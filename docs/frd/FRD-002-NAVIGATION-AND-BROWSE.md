@@ -1,367 +1,229 @@
 # FRD-002 — Navigation & Content Browsing
 
 **Functional Requirement Document**
-**Project:** Lodestone PF1
+**Project:** Lodestone Suite (PF1 / PF2 / SF1)
 **Status:** Draft — Awaiting approval
-**Version:** 1.0
+**Version:** 2.0
+**Updated:** 2026-04-01
 
 ---
 
 ## Purpose
 
-Define how users navigate and browse content. Navigation is the **primary entry point** for most players — searching for a specific spell is efficient, but browsing "all 3rd-level Wizard spells" should be equally fast and discoverable.
+Define the behavioral requirements for navigation and content browsing across all three Lodestone apps. The specific visual navigation pattern (columnar, sidebar+stack, tab-based, etc.) is **deferred to the Design Phase** — Lumen will produce mockups and we'll choose based on usability. This FRD defines what navigation must accomplish; not how it looks.
+
+---
+
+## Design Principles
+
+1. **Context preservation** — Users always know where they are in the content hierarchy.
+2. **Two-path navigation** — Browsing for exploration and global search for direct lookup are both first-class.
+3. **iPad-first, iPhone-complete** — Designed for use at the gaming table on a tablet. iPhone is a full-featured adaptive variant, not an afterthought.
+4. **Tappable everything** — Any referenced rule, spell, feat, or item in a detail view is a live hyperlink.
+5. **Modern native app** — No fake book UI, no page-flip animations, no paper textures. Feels like a great iOS app, not a digital book.
 
 ---
 
 ## User Stories
 
-1. **As a player, I want to browse all spells by class**
-   - Acceptance: Tap "Spells" → see list of classes → tap "Cleric" → see all cleric spells sorted by level
-
-2. **As a DM, I want to find creatures by type (humanoid, undead, etc.)**
-   - Acceptance: Tap "Creatures" → browse by type → see all humanoids sorted by CR
-
-3. **As a user, I want to see all classes at a glance with short descriptions**
-   - Acceptance: Tap "Classes" → see all classes with AC/HD/BAB icons/badges, tap to drill in
-
-4. **As a user, I want a breadcrumb showing where I am**
-   - Acceptance: Navigated 3 levels deep (Classes → Cleric → Class Features) — breadcrumb shows "Classes > Cleric > Features"
-
-5. **As a user, I want to see recommended/popular entries on the home screen**
-   - Acceptance: Home screen shows featured spells, recent searches, or trending entries
+1. **As a player at the table**, I want to find a spell by browsing class → level without typing
+2. **As a GM**, I want to browse all monsters in the Bestiary sorted by CR
+3. **As a player**, I want to follow a feat's prerequisite chain without losing my place in the feat list
+4. **As any user**, I want to get back to where I was with one or two taps
+5. **As an iPad user**, I want to see navigation context and entry content simultaneously
+6. **As an iPhone user**, I want the same content with a one-column-at-a-time flow
 
 ---
 
 ## Functional Requirements
 
-### FR-002-1: Tab-Based Navigation (Root Level)
+### FR-002-1: Content Hierarchy
 
-App has **5 main tabs** at the bottom:
+The content model has **four levels**. Navigation must expose all four:
 
-| Tab | Icon | Content | Notes |
-|-----|------|---------|-------|
-| **Home** | 🏠 | Featured entries, recent searches, quick stats | First time launch experience |
-| **Classes** | ⚔️ | Browse all classes by core/archetypes, drill into features/spells | Hierarchical |
-| **Spells** | ✨ | Browse by class/level/school/descriptor, search | Hierarchical + faceted |
-| **Reference** | 📖 | Creatures, items, feats, traits, rules by category | Multi-level browsing |
-| **Favorites** | ❤️ | User's saved entries, searchable, with notes (Phase 2) | Personalization |
+```
+Level 1: App / Game System (PF1 / PF2 / SF1)
+Level 2: Book (Core Rulebook, Advanced Player's Guide, Bestiary...)
+Level 3: Section / Chapter (Classes, Spells, Feats, Combat...)
+Level 4: Entry (individual spell, feat, monster, rule section)
+```
 
-Each tab is a `UITabBarController` with independent navigation stacks.
+Users must be able to drill from Level 2 → 3 → 4 without losing orientation.
 
 ---
 
-### FR-002-2: Home Screen
+### FR-002-2: Primary Navigation Tabs
 
-**Purpose:** Onboard new users, show what's available, highlight powerful lookups.
+The app has **five root-level destinations** accessible from any depth:
 
-**Layout:**
+| Tab | Content |
+|-----|---------|
+| **Browse** | Full book → chapter → entry hierarchy |
+| **Search** | Global full-text search with filters |
+| **Favorites** | Bookmarked entries |
+| **GM Tools** | Quick-reference: conditions, tables, dice |
+| **Settings** | Subscription, display preferences |
+
+Switching tabs preserves each tab's navigation state (deep-linking within a tab is preserved).
+
+---
+
+### FR-002-3: Browse Tab Requirements
+
+The Browse tab is the primary content exploration surface. It must:
+
+- Show all books available for the active app (PF1/PF2/SF1)
+- Indicate which books are free vs. subscription-required
+- Allow drill-down from book → section → entry list → entry detail
+- Show entry count per section (e.g., "Feats — 432 entries")
+- Support alphabetical index (scrubber or A-Z jump) in long entry lists
+- Provide a breadcrumb or back-navigation trail so users know their depth
+
+**On iPad:** Navigation context (books, sections) should remain visible alongside the content pane — the specific approach (sidebar, column, etc.) is left to Lumen's design phase.
+
+**On iPhone:** Single-column push/pop navigation. Same hierarchy, one level at a time.
+
+---
+
+### FR-002-4: Cross-Type Browsing (Quick Access)
+
+In addition to book-centric browsing, users should be able to browse content **across all books by type**:
+
+- All Classes (across Core + APG + ACG + etc.)
+- All Spells (by class, by school, by level)
+- All Feats (by type: Combat, Metamagic, General)
+- All Monsters (by type, by CR)
+- All Items (by category)
+
+This is the "quick access" path — useful when you know the type but not which book.
+
+---
+
+### FR-002-5: Home / Landing Screen
+
+When the app opens (or Browse tab is selected with nothing selected), a home screen shows:
+
+- **Quick Access** — shortcuts to the most common content types (Classes, Spells, Feats, Items, Monsters, Rules)
+- **Your Books** — all available books; free ones open directly, locked ones show subscription prompt
+- **Recently Viewed** — last 10-20 entries, persisted locally across sessions
+
+---
+
+### FR-002-6: Entry Detail Navigation
+
+From any entry detail view:
+
+- All cross-reference links (prerequisite feats, caster classes, related spells) are **tappable**
+- Tapping a link opens the linked entry
+- Back button or swipe-back returns to the previous entry
+- A user can follow a chain (Feat A → Feat B → Feat C) and retrace steps
+
+---
+
+### FR-002-7: Premium Content Gating in Navigation
+
+Subscription-required content must be visible in the navigation tree with a clear locked indicator (lock icon, dimmed state, or badge). Tapping locked content opens a non-modal subscription prompt — the user can dismiss it and continue browsing free content. The navigation tree is never hidden; only the entry content is gated.
+
+---
+
+### FR-002-8: Search Integration
+
+A search bar is accessible from **any depth** of the navigation hierarchy. Activating it does not reset the navigation stack — it overlays a search experience, and dismissing it returns to the previous state. Search is covered in detail in FRD-003.
+
+---
+
+## Navigation Pattern — Decision: Option D (Home + Search-First)
+
+**Selected pattern:** Home screen with category tiles + global search as the primary interaction. Hierarchical browse is available but secondary.
+
+**Rationale:** Most users at the table know what they're looking for (e.g., "Fireball", "Power Attack", "Troll"). Search-first gets them there in 1-2 taps. Browse hierarchy serves discovery and new users. This avoids the complexity of 3-column layout on iPhone while still being fast on iPad.
+
+### Layout Specification
+
+**Home Screen (Browse tab root):**
 ```
 ┌─────────────────────────────────┐
-│  Lodestone    [Search icon]      │  ← Header with search affordance
+│  Lodestone: PF1    [Search bar]  │  ← always visible
 ├─────────────────────────────────┤
-│ ⏱  Recent Searches              │
-│ • Fireball (2 days ago)          │  ← Tappable history
-│ • Giant Spider (1 week ago)      │
-│                                  │
-│ 💡 Quick Browse                  │
-│ ┌──────────────┬──────────────┐  │
-│ │ All Classes  │ All Races    │  │  ← Quick shortcut buttons
-│ └──────────────┴──────────────┘  │
-│ ┌──────────────┬──────────────┐  │
-│ │ All Spells   │ All Creatures│  │
-│ └──────────────┴──────────────┘  │
-│                                  │
-│ 📚 Featured This Week            │
-│ • Spell: True Strike             │  ← Rotating featured entries
-│ • Feat: Power Attack             │
-│ • Item: Cloak of Resistance      │
-│                                  │
-│ ℹ️  Need help?                   │
-│ "Tap any spell to see all classes│
-│  that can cast it"               │  ← Inline onboarding
+│  QUICK ACCESS                   │
+│  ┌───────┐ ┌───────┐ ┌───────┐  │
+│  │Classes│ │Spells │ │ Feats │  │
+│  └───────┘ └───────┘ └───────┘  │
+│  ┌───────┐ ┌───────┐ ┌───────┐  │
+│  │ Items │ │Monster│ │ Rules │  │
+│  └───────┘ └───────┘ └───────┘  │
+├─────────────────────────────────┤
+│  YOUR BOOKS                     │
+│  Core Rulebook          free >  │
+│  Advanced Player's Guide free > │
+│  Ultimate Combat          🔒 >  │
+│  ...                            │
+├─────────────────────────────────┤
+│  RECENTLY VIEWED                │
+│  Fireball · Spell               │
+│  Power Attack · Feat            │
+│  Troll · Monster                │
 └─────────────────────────────────┘
 ```
 
----
+**From a category tile (e.g., Spells):**
+- Shows all spells across all unlocked books
+- Grouped by class (PF1) or tradition (PF2/SF1) with section headers
+- Search bar filters within the list
+- Tap an entry → full detail view
 
-### FR-002-3: Hierarchical Browsing (Classes Tab)
+**From a book (e.g., Core Rulebook):**
+- Shows chapter list for that book
+- Tap chapter → entry list for that chapter
+- Same entry list → detail view pattern
 
-Navigation structure:
+**iPad adaptation:**
+- On iPad, the home/browse column stays visible as a sidebar (NavigationSplitView)
+- Content pane shows the entry list or detail on the right
+- No third column needed
 
-```
-Classes (root)
-├── Core Classes
-│   ├── Barbarian
-│   │   ├── Class Overview
-│   │   ├── Class Features (by level)
-│   │   └── Spell List (if spellcaster)
-│   ├── Bard
-│   ├── Cleric
-│   └── ... (all core classes)
-├── Hybrid Classes
-│   └── ... (5-6 hybrid classes)
-└── Prestige Classes
-    └── ... (30+ prestige classes)
-```
-
-**Each class detail screen shows:**
-- Hit die, BAB, saving throws, skills per level (badges)
-- Key abilities (Sneak Attack, Turn Undead, etc.)
-- Class features table (level | feature | description)
-- Spell list (if spellcaster) — sortable by level
-
----
-
-### FR-002-4: Faceted Browsing (Spells Tab)
-
-Spells are the most-searched content. Provide **multiple entry points**:
-
-```
-Spells (root)
-├── By Class
-│   ├── Cleric
-│   │   ├── Level 0 (Cantrips)
-│   │   ├── Level 1
-│   │   └── ... (Levels 2-9)
-│   ├── Wizard
-│   └── ... (all spellcasters)
-├── By School
-│   ├── Abjuration
-│   ├── Conjuration
-│   ├── ... (all 8 schools)
-├── By Descriptor
-│   ├── Fire
-│   ├── Cold
-│   ├── Teleportation
-│   └── ... (20+ descriptors)
-├── All Spells (A-Z)
-│   └── ... (1000+ entries, paginated, searchable)
-```
-
-**Each level/school/descriptor shows:**
-- List of spells, sortable by (name | level | school | class)
-- Tap to drill into spell detail
-
----
-
-### FR-002-5: Multi-Category Browsing (Reference Tab)
-
-Catch-all for non-spell content:
-
-```
-Reference (root)
-├── Creatures
-│   ├── By Type (Humanoid, Undead, Dragon, ...)
-│   ├── By CR (1/8, 1/6, 1/4, ... 30)
-│   ├── By Size (Fine, Tiny, Small, Medium, Large, ...)
-│   └── All (A-Z)
-├── Equipment
-│   ├── Armor (Light, Medium, Heavy, Shields)
-│   ├── Weapons (Simple, Martial, Exotic)
-│   ├── Magic Items (Armor, Weapons, Rings, Rods, ...)
-│   └── Goods & Services (Alchemical, Gear, Mounts, ...)
-├── Feats
-│   ├── Combat Feats
-│   ├── Metamagic Feats
-│   ├── Item Creation
-│   ├── General Feats
-│   └── All (A-Z)
-├── Traits
-│   ├── Campaign Traits
-│   ├── Religion Traits
-│   ├── Race Traits
-│   └── All (A-Z)
-├── Rules & Tables
-│   ├── Combat
-│   ├── Spellcasting
-│   ├── Skills & Abilities
-│   ├── Environmental
-│   └── Special Rules
-```
-
----
-
-### FR-002-6: Breadcrumb Navigation
-
-Every non-root screen shows a **breadcrumb trail** at the top:
-
-```
-Classes > Cleric > Class Features
-```
-
-Tap any breadcrumb segment to go back to that level (don't pop the stack, jump).
-
-**Example flow:**
-1. Home → Classes (tap "Classes" tab)
-2. Classes → Cleric (tap Cleric cell)
-3. Cleric → Features (tap "Features" button)
-4. Breadcrumb shows: `Classes > Cleric > Features`
-5. Tap "Cleric" in breadcrumb → back to Cleric detail (not home)
-
----
-
-### FR-002-7: Search Integration (Every Screen)
-
-Every tab has a **search bar at the top** that:
-- Searches **only within that tab's category** (search in "Spells" tab searches only spells)
-- Shows live results as you type (max 20 results, alphabetical + relevance)
-- Has a "Search All" option at the bottom (searches all content)
-- Tapping a result navigates to that entry's detail view
-
-**Search scope examples:**
-- In "Spells" tab: Search returns only spells
-- In "Reference" tab: Search returns creatures, feats, items, traits, rules (all reference content)
-- Tap "Search All" → full-app search across all categories
-
----
-
-### FR-002-8: List Rendering & Performance
-
-**Requirement:** Lists with 100+ items must be fast (no lag on scroll).
-
-**Implementation:**
-- Use `UITableViewController` with pagination (load 50 items, "load more" at bottom)
-- OR use `SwiftUI` `List` with lazy loading
-- Smooth scroll target: 60 fps, no stuttering
-
-**Large list strategy:**
-- "All Spells" list (1000+) — paginated in groups of 50
-- "All Creatures" list (500+) — paginated in groups of 50
-- User can search to narrow results instead of scrolling
-
----
-
-### FR-002-9: iPad Optimization
-
-**Landscape mode on iPad:**
-- **Master/Detail split view** — browse on left, detail on right
-- **Rotating portrait ↔ landscape** — navigation stack collapses/expands appropriately
-- **Larger fonts on iPad** — readable without pinch-zoom
-
-**Example:**
-- Portrait: Full-width browsing (classes list takes whole screen)
-- Landscape: Split view (class list on left [40% width], class detail on right [60% width])
-
----
-
-### FR-002-10: Dark Mode Support
-
-All browsing screens support **system dark mode**:
-- iOS settings → Light/Dark/Auto
-- Dark background + light text
-- Contrasts remain ≥4.5:1 WCAG AA
-- No hardcoded colors; use `UIColor` semantic colors or `Color` environment
-
----
-
-## UI Inventory
-
-**Navigation Controller Screens:**
-
-| Screen | Controller | Purpose | Parent |
-|--------|-----------|---------|--------|
-| Home | `HomeViewController` | Featured entries, quick browse | Tab root |
-| Classes List | `ClassesListViewController` | Browse core/hybrid/prestige classes | Classes tab |
-| Class Detail | `ClassDetailViewController` | Class overview, features, spells | Classes List |
-| Spells by Class | `SpellsByClassViewController` | Show spells for a specific class | Spells tab |
-| Spells by Level | `SpellsByLevelViewController` | Show spells at a specific level | Spells by Class |
-| Spell Detail | `SpellDetailViewController` | Full spell entry, hyperlinks | Spells by Level |
-| Creatures List | `CreaturesListViewController` | Browse creatures by category | Reference tab |
-| Creature Detail | `CreatureDetailViewController` | Stat block, abilities | Creatures List |
-| Equipment List | `EquipmentListViewController` | Browse items by type | Reference tab |
-| Item Detail | `ItemDetailViewController` | Full item description | Equipment List |
-| Feats List | `FeatsListViewController` | Browse feats by category | Reference tab |
-| Feat Detail | `FeatDetailViewController` | Feat with prerequisites/benefits | Feats List |
-| Favorites List | `FavoritesViewController` | User's bookmarked entries | Favorites tab |
-| Search Results | `SearchResultsViewController` | Search results across all categories | Modal/overlay |
-
-**UI Elements (Reusable):**
-
-| Element | Purpose | Used By |
-|---------|---------|---------|
-| `HyperlinkText` | Tappable cross-references | All detail screens |
-| `BadgeView` | AC, HD, BAB display | Class/Creature detail |
-| `BreadcrumbView` | Navigation trail | All detail screens |
-| `SearchBar` | Search input | All tab roots |
-| `FavoriteButton` | Add/remove favorite | All detail screens |
-| `ListCell` | Row template for lists | All list screens |
-| `SectionHeader` | Category header in lists | List screens with sections |
-
----
-
-## Data Requirements
-
-From **FRD-001**, all content must be:
-- Indexed for fast lookup (by type, by category, by name)
-- Linked (spell ↔ class, feat ↔ prerequisite, etc.)
-- Searchable (full-text index)
-
----
-
-## Business Rules
-
-1. **Free users see all Core Rulebook content** — No gating
-2. **Paid users see all Core + expansions** — Entire reference opens
-3. **Navigation respects subscription status** — Show "Unlock Expansion" button if user taps content they don't have access to
-
----
-
-## Error States
-
-| Error | Handling |
-|-------|----------|
-| Empty search results | "No results. Try: broader search, 'Search All', or browse by category" |
-| List fails to load | Show spinner, retry button, "Check internet connection?" |
-| Tap broken hyperlink | Show alert "Referenced entry not found" + offer "Report issue" |
-| iPad rotation mid-navigation | Preserve navigation stack, adapt layout |
+**iPhone:**
+- Standard NavigationStack push. Home → list → detail.
+- Search bar always accessible from toolbar.
 
 ---
 
 ## Acceptance Criteria
 
-1. **All 5 tabs functional** — Navigate between tabs, each preserves state on back
-2. **Classes tab complete** — Browse all classes, drill into features, see spell list if applicable
-3. **Spells tab complete** — Browse by class/level/school, results load in <200ms
-4. **Reference tab complete** — Browse creatures/items/feats/traits/rules
-5. **Breadcrumbs work** — Tap any segment, navigate there (don't just pop)
-6. **Search works globally** — Every tab has search, "Search All" works
-7. **iPad split view works** — Landscape shows master/detail on iPad Air+
-8. **Dark mode works** — Toggle system dark mode, app adapts
-9. **List performance** — Scroll 1000-item list at 60 fps (no jank)
-10. **Favorites persist** — Favorite an entry, close app, reopen, verify still marked
+1. Users can navigate from app launch to any entry in ≤4 taps
+2. Browsing context (which book/section you're in) is visible from the entry detail view
+3. Cross-reference links navigate to the linked entry; back navigation returns to origin
+4. Premium content is identifiable in the browse hierarchy without entering it
+5. Recently Viewed entries persist across app sessions
+6. Quick Access shortcuts load all-books content lists for each content type
+7. Navigation state is preserved when switching tabs and returning
+8. Search bar is accessible from any navigation depth without stack reset
+9. iPad shows navigation context and content simultaneously (implementation TBD)
+10. iPhone NavigationStack supports full hierarchy with correct back behavior
 
 ---
 
 ## Out of Scope
 
-- User notes/annotations (Phase 2)
-- Sharing entries via link
-- Exporting browsing history
-- Collaborative browsing (multiplayer)
+- Custom book ordering by users
+- Collapse/hide entire books from the browse tree
+- "History" tab (Recently Viewed on home screen is sufficient)
+- Animated page/book transitions
 
 ---
 
 ## Dependencies
 
-- **FRD-001** (Core Data Model) — Must exist; data structure drives all navigation
-- **Search functionality** (will be FRD-003)
-
----
-
-## Notes
-
-This FRD defines the **user journey**. Every entry point (home, tabs, search, favorites) exists to minimize the time between "I need to look up Fireball" and "I'm reading the Fireball entry." Navigation must be intuitive and fast.
-
-**Key design principles:**
-- **Multiple entry points** — Players can browse OR search; don't force one pattern
-- **Discoverable categories** — New users should see all available content at a glance
-- **Fast navigation** — Transitions <100ms (no visible lag)
-- **iPad parity** — Not just "iPhone app that works on iPad"; use iPad screen real estate
+- **FRD-001** — Book/chapter/entry hierarchy must be data-driven from the database
+- **FRD-003** — Search bar integration at every navigation depth
+- **FRD-004** — Lock badges on subscription-required content
+- **Design Phase (Lumen)** — Visual navigation pattern decision
 
 ---
 
 ## Sign-Off
 
-**Status:** Draft — awaiting approval
+**Status:** Draft — awaiting design decision on navigation pattern, then final approval
 **Created:** 2026-03-31
+**Updated:** 2026-04-01
 **Author:** Friday

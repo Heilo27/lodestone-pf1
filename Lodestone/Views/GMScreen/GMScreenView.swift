@@ -2,60 +2,97 @@ import SwiftUI
 
 struct GMScreenView: View {
     @State private var viewModel = GMScreenViewModel()
+    @State private var searchText = ""
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var displayedReferences: [GMScreenViewModel.QuickReference] {
+        let filtered = viewModel.filteredReferences
+        if searchText.isEmpty { return filtered }
+        let lower = searchText.lowercased()
+        return filtered.filter {
+            $0.title.lowercased().contains(lower) ||
+            $0.content.lowercased().contains(lower)
+        }
+    }
 
     var body: some View {
         NavigationStack {
             List {
-                // Category filter
+                // Category filter chips
                 Section {
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 8) {
-                            CategoryButton(title: "All", isSelected: viewModel.selectedCategory == nil) {
+                        HStack(spacing: AppSpacing.sm) {
+                            GMCategoryChip(title: "All", isSelected: viewModel.selectedCategory == nil) {
                                 viewModel.selectedCategory = nil
                             }
                             ForEach(viewModel.categories, id: \.self) { category in
-                                CategoryButton(title: category, isSelected: viewModel.selectedCategory == category) {
+                                GMCategoryChip(
+                                    title: category,
+                                    isSelected: viewModel.selectedCategory == category
+                                ) {
                                     viewModel.selectedCategory = category
                                 }
                             }
                         }
+                        .padding(.horizontal, AppSpacing.xs)
                     }
                     .listRowInsets(EdgeInsets())
                     .listRowBackground(Color.clear)
                 }
 
-                // Quick reference cards
-                ForEach(viewModel.filteredReferences) { reference in
-                    Section(reference.title) {
-                        Text(reference.content)
-                            .font(.system(.caption, design: .monospaced))
-                            .textSelection(.enabled)
+                if displayedReferences.isEmpty {
+                    ContentUnavailableView.search(text: searchText)
+                } else {
+                    ForEach(displayedReferences) { reference in
+                        Section(reference.title) {
+                            Text(reference.content.trimmingCharacters(in: .whitespacesAndNewlines))
+                                .font(.system(.caption, design: .monospaced))
+                                .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                                .textSelection(.enabled)
+                                .lineSpacing(3)
+                        }
                     }
                 }
             }
             .listStyle(.insetGrouped)
             .navigationTitle("GM Screen")
+            .searchable(text: $searchText, prompt: "Search tables…")
         }
     }
 }
 
-private struct CategoryButton: View {
+private struct GMCategoryChip: View {
     let title: String
     let isSelected: Bool
     let action: () -> Void
 
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var activeColor: Color {
+        colorScheme == .dark ? AppColors.secondaryDark : AppColors.secondary
+    }
+
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.subheadline)
-                .fontWeight(.medium)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 8)
-                .background(isSelected ? AppColors.primary : Color(.tertiarySystemFill))
-                .foregroundStyle(isSelected ? .white : .primary)
-                .clipShape(Capsule())
+                .font(AppFonts.chip())
+                .padding(.horizontal, AppSpacing.md)
+                .padding(.vertical, AppSpacing.sm)
+                .background(
+                    isSelected
+                        ? activeColor
+                        : AppColors.adaptiveSurfaceElevated(colorScheme),
+                    in: Capsule()
+                )
+                .foregroundStyle(
+                    isSelected
+                        ? Color.white
+                        : AppColors.adaptiveTextPrimary(colorScheme)
+                )
         }
         .buttonStyle(.plain)
+        .frame(minHeight: 44)
+        .contentShape(Rectangle())
     }
 }
 

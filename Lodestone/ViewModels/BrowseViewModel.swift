@@ -3,14 +3,26 @@ import SwiftUI
 
 @Observable
 final class BrowseViewModel {
+    // Quick access
     var categories: [ContentType] = ContentType.allCases
     var categoryCounts: [ContentType: Int] = [:]
-    var selectedCategory: ContentType?
-    var entries: [any ContentEntry] = []
-    var isLoading: Bool = false
-    var errorMessage: String?
+
+    // Books
+    var books: [BookSource] = []
+    var isLoadingBooks = false
+
+    // Recently viewed
+    var recentlyViewed: [RecentEntry] = []
 
     private let database = DatabaseService.shared
+    let recentlyViewedService = RecentlyViewedService()
+
+    func loadHomeData() async {
+        async let counts: () = loadCounts()
+        async let booksLoad: () = loadBooks()
+        _ = await (counts, booksLoad)
+        recentlyViewed = recentlyViewedService.entries
+    }
 
     func loadCounts() async {
         do {
@@ -24,16 +36,14 @@ final class BrowseViewModel {
         }
     }
 
-    func loadEntries(for type: ContentType) async {
-        isLoading = true
-        errorMessage = nil
+    func loadBooks() async {
+        isLoadingBooks = true
         do {
             try await database.open()
-            entries = try await database.browse(type: type)
+            books = try await database.browseSources()
         } catch {
-            errorMessage = error.localizedDescription
-            entries = []
+            books = []
         }
-        isLoading = false
+        isLoadingBooks = false
     }
 }

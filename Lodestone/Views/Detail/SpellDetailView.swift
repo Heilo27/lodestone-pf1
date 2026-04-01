@@ -2,9 +2,10 @@ import SwiftUI
 
 struct SpellDetailView: View {
     let spell: SpellEntry
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
             DetailRow(label: "School", value: spell.school)
             DetailRow(label: "Level", value: spell.levels)
             DetailRow(label: "Casting Time", value: spell.castingTime)
@@ -15,33 +16,20 @@ struct SpellDetailView: View {
             DetailRow(label: "Spell Resistance", value: spell.spellResistance ? "Yes" : "No")
             DetailRow(label: "Source", value: spell.source)
 
-            Divider()
+            OrnamentalDivider(label: "Description")
+                .padding(.vertical, AppSpacing.sm)
 
-            Text("Description")
-                .font(.headline)
             Text(spell.description)
-                .font(.body)
-        }
-    }
-}
-
-private struct DetailRow: View {
-    let label: String
-    let value: String
-
-    var body: some View {
-        HStack(alignment: .top) {
-            Text(label)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundStyle(.secondary)
-                .frame(width: 120, alignment: .leading)
-            Text(value)
-                .font(.subheadline)
+                .font(AppFonts.body)
+                .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                .lineSpacing(4)
         }
     }
 }
 
 #Preview {
-    SpellDetailView(spell: .placeholder)
+    ScrollView {
+        SpellDetailView(spell: .placeholder)
+            .padding()
+    }
 }

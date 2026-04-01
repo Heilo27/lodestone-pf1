@@ -1,15 +1,15 @@
 # Lodestone PF1 — Project Configuration
 
-**Project:** Lodestone Pathfinder 1E Reference App
+**Project:** Lodestone Reference Suite — PF1 / PF2 / SF1
 **Platform:** iOS / iPadOS
-**Status:** Phase 4 (PRD + FRDs Draft)
+**Status:** Phase 4 (PRD v2 + FRDs Draft — awaiting approval)
 
 ---
 
 ## Project Identity
 
-**Name:** Lodestone (PF1, PF2, SF1 variants)
-**Tagline:** The complete Pathfinder 1E reference in your pocket
+**Name:** Lodestone (PF1, PF2, SF1 — three separate App Store apps, shared codebase)
+**Tagline:** The complete tabletop RPG reference in your pocket
 **Target Users:** Players, Game Masters, Pathfinder enthusiasts
 **Distribution:** App Store (iOS 15.0+)
 

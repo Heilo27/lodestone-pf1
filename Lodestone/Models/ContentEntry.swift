@@ -6,4 +6,5 @@ protocol ContentEntry: Codable, Identifiable, Hashable {
     var contentType: ContentType { get }
     var summary: String { get }
     var isPremium: Bool { get }
+    var source: String { get }
 }

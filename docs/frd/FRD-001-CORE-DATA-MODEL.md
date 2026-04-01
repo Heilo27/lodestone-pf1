@@ -1,15 +1,23 @@
 # FRD-001 — Core Data Model & Database Schema
 
 **Functional Requirement Document**
-**Project:** Lodestone PF1
+**Project:** Lodestone Suite (PF1 / PF2 / SF1)
 **Status:** Draft — Awaiting approval
-**Version:** 1.0
+**Version:** 2.0
+**Updated:** 2026-04-01
 
 ---
 
 ## Purpose
 
-Define the data model, database schema, and relationships that underpin all content in Lodestone. This FRD ensures searchability, cross-referencing, and performance across the entire app.
+Define the data model, database schema, and relationships that underpin all content in the Lodestone suite. This FRD applies to all three apps (PF1, PF2, SF1) — each app has its own SQLite database but uses the **same schema**. The shared `LodestoneCore` Swift package provides all data access code; app targets inject their specific database file at launch.
+
+**Database per app:**
+- `LodestoneApp-PF1` → `pf1-content.sqlite`
+- `LodestoneApp-PF2` → `pf2-content.sqlite`
+- `LodestoneApp-SF1` → `sf1-content.sqlite`
+
+All three files share identical table structure. Content and cross-reference data differ.
 
 ---
 
@@ -342,4 +350,5 @@ This FRD is the **data foundation**. All subsequent FRDs depend on it (search, n
 
 **Status:** Draft — awaiting approval
 **Created:** 2026-03-31
+**Updated:** 2026-04-01
 **Author:** Friday

@@ -3,10 +3,11 @@ import SwiftUI
 struct FilterView: View {
     let activeFilters: Set<ContentType>
     let onToggle: (ContentType) -> Void
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
+            HStack(spacing: AppSpacing.sm) {
                 ForEach(ContentType.allCases) { type in
                     FilterChip(
                         title: type.singularName,
@@ -18,10 +19,10 @@ struct FilterView: View {
                     }
                 }
             }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
+            .padding(.horizontal, AppSpacing.base)
+            .padding(.vertical, AppSpacing.sm)
         }
-        .background(AppColors.groupedBackground)
+        .background(AppColors.adaptiveBackground(colorScheme))
     }
 }
 
@@ -34,24 +35,27 @@ private struct FilterChip: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 4) {
+            HStack(spacing: AppSpacing.xs) {
                 Image(systemName: icon)
-                    .font(.caption)
+                    .font(AppFonts.caption)
                 Text(title)
-                    .font(.caption)
-                    .fontWeight(.medium)
+                    .font(AppFonts.chip())
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(isSelected ? color.opacity(0.2) : Color(.tertiarySystemFill))
+            .padding(.horizontal, AppSpacing.md)
+            .padding(.vertical, AppSpacing.xs + 2)
+            .background(isSelected ? color.opacity(0.18) : Color(.tertiarySystemFill))
             .foregroundStyle(isSelected ? color : .secondary)
             .clipShape(Capsule())
             .overlay(
                 Capsule()
-                    .strokeBorder(isSelected ? color : .clear, lineWidth: 1)
+                    .strokeBorder(isSelected ? color.opacity(0.5) : Color.clear, lineWidth: 1)
             )
         }
         .buttonStyle(.plain)
+        .frame(minHeight: 44)
+        .contentShape(Rectangle())
+        .accessibilityLabel(title)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

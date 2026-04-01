@@ -19,6 +19,11 @@ struct SpellEntry: ContentEntry {
     let description: String
     let source: String
 
+    enum CodingKeys: String, CodingKey {
+        case id, title, summary, isPremium, school, levels, castingTime, components
+        case range, duration, savingThrow, spellResistance, description, source
+    }
+
     // MARK: - Database init
     init(from row: SQLiteRow) {
         id = UUID(uuidString: row["id"] ?? "") ?? UUID()

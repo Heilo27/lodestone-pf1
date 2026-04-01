@@ -2,49 +2,29 @@ import SwiftUI
 
 struct RuleDetailView: View {
     let rule: RuleEntry
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
             if !rule.category.isEmpty {
-                HStack {
-                    Text(rule.category)
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 4)
-                        .background(AppColors.contentTypeColor(.rule).opacity(0.15))
-                        .clipShape(Capsule())
-                }
+                DetailRow(label: "Category", value: rule.category)
             }
 
-            RuleInfoRow(label: "Source", value: rule.source)
-
-            Divider()
+            OrnamentalDivider(label: "Rule Text")
+                .padding(.vertical, AppSpacing.sm)
 
             Text(rule.body)
-                .font(.system(.body, design: .monospaced))
+                .font(AppFonts.body)
+                .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .textSelection(.enabled)
-        }
-    }
-}
-
-private struct RuleInfoRow: View {
-    let label: String
-    let value: String
-
-    var body: some View {
-        HStack(alignment: .top) {
-            Text(label)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundStyle(.secondary)
-                .frame(width: 80, alignment: .leading)
-            Text(value)
-                .font(.subheadline)
+                .lineSpacing(4)
         }
     }
 }
 
 #Preview {
-    RuleDetailView(rule: .placeholder)
+    ScrollView {
+        RuleDetailView(rule: .placeholder)
+            .padding()
+    }
 }

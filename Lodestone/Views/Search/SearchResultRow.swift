@@ -2,38 +2,30 @@ import SwiftUI
 
 struct SearchResultRow: View {
     let entry: any ContentEntry
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: entry.contentType.iconName)
-                .font(.body)
-                .foregroundStyle(AppColors.contentTypeColor(entry.contentType))
-                .frame(width: 28, height: 28)
+        HStack(spacing: AppSpacing.md) {
+            ContentTypeIconBadge(type: entry.contentType, size: 32)
 
             VStack(alignment: .leading, spacing: 2) {
-                HStack {
+                HStack(spacing: AppSpacing.xs) {
                     Text(entry.title)
-                        .font(.headline)
+                        .font(AppFonts.headline)
+                        .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                     if entry.isPremium {
-                        Image(systemName: "crown.fill")
-                            .font(.caption2)
-                            .foregroundStyle(AppColors.premiumGold)
+                        PremiumBadge(compact: true)
                     }
                 }
                 Text(entry.summary)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(AppFonts.caption)
+                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                     .lineLimit(2)
             }
 
             Spacer()
 
-            Text(entry.contentType.singularName)
-                .font(.caption)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(AppColors.contentTypeColor(entry.contentType).opacity(0.15))
-                .clipShape(Capsule())
+            ContentTypeBadge(type: entry.contentType)
         }
         .padding(.vertical, 2)
     }

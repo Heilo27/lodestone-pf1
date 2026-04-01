@@ -2,30 +2,32 @@ import SwiftUI
 
 struct MonsterDetailView: View {
     let monster: MonsterEntry
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            // Stat block grid
+            HStack(spacing: AppSpacing.sm) {
                 StatBlock(label: "CR", value: monster.challengeRating)
                 StatBlock(label: "AC", value: "\(monster.armorClass)")
                 StatBlock(label: "HP", value: monster.hitPoints)
             }
+            .padding(.bottom, AppSpacing.sm)
 
-            Divider()
+            DetailRow(label: "Type", value: monster.type)
+            DetailRow(label: "Size", value: monster.size)
+            DetailRow(label: "Alignment", value: monster.alignment)
+            DetailRow(label: "Speed", value: monster.speed)
+            DetailRow(label: "Environment", value: monster.environment)
+            DetailRow(label: "Source", value: monster.source)
 
-            MonsterInfoRow(label: "Type", value: monster.type)
-            MonsterInfoRow(label: "Size", value: monster.size)
-            MonsterInfoRow(label: "Alignment", value: monster.alignment)
-            MonsterInfoRow(label: "Speed", value: monster.speed)
-            MonsterInfoRow(label: "Environment", value: monster.environment)
-            MonsterInfoRow(label: "Source", value: monster.source)
+            OrnamentalDivider(label: "Description")
+                .padding(.vertical, AppSpacing.sm)
 
-            Divider()
-
-            Text("Description")
-                .font(.headline)
             Text(monster.description)
-                .font(.body)
+                .font(AppFonts.body)
+                .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                .lineSpacing(4)
         }
     }
 }
@@ -34,40 +36,28 @@ private struct StatBlock: View {
     let label: String
     let value: String
 
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: AppSpacing.xs) {
             Text(label)
-                .font(.caption)
-                .fontWeight(.semibold)
-                .foregroundStyle(.secondary)
+                .font(AppFonts.caption.weight(.semibold))
+                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                .textCase(.uppercase)
+                .tracking(0.8)
             Text(value)
-                .font(.title3)
-                .fontWeight(.bold)
+                .font(AppFonts.displaySmall)
+                .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 8)
-        .background(Color(.tertiarySystemFill))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-    }
-}
-
-private struct MonsterInfoRow: View {
-    let label: String
-    let value: String
-
-    var body: some View {
-        HStack(alignment: .top) {
-            Text(label)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundStyle(.secondary)
-                .frame(width: 100, alignment: .leading)
-            Text(value)
-                .font(.subheadline)
-        }
+        .padding(.vertical, AppSpacing.md)
+        .background(AppColors.adaptiveSurfaceElevated(colorScheme), in: RoundedRectangle(cornerRadius: AppRadius.medium))
     }
 }
 
 #Preview {
-    MonsterDetailView(monster: .placeholder)
+    ScrollView {
+        MonsterDetailView(monster: .placeholder)
+            .padding()
+    }
 }

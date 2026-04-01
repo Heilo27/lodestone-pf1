@@ -71,6 +71,46 @@ actor DatabaseService {
         return try fetchEntries(type: type, limit: limit, offset: offset)
     }
 
+    /// Returns distinct book names and their entry counts, sorted by entry count desc.
+    func browseSources() throws -> [BookSource] {
+        guard isOpen else { throw DatabaseError.notOpen }
+        guard let db else { throw DatabaseError.notOpen }
+
+        let sql = """
+        SELECT source, COUNT(*) as cnt,
+               MAX(is_premium) as requires_sub
+        FROM content
+        GROUP BY source
+        ORDER BY requires_sub ASC, cnt DESC
+        """
+        var stmt: OpaquePointer?
+        defer { sqlite3_finalize(stmt) }
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
+            throw DatabaseError.queryFailed(dbError())
+        }
+        var results: [BookSource] = []
+        while sqlite3_step(stmt) == SQLITE_ROW {
+            let name = String(cString: sqlite3_column_text(stmt, 0))
+            let count = Int(sqlite3_column_int(stmt, 1))
+            let isPremium = sqlite3_column_int(stmt, 2) != 0
+            results.append(BookSource(name: name, entryCount: count, isPremium: isPremium))
+        }
+        return results
+    }
+
+    /// Returns all entries from a specific book source, sorted by type then name.
+    func browse(source: String, limit: Int = 500) throws -> [any ContentEntry] {
+        guard isOpen else { throw DatabaseError.notOpen }
+        let sql = """
+        SELECT c.id, c.title, c.content_type, c.summary, c.is_premium, c.source
+        FROM content c
+        WHERE c.source = ?
+        ORDER BY c.content_type ASC, c.title ASC
+        LIMIT \(limit)
+        """
+        return try queryEntries(sql: sql, params: [source])
+    }
+
     func getEntry(id: UUID, type: ContentType) throws -> (any ContentEntry)? {
         guard isOpen else { throw DatabaseError.notOpen }
         return try fetchEntry(id: id, type: type)
@@ -78,15 +118,24 @@ actor DatabaseService {
 
     func countForType(_ type: ContentType) throws -> Int {
         guard isOpen else { throw DatabaseError.notOpen }
-        return try queryInt("SELECT COUNT(*) FROM content WHERE content_type = '\(type.rawValue)'")
+        let tableValue: String
+        switch type {
+        case .spell:   tableValue = "spell"
+        case .class_:  tableValue = "class"
+        case .monster: tableValue = "monster"
+        case .feat:    tableValue = "feat"
+        case .item:    tableValue = "item"
+        case .race:    tableValue = "race"
+        case .trait:   tableValue = "trait"
+        case .rule:    tableValue = "rule"
+        }
+        return try queryIntBound("SELECT COUNT(*) FROM content WHERE content_type = ?", param: tableValue)
     }
 
     func getAllFavorites(ids: Set<UUID>) throws -> [any ContentEntry] {
         guard isOpen else { throw DatabaseError.notOpen }
         guard !ids.isEmpty else { return [] }
 
-        let placeholders = ids.map { "'\($0.uuidString)'" }.joined(separator: ",")
-        let sql = "SELECT c.*, d.* FROM content c LEFT JOIN spell_details d ON d.content_id = c.id WHERE c.id IN (\(placeholders))"
         // Use generic browse with ID filter
         var results: [any ContentEntry] = []
         for id in ids {
@@ -628,6 +677,12 @@ actor DatabaseService {
         try? exec("ROLLBACK")
     }
 
+    /// Clears the FTS index entirely. Call at the start of a re-seed to prevent duplicate entries.
+    func clearFTSIndex() throws {
+        guard isOpen else { throw DatabaseError.notOpen }
+        try exec("DELETE FROM content_fts")
+    }
+
     private func queryInt(_ sql: String) throws -> Int {
         guard let db else { throw DatabaseError.notOpen }
         var stmt: OpaquePointer?
@@ -636,6 +691,21 @@ actor DatabaseService {
         if sqlite3_prepare_v2(db, sql, -1, &stmt, nil) != SQLITE_OK {
             throw DatabaseError.queryFailed(dbError())
         }
+
+        guard sqlite3_step(stmt) == SQLITE_ROW else { return 0 }
+        return Int(sqlite3_column_int(stmt, 0))
+    }
+
+    private func queryIntBound(_ sql: String, param: String) throws -> Int {
+        guard let db else { throw DatabaseError.notOpen }
+        var stmt: OpaquePointer?
+        defer { sqlite3_finalize(stmt) }
+
+        if sqlite3_prepare_v2(db, sql, -1, &stmt, nil) != SQLITE_OK {
+            throw DatabaseError.queryFailed(dbError())
+        }
+
+        sqlite3_bind_text(stmt, 1, param, -1, SQLITE_TRANSIENT)
 
         guard sqlite3_step(stmt) == SQLITE_ROW else { return 0 }
         return Int(sqlite3_column_int(stmt, 0))

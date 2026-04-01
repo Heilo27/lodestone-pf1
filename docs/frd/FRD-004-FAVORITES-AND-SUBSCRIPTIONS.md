@@ -1,9 +1,10 @@
 # FRD-004 — Favorites & Subscription Management
 
 **Functional Requirement Document**
-**Project:** Lodestone PF1
+**Project:** Lodestone Suite (PF1 / PF2 / SF1)
 **Status:** Draft — Awaiting approval
-**Version:** 1.0
+**Version:** 2.0
+**Updated:** 2026-04-01
 
 ---
 
@@ -100,22 +101,29 @@ Define how users bookmark entries (favorites) and manage paid content access thr
 
 ### FR-004-3: In-App Purchase (IAP) — Subscription
 
-**Product:** `com.heiloproject.lodestone.pf1.expansion.monthly`
+**Product group:** `com.heiloproject.lodestone.allaccess`
 
-**Pricing:** $2.99/month (Apple standard tier 3)
-- Covers all expansion content (Advanced Player's Guide, Bestiaries, Ultimate books, etc.)
+The subscription is a **single product** shared across all three apps via an App Store subscription group. Subscribing in PF1 automatically unlocks premium content in PF2 and SF1 (and vice versa). One subscription, three apps.
+
+**Product IDs (all in same subscription group):**
+- `com.heiloproject.lodestone.allaccess.monthly` — $2/month
+- `com.heiloproject.lodestone.allaccess.annual` — $18/year (~25% savings)
+
+**Pricing:** $2/month (Apple standard tier 2)
+- Covers all expansion content in all three Lodestone apps
 - Auto-renewal enabled
-- 7-day free trial (Apple default, configurable)
+- 7-day free trial (new subscribers only)
 - Cancellable anytime
 
 **Subscription benefits:**
-- Unlock all expansion manuals
-- Same $2.99/month across all three Lodestone apps (PF1, PF2, SF1)
+- Unlock all expansion manuals for PF1 + PF2 + SF1
+- Annual option saves ~25%
 
 **Implementation:**
-- Use `StoreKit2` (Apple's native IAP framework)
-- Handle subscription lifecycle (started, renewed, expired, cancelled)
-- Store receipt locally for offline verification
+- Use `StoreKit2` — `Product.SubscriptionInfo` with shared group
+- Check entitlement across apps via shared App Store account (no server needed)
+- Handle subscription lifecycle (started, renewed, expired, cancelled, billing retry)
+- Store entitlement status locally for offline access (re-verify on next foreground)
 
 ---
 
@@ -133,14 +141,15 @@ When user taps an expansion entry (e.g., creature from "Ultimate Combat"):
 │ "Advanced Player's Guide"    │
 │ and requires a subscription. │
 │                             │
-│ $2.99/month gets you:        │
+│ $2/month gets you:           │
 │ ✓ All expansion manuals     │
+│ ✓ Covers PF1 + PF2 + SF1   │
 │ ✓ 4000+ additional entries  │
 │ ✓ Cancel anytime            │
 │                             │
 │ [7-day free trial]          │  ← Button (if no trial used)
 │        OR                   │
-│ [Subscribe Now - $2.99/mo]  │  ← Button
+│ [Subscribe Now - $2/mo]     │  ← Button
 │ [Maybe Later] [Restore]     │
 └──────────────────────────────┘
 ```

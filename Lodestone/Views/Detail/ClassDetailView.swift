@@ -2,55 +2,39 @@ import SwiftUI
 
 struct ClassDetailView: View {
     let classEntry: ClassEntry
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            DetailInfoRow(label: "Hit Die", value: classEntry.hitDie)
-            DetailInfoRow(label: "Skill Ranks", value: "\(classEntry.skillRanks) + Int modifier per level")
-            DetailInfoRow(label: "BAB", value: classEntry.baseAttackBonus)
-            DetailInfoRow(label: "Fort Save", value: classEntry.fortSave)
-            DetailInfoRow(label: "Ref Save", value: classEntry.refSave)
-            DetailInfoRow(label: "Will Save", value: classEntry.willSave)
-            DetailInfoRow(label: "Source", value: classEntry.source)
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            DetailRow(label: "Hit Die", value: classEntry.hitDie)
+            DetailRow(label: "Skill Ranks", value: "\(classEntry.skillRanks) + Int modifier per level")
+            DetailRow(label: "BAB", value: classEntry.baseAttackBonus)
+            DetailRow(label: "Fort Save", value: classEntry.fortSave)
+            DetailRow(label: "Ref Save", value: classEntry.refSave)
+            DetailRow(label: "Will Save", value: classEntry.willSave)
+            DetailRow(label: "Source", value: classEntry.source)
 
-            Divider()
+            OrnamentalDivider(label: "Class Skills")
+                .padding(.vertical, AppSpacing.sm)
 
-            Text("Class Skills")
-                .font(.headline)
-            FlowLayout(spacing: 6) {
+            FlowLayout(spacing: AppSpacing.xs) {
                 ForEach(classEntry.classSkills, id: \.self) { skill in
                     Text(skill)
-                        .font(.caption)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color(.tertiarySystemFill))
-                        .clipShape(Capsule())
+                        .font(AppFonts.chip())
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                        .padding(.horizontal, AppSpacing.sm)
+                        .padding(.vertical, AppSpacing.xs)
+                        .background(AppColors.adaptiveSurfaceElevated(colorScheme), in: Capsule())
                 }
             }
 
-            Divider()
+            OrnamentalDivider(label: "Description")
+                .padding(.vertical, AppSpacing.sm)
 
-            Text("Description")
-                .font(.headline)
             Text(classEntry.description)
-                .font(.body)
-        }
-    }
-}
-
-private struct DetailInfoRow: View {
-    let label: String
-    let value: String
-
-    var body: some View {
-        HStack(alignment: .top) {
-            Text(label)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundStyle(.secondary)
-                .frame(width: 120, alignment: .leading)
-            Text(value)
-                .font(.subheadline)
+                .font(AppFonts.body)
+                .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                .lineSpacing(4)
         }
     }
 }
@@ -94,5 +78,8 @@ private struct FlowLayout: Layout {
 }
 
 #Preview {
-    ClassDetailView(classEntry: .placeholder)
+    ScrollView {
+        ClassDetailView(classEntry: .placeholder)
+            .padding()
+    }
 }

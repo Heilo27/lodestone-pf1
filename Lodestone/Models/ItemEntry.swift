@@ -17,6 +17,10 @@ struct ItemEntry: ContentEntry {
     let description: String
     let source: String
 
+    enum CodingKeys: String, CodingKey {
+        case id, title, summary, isPremium, price, weight, slot, aura, casterLevel, itemType, description, source
+    }
+
     // MARK: - Database init
     init(from row: SQLiteRow) {
         id = UUID(uuidString: row["id"] ?? "") ?? UUID()

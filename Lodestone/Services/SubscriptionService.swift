@@ -3,13 +3,48 @@ import StoreKit
 
 @Observable
 final class SubscriptionService {
+    #if DEBUG
+    /// Bypasses StoreKit entirely. Toggle in Settings → Debug.
+    var debugUnlockAll: Bool {
+        get { UserDefaults.standard.bool(forKey: "debug_unlockAll") }
+        set { UserDefaults.standard.set(newValue, forKey: "debug_unlockAll") }
+    }
+    #endif
+
     private(set) var isSubscribed: Bool = false
+
+    private var updatesTask: Task<Void, Never>?
+
+    init() {
+        updatesTask = Task {
+            for await result in Transaction.updates {
+                if case .verified(let transaction) = result {
+                    await transaction.finish()
+                }
+                await checkSubscriptionStatus()
+            }
+        }
+    }
+
+    deinit {
+        updatesTask?.cancel()
+    }
+
+    var isUnlocked: Bool {
+        #if DEBUG
+        if debugUnlockAll { return true }
+        #endif
+        return isSubscribed
+    }
     private(set) var products: [Product] = []
     private(set) var purchaseError: String?
+    private(set) var expirationDate: Date?
+    private(set) var activeProductID: String?
 
+    // Subscription for Lodestone PF1
     private let productIDs = [
-        "com.heiloprojects.lodestone.monthly",
-        "com.heiloprojects.lodestone.yearly",
+        "com.heiloproject.lodestone.allaccess.monthly",
+        "com.heiloproject.lodestone.allaccess.annual",
     ]
 
     func loadProducts() async {
@@ -26,8 +61,11 @@ final class SubscriptionService {
             switch result {
             case .success(let verification):
                 switch verification {
-                case .verified:
+                case .verified(let transaction):
                     isSubscribed = true
+                    activeProductID = transaction.productID
+                    expirationDate = transaction.expirationDate
+                    await transaction.finish()
                 case .unverified:
                     purchaseError = "Purchase could not be verified."
                 }
@@ -53,14 +91,22 @@ final class SubscriptionService {
     }
 
     func checkSubscriptionStatus() async {
+        var found = false
         for await result in Transaction.currentEntitlements {
             if case .verified(let transaction) = result {
                 if productIDs.contains(transaction.productID) {
                     isSubscribed = true
+                    activeProductID = transaction.productID
+                    expirationDate = transaction.expirationDate
+                    found = true
                     return
                 }
             }
         }
-        isSubscribed = false
+        if !found {
+            isSubscribed = false
+            activeProductID = nil
+            expirationDate = nil
+        }
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    @State private var favoritesService = FavoritesService()
+    @Environment(FavoritesService.self) private var favoritesService
     @State private var viewModel: FavoritesViewModel?
 
     var body: some View {
@@ -21,14 +21,13 @@ struct FavoritesView: View {
                             NavigationLink {
                                 DetailView(entry: entry)
                             } label: {
-                                HStack(spacing: 12) {
-                                    Image(systemName: entry.contentType.iconName)
-                                        .foregroundStyle(AppColors.contentTypeColor(entry.contentType))
-                                    VStack(alignment: .leading) {
+                                HStack(spacing: AppSpacing.md) {
+                                    ContentTypeIconBadge(type: entry.contentType, size: 32)
+                                    VStack(alignment: .leading, spacing: 2) {
                                         Text(entry.title)
-                                            .font(.headline)
+                                            .font(AppFonts.headline)
                                         Text(entry.contentType.singularName)
-                                            .font(.caption)
+                                            .font(AppFonts.caption)
                                             .foregroundStyle(.secondary)
                                     }
                                 }

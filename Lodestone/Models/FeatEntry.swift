@@ -15,6 +15,10 @@ struct FeatEntry: ContentEntry {
     let featType: String
     let source: String
 
+    enum CodingKeys: String, CodingKey {
+        case id, title, summary, isPremium, prerequisites, benefit, normal, special, featType, source
+    }
+
     // MARK: - Database init
     init(from row: SQLiteRow) {
         id = UUID(uuidString: row["id"] ?? "") ?? UUID()

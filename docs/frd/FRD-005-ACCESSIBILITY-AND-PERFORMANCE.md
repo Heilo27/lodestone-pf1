@@ -1,9 +1,10 @@
 # FRD-005 — Accessibility & Performance
 
 **Functional Requirement Document**
-**Project:** Lodestone PF1
+**Project:** Lodestone Suite (PF1 / PF2 / SF1)
 **Status:** Draft — Awaiting approval
-**Version:** 1.0
+**Version:** 2.0
+**Updated:** 2026-04-01
 
 ---
 

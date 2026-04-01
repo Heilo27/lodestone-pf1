@@ -2,62 +2,43 @@ import SwiftUI
 
 struct TraitDetailView: View {
     let trait: TraitEntry
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
             if !trait.traitType.isEmpty {
-                HStack {
-                    Text(trait.traitType)
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 4)
-                        .background(AppColors.contentTypeColor(.trait).opacity(0.15))
-                        .clipShape(Capsule())
-                }
+                SourceBadge(text: trait.traitType, color: AppColors.contentTypeColor(.trait))
+                    .padding(.bottom, AppSpacing.xs)
             }
 
             if !trait.prerequisites.isEmpty {
-                TraitInfoRow(label: "Prerequisites", value: trait.prerequisites)
+                DetailRow(label: "Prerequisites", value: trait.prerequisites)
             }
-            TraitInfoRow(label: "Source", value: trait.source)
+            DetailRow(label: "Source", value: trait.source)
 
-            Divider()
+            OrnamentalDivider(label: "Benefit")
+                .padding(.vertical, AppSpacing.sm)
 
-            Text("Benefit")
-                .font(.headline)
             Text(trait.benefit)
-                .font(.body)
+                .font(AppFonts.body)
+                .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                .lineSpacing(4)
 
             if !trait.description.isEmpty && trait.description != trait.benefit {
-                Divider()
-                Text("Description")
-                    .font(.headline)
+                OrnamentalDivider(label: "Description")
+                    .padding(.vertical, AppSpacing.sm)
                 Text(trait.description)
-                    .font(.body)
-                    .foregroundStyle(.secondary)
+                    .font(AppFonts.body)
+                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                    .lineSpacing(4)
             }
-        }
-    }
-}
-
-private struct TraitInfoRow: View {
-    let label: String
-    let value: String
-
-    var body: some View {
-        HStack(alignment: .top) {
-            Text(label)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundStyle(.secondary)
-                .frame(width: 120, alignment: .leading)
-            Text(value)
-                .font(.subheadline)
         }
     }
 }
 
 #Preview {
-    TraitDetailView(trait: .placeholder)
+    ScrollView {
+        TraitDetailView(trait: .placeholder)
+            .padding()
+    }
 }

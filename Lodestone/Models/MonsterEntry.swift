@@ -21,6 +21,11 @@ struct MonsterEntry: ContentEntry {
     let description: String
     let source: String
 
+    enum CodingKeys: String, CodingKey {
+        case id, title, summary, isPremium, challengeRating, type, size, alignment
+        case hitPoints, armorClass, speed, attacks, specialAbilities, environment, description, source
+    }
+
     // MARK: - Database init
     init(from row: SQLiteRow) {
         id = UUID(uuidString: row["id"] ?? "") ?? UUID()
@@ -62,6 +67,45 @@ struct MonsterEntry: ContentEntry {
         self.environment = environment
         self.description = description
         self.source = source
+    }
+
+    // MARK: - Factory
+
+    static func make(
+        _ title: String,
+        cr: String,
+        type: String,
+        size: String,
+        alignment: String,
+        hp: String,
+        ac: Int,
+        speed: String,
+        attacks: String,
+        specialAbilities: String,
+        environment: String,
+        summary: String,
+        desc: String,
+        source: String = "Bestiary",
+        isPremium: Bool = false
+    ) -> MonsterEntry {
+        MonsterEntry(
+            id: UUID(),
+            title: title,
+            summary: summary,
+            isPremium: isPremium,
+            challengeRating: cr,
+            type: type,
+            size: size,
+            alignment: alignment,
+            hitPoints: hp,
+            armorClass: ac,
+            speed: speed,
+            attacks: attacks,
+            specialAbilities: specialAbilities,
+            environment: environment,
+            description: desc,
+            source: source
+        )
     }
 
     static let placeholder = MonsterEntry(
