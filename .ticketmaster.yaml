@@ -1,0 +1,82 @@
+project:
+  id: lodestone
+  name: "Lodestone"
+  description: "Pathfinder reference library apps (PF1, PF2, SF1)"
+  path: /Users/ryan/Documents/Development/Lodestone
+
+epics:
+  - name: "Lodestone PF1 — Initial Release"
+    description: "Core Pathfinder 1E reference library with search, browse, and subscription"
+    tasks:
+      - id: TASK-001
+        title: "Data Extraction from Archives of Nethys"
+        priority: critical
+        effort: 40
+      - id: TASK-002
+        title: "SQLite Full-Text Search Database"
+        priority: critical
+        effort: 30
+      - id: TASK-003
+        title: "Core Data Model & Entities"
+        priority: critical
+        effort: 20
+      - id: TASK-004
+        title: "SQLite Search Service"
+        priority: critical
+        effort: 25
+      - id: TASK-005
+        title: "Browse Hierarchy UI"
+        priority: critical
+        effort: 35
+      - id: TASK-006
+        title: "Detail View & Content Display"
+        priority: critical
+        effort: 30
+      - id: TASK-007
+        title: "Search UI & Filters"
+        priority: critical
+        effort: 25
+      - id: TASK-008
+        title: "StoreKit2 Integration"
+        priority: critical
+        effort: 30
+      - id: TASK-009
+        title: "Content Gating & Premium Indicator"
+        priority: critical
+        effort: 20
+      - id: TASK-010
+        title: "Subscription Settings Screen"
+        priority: high
+        effort: 15
+      - id: TASK-011
+        title: "Tab-Based Navigation Architecture"
+        priority: critical
+        effort: 20
+      - id: TASK-012
+        title: "Favorites Manager"
+        priority: high
+        effort: 20
+      - id: TASK-013
+        title: "GM Screen Reference Tools"
+        priority: high
+        effort: 25
+      - id: TASK-014
+        title: "Responsive Layout (iPhone + iPad)"
+        priority: critical
+        effort: 30
+      - id: TASK-015
+        title: "Dark Mode & Accessibility"
+        priority: high
+        effort: 20
+      - id: TASK-016
+        title: "Automated Tests (Unit + UI)"
+        priority: high
+        effort: 25
+      - id: TASK-017
+        title: "Performance & Optimization"
+        priority: high
+        effort: 20
+      - id: TASK-018
+        title: "App Store Submission Prep"
+        priority: high
+        effort: 15
