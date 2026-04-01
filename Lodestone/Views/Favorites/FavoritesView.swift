@@ -1,0 +1,64 @@
+import SwiftUI
+
+struct FavoritesView: View {
+    @State private var favoritesService = FavoritesService()
+    @State private var viewModel: FavoritesViewModel?
+
+    var body: some View {
+        NavigationStack {
+            Group {
+                if let vm = viewModel {
+                    if vm.isLoading {
+                        ProgressView("Loading favorites...")
+                    } else if vm.entries.isEmpty {
+                        ContentUnavailableView(
+                            "No Favorites",
+                            systemImage: "heart.slash",
+                            description: Text("Tap the heart icon on any entry to add it to your favorites.")
+                        )
+                    } else {
+                        List(vm.entries, id: \.id) { entry in
+                            NavigationLink {
+                                DetailView(entry: entry)
+                            } label: {
+                                HStack(spacing: 12) {
+                                    Image(systemName: entry.contentType.iconName)
+                                        .foregroundStyle(AppColors.contentTypeColor(entry.contentType))
+                                    VStack(alignment: .leading) {
+                                        Text(entry.title)
+                                            .font(.headline)
+                                        Text(entry.contentType.singularName)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                            }
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    vm.removeFavorite(entry.id)
+                                } label: {
+                                    Label("Remove", systemImage: "heart.slash")
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    ProgressView()
+                }
+            }
+            .navigationTitle("Favorites")
+            .onAppear {
+                if viewModel == nil {
+                    viewModel = FavoritesViewModel(favoritesService: favoritesService)
+                }
+            }
+            .task {
+                await viewModel?.loadFavorites()
+            }
+        }
+    }
+}
+
+#Preview {
+    FavoritesView()
+}

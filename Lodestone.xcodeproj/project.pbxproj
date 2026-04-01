@@ -1,0 +1,829 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10001 /* LodestoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10001; };
+		A10002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002; };
+		A10003 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003; };
+		A10004 /* ContentEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004; };
+		A10005 /* SpellEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005; };
+		A10006 /* ClassEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006; };
+		A10007 /* MonsterEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007; };
+		A10008 /* FeatEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008; };
+		A10009 /* ItemEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009; };
+		A10010 /* RaceEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010; };
+		A10011 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011; };
+		A10012 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012; };
+		A10013 /* FavoritesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013; };
+		A10014 /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014; };
+		A10015 /* BrowseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10015; };
+		A10016 /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10016; };
+		A10017 /* BrowseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10017; };
+		A10018 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10018; };
+		A10019 /* SearchResultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10019; };
+		A10020 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10020; };
+		A10021 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10021; };
+		A10022 /* SpellDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10022; };
+		A10023 /* ClassDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023; };
+		A10024 /* MonsterDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10024; };
+		A10025 /* FeatDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10025; };
+		A10026 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10026; };
+		A10027 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10027; };
+		A10028 /* GMScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10028; };
+		A10029 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029; };
+		A10030 /* BrowseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030; };
+		A10031 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10031; };
+		A10032 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10032; };
+		A10033 /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10033; };
+		A10034 /* GMScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10034; };
+		A10035 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10035; };
+		A10036 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10036; };
+		A10037 /* TraitEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10037a; };
+		A10038 /* RuleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10038; };
+		A10039 /* SeedDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10039; };
+		A10040 /* SQLiteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10040; };
+		A10041 /* TraitDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10041; };
+		A10042 /* RuleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10042; };
+		A10043 /* RaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10043; };
+		A10050 /* LodestoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10050; };
+		A10060 /* LodestoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10060; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C10001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P10000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = T10001;
+			remoteInfo = Lodestone;
+		};
+		C10002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P10000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = T10001;
+			remoteInfo = Lodestone;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B10001 /* LodestoneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodestoneApp.swift; sourceTree = "<group>"; };
+		B10002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B10003 /* ContentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
+		B10004 /* ContentEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentEntry.swift; sourceTree = "<group>"; };
+		B10005 /* SpellEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellEntry.swift; sourceTree = "<group>"; };
+		B10006 /* ClassEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassEntry.swift; sourceTree = "<group>"; };
+		B10007 /* MonsterEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonsterEntry.swift; sourceTree = "<group>"; };
+		B10008 /* FeatEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatEntry.swift; sourceTree = "<group>"; };
+		B10009 /* ItemEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEntry.swift; sourceTree = "<group>"; };
+		B10010 /* RaceEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceEntry.swift; sourceTree = "<group>"; };
+		B10011 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		B10012 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
+		B10013 /* FavoritesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesService.swift; sourceTree = "<group>"; };
+		B10014 /* SubscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionService.swift; sourceTree = "<group>"; };
+		B10015 /* BrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseView.swift; sourceTree = "<group>"; };
+		B10016 /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
+		B10017 /* BrowseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseRowView.swift; sourceTree = "<group>"; };
+		B10018 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		B10019 /* SearchResultRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultRow.swift; sourceTree = "<group>"; };
+		B10020 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
+		B10021 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		B10022 /* SpellDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellDetailView.swift; sourceTree = "<group>"; };
+		B10023 /* ClassDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassDetailView.swift; sourceTree = "<group>"; };
+		B10024 /* MonsterDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonsterDetailView.swift; sourceTree = "<group>"; };
+		B10025 /* FeatDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatDetailView.swift; sourceTree = "<group>"; };
+		B10026 /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
+		B10027 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		B10028 /* GMScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMScreenView.swift; sourceTree = "<group>"; };
+		B10029 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B10030 /* BrowseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewModel.swift; sourceTree = "<group>"; };
+		B10031 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		B10032 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		B10033 /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
+		B10034 /* GMScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMScreenViewModel.swift; sourceTree = "<group>"; };
+		B10035 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B10036 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10037 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B10037a /* TraitEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitEntry.swift; sourceTree = "<group>"; };
+		B10038 /* RuleEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEntry.swift; sourceTree = "<group>"; };
+		B10039 /* SeedDataBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedDataBuilder.swift; sourceTree = "<group>"; };
+		B10040 /* SQLiteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteRow.swift; sourceTree = "<group>"; };
+		B10041 /* TraitDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitDetailView.swift; sourceTree = "<group>"; };
+		B10042 /* RuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleDetailView.swift; sourceTree = "<group>"; };
+		B10043 /* RaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceDetailView.swift; sourceTree = "<group>"; };
+		B10050 /* LodestoneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodestoneTests.swift; sourceTree = "<group>"; };
+		B10060 /* LodestoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodestoneUITests.swift; sourceTree = "<group>"; };
+		PR0001 /* Lodestone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lodestone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		PR0002 /* LodestoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LodestoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		PR0003 /* LodestoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LodestoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F10001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F10002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F10003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G10000 = {
+			isa = PBXGroup;
+			children = (
+				G10001 /* Lodestone */,
+				G10020 /* LodestoneTests */,
+				G10021 /* LodestoneUITests */,
+				G10099 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		G10001 /* Lodestone */ = {
+			isa = PBXGroup;
+			children = (
+				G10002 /* App */,
+				G10003 /* Models */,
+				G10004 /* Services */,
+				G10005 /* Views */,
+				G10012 /* ViewModels */,
+				G10013 /* Utilities */,
+				G10014 /* Resources */,
+			);
+			path = Lodestone;
+			sourceTree = "<group>";
+		};
+		G10002 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B10001 /* LodestoneApp.swift */,
+				B10002 /* ContentView.swift */,
+				B10037 /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		G10003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B10004 /* ContentEntry.swift */,
+				B10003 /* ContentType.swift */,
+				B10005 /* SpellEntry.swift */,
+				B10006 /* ClassEntry.swift */,
+				B10007 /* MonsterEntry.swift */,
+				B10008 /* FeatEntry.swift */,
+				B10009 /* ItemEntry.swift */,
+				B10010 /* RaceEntry.swift */,
+				B10037a /* TraitEntry.swift */,
+				B10038 /* RuleEntry.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		G10004 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B10011 /* DatabaseService.swift */,
+				B10012 /* SearchService.swift */,
+				B10013 /* FavoritesService.swift */,
+				B10014 /* SubscriptionService.swift */,
+				B10039 /* SeedDataBuilder.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		G10005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				G10006 /* Browse */,
+				G10007 /* Search */,
+				G10008 /* Detail */,
+				G10009 /* Favorites */,
+				G10010 /* GMScreen */,
+				G10011 /* Settings */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		G10006 /* Browse */ = {
+			isa = PBXGroup;
+			children = (
+				B10015 /* BrowseView.swift */,
+				B10016 /* CategoryListView.swift */,
+				B10017 /* BrowseRowView.swift */,
+			);
+			path = Browse;
+			sourceTree = "<group>";
+		};
+		G10007 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				B10018 /* SearchView.swift */,
+				B10019 /* SearchResultRow.swift */,
+				B10020 /* FilterView.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		G10008 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				B10021 /* DetailView.swift */,
+				B10022 /* SpellDetailView.swift */,
+				B10023 /* ClassDetailView.swift */,
+				B10024 /* MonsterDetailView.swift */,
+				B10025 /* FeatDetailView.swift */,
+				B10026 /* ItemDetailView.swift */,
+				B10041 /* TraitDetailView.swift */,
+				B10042 /* RuleDetailView.swift */,
+				B10043 /* RaceDetailView.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		G10009 /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+				B10027 /* FavoritesView.swift */,
+			);
+			path = Favorites;
+			sourceTree = "<group>";
+		};
+		G10010 /* GMScreen */ = {
+			isa = PBXGroup;
+			children = (
+				B10028 /* GMScreenView.swift */,
+			);
+			path = GMScreen;
+			sourceTree = "<group>";
+		};
+		G10011 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B10029 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		G10012 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B10030 /* BrowseViewModel.swift */,
+				B10031 /* SearchViewModel.swift */,
+				B10032 /* DetailViewModel.swift */,
+				B10033 /* FavoritesViewModel.swift */,
+				B10034 /* GMScreenViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		G10013 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				B10035 /* Constants.swift */,
+				B10040 /* SQLiteRow.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		G10014 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B10036 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		G10020 /* LodestoneTests */ = {
+			isa = PBXGroup;
+			children = (
+				B10050 /* LodestoneTests.swift */,
+			);
+			path = LodestoneTests;
+			sourceTree = "<group>";
+		};
+		G10021 /* LodestoneUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B10060 /* LodestoneUITests.swift */,
+			);
+			path = LodestoneUITests;
+			sourceTree = "<group>";
+		};
+		G10099 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				PR0001 /* Lodestone.app */,
+				PR0002 /* LodestoneTests.xctest */,
+				PR0003 /* LodestoneUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		T10001 /* Lodestone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = X10001 /* Build configuration list for PBXNativeTarget "Lodestone" */;
+			buildPhases = (
+				S10001 /* Sources */,
+				F10001 /* Frameworks */,
+				R10001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Lodestone;
+			productName = Lodestone;
+			productReference = PR0001 /* Lodestone.app */;
+			productType = "com.apple.product-type.application";
+		};
+		T10002 /* LodestoneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = X10002 /* Build configuration list for PBXNativeTarget "LodestoneTests" */;
+			buildPhases = (
+				S10002 /* Sources */,
+				F10002 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D10001 /* PBXTargetDependency */,
+			);
+			name = LodestoneTests;
+			productName = LodestoneTests;
+			productReference = PR0002 /* LodestoneTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		T10003 /* LodestoneUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = X10003 /* Build configuration list for PBXNativeTarget "LodestoneUITests" */;
+			buildPhases = (
+				S10003 /* Sources */,
+				F10003 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D10002 /* PBXTargetDependency */,
+			);
+			name = LodestoneUITests;
+			productName = LodestoneUITests;
+			productReference = PR0003 /* LodestoneUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		P10000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					T10001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					T10002 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = T10001;
+					};
+					T10003 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = T10001;
+					};
+				};
+			};
+			buildConfigurationList = X10000 /* Build configuration list for PBXProject "Lodestone" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = G10000;
+			productRefGroup = G10099 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				T10001 /* Lodestone */,
+				T10002 /* LodestoneTests */,
+				T10003 /* LodestoneUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		R10001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10036 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		S10001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001 /* LodestoneApp.swift in Sources */,
+				A10002 /* ContentView.swift in Sources */,
+				A10003 /* ContentType.swift in Sources */,
+				A10004 /* ContentEntry.swift in Sources */,
+				A10005 /* SpellEntry.swift in Sources */,
+				A10006 /* ClassEntry.swift in Sources */,
+				A10007 /* MonsterEntry.swift in Sources */,
+				A10008 /* FeatEntry.swift in Sources */,
+				A10009 /* ItemEntry.swift in Sources */,
+				A10010 /* RaceEntry.swift in Sources */,
+				A10011 /* DatabaseService.swift in Sources */,
+				A10012 /* SearchService.swift in Sources */,
+				A10013 /* FavoritesService.swift in Sources */,
+				A10014 /* SubscriptionService.swift in Sources */,
+				A10015 /* BrowseView.swift in Sources */,
+				A10016 /* CategoryListView.swift in Sources */,
+				A10017 /* BrowseRowView.swift in Sources */,
+				A10018 /* SearchView.swift in Sources */,
+				A10019 /* SearchResultRow.swift in Sources */,
+				A10020 /* FilterView.swift in Sources */,
+				A10021 /* DetailView.swift in Sources */,
+				A10022 /* SpellDetailView.swift in Sources */,
+				A10023 /* ClassDetailView.swift in Sources */,
+				A10024 /* MonsterDetailView.swift in Sources */,
+				A10025 /* FeatDetailView.swift in Sources */,
+				A10026 /* ItemDetailView.swift in Sources */,
+				A10027 /* FavoritesView.swift in Sources */,
+				A10028 /* GMScreenView.swift in Sources */,
+				A10029 /* SettingsView.swift in Sources */,
+				A10030 /* BrowseViewModel.swift in Sources */,
+				A10031 /* SearchViewModel.swift in Sources */,
+				A10032 /* DetailViewModel.swift in Sources */,
+				A10033 /* FavoritesViewModel.swift in Sources */,
+				A10034 /* GMScreenViewModel.swift in Sources */,
+				A10035 /* Constants.swift in Sources */,
+				A10037 /* TraitEntry.swift in Sources */,
+				A10038 /* RuleEntry.swift in Sources */,
+				A10039 /* SeedDataBuilder.swift in Sources */,
+				A10040 /* SQLiteRow.swift in Sources */,
+				A10041 /* TraitDetailView.swift in Sources */,
+				A10042 /* RuleDetailView.swift in Sources */,
+				A10043 /* RaceDetailView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		S10002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10050 /* LodestoneTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		S10003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10060 /* LodestoneUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D10001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = T10001 /* Lodestone */;
+			targetProxy = C10001 /* PBXContainerItemProxy */;
+		};
+		D10002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = T10001 /* Lodestone */;
+			targetProxy = C10002 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BC0001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BC0002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BC1001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Lodestone/App/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BC1002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Lodestone/App/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BC2001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1.tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lodestone.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Lodestone";
+			};
+			name = Debug;
+		};
+		BC2002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1.tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lodestone.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Lodestone";
+			};
+			name = Release;
+		};
+		BC3001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1.uitests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Lodestone;
+			};
+			name = Debug;
+		};
+		BC3002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1.uitests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Lodestone;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		X10000 /* Build configuration list for PBXProject "Lodestone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC0001 /* Debug */,
+				BC0002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		X10001 /* Build configuration list for PBXNativeTarget "Lodestone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC1001 /* Debug */,
+				BC1002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		X10002 /* Build configuration list for PBXNativeTarget "LodestoneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC2001 /* Debug */,
+				BC2002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		X10003 /* Build configuration list for PBXNativeTarget "LodestoneUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC3001 /* Debug */,
+				BC3002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = P10000 /* Project object */;
+}
