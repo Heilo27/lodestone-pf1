@@ -51,13 +51,9 @@ enum AppFonts {
     /// 17pt Semibold — row titles, nav items
     static let headline: Font = .system(.headline)
 
-    /// Medium weight chip/badge font — scales with Dynamic Type.
-    /// Returns a semantic font based on the requested size:
-    /// ≤11pt → .caption2, 12pt → .caption, ≥13pt → .footnote (all at .medium weight).
-    /// This ensures the font grows with the user's preferred text size setting.
-    static func chip(size: CGFloat = 13) -> Font {
-        let style: Font.TextStyle = size <= 11 ? .caption2 : (size <= 12 ? .caption : .footnote)
-        return .system(style, design: .default).weight(.medium)
+    /// caption2 Medium — badges, chips (Dynamic Type aware)
+    static func chip() -> Font {
+        .system(.caption2).weight(.medium)
     }
 
     // MARK: Fallback

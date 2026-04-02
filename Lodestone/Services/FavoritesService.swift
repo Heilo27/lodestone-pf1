@@ -9,10 +9,11 @@ struct FavoriteEntry: Codable, Hashable {
 @Observable
 final class FavoritesService {
     private(set) var favorites: Set<FavoriteEntry> = []
-    private let legacyStorageKey = "lodestone_favorites_v2"
-    private let db = DatabaseService.shared
+    private let storageKey = "lodestone_favorites_v2"
 
-    init() {}
+    init() {
+        load()
+    }
 
     var favoriteIDs: Set<UUID> { Set(favorites.map(\.id)) }
 
@@ -23,51 +24,32 @@ final class FavoritesService {
     func toggle(_ entry: any ContentEntry) {
         if let existing = favorites.first(where: { $0.id == entry.id }) {
             favorites.remove(existing)
-            Task { try? await db.deleteFavorite(id: existing.id) }
         } else {
-            let fav = FavoriteEntry(id: entry.id, contentType: entry.contentType)
-            favorites.insert(fav)
-            Task { try? await db.insertFavorite(id: fav.id, contentType: fav.contentType) }
+            favorites.insert(FavoriteEntry(id: entry.id, contentType: entry.contentType))
         }
+        save()
     }
 
     func remove(_ id: UUID) {
         favorites = favorites.filter { $0.id != id }
-        Task { try? await db.deleteFavorite(id: id) }
+        save()
     }
 
     func removeAll() {
         favorites.removeAll()
-        Task {
-            for fav in favorites {
-                try? await db.deleteFavorite(id: fav.id)
-            }
-        }
+        save()
     }
 
-    // MARK: - Load from SQLite (call after DB is open)
+    // MARK: - Persistence
 
-    func loadFromDatabase() async {
-        do {
-            var loaded = try await db.getFavorites()
-            // Migrate legacy UserDefaults favorites if any
-            if let data = UserDefaults.standard.data(forKey: legacyStorageKey),
-               let legacy = try? JSONDecoder().decode([FavoriteEntry].self, from: data) {
-                for entry in legacy {
-                    if !loaded.contains(entry) {
-                        try? await db.insertFavorite(id: entry.id, contentType: entry.contentType)
-                        loaded.insert(entry)
-                    }
-                }
-                UserDefaults.standard.removeObject(forKey: legacyStorageKey)
-            }
-            favorites = loaded
-        } catch {
-            // DB not ready yet — fall back to legacy if present
-            if let data = UserDefaults.standard.data(forKey: legacyStorageKey),
-               let legacy = try? JSONDecoder().decode([FavoriteEntry].self, from: data) {
-                favorites = Set(legacy)
-            }
-        }
+    private func save() {
+        guard let data = try? JSONEncoder().encode(Array(favorites)) else { return }
+        UserDefaults.standard.set(data, forKey: storageKey)
+    }
+
+    private func load() {
+        guard let data = UserDefaults.standard.data(forKey: storageKey),
+              let decoded = try? JSONDecoder().decode([FavoriteEntry].self, from: data) else { return }
+        favorites = Set(decoded)
     }
 }

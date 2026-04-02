@@ -3,71 +3,84 @@ import SwiftUI
 struct MonsterListView: View {
     enum SortOrder: String, CaseIterable {
         case alphabetical = "A–Z"
-        case byLevel      = "By Level"
-        case byType       = "By Type"
+        case byCR = "By CR"
     }
 
     @State private var entries: [MonsterEntry] = []
     @State private var isLoading = true
     @State private var searchText = ""
     @State private var sortOrder: SortOrder = .alphabetical
-    @State private var selectedType: String = "All"
     @Environment(\.colorScheme) private var colorScheme
     @Environment(SubscriptionService.self) private var subscriptionService
 
-    // MARK: - Filters
+    // MARK: - CR Sort Helper
 
-    private var allTypes: [String] {
-        let found = Set(entries.map { $0.creatureType.isEmpty ? "Other" : $0.creatureType }).sorted()
-        return ["All"] + found
+    private func crSortValue(_ cr: String) -> Double {
+        switch cr {
+        case "1/8": return 0.125
+        case "1/6": return 0.167
+        case "1/4": return 0.25
+        case "1/3": return 0.333
+        case "1/2": return 0.5
+        default:
+            return Double(cr) ?? 99
+        }
     }
 
+    // MARK: - Filtered & Sorted Data
+
     private var filteredEntries: [MonsterEntry] {
-        var base = entries
-        if selectedType != "All" {
-            base = base.filter {
-                let t = $0.creatureType.isEmpty ? "Other" : $0.creatureType
-                return t == selectedType
+        let base: [MonsterEntry]
+        if searchText.isEmpty {
+            base = entries
+        } else {
+            let q = searchText.lowercased()
+            base = entries.filter { $0.title.lowercased().contains(q) }
+        }
+        if subscriptionService.isUnlocked {
+            return base
+        }
+        return base.sorted { ($0.isPremium ? 1 : 0) < ($1.isPremium ? 1 : 0) }
+    }
+
+    private var sortedEntries: [MonsterEntry] {
+        switch sortOrder {
+        case .alphabetical:
+            return filteredEntries.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+        case .byCR:
+            return filteredEntries.sorted {
+                let aVal = crSortValue($0.challengeRating)
+                let bVal = crSortValue($1.challengeRating)
+                if aVal != bVal { return aVal < bVal }
+                return $0.title.localizedCompare($1.title) == .orderedAscending
             }
         }
-        if !searchText.isEmpty {
-            let q = searchText.lowercased()
-            base = base.filter { $0.title.lowercased().contains(q) }
+    }
+
+    private var crGroups: [(cr: String, monsters: [MonsterEntry])] {
+        var seen: [String] = []
+        var result: [(String, [MonsterEntry])] = []
+        for monster in sortedEntries {
+            let cr = monster.challengeRating.isEmpty ? "?" : monster.challengeRating
+            if !seen.contains(cr) {
+                seen.append(cr)
+                result.append((cr, []))
+            }
+            if let idx = result.firstIndex(where: { $0.0 == cr }) {
+                result[idx].1.append(monster)
+            }
         }
-        if !subscriptionService.isUnlocked {
-            base = base.sorted { !$0.isPremium && $1.isPremium }
-        }
-        return base
+        return result.map { ($0.0, $0.1) }
     }
 
     private var alphabeticalGroups: [(letter: String, monsters: [MonsterEntry])] {
-        let sorted = filteredEntries.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
         var dict: [String: [MonsterEntry]] = [:]
-        for monster in sorted {
+        for monster in sortedEntries {
             let letter = String(monster.title.prefix(1)).uppercased()
             dict[letter, default: []].append(monster)
         }
-        return dict.keys.sorted().map { ($0, dict[$0]!) }
-    }
-
-    private var levelGroups: [(level: Int, monsters: [MonsterEntry])] {
-        var dict: [Int: [MonsterEntry]] = [:]
-        for monster in filteredEntries {
-            dict[monster.level, default: []].append(monster)
-        }
-        return dict.keys.sorted().map { level in
-            (level, dict[level]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
-        }
-    }
-
-    private var typeGroups: [(type: String, monsters: [MonsterEntry])] {
-        var dict: [String: [MonsterEntry]] = [:]
-        for monster in filteredEntries {
-            let t = monster.creatureType.isEmpty ? "Other" : monster.creatureType
-            dict[t, default: []].append(monster)
-        }
-        return dict.keys.sorted().map { type in
-            (type, dict[type]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
+        return dict.keys.sorted().map { letter in
+            (letter, dict[letter]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
         }
     }
 
@@ -78,7 +91,7 @@ struct MonsterListView: View {
             if isLoading {
                 ProgressView("Loading Monsters...")
                     .tint(AppColors.adaptivePrimary(colorScheme))
-            } else if filteredEntries.isEmpty {
+            } else if sortedEntries.isEmpty {
                 ContentUnavailableView(
                     "No Monsters",
                     systemImage: ContentType.monster.iconName,
@@ -88,26 +101,17 @@ struct MonsterListView: View {
                 )
             } else {
                 List {
-                    switch sortOrder {
-                    case .alphabetical:
+                    if sortOrder == .byCR {
+                        ForEach(crGroups, id: \.cr) { group in
+                            Section(header: GroupHeader("CR \(group.cr)")) {
+                                ForEach(group.monsters, id: \.id) { monster in
+                                    MonsterRow(entry: monster, isUnlocked: subscriptionService.isUnlocked)
+                                }
+                            }
+                        }
+                    } else {
                         ForEach(alphabeticalGroups, id: \.letter) { group in
                             Section(header: GroupHeader(group.letter)) {
-                                ForEach(group.monsters, id: \.id) { monster in
-                                    MonsterRow(entry: monster, isUnlocked: subscriptionService.isUnlocked)
-                                }
-                            }
-                        }
-                    case .byLevel:
-                        ForEach(levelGroups, id: \.level) { group in
-                            Section(header: GroupHeader("Level \(group.level)")) {
-                                ForEach(group.monsters, id: \.id) { monster in
-                                    MonsterRow(entry: monster, isUnlocked: subscriptionService.isUnlocked)
-                                }
-                            }
-                        }
-                    case .byType:
-                        ForEach(typeGroups, id: \.type) { group in
-                            Section(header: GroupHeader(group.type)) {
                                 ForEach(group.monsters, id: \.id) { monster in
                                     MonsterRow(entry: monster, isUnlocked: subscriptionService.isUnlocked)
                                 }
@@ -120,44 +124,14 @@ struct MonsterListView: View {
         .navigationTitle("Monsters")
         .searchable(text: $searchText, prompt: "Search Monsters")
         .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                Picker("Sort", selection: $sortOrder) {
-                    ForEach(SortOrder.allCases, id: \.self) { Text($0.rawValue).tag($0) }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal, AppSpacing.base)
-                .padding(.vertical, AppSpacing.sm)
-                .background(AppColors.adaptiveBackground(colorScheme).opacity(0.95))
-                Divider()
-            }
+            SortPicker(selection: $sortOrder)
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    ForEach(allTypes, id: \.self) { type in
-                        Button {
-                            selectedType = type
-                        } label: {
-                            if selectedType == type {
-                                Label(type, systemImage: "checkmark")
-                            } else {
-                                Text(type)
-                            }
-                        }
-                    }
-                } label: {
-                    Label(
-                        selectedType == "All" ? "Filter" : selectedType,
-                        systemImage: selectedType == "All"
-                            ? "line.3.horizontal.decrease.circle"
-                            : "line.3.horizontal.decrease.circle.fill"
-                    )
-                    .font(AppFonts.body)
-                }
-            }
+        .task {
+            await loadEntries()
         }
-        .task { await loadEntries() }
     }
+
+    // MARK: - Load
 
     private func loadEntries() async {
         do {
@@ -182,7 +156,9 @@ private struct MonsterRow: View {
     private let monsterColor = AppColors.contentTypeColor(.monster)
 
     var body: some View {
-        NavigationLink { DetailView(entry: entry) } label: {
+        NavigationLink {
+            DetailView(entry: entry)
+        } label: {
             HStack(spacing: AppSpacing.md) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(entry.title)
@@ -205,23 +181,44 @@ private struct MonsterRow: View {
                         .font(.caption)
                         .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                 } else {
-                    Text("Lvl \(entry.level)")
-                        .font(AppFonts.chip(size: 11))
-                        .foregroundStyle(monsterColor)
-                        .padding(.horizontal, AppSpacing.sm)
-                        .padding(.vertical, 3)
-                        .background(monsterColor.opacity(0.12), in: Capsule())
-                        .overlay(Capsule().strokeBorder(monsterColor.opacity(0.3), lineWidth: 0.5))
+                    // CR badge
+                    if !entry.challengeRating.isEmpty {
+                        Text("CR \(entry.challengeRating)")
+                            .font(AppFonts.chip())
+                            .foregroundStyle(monsterColor)
+                            .padding(.horizontal, AppSpacing.sm)
+                            .padding(.vertical, 3)
+                            .background(monsterColor.opacity(0.12), in: Capsule())
+                            .overlay(Capsule().strokeBorder(monsterColor.opacity(0.3), lineWidth: 0.5))
+                    }
                 }
             }
-            .padding(.vertical, 2)
+            .padding(.vertical, AppSpacing.sm)
         }
+    }
+}
+
+// MARK: - Reusable Sort Picker
+
+private struct SortPicker<T: RawRepresentable & Hashable & CaseIterable>: View where T.RawValue == String, T.AllCases: RandomAccessCollection {
+    @Binding var selection: T
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        Picker("Sort", selection: $selection) {
+            ForEach(Array(T.allCases), id: \.self) { option in
+                Text(option.rawValue).tag(option)
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding(.horizontal, AppSpacing.base)
+        .padding(.vertical, AppSpacing.sm)
+        .background(AppColors.adaptiveBackground(colorScheme).opacity(0.95))
     }
 }
 
 #Preview {
     NavigationStack {
         MonsterListView()
-            .environment(SubscriptionService())
     }
 }

@@ -3,22 +3,21 @@ import SwiftUI
 // MARK: - Item Category
 
 struct ItemCategory: Identifiable {
-    let id: String           // display name
-    let itemTypes: [String]  // itemType values that map here
+    let id: String          // display name
+    let itemTypes: [String] // itemType values that map here
+    var isSpecial: Bool = false
 
     static let allCategories: [ItemCategory] = [
-        ItemCategory(id: "Weapons",          itemTypes: ["Simple Weapon", "Martial Weapon", "Advanced Weapon"]),
-        ItemCategory(id: "Armor",            itemTypes: ["Light Armor", "Medium Armor", "Heavy Armor"]),
-        ItemCategory(id: "Shields",          itemTypes: ["Shield"]),
-        ItemCategory(id: "Adventuring Gear", itemTypes: ["Adventuring Gear"]),
-        ItemCategory(id: "Worn Items",       itemTypes: ["Worn Item"]),
+        ItemCategory(id: "Wondrous Items",   itemTypes: ["Wondrous Item"]),
+        ItemCategory(id: "Weapons",          itemTypes: ["Weapon"], isSpecial: true),
+        ItemCategory(id: "Armor & Shields",  itemTypes: ["Armor", "Shield"], isSpecial: true),
         ItemCategory(id: "Rings",            itemTypes: ["Ring"]),
-        ItemCategory(id: "Wands",            itemTypes: ["Wand"]),
+        ItemCategory(id: "Rods",             itemTypes: ["Rod"]),
         ItemCategory(id: "Staves",           itemTypes: ["Staff"]),
+        ItemCategory(id: "Wands",            itemTypes: ["Wand"]),
         ItemCategory(id: "Potions",          itemTypes: ["Potion"]),
         ItemCategory(id: "Scrolls",          itemTypes: ["Scroll"]),
-        ItemCategory(id: "Runes",            itemTypes: ["Rune"]),
-        ItemCategory(id: "Consumables",      itemTypes: ["Consumable"]),
+        ItemCategory(id: "Artifacts",        itemTypes: ["Artifact"]),
     ]
 
     static let otherCategory = ItemCategory(id: "Other", itemTypes: [])
@@ -30,7 +29,7 @@ struct ItemCategory: Identifiable {
     }
 }
 
-// MARK: - Item List View (category level)
+// MARK: - Main Item List View (Category Level)
 
 struct ItemListView: View {
     @State private var allEntries: [ItemEntry] = []
@@ -44,13 +43,18 @@ struct ItemListView: View {
             let cat = ItemCategory.category(for: entry.itemType)
             counts[cat.id, default: 0] += 1
         }
+
         var result: [(ItemCategory, Int)] = []
         for cat in ItemCategory.allCategories {
             let count = counts[cat.id] ?? 0
             if count > 0 { result.append((cat, count)) }
         }
+
         let otherCount = counts["Other"] ?? 0
-        if otherCount > 0 { result.append((ItemCategory.otherCategory, otherCount)) }
+        if otherCount > 0 {
+            result.append((ItemCategory.otherCategory, otherCount))
+        }
+
         return result
     }
 
@@ -68,10 +72,7 @@ struct ItemListView: View {
             } else {
                 List(categoryCounts, id: \.category.id) { pair in
                     NavigationLink {
-                        ItemCategoryDetailView(
-                            categoryName: pair.category.id,
-                            items: allEntries.filter { ItemCategory.category(for: $0.itemType).id == pair.category.id }
-                        )
+                        categoryDestination(pair.category)
                     } label: {
                         HStack {
                             Text(pair.category.id)
@@ -82,13 +83,35 @@ struct ItemListView: View {
                                 .font(AppFonts.caption)
                                 .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                         }
-                        .padding(.vertical, 2)
+                        .padding(.vertical, AppSpacing.sm)
                     }
                 }
             }
         }
         .navigationTitle("Items")
-        .task { await loadEntries() }
+        .task {
+            await loadEntries()
+        }
+    }
+
+    @ViewBuilder
+    private func categoryDestination(_ category: ItemCategory) -> some View {
+        let items = allEntries.filter { entry in
+            let cat = ItemCategory.category(for: entry.itemType)
+            return cat.id == category.id
+        }
+
+        if category.isSpecial {
+            ItemSpecialCategoryView(
+                category: category,
+                items: items
+            )
+        } else {
+            ItemCategoryDetailView(
+                categoryName: category.id,
+                items: items
+            )
+        }
     }
 
     private func loadEntries() async {
@@ -103,39 +126,21 @@ struct ItemListView: View {
     }
 }
 
-// MARK: - Item Category Detail View
+// MARK: - Item Category Detail View (plain list)
 
 struct ItemCategoryDetailView: View {
     let categoryName: String
     let items: [ItemEntry]
 
     @State private var searchText = ""
-    @State private var sortByLevel = false
     @Environment(\.colorScheme) private var colorScheme
     @Environment(SubscriptionService.self) private var subscriptionService
 
     private var filteredItems: [ItemEntry] {
-        var base = items.sorted { lhs, rhs in
-            if sortByLevel {
-                if lhs.itemLevel != rhs.itemLevel { return lhs.itemLevel < rhs.itemLevel }
-            }
-            return lhs.title.localizedCompare(rhs.title) == .orderedAscending
-        }
-        if !searchText.isEmpty {
-            let q = searchText.lowercased()
-            base = base.filter { $0.title.lowercased().contains(q) }
-        }
-        return base
-    }
-
-    private var levelGroups: [(level: Int, items: [ItemEntry])] {
-        var dict: [Int: [ItemEntry]] = [:]
-        for item in filteredItems {
-            dict[item.itemLevel, default: []].append(item)
-        }
-        return dict.keys.sorted().map { level in
-            (level, dict[level]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
-        }
+        let sorted = items.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+        if searchText.isEmpty { return sorted }
+        let q = searchText.lowercased()
+        return sorted.filter { $0.title.lowercased().contains(q) }
     }
 
     var body: some View {
@@ -144,41 +149,125 @@ struct ItemCategoryDetailView: View {
                 ContentUnavailableView(
                     "No \(categoryName)",
                     systemImage: ContentType.item.iconName,
-                    description: Text(searchText.isEmpty ? "No items in this category." : "No results for \"\(searchText)\".")
+                    description: Text(searchText.isEmpty
+                        ? "No items in this category."
+                        : "No results for \"\(searchText)\".")
                 )
             } else {
-                List {
-                    if sortByLevel {
-                        ForEach(levelGroups, id: \.level) { group in
-                            Section(header: GroupHeader(group.level == 0 ? "Level 0 (Base)" : "Level \(group.level)")) {
-                                ForEach(group.items, id: \.id) { item in
-                                    ItemRow(entry: item, isUnlocked: subscriptionService.isUnlocked)
-                                }
-                            }
-                        }
-                    } else {
-                        ForEach(filteredItems, id: \.id) { item in
-                            ItemRow(entry: item, isUnlocked: subscriptionService.isUnlocked)
-                        }
-                    }
+                List(filteredItems, id: \.id) { item in
+                    ItemRow(entry: item, isUnlocked: subscriptionService.isUnlocked)
                 }
             }
         }
         .navigationTitle(categoryName)
         .searchable(text: $searchText, prompt: "Search \(categoryName)")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    sortByLevel.toggle()
-                } label: {
-                    Label(
-                        sortByLevel ? "Sort: Level" : "Sort: A–Z",
-                        systemImage: sortByLevel ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle"
-                    )
-                    .font(AppFonts.body)
+    }
+}
+
+// MARK: - Item Special Category View (enhancement table + items)
+
+struct ItemSpecialCategoryView: View {
+    let category: ItemCategory
+    let items: [ItemEntry]
+
+    @State private var searchText = ""
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(SubscriptionService.self) private var subscriptionService
+
+    private var isWeapon: Bool { category.id == "Weapons" }
+
+    private var enhancementRows: [(bonus: String, price: String)] {
+        if isWeapon {
+            return [
+                ("+1", "+2,000 gp"),
+                ("+2", "+8,000 gp"),
+                ("+3", "+18,000 gp"),
+                ("+4", "+32,000 gp"),
+                ("+5", "+50,000 gp"),
+            ]
+        } else {
+            return [
+                ("+1", "+1,000 gp"),
+                ("+2", "+4,000 gp"),
+                ("+3", "+9,000 gp"),
+                ("+4", "+16,000 gp"),
+                ("+5", "+25,000 gp"),
+            ]
+        }
+    }
+
+    private var filteredItems: [ItemEntry] {
+        let sorted = items.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+        if searchText.isEmpty { return sorted }
+        let q = searchText.lowercased()
+        return sorted.filter { $0.title.lowercased().contains(q) }
+    }
+
+    var body: some View {
+        List {
+            // Enhancement bonus table section
+            Section(header: GroupHeader("Enhancement Bonus Pricing")) {
+                enhancementTable
+            }
+
+            // Named special items section
+            if !filteredItems.isEmpty {
+                Section(header: GroupHeader("Special \(category.id)")) {
+                    ForEach(filteredItems, id: \.id) { item in
+                        ItemRow(entry: item, isUnlocked: subscriptionService.isUnlocked)
+                    }
                 }
             }
         }
+        .navigationTitle(category.id)
+        .searchable(text: $searchText, prompt: "Search \(category.id)")
+    }
+
+    private var enhancementTable: some View {
+        VStack(spacing: 0) {
+            // Header row
+            HStack {
+                Text("Bonus")
+                    .font(AppFonts.caption.weight(.semibold))
+                    .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text("Price Modifier")
+                    .font(AppFonts.caption.weight(.semibold))
+                    .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+            .padding(.horizontal, AppSpacing.md)
+            .padding(.vertical, AppSpacing.sm)
+            .background(AppColors.adaptivePrimary(colorScheme).opacity(0.08))
+
+            // Data rows
+            ForEach(Array(enhancementRows.enumerated()), id: \.offset) { index, row in
+                HStack {
+                    Text(row.bonus)
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text(row.price)
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+                .padding(.horizontal, AppSpacing.md)
+                .padding(.vertical, AppSpacing.sm)
+                .background(
+                    index % 2 == 0
+                        ? AppColors.adaptiveSurface(colorScheme)
+                        : AppColors.adaptiveSurfaceElevated(colorScheme)
+                )
+            }
+        }
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.small))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppRadius.small)
+                .strokeBorder(AppColors.adaptiveBorder(colorScheme), lineWidth: 0.5)
+        )
+        // Negative padding to offset List row insets
+        .listRowInsets(EdgeInsets(top: AppSpacing.sm, leading: 0, bottom: AppSpacing.sm, trailing: 0))
     }
 }
 
@@ -192,7 +281,9 @@ struct ItemRow: View {
     private var isLocked: Bool { entry.isPremium && !isUnlocked }
 
     var body: some View {
-        NavigationLink { DetailView(entry: entry) } label: {
+        NavigationLink {
+            DetailView(entry: entry)
+        } label: {
             HStack(spacing: AppSpacing.md) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(entry.title)
@@ -200,12 +291,6 @@ struct ItemRow: View {
                         .foregroundStyle(isLocked
                             ? AppColors.adaptiveTextSecondary(colorScheme)
                             : AppColors.adaptiveTextPrimary(colorScheme))
-                    if !entry.summary.isEmpty {
-                        Text(entry.summary)
-                            .font(AppFonts.caption)
-                            .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                            .lineLimit(1)
-                    }
                 }
 
                 Spacer()
@@ -220,7 +305,7 @@ struct ItemRow: View {
                         .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                 }
             }
-            .padding(.vertical, 2)
+            .padding(.vertical, AppSpacing.sm)
         }
     }
 }
@@ -228,6 +313,5 @@ struct ItemRow: View {
 #Preview {
     NavigationStack {
         ItemListView()
-            .environment(SubscriptionService())
     }
 }

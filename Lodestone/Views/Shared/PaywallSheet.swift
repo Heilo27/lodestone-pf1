@@ -14,7 +14,7 @@ struct PaywallSheet: View {
 
     private var subtitle: String {
         guard let entry else {
-            return "Expand your Pathfinder 2E library with all 15 expansion books."
+            return "Expand your Pathfinder 1E library with all 15 expansion books."
         }
         let typeLabel = entry.contentType.singularName.lowercased()
         let source = entry.source
@@ -29,6 +29,7 @@ struct PaywallSheet: View {
                 .frame(width: 36, height: 5)
                 .padding(.top, AppSpacing.md)
                 .padding(.bottom, AppSpacing.xl)
+                .accessibilityHidden(true)
 
             // Crown icon
             Image(systemName: "crown.fill")
@@ -52,7 +53,7 @@ struct PaywallSheet: View {
 
             // Feature bullets
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                FeatureBullet(icon: "books.vertical.fill", text: "Expansion books — APG, Secrets of Magic, Book of the Dead, and more")
+                FeatureBullet(icon: "books.vertical.fill", text: "15 expansion books — APG, Ultimate Magic, Bestiary 2–5, and more")
                 FeatureBullet(icon: "magnifyingglass", text: "Full search across all content")
                 FeatureBullet(icon: "lock.open.fill", text: "Instant access — no download required")
             }
@@ -140,7 +141,6 @@ private struct FeatureBullet: View {
             Image(systemName: icon)
                 .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
                 .frame(width: 24)
-                .accessibilityHidden(true)
             Text(text)
                 .font(AppFonts.subheadline)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))

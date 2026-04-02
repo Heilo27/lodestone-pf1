@@ -19,7 +19,7 @@ struct CategoryListView: View {
         }
         // When not unlocked, show free entries first, then premium (locked) entries below
         if subscriptionService.isUnlocked { return base }
-        return base.sorted { !$0.isPremium && $1.isPremium }
+        return base.sorted { ($0.isPremium ? 1 : 0) < ($1.isPremium ? 1 : 0) }
     }
 
     var body: some View {
@@ -98,15 +98,14 @@ private struct CategoryEntryRow: View {
                 Image(systemName: "lock.fill")
                     .font(.caption)
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                    .accessibilityLabel("Premium content — requires subscription")
             } else if entry.isPremium {
                 // Unlocked premium — show source badge instead of lock
                 SourceBadge(text: entry.source)
-            } else if entry.source != "Player Core Handbook" {
+            } else if entry.source != "Core Rulebook" {
                 SourceBadge(text: entry.source)
             }
         }
-        .padding(.vertical, 2)
+        .padding(.vertical, AppSpacing.sm)
     }
 }
 

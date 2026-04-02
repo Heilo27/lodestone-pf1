@@ -2,15 +2,14 @@ import SwiftUI
 
 struct FeatListView: View {
     enum SortOrder: String, CaseIterable {
-        case byType  = "By Type"
-        case byLevel = "By Level"
-        case prereqs = "Prerequisites"
+        case byType    = "By Type"
+        case prereqs   = "Prerequisites"
     }
 
+    // Display order for known feat types
     static let orderedFeatTypes = [
-        "General", "Skill", "Ancestry", "Class", "Archetype",
-        "Fighter", "Ranger", "Rogue", "Wizard", "Cleric",
-        "Bard", "Champion", "Druid", "Monk", "Sorcerer", "Barbarian"
+        "Combat", "General", "Metamagic", "Teamwork", "Item Creation",
+        "Critical", "Grit", "Style", "Performance", "Racial", "Monster", "Mythic"
     ]
 
     @State private var entries: [FeatEntry] = []
@@ -27,7 +26,7 @@ struct FeatListView: View {
         let found = Set(entries.map { $0.featType.isEmpty ? "Other" : $0.featType })
         let ordered = Self.orderedFeatTypes.filter { found.contains($0) }
         let remaining = found.subtracting(Self.orderedFeatTypes).subtracting(["Other"]).sorted()
-        let hasOther = entries.contains { $0.featType.isEmpty }
+        let hasOther = found.contains("Other") || entries.contains { $0.featType.isEmpty }
         return ["All"] + ordered + remaining + (hasOther ? ["Other"] : [])
     }
 
@@ -44,16 +43,17 @@ struct FeatListView: View {
             base = base.filter { $0.title.lowercased().contains(q) }
         }
         if !subscriptionService.isUnlocked {
-            base = base.sorted { !$0.isPremium && $1.isPremium }
+            base = base.sorted { ($0.isPremium ? 1 : 0) < ($1.isPremium ? 1 : 0) }
         }
         return base
     }
 
+    // Grouped by type in display order
     private var typeGroups: [(type: String, feats: [FeatEntry])] {
         var dict: [String: [FeatEntry]] = [:]
         for feat in baseEntries {
-            let t = feat.featType.isEmpty ? "Other" : feat.featType
-            dict[t, default: []].append(feat)
+            let type = feat.featType.isEmpty ? "Other" : feat.featType
+            dict[type, default: []].append(feat)
         }
 
         if selectedType != "All" {
@@ -62,36 +62,27 @@ struct FeatListView: View {
         }
 
         var result: [(String, [FeatEntry])] = []
-        for t in Self.orderedFeatTypes {
-            if let feats = dict[t] {
-                result.append((t, feats.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }))
+        for type in Self.orderedFeatTypes {
+            if let feats = dict[type] {
+                result.append((type, feats.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }))
             }
         }
         var other: [FeatEntry] = []
-        for (t, feats) in dict where !Self.orderedFeatTypes.contains(t) && t != "Other" {
+        for (type, feats) in dict where !Self.orderedFeatTypes.contains(type) && type != "Other" {
             other.append(contentsOf: feats)
         }
-        if let existing = dict["Other"] { other.append(contentsOf: existing) }
+        if let existingOther = dict["Other"] { other.append(contentsOf: existingOther) }
         if !other.isEmpty {
             result.append(("Other", other.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }))
         }
         return result
     }
 
-    private var levelGroups: [(level: Int, feats: [FeatEntry])] {
-        var dict: [Int: [FeatEntry]] = [:]
-        for feat in baseEntries {
-            dict[feat.level, default: []].append(feat)
-        }
-        return dict.keys.sorted().map { level in
-            (level, dict[level]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
-        }
-    }
-
+    // Grouped by whether feat has prerequisites
     private var prereqGroups: [(label: String, feats: [FeatEntry])] {
         let sorted = baseEntries.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
-        let withPrereqs = sorted.filter { !$0.prerequisites.isEmpty }
-        let noPrereqs   = sorted.filter {  $0.prerequisites.isEmpty }
+        let withPrereqs  = sorted.filter { !$0.prerequisites.isEmpty }
+        let noPrereqs    = sorted.filter {  $0.prerequisites.isEmpty }
         var result: [(String, [FeatEntry])] = []
         if !noPrereqs.isEmpty   { result.append(("No Prerequisites", noPrereqs)) }
         if !withPrereqs.isEmpty { result.append(("Has Prerequisites", withPrereqs)) }
@@ -105,7 +96,7 @@ struct FeatListView: View {
             if isLoading {
                 ProgressView("Loading Feats...")
                     .tint(AppColors.adaptivePrimary(colorScheme))
-            } else if typeGroups.isEmpty && levelGroups.isEmpty && prereqGroups.isEmpty {
+            } else if typeGroups.isEmpty && prereqGroups.isEmpty {
                 ContentUnavailableView(
                     "No Feats",
                     systemImage: ContentType.feat.iconName,
@@ -115,6 +106,7 @@ struct FeatListView: View {
                 )
             } else {
                 VStack(spacing: 0) {
+                    // Sort picker
                     Picker("Sort", selection: $sortOrder) {
                         ForEach(SortOrder.allCases, id: \.self) { Text($0.rawValue).tag($0) }
                     }
@@ -130,14 +122,6 @@ struct FeatListView: View {
                         case .byType:
                             ForEach(typeGroups, id: \.type) { group in
                                 Section(header: GroupHeader(group.type)) {
-                                    ForEach(group.feats, id: \.id) { feat in
-                                        FeatRow(entry: feat, isUnlocked: subscriptionService.isUnlocked)
-                                    }
-                                }
-                            }
-                        case .byLevel:
-                            ForEach(levelGroups, id: \.level) { group in
-                                Section(header: GroupHeader("Level \(group.level)")) {
                                     ForEach(group.feats, id: \.id) { feat in
                                         FeatRow(entry: feat, isUnlocked: subscriptionService.isUnlocked)
                                     }
@@ -186,6 +170,8 @@ struct FeatListView: View {
         .task { await loadEntries() }
     }
 
+    // MARK: - Load
+
     private func loadEntries() async {
         do {
             try await DatabaseService.shared.open()
@@ -209,14 +195,16 @@ private struct FeatRow: View {
 
     private var benefitSummary: String {
         let text = entry.benefit
-        if let idx = text.firstIndex(of: ".") {
-            return String(text[...idx])
+        if let range = text.range(of: ".", options: .literal) {
+            return String(text[text.startIndex...range.lowerBound]) + "."
         }
         return String(text.prefix(120))
     }
 
     var body: some View {
-        NavigationLink { DetailView(entry: entry) } label: {
+        NavigationLink {
+            DetailView(entry: entry)
+        } label: {
             HStack(spacing: AppSpacing.md) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(entry.title)
@@ -239,11 +227,11 @@ private struct FeatRow: View {
                     Image(systemName: "lock.fill")
                         .font(.caption)
                         .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                } else if entry.source != "Player Core Handbook" {
+                } else if entry.source != "Core Rulebook" {
                     SourceBadge(text: entry.source)
                 }
             }
-            .padding(.vertical, 2)
+            .padding(.vertical, AppSpacing.sm)
         }
     }
 }

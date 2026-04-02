@@ -1,8 +1,8 @@
 import SwiftUI
 
 enum AppConstants {
-    static let appName = "Lodestone PF2"
-    static let bundleID = "com.heiloprojects.lodestone-pf2"
+    static let appName = "Lodestone PF1"
+    static let bundleID = "com.heiloproject.lodestone.pf1"
     static let maxRecentSearches = 10
     static let searchDebounceSeconds: Double = 0.3
 }
@@ -36,13 +36,13 @@ extension Color {
 // MARK: - App Colors
 
 enum AppColors {
-    // Brand — PF2 uses deep crimson/royal red
-    static let primary = Color(hex: "7A1010")           // deep crimson (light mode) — WCAG AA on #FAF7F0
-    static let primaryDark = Color(hex: "C0392B")        // vivid crimson (dark mode)
-    static let secondary = Color(hex: "4A1010")          // dark burgundy (light mode)
-    static let secondaryDark = Color(hex: "8B1A1A")      // dark crimson (dark mode)
-    static let accent = Color(hex: "8B3A3A")             // dusty rose-red accent
-    static let premiumGold = Color(hex: "D4AF37")        // crown/premium (keep gold)
+    // Brand
+    static let primary = Color(hex: "7A5C00")           // dark gold (light mode) — WCAG AA on #FAF7F0 (~5.2:1)
+    static let primaryDark = Color(hex: "D4AF37")        // bright gold (dark mode)
+    static let secondary = Color(hex: "8B1A1A")          // crimson (light mode)
+    static let secondaryDark = Color(hex: "C0392B")      // crimson (dark mode)
+    static let accent = Color(hex: "1F6358")             // teal-green (darkened for WCAG AA contrast)
+    static let premiumGold = Color(hex: "D4AF37")        // crown/premium
 
     // Background
     static let background = Color(hex: "FAF7F0")         // warm parchment (light)
@@ -55,7 +55,7 @@ enum AppColors {
     // Text
     static let textPrimary = Color(hex: "1A1714")
     static let textPrimaryDark = Color(hex: "F0EDE6")
-    static let textSecondary = Color(hex: "6B6560")
+    static let textSecondary = Color(hex: "4A4440")
     static let textSecondaryDark = Color(hex: "9A9590")
 
     // Border
@@ -98,16 +98,14 @@ enum AppColors {
     // Content type colors
     static func contentTypeColor(_ type: ContentType) -> Color {
         switch type {
-        case .spell:      Color(hex: "7B3FA0")
-        case .class_:     Color(hex: "1A6B9A")
-        case .monster:    Color(hex: "C0392B")
-        case .feat:       Color(hex: "D05A16")
-        case .item:       Color(hex: "2E8B57")
-        case .ancestry:   Color(hex: "1A7A7A")
-        case .trait:      Color(hex: "5B4B9A")
-        case .rule:       Color(hex: "5A5A5A")
-        case .background: Color(hex: "8B6508")
-        case .condition:  Color(hex: "A0522D")
+        case .spell:   Color(hex: "7B3FA0")
+        case .class_:  Color(hex: "1A6B9A")
+        case .monster: Color(hex: "C0392B")
+        case .feat:    Color(hex: "D05A16")
+        case .item:    Color(hex: "2E8B57")
+        case .race:    Color(hex: "1A7A7A")
+        case .trait:   Color(hex: "5B4B9A")
+        case .rule:    Color(hex: "4A4A4A")
         }
     }
 }

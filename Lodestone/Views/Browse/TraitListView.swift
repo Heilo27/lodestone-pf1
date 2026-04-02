@@ -9,8 +9,7 @@ struct TraitListView: View {
     @Environment(SubscriptionService.self) private var subscriptionService
 
     private static let typeOrder = [
-        "Ancestry", "Class", "Creature", "Energy", "Equipment",
-        "General", "Magical", "Rarity", "Skill", "Weapon"
+        "Combat", "Magic", "Faith", "Social", "Regional", "Race", "Equipment", "Religion"
     ]
 
     private var allTypes: [String] {
@@ -30,21 +29,19 @@ struct TraitListView: View {
             base = base.filter { $0.title.lowercased().contains(q) }
         }
         if !subscriptionService.isUnlocked {
-            base = base.sorted { !$0.isPremium && $1.isPremium }
+            base = base.sorted { ($0.isPremium ? 1 : 0) < ($1.isPremium ? 1 : 0) }
         }
         return base
     }
 
     private var groupedByType: [(type: String, traits: [TraitEntry])] {
         if selectedType != "All" {
-            let sorted = filtered.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
-            return [(type: selectedType, traits: sorted)]
+            return [(type: selectedType, traits: filtered)]
         }
-        let types = allTypes.dropFirst()
+        // Group in display order
+        let types = allTypes.dropFirst() // drop "All"
         return types.compactMap { type in
-            let entries = filtered
-                .filter { $0.traitType == type }
-                .sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+            let entries = filtered.filter { $0.traitType == type }
             return entries.isEmpty ? nil : (type: type, traits: entries)
         }
     }
@@ -91,13 +88,9 @@ struct TraitListView: View {
                         }
                     }
                 } label: {
-                    Label(
-                        selectedType == "All" ? "Filter" : selectedType,
-                        systemImage: selectedType == "All"
-                            ? "line.3.horizontal.decrease.circle"
-                            : "line.3.horizontal.decrease.circle.fill"
-                    )
-                    .font(AppFonts.body)
+                    Label(selectedType == "All" ? "Filter" : selectedType,
+                          systemImage: selectedType == "All" ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                        .font(AppFonts.body)
                 }
             }
         }
@@ -133,8 +126,8 @@ private struct TraitRow: View {
                         ? AppColors.adaptiveTextSecondary(colorScheme)
                         : AppColors.adaptiveTextPrimary(colorScheme))
 
-                if !trait.summary.isEmpty {
-                    Text(trait.summary)
+                if !trait.benefit.isEmpty {
+                    Text(firstSentence(trait.benefit))
                         .font(AppFonts.caption)
                         .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                         .lineLimit(1)
@@ -147,13 +140,19 @@ private struct TraitRow: View {
                 Image(systemName: "lock.fill")
                     .font(.caption)
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                    .accessibilityLabel("Premium content — requires subscription")
-            } else if trait.source != "Player Core Handbook" {
+            } else if trait.source != "Core Rulebook" && trait.source != "Advanced Player's Guide" {
                 SourceBadge(text: trait.source)
             }
         }
-        .padding(.vertical, 2)
-        .opacity(isLocked ? 0.75 : 1)
+        .padding(.vertical, AppSpacing.sm)
+        .opacity(isLocked ? 0.6 : 1)
+    }
+
+    private func firstSentence(_ text: String) -> String {
+        if let idx = text.firstIndex(of: ".") {
+            return String(text[...idx])
+        }
+        return text
     }
 }
 

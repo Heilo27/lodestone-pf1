@@ -25,7 +25,8 @@ final class SubscriptionService {
     private var updatesTask: Task<Void, Never>?
 
     init() {
-        updatesTask = Task {
+        updatesTask = Task { [weak self] in
+            guard let self else { return }
             for await result in Transaction.updates {
                 if case .verified(let transaction) = result {
                     await transaction.finish()
@@ -121,7 +122,7 @@ final class SubscriptionService {
                     activeProductID = transaction.productID
                     expirationDate = transaction.expirationDate
                     found = true
-                    return
+                    break
                 }
             }
         }

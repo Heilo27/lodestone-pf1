@@ -3,21 +3,52 @@ import SwiftUI
 struct SpellListView: View {
     enum SortOrder: String, CaseIterable {
         case alphabetical = "A–Z"
-        case byRank       = "By Rank"
-        case byTradition  = "By Tradition"
+        case byLevel = "By Level"
+        case byClass = "By Class"
     }
 
-    static let traditions = ["Arcane", "Divine", "Occult", "Primal"]
+    static let spellClasses = [
+        "Bard", "Cleric", "Druid", "Paladin", "Ranger",
+        "Sorcerer/Wizard", "Witch", "Alchemist", "Inquisitor",
+        "Magus", "Summoner", "Oracle"
+    ]
 
     @State private var entries: [SpellEntry] = []
     @State private var isLoading = true
     @State private var searchText = ""
     @State private var sortOrder: SortOrder = .alphabetical
-    @State private var selectedTradition: String = "Arcane"
+    @State private var selectedClass: String = "Sorcerer/Wizard"
     @Environment(\.colorScheme) private var colorScheme
     @Environment(SubscriptionService.self) private var subscriptionService
 
-    // MARK: - Filtered
+    // MARK: - Level Helpers
+
+    /// Minimum spell level across all classes in the levels string.
+    private func minSpellLevel(_ levels: String) -> Int {
+        let pattern = /\b(\d+)\b/
+        let numbers = levels.matches(of: pattern).compactMap { Int($0.output.1) }
+        return numbers.min() ?? 0
+    }
+
+    /// Level for a specific class in the levels string (case-insensitive).
+    private func levelForClass(_ levels: String, className: String) -> Int? {
+        let lower = levels.lowercased()
+        let classLower = className.lowercased()
+        // Try to find "classname N"
+        guard let range = lower.range(of: classLower) else { return nil }
+        let afterClass = String(lower[range.upperBound...])
+        // Skip whitespace and optional "/"" variants, then grab the number
+        let trimmed = afterClass.trimmingCharacters(in: .whitespaces)
+        if trimmed.hasPrefix("/") || trimmed.hasPrefix(",") { return nil }
+        // Find first integer after class name
+        let numberPattern = /^\s*(\d+)/
+        if let match = trimmed.firstMatch(of: numberPattern) {
+            return Int(match.output.1)
+        }
+        return nil
+    }
+
+    // MARK: - Filtered & Sorted Data
 
     private var filteredEntries: [SpellEntry] {
         let base: [SpellEntry]
@@ -28,32 +59,46 @@ struct SpellListView: View {
             base = entries.filter { $0.title.lowercased().contains(q) }
         }
         if subscriptionService.isUnlocked { return base }
-        return base.sorted { !$0.isPremium && $1.isPremium }
+        return base.sorted { ($0.isPremium ? 1 : 0) < ($1.isPremium ? 1 : 0) }
     }
 
-    private var alphabeticallySorted: [SpellEntry] {
-        filteredEntries.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+    private var alphabeticalGroups: [(letter: String, spells: [SpellEntry])] {
+        let sorted = filteredEntries.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+        var dict: [String: [SpellEntry]] = [:]
+        for spell in sorted {
+            let letter = String(spell.title.prefix(1)).uppercased()
+            dict[letter, default: []].append(spell)
+        }
+        return dict.keys.sorted().map { letter in
+            (letter, dict[letter]!)
+        }
     }
 
-    private var rankGroups: [(rank: Int, spells: [SpellEntry])] {
+    private var levelGroups: [(level: Int, spells: [SpellEntry])] {
         var dict: [Int: [SpellEntry]] = [:]
         for spell in filteredEntries {
-            dict[spell.rank, default: []].append(spell)
+            let level = minSpellLevel(spell.levels)
+            dict[level, default: []].append(spell)
         }
-        return dict.keys.sorted().map { rank in
-            (rank, dict[rank]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
+        return dict.keys.sorted().map { level in
+            (level, dict[level]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
         }
     }
 
-    private var traditionGroups: [(rank: Int, spells: [SpellEntry])] {
-        let tradLower = selectedTradition.lowercased()
-        let filtered = filteredEntries.filter { $0.traditions.lowercased().contains(tradLower) }
+    private var classFilteredLevelGroups: [(level: Int, spells: [SpellEntry])] {
+        let classLower = selectedClass.lowercased()
+        // For "sorcerer/wizard", accept either "sorcerer/wizard" or both "sorcerer" and "wizard"
+        let filtered = filteredEntries.filter { spell in
+            spell.levels.lowercased().contains(classLower)
+        }
         var dict: [Int: [SpellEntry]] = [:]
         for spell in filtered {
-            dict[spell.rank, default: []].append(spell)
+            let level = levelForClass(spell.levels, className: selectedClass)
+                ?? minSpellLevel(spell.levels)
+            dict[level, default: []].append(spell)
         }
-        return dict.keys.sorted().map { rank in
-            (rank, dict[rank]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
+        return dict.keys.sorted().map { level in
+            (level, dict[level]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
         }
     }
 
@@ -66,27 +111,12 @@ struct SpellListView: View {
                     .tint(AppColors.adaptivePrimary(colorScheme))
             } else {
                 VStack(spacing: 0) {
-                    Picker("Sort", selection: $sortOrder) {
-                        ForEach(SortOrder.allCases, id: \.self) { Text($0.rawValue).tag($0) }
-                    }
-                    .pickerStyle(.segmented)
-                    .padding(.horizontal, AppSpacing.base)
-                    .padding(.vertical, AppSpacing.sm)
-                    .background(AppColors.adaptiveBackground(colorScheme).opacity(0.95))
+                    // Sort picker
+                    spellSortPicker
 
-                    if sortOrder == .byTradition {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: AppSpacing.sm) {
-                                ForEach(Self.traditions, id: \.self) { tradition in
-                                    TraditionChip(label: tradition, isSelected: tradition == selectedTradition) {
-                                        selectedTradition = tradition
-                                    }
-                                }
-                            }
-                            .padding(.horizontal, AppSpacing.base)
-                            .padding(.vertical, AppSpacing.sm)
-                        }
-                        .background(AppColors.adaptiveBackground(colorScheme).opacity(0.95))
+                    // Class chips (only when By Class is selected)
+                    if sortOrder == .byClass {
+                        classChipPicker
                     }
 
                     Divider()
@@ -97,16 +127,47 @@ struct SpellListView: View {
         }
         .navigationTitle("Spells")
         .searchable(text: $searchText, prompt: "Search Spells")
-        .task { await loadEntries() }
+        .task {
+            await loadEntries()
+        }
+    }
+
+    // MARK: - Subviews
+
+    private var spellSortPicker: some View {
+        Picker("Sort", selection: $sortOrder) {
+            ForEach(SortOrder.allCases, id: \.self) { option in
+                Text(option.rawValue).tag(option)
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding(.horizontal, AppSpacing.base)
+        .padding(.vertical, AppSpacing.sm)
+        .background(AppColors.adaptiveBackground(colorScheme).opacity(0.95))
+    }
+
+    private var classChipPicker: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: AppSpacing.sm) {
+                ForEach(SpellListView.spellClasses, id: \.self) { cls in
+                    ClassChip(label: cls, isSelected: cls == selectedClass) {
+                        selectedClass = cls
+                    }
+                }
+            }
+            .padding(.horizontal, AppSpacing.base)
+            .padding(.vertical, AppSpacing.sm)
+        }
+        .background(AppColors.adaptiveBackground(colorScheme).opacity(0.95))
     }
 
     @ViewBuilder
     private var spellList: some View {
         let isEmpty: Bool = {
             switch sortOrder {
-            case .alphabetical:  return alphabeticallySorted.isEmpty
-            case .byRank:        return rankGroups.isEmpty
-            case .byTradition:   return traditionGroups.isEmpty
+            case .alphabetical: return alphabeticalGroups.isEmpty
+            case .byLevel: return levelGroups.isEmpty
+            case .byClass: return classFilteredLevelGroups.isEmpty
             }
         }()
 
@@ -122,20 +183,24 @@ struct SpellListView: View {
             List {
                 switch sortOrder {
                 case .alphabetical:
-                    ForEach(alphabeticallySorted, id: \.id) { spell in
-                        SpellRow(entry: spell, isUnlocked: subscriptionService.isUnlocked)
-                    }
-                case .byRank:
-                    ForEach(rankGroups, id: \.rank) { group in
-                        Section(header: GroupHeader(group.rank == 0 ? "Cantrips" : "Rank \(group.rank)")) {
+                    ForEach(alphabeticalGroups, id: \.letter) { group in
+                        Section(header: GroupHeader(group.letter)) {
                             ForEach(group.spells, id: \.id) { spell in
                                 SpellRow(entry: spell, isUnlocked: subscriptionService.isUnlocked)
                             }
                         }
                     }
-                case .byTradition:
-                    ForEach(traditionGroups, id: \.rank) { group in
-                        Section(header: GroupHeader(group.rank == 0 ? "Cantrips" : "Rank \(group.rank)")) {
+                case .byLevel:
+                    ForEach(levelGroups, id: \.level) { group in
+                        Section(header: GroupHeader("Level \(group.level)")) {
+                            ForEach(group.spells, id: \.id) { spell in
+                                SpellRow(entry: spell, isUnlocked: subscriptionService.isUnlocked)
+                            }
+                        }
+                    }
+                case .byClass:
+                    ForEach(classFilteredLevelGroups, id: \.level) { group in
+                        Section(header: GroupHeader("Level \(group.level)")) {
                             ForEach(group.spells, id: \.id) { spell in
                                 SpellRow(entry: spell, isUnlocked: subscriptionService.isUnlocked)
                             }
@@ -145,6 +210,8 @@ struct SpellListView: View {
             }
         }
     }
+
+    // MARK: - Load
 
     private func loadEntries() async {
         do {
@@ -166,10 +233,13 @@ private struct SpellRow: View {
     @Environment(\.colorScheme) private var colorScheme
 
     private var isLocked: Bool { entry.isPremium && !isUnlocked }
+    private let spellColor = AppColors.contentTypeColor(.spell)
     private let accentColor = AppColors.accent
 
     var body: some View {
-        NavigationLink { DetailView(entry: entry) } label: {
+        NavigationLink {
+            DetailView(entry: entry)
+        } label: {
             HStack(spacing: AppSpacing.md) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(entry.title)
@@ -178,8 +248,8 @@ private struct SpellRow: View {
                             ? AppColors.adaptiveTextSecondary(colorScheme)
                             : AppColors.adaptiveTextPrimary(colorScheme))
 
-                    if !entry.traditions.isEmpty {
-                        Text(entry.traditions)
+                    if !entry.school.isEmpty {
+                        Text(entry.school)
                             .font(AppFonts.caption)
                             .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                             .lineLimit(1)
@@ -192,25 +262,27 @@ private struct SpellRow: View {
                     Image(systemName: "lock.fill")
                         .font(.caption)
                         .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                        .accessibilityLabel("Premium content — requires subscription")
-                } else if !entry.actions.isEmpty {
-                    Text(entry.actions)
-                        .font(AppFonts.chip(size: 11))
-                        .foregroundStyle(accentColor)
-                        .padding(.horizontal, AppSpacing.sm)
-                        .padding(.vertical, 2)
-                        .background(accentColor.opacity(0.12), in: Capsule())
-                        .overlay(Capsule().strokeBorder(accentColor.opacity(0.3), lineWidth: 0.5))
+                } else {
+                    // School badge
+                    if !entry.school.isEmpty {
+                        Text(entry.school)
+                            .font(AppFonts.chip())
+                            .foregroundStyle(accentColor)
+                            .padding(.horizontal, AppSpacing.sm)
+                            .padding(.vertical, 2)
+                            .background(accentColor.opacity(0.12), in: Capsule())
+                            .overlay(Capsule().strokeBorder(accentColor.opacity(0.3), lineWidth: 0.5))
+                    }
                 }
             }
-            .padding(.vertical, 2)
+            .padding(.vertical, AppSpacing.sm)
         }
     }
 }
 
-// MARK: - Tradition Chip
+// MARK: - Class Chip
 
-private struct TraditionChip: View {
+private struct ClassChip: View {
     let label: String
     let isSelected: Bool
     let action: () -> Void
@@ -219,7 +291,7 @@ private struct TraditionChip: View {
     var body: some View {
         Button(action: action) {
             Text(label)
-                .font(AppFonts.chip(size: 12))
+                .font(AppFonts.chip())
                 .foregroundStyle(isSelected
                     ? AppColors.adaptivePrimary(colorScheme)
                     : AppColors.adaptiveTextSecondary(colorScheme))
@@ -249,6 +321,5 @@ private struct TraditionChip: View {
 #Preview {
     NavigationStack {
         SpellListView()
-            .environment(SubscriptionService())
     }
 }

@@ -2,7 +2,6 @@ import SwiftUI
 
 struct BrowseView: View {
     @State private var viewModel = BrowseViewModel()
-    @State private var showPaywall = false
     @Environment(\.colorScheme) private var colorScheme
     @Environment(SubscriptionService.self) private var subscriptionService
     @Environment(RecentlyViewedService.self) private var recentlyViewedService
@@ -29,11 +28,6 @@ struct BrowseView: View {
             .onChange(of: subscriptionService.isUnlocked) { _, isUnlocked in
                 Task { await viewModel.loadCounts(isUnlocked: isUnlocked) }
             }
-            .sheet(isPresented: $showPaywall) {
-                PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService)
-                    .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.hidden)
-            }
         }
     }
 
@@ -52,23 +46,9 @@ struct BrowseView: View {
                         QuickAccessTile(type: type, count: viewModel.categoryCounts[type])
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("\(type.displayName), \(viewModel.categoryCounts[type] ?? 0) entries")
+                    .accessibilityLabel(viewModel.categoryCounts[type].map { "\(type.displayName), \($0) entries" } ?? type.displayName)
                 }
             }
-        }
-    }
-
-    // MARK: - Content Type Routing
-
-    @ViewBuilder
-    private func destinationView(for type: ContentType) -> some View {
-        switch type {
-        case .spell:      SpellListView()
-        case .feat:       FeatListView()
-        case .item:       ItemListView()
-        case .monster:    MonsterListView()
-        case .trait:      TraitListView()
-        default:          CategoryListView(contentType: type)
         }
     }
 
@@ -79,7 +59,7 @@ struct BrowseView: View {
             sectionHeader("Your Books")
 
             if viewModel.isLoadingBooks {
-                HStack { Spacer(); ProgressView(); Spacer() }
+                HStack { Spacer(); ProgressView("Loading books..."); Spacer() }
                     .padding(.vertical, AppSpacing.lg)
             } else if viewModel.books.isEmpty {
                 Text("No books found")
@@ -89,26 +69,13 @@ struct BrowseView: View {
             } else {
                 VStack(spacing: 0) {
                     ForEach(Array(viewModel.books.enumerated()), id: \.element.id) { index, book in
-                        let isLocked = book.isPremium && !subscriptionService.isUnlocked
-                        if isLocked {
-                            Button {
-                                showPaywall = true
-                            } label: {
-                                BookRow(book: book, isUnlocked: subscriptionService.isUnlocked)
-                                    .padding(.horizontal, AppSpacing.base)
-                                    .padding(.vertical, AppSpacing.md)
-                                    .background(AppColors.adaptiveSurface(colorScheme))
-                            }
-                            .buttonStyle(.plain)
-                        } else {
-                            NavigationLink(destination: BookContentsView(source: book)) {
-                                BookRow(book: book, isUnlocked: subscriptionService.isUnlocked)
-                                    .padding(.horizontal, AppSpacing.base)
-                                    .padding(.vertical, AppSpacing.md)
-                                    .background(AppColors.adaptiveSurface(colorScheme))
-                            }
-                            .buttonStyle(.plain)
+                        NavigationLink(destination: BookContentsView(source: book)) {
+                            BookRow(book: book, isUnlocked: subscriptionService.isUnlocked)
+                                .padding(.horizontal, AppSpacing.base)
+                                .padding(.vertical, AppSpacing.md)
+                                .background(AppColors.adaptiveSurface(colorScheme))
                         }
+                        .buttonStyle(.plain)
 
                         if index < viewModel.books.count - 1 {
                             Divider()
@@ -172,6 +139,20 @@ struct BrowseView: View {
         }
     }
 
+    // MARK: - Destination Routing
+
+    @ViewBuilder
+    private func destinationView(for type: ContentType) -> some View {
+        switch type {
+        case .monster: MonsterListView()
+        case .spell:   SpellListView()
+        case .feat:    FeatListView()
+        case .item:    ItemListView()
+        case .trait:   TraitListView()
+        default:       CategoryListView(contentType: type)
+        }
+    }
+
     // MARK: - Helpers
 
     private func sectionHeader(_ title: String) -> some View {
@@ -206,7 +187,7 @@ struct QuickAccessTile: View {
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
             }
         }
-        .frame(maxWidth: .infinity, minHeight: 44)
+        .frame(maxWidth: .infinity)
         .padding(.vertical, AppSpacing.md)
         .background(AppColors.adaptiveSurface(colorScheme), in: RoundedRectangle(cornerRadius: AppRadius.medium))
         .overlay(

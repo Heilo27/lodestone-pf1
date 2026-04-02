@@ -15,6 +15,7 @@ struct DetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
+                // Header area
                 headerView
                     .padding(.horizontal, AppSpacing.base)
                     .padding(.top, AppSpacing.base)
@@ -28,6 +29,7 @@ struct DetailView: View {
                     lockedContentOverlay
                         .padding(.horizontal, AppSpacing.base)
                 } else {
+                    // Summary
                     if !entry.summary.isEmpty {
                         Text(entry.summary)
                             .font(AppFonts.body)
@@ -36,6 +38,7 @@ struct DetailView: View {
                             .padding(.bottom, AppSpacing.base)
                     }
 
+                    // Type-specific detail
                     typeSpecificView(for: entry)
                         .padding(.horizontal, AppSpacing.base)
                 }
@@ -70,17 +73,18 @@ struct DetailView: View {
 
     private var headerView: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            // Badges row
             HStack(spacing: AppSpacing.xs) {
                 ContentTypeIconBadge(type: entry.contentType, size: 28)
                 ContentTypeBadge(type: entry.contentType)
                 SourceBadge(text: entry.source)
-                if isLocked {
+                if entry.isPremium {
                     PremiumBadge(compact: true)
                 }
                 Spacer()
             }
-            .accessibilityElement(children: .combine)
 
+            // Full-width title
             Text(entry.title)
                 .font(AppFonts.displayMedium)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
@@ -120,11 +124,12 @@ struct DetailView: View {
                             Label("Unlock with Premium", systemImage: "crown.fill")
                         }
                         .buttonStyle(PrimaryButtonStyle())
+                        .accessibilityHint("Opens subscription options")
                         .padding(.horizontal, AppSpacing.xl)
                         .padding(.top, AppSpacing.xs)
                     }
                 }
-                .frame(minHeight: 220)
+                .frame(maxWidth: .infinity)
         }
     }
 
@@ -135,24 +140,20 @@ struct DetailView: View {
         switch entry {
         case let spell as SpellEntry:
             SpellDetailView(spell: spell)
-        case let cls as ClassEntry:
-            ClassDetailView(cls: cls)
+        case let classEntry as ClassEntry:
+            ClassDetailView(classEntry: classEntry)
         case let monster as MonsterEntry:
             MonsterDetailView(monster: monster)
         case let feat as FeatEntry:
             FeatDetailView(feat: feat)
         case let item as ItemEntry:
             ItemDetailView(item: item)
-        case let ancestry as AncestryEntry:
-            AncestryDetailView(ancestry: ancestry)
+        case let race as RaceEntry:
+            RaceDetailView(race: race)
         case let trait as TraitEntry:
             TraitDetailView(trait: trait)
         case let rule as RuleEntry:
             RuleDetailView(rule: rule)
-        case let background as BackgroundEntry:
-            BackgroundDetailView(background: background)
-        case let condition as ConditionEntry:
-            ConditionDetailView(condition: condition)
         default:
             Text(entry.summary)
                 .font(AppFonts.body)

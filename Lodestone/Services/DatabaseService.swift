@@ -19,6 +19,7 @@ actor DatabaseService {
 
         let dbPath = Self.writableDatabasePath()
 
+        // If no writable DB exists yet, we'll create one (SeedDataBuilder populates it separately)
         if sqlite3_open(dbPath, &db) != SQLITE_OK {
             let error = String(cString: sqlite3_errmsg(db))
             throw DatabaseError.openFailed(error)
@@ -54,8 +55,10 @@ actor DatabaseService {
             return try browseAll(filters: filters, limit: limit, offset: offset)
         }
 
+        // Try FTS5 first
         var results = try ftsSearch(query: trimmed, filters: filters, limit: limit)
 
+        // Fallback to LIKE if FTS returns nothing
         if results.isEmpty {
             results = try likeSearch(query: trimmed, filters: filters, limit: limit)
         }
@@ -68,6 +71,7 @@ actor DatabaseService {
         return try fetchEntries(type: type, limit: limit, offset: offset)
     }
 
+    /// Returns distinct book names and their entry counts, sorted by entry count desc.
     func browseSources() throws -> [BookSource] {
         guard isOpen else { throw DatabaseError.notOpen }
         guard let db else { throw DatabaseError.notOpen }
@@ -94,6 +98,7 @@ actor DatabaseService {
         return results
     }
 
+    /// Returns all entries from a specific book source, sorted by type then name.
     func browse(source: String, limit: Int = 500) throws -> [any ContentEntry] {
         guard isOpen else { throw DatabaseError.notOpen }
         let sql = """
@@ -123,62 +128,29 @@ actor DatabaseService {
         guard isOpen else { throw DatabaseError.notOpen }
         guard !favorites.isEmpty else { return [] }
 
+        // Group favorites by content type to batch per-type queries
+        var byType: [ContentType: [UUID]] = [:]
+        for fav in favorites {
+            byType[fav.contentType, default: []].append(fav.id)
+        }
+
         var results: [any ContentEntry] = []
-        for favorite in favorites {
-            if let entry = try fetchEntry(id: favorite.id, type: favorite.contentType) {
-                results.append(entry)
-            }
+        for (type, ids) in byType {
+            let (detailTable, detailCols) = detailTableInfo(for: type)
+            let placeholders = ids.map { _ in "?" }.joined(separator: ",")
+            let sql = """
+            SELECT c.id, c.title, c.content_type, c.summary, c.is_premium, c.source,
+                   \(detailCols)
+            FROM content c
+            LEFT JOIN \(detailTable) d ON d.content_id = c.id
+            WHERE c.id IN (\(placeholders))
+            ORDER BY c.title
+            """
+            let params = ids.map { $0.uuidString }
+            let batch = try queryEntries(sql: sql, params: params)
+            results.append(contentsOf: batch)
         }
         return results.sorted { $0.title < $1.title }
-    }
-
-    // MARK: - Favorites (SQLite-backed)
-
-    func insertFavorite(id: UUID, contentType: ContentType) throws {
-        guard isOpen else { throw DatabaseError.notOpen }
-        let now = ISO8601DateFormatter().string(from: Date())
-        try execInsert("""
-        INSERT OR REPLACE INTO favorites (id, content_id, content_type, added_at)
-        VALUES (?, ?, ?, ?)
-        """, params: [id.uuidString, id.uuidString, contentType.rawValue, now])
-    }
-
-    func deleteFavorite(id: UUID) throws {
-        guard isOpen else { throw DatabaseError.notOpen }
-        try execInsert(
-            "DELETE FROM favorites WHERE id = ?",
-            params: [id.uuidString]
-        )
-    }
-
-    func getFavorites() throws -> Set<FavoriteEntry> {
-        guard isOpen else { throw DatabaseError.notOpen }
-        guard let db else { throw DatabaseError.notOpen }
-        let sql = "SELECT content_id, content_type FROM favorites ORDER BY added_at DESC"
-        var stmt: OpaquePointer?
-        defer { sqlite3_finalize(stmt) }
-        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
-            throw DatabaseError.queryFailed(dbError())
-        }
-        var results = Set<FavoriteEntry>()
-        while sqlite3_step(stmt) == SQLITE_ROW {
-            let idStr = String(cString: sqlite3_column_text(stmt, 0))
-            let typeStr = String(cString: sqlite3_column_text(stmt, 1))
-            if let id = UUID(uuidString: idStr),
-               let type = ContentType(rawValue: typeStr) {
-                results.insert(FavoriteEntry(id: id, contentType: type))
-            }
-        }
-        return results
-    }
-
-    func isFavorited(id: UUID) throws -> Bool {
-        guard isOpen else { throw DatabaseError.notOpen }
-        let count = try queryIntBound(
-            "SELECT COUNT(*) FROM favorites WHERE id = ?",
-            param: id.uuidString
-        )
-        return count > 0
     }
 
     // MARK: - Schema
@@ -186,10 +158,11 @@ actor DatabaseService {
     private func configurePragmas() throws {
         try exec("PRAGMA journal_mode = WAL")
         try exec("PRAGMA foreign_keys = ON")
-        try exec("PRAGMA cache_size = -8000")
+        try exec("PRAGMA cache_size = -8000") // 8MB cache
     }
 
     private func createSchema() throws {
+        // Main content table
         try exec("""
         CREATE TABLE IF NOT EXISTS content (
             id TEXT PRIMARY KEY,
@@ -197,10 +170,11 @@ actor DatabaseService {
             content_type TEXT NOT NULL,
             summary TEXT NOT NULL DEFAULT '',
             is_premium INTEGER NOT NULL DEFAULT 0,
-            source TEXT NOT NULL DEFAULT 'Player Core Handbook'
+            source TEXT NOT NULL DEFAULT 'Core Rulebook'
         )
         """)
 
+        // FTS5 virtual table
         try exec("""
         CREATE VIRTUAL TABLE IF NOT EXISTS content_fts USING fts5(
             id UNINDEXED,
@@ -213,111 +187,95 @@ actor DatabaseService {
         )
         """)
 
-        // PF2 Spells: rank + traditions + actions (no school/levels/components/SR)
+        // Type-specific detail tables
         try exec("""
         CREATE TABLE IF NOT EXISTS spell_details (
             content_id TEXT PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
-            rank INTEGER NOT NULL DEFAULT 1,
-            traditions TEXT NOT NULL DEFAULT '',
-            actions TEXT NOT NULL DEFAULT '',
-            traits TEXT NOT NULL DEFAULT '',
+            school TEXT NOT NULL DEFAULT '',
+            levels TEXT NOT NULL DEFAULT '',
+            casting_time TEXT NOT NULL DEFAULT '',
+            components TEXT NOT NULL DEFAULT '',
             range TEXT NOT NULL DEFAULT '',
-            area TEXT NOT NULL DEFAULT '',
-            targets TEXT NOT NULL DEFAULT '',
             duration TEXT NOT NULL DEFAULT '',
             saving_throw TEXT NOT NULL DEFAULT '',
-            heightened TEXT NOT NULL DEFAULT '',
+            spell_resistance INTEGER NOT NULL DEFAULT 0,
             description TEXT NOT NULL DEFAULT ''
         )
         """)
 
-        // PF2 Classes: keyAbility + hp/level + proficiencies (no hitDie/BAB/skillRanks)
         try exec("""
         CREATE TABLE IF NOT EXISTS class_details (
             content_id TEXT PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
-            key_ability TEXT NOT NULL DEFAULT '',
-            hp INTEGER NOT NULL DEFAULT 8,
-            perception TEXT NOT NULL DEFAULT 'Trained',
+            hit_die TEXT NOT NULL DEFAULT '',
+            skill_ranks INTEGER NOT NULL DEFAULT 2,
+            base_attack_bonus TEXT NOT NULL DEFAULT '',
             fort_save TEXT NOT NULL DEFAULT '',
             ref_save TEXT NOT NULL DEFAULT '',
             will_save TEXT NOT NULL DEFAULT '',
-            skills TEXT NOT NULL DEFAULT '',
-            class_features TEXT NOT NULL DEFAULT '',
+            class_skills TEXT NOT NULL DEFAULT '[]',
             description TEXT NOT NULL DEFAULT ''
         )
         """)
 
-        // PF2 Feats: level + featType + traits (no benefit/normal/special split)
         try exec("""
         CREATE TABLE IF NOT EXISTS feat_details (
             content_id TEXT PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
-            level INTEGER NOT NULL DEFAULT 1,
-            feat_type TEXT NOT NULL DEFAULT '',
-            traits TEXT NOT NULL DEFAULT '',
             prerequisites TEXT NOT NULL DEFAULT '',
-            requirements TEXT NOT NULL DEFAULT '',
-            trigger TEXT NOT NULL DEFAULT '',
-            benefit TEXT NOT NULL DEFAULT ''
+            benefit TEXT NOT NULL DEFAULT '',
+            normal TEXT NOT NULL DEFAULT '',
+            special TEXT NOT NULL DEFAULT '',
+            feat_type TEXT NOT NULL DEFAULT ''
         )
         """)
 
-        // PF2 Monsters: level + saves (no CR/alignment/environment)
         try exec("""
         CREATE TABLE IF NOT EXISTS monster_details (
             content_id TEXT PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
-            level INTEGER NOT NULL DEFAULT 1,
-            creature_type TEXT NOT NULL DEFAULT '',
+            challenge_rating TEXT NOT NULL DEFAULT '',
+            monster_type TEXT NOT NULL DEFAULT '',
             size TEXT NOT NULL DEFAULT '',
-            traits TEXT NOT NULL DEFAULT '',
+            alignment TEXT NOT NULL DEFAULT '',
             hit_points TEXT NOT NULL DEFAULT '',
             armor_class INTEGER NOT NULL DEFAULT 10,
-            fort_save INTEGER NOT NULL DEFAULT 0,
-            ref_save INTEGER NOT NULL DEFAULT 0,
-            will_save INTEGER NOT NULL DEFAULT 0,
             speed TEXT NOT NULL DEFAULT '',
             attacks TEXT NOT NULL DEFAULT '',
             special_abilities TEXT NOT NULL DEFAULT '',
+            environment TEXT NOT NULL DEFAULT '',
             description TEXT NOT NULL DEFAULT ''
         )
         """)
 
-        // PF2 Items: item_level + bulk + usage (no slot/aura/caster_level)
         try exec("""
         CREATE TABLE IF NOT EXISTS item_details (
             content_id TEXT PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
-            item_level INTEGER NOT NULL DEFAULT 0,
             price TEXT NOT NULL DEFAULT '',
-            bulk TEXT NOT NULL DEFAULT '',
-            usage TEXT NOT NULL DEFAULT '',
-            traits TEXT NOT NULL DEFAULT '',
+            weight TEXT NOT NULL DEFAULT '',
+            slot TEXT NOT NULL DEFAULT '',
+            aura TEXT NOT NULL DEFAULT '',
+            caster_level INTEGER NOT NULL DEFAULT 0,
             item_type TEXT NOT NULL DEFAULT '',
-            activate TEXT NOT NULL DEFAULT '',
             description TEXT NOT NULL DEFAULT ''
         )
         """)
 
-        // PF2 Ancestries: hp + speed + boosts/flaws (replaces PF1 race_details)
         try exec("""
-        CREATE TABLE IF NOT EXISTS ancestry_details (
+        CREATE TABLE IF NOT EXISTS race_details (
             content_id TEXT PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
-            hp INTEGER NOT NULL DEFAULT 8,
             size TEXT NOT NULL DEFAULT '',
-            speed INTEGER NOT NULL DEFAULT 25,
-            ability_boosts TEXT NOT NULL DEFAULT '',
-            ability_flaws TEXT NOT NULL DEFAULT '',
-            vision TEXT NOT NULL DEFAULT '',
+            speed TEXT NOT NULL DEFAULT '',
+            ability_modifiers TEXT NOT NULL DEFAULT '',
+            racial_traits TEXT NOT NULL DEFAULT '[]',
             languages TEXT NOT NULL DEFAULT '[]',
-            traits TEXT NOT NULL DEFAULT '',
-            ancestral_features TEXT NOT NULL DEFAULT '[]',
             description TEXT NOT NULL DEFAULT ''
         )
         """)
 
-        // PF2 Traits: just category + description (no prerequisites/benefit)
         try exec("""
         CREATE TABLE IF NOT EXISTS trait_details (
             content_id TEXT PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
             trait_type TEXT NOT NULL DEFAULT '',
+            prerequisites TEXT NOT NULL DEFAULT '',
+            benefit TEXT NOT NULL DEFAULT '',
             description TEXT NOT NULL DEFAULT ''
         )
         """)
@@ -330,59 +288,36 @@ actor DatabaseService {
         )
         """)
 
-        // PF2-exclusive: Backgrounds
-        try exec("""
-        CREATE TABLE IF NOT EXISTS background_details (
-            content_id TEXT PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
-            ability_boosts TEXT NOT NULL DEFAULT '',
-            trained_skills TEXT NOT NULL DEFAULT '',
-            skill_feat TEXT NOT NULL DEFAULT '',
-            description TEXT NOT NULL DEFAULT ''
-        )
-        """)
-
-        // PF2-exclusive: Conditions
-        try exec("""
-        CREATE TABLE IF NOT EXISTS condition_details (
-            content_id TEXT PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
-            is_valued INTEGER NOT NULL DEFAULT 0,
-            description TEXT NOT NULL DEFAULT ''
-        )
-        """)
-
+        // Indexes
         try exec("CREATE INDEX IF NOT EXISTS idx_content_type ON content(content_type)")
         try exec("CREATE INDEX IF NOT EXISTS idx_content_title ON content(title)")
-
-        try exec("""
-        CREATE TABLE IF NOT EXISTS favorites (
-            id TEXT PRIMARY KEY,
-            content_id TEXT NOT NULL,
-            content_type TEXT NOT NULL,
-            added_at TEXT NOT NULL
-        )
-        """)
     }
 
     // MARK: - Insert (used by SeedDataBuilder)
 
     func insertSpell(_ spell: SpellEntry) throws {
-        try execInsert("""
+        let sql = """
         INSERT OR REPLACE INTO content (id, title, content_type, summary, is_premium, source)
         VALUES (?, ?, 'spell', ?, ?, ?)
-        """, params: [spell.id.uuidString, spell.title, spell.summary,
-                      spell.isPremium ? "1" : "0", spell.source])
+        """
+        try execInsert(sql, params: [
+            spell.id.uuidString, spell.title, spell.summary,
+            spell.isPremium ? "1" : "0", spell.source
+        ])
 
-        try execInsert("""
+        let sql2 = """
         INSERT OR REPLACE INTO spell_details
-        (content_id, rank, traditions, actions, traits, range, area, targets, duration, saving_throw, heightened, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, params: [spell.id.uuidString, "\(spell.rank)", spell.traditions, spell.actions,
-                      spell.traits, spell.range, spell.area, spell.targets,
-                      spell.duration, spell.savingThrow, spell.heightened, spell.description])
+        (content_id, school, levels, casting_time, components, range, duration, saving_throw, spell_resistance, description)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """
+        try execInsert(sql2, params: [
+            spell.id.uuidString, spell.school, spell.levels, spell.castingTime,
+            spell.components, spell.range, spell.duration, spell.savingThrow,
+            spell.spellResistance ? "1" : "0", spell.description
+        ])
 
         try insertFTS(id: spell.id.uuidString, title: spell.title, type: "spell",
-                     summary: spell.summary,
-                     body: "\(spell.traditions) \(spell.traits) \(spell.description)")
+                     summary: spell.summary, body: "\(spell.school) \(spell.levels) \(spell.description)")
     }
 
     func insertClass(_ cls: ClassEntry) throws {
@@ -392,16 +327,16 @@ actor DatabaseService {
         """, params: [cls.id.uuidString, cls.title, cls.summary,
                       cls.isPremium ? "1" : "0", cls.source])
 
+        let skillsJSON = (try? String(data: JSONEncoder().encode(cls.classSkills), encoding: .utf8)) ?? "[]"
         try execInsert("""
         INSERT OR REPLACE INTO class_details
-        (content_id, key_ability, hp, perception, fort_save, ref_save, will_save, skills, class_features, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, params: [cls.id.uuidString, cls.keyAbility, "\(cls.hp)", cls.perception,
-                      cls.fortSave, cls.refSave, cls.willSave, cls.skills,
-                      cls.classFeatures, cls.description])
+        (content_id, hit_die, skill_ranks, base_attack_bonus, fort_save, ref_save, will_save, class_skills, description)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, params: [cls.id.uuidString, cls.hitDie, "\(cls.skillRanks)", cls.baseAttackBonus,
+                      cls.fortSave, cls.refSave, cls.willSave, skillsJSON, cls.description])
 
         try insertFTS(id: cls.id.uuidString, title: cls.title, type: "class",
-                     summary: cls.summary, body: "\(cls.keyAbility) \(cls.description)")
+                     summary: cls.summary, body: cls.description)
     }
 
     func insertFeat(_ feat: FeatEntry) throws {
@@ -412,15 +347,14 @@ actor DatabaseService {
                       feat.isPremium ? "1" : "0", feat.source])
 
         try execInsert("""
-        INSERT OR REPLACE INTO feat_details
-        (content_id, level, feat_type, traits, prerequisites, requirements, trigger, benefit)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, params: [feat.id.uuidString, "\(feat.level)", feat.featType, feat.traits,
-                      feat.prerequisites, feat.requirements, feat.trigger, feat.benefit])
+        INSERT OR REPLACE INTO feat_details (content_id, prerequisites, benefit, normal, special, feat_type)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """, params: [feat.id.uuidString, feat.prerequisites, feat.benefit,
+                      feat.normal, feat.special, feat.featType])
 
         try insertFTS(id: feat.id.uuidString, title: feat.title, type: "feat",
                      summary: feat.summary,
-                     body: "\(feat.featType) \(feat.traits) \(feat.prerequisites) \(feat.benefit)")
+                     body: "\(feat.featType) \(feat.prerequisites) \(feat.benefit)")
     }
 
     func insertMonster(_ monster: MonsterEntry) throws {
@@ -432,17 +366,16 @@ actor DatabaseService {
 
         try execInsert("""
         INSERT OR REPLACE INTO monster_details
-        (content_id, level, creature_type, size, traits, hit_points, armor_class, fort_save, ref_save, will_save, speed, attacks, special_abilities, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, params: [monster.id.uuidString, "\(monster.level)", monster.creatureType,
-                      monster.size, monster.traits, monster.hitPoints,
-                      "\(monster.armorClass)", "\(monster.fortSave)", "\(monster.refSave)",
-                      "\(monster.willSave)", monster.speed, monster.attacks,
-                      monster.specialAbilities, monster.description])
+        (content_id, challenge_rating, monster_type, size, alignment, hit_points, armor_class, speed, attacks, special_abilities, environment, description)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, params: [monster.id.uuidString, monster.challengeRating, monster.type,
+                      monster.size, monster.alignment, monster.hitPoints,
+                      "\(monster.armorClass)", monster.speed, monster.attacks,
+                      monster.specialAbilities, monster.environment, monster.description])
 
         try insertFTS(id: monster.id.uuidString, title: monster.title, type: "monster",
                      summary: monster.summary,
-                     body: "\(monster.creatureType) \(monster.traits) Level \(monster.level) \(monster.description)")
+                     body: "\(monster.type) \(monster.size) CR\(monster.challengeRating) \(monster.description)")
     }
 
     func insertItem(_ item: ItemEntry) throws {
@@ -453,37 +386,34 @@ actor DatabaseService {
                       item.isPremium ? "1" : "0", item.source])
 
         try execInsert("""
-        INSERT OR REPLACE INTO item_details
-        (content_id, item_level, price, bulk, usage, traits, item_type, activate, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, params: [item.id.uuidString, "\(item.itemLevel)", item.price, item.bulk,
-                      item.usage, item.traits, item.itemType, item.activate, item.description])
+        INSERT OR REPLACE INTO item_details (content_id, price, weight, slot, aura, caster_level, item_type, description)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, params: [item.id.uuidString, item.price, item.weight, item.slot,
+                      item.aura, "\(item.casterLevel)", item.itemType, item.description])
 
         try insertFTS(id: item.id.uuidString, title: item.title, type: "item",
                      summary: item.summary,
-                     body: "\(item.itemType) \(item.traits) \(item.description)")
+                     body: "\(item.itemType) \(item.aura) \(item.description)")
     }
 
-    func insertAncestry(_ ancestry: AncestryEntry) throws {
+    func insertRace(_ race: RaceEntry) throws {
         try execInsert("""
         INSERT OR REPLACE INTO content (id, title, content_type, summary, is_premium, source)
-        VALUES (?, ?, 'ancestry', ?, ?, ?)
-        """, params: [ancestry.id.uuidString, ancestry.title, ancestry.summary,
-                      ancestry.isPremium ? "1" : "0", ancestry.source])
+        VALUES (?, ?, 'race', ?, ?, ?)
+        """, params: [race.id.uuidString, race.title, race.summary,
+                      race.isPremium ? "1" : "0", race.source])
 
-        let langsJSON = (try? String(data: JSONEncoder().encode(ancestry.languages), encoding: .utf8)) ?? "[]"
-        let featuresJSON = (try? String(data: JSONEncoder().encode(ancestry.ancestralFeatures), encoding: .utf8)) ?? "[]"
+        let traitsJSON = (try? String(data: JSONEncoder().encode(race.racialTraits), encoding: .utf8)) ?? "[]"
+        let langsJSON = (try? String(data: JSONEncoder().encode(race.languages), encoding: .utf8)) ?? "[]"
         try execInsert("""
-        INSERT OR REPLACE INTO ancestry_details
-        (content_id, hp, size, speed, ability_boosts, ability_flaws, vision, languages, traits, ancestral_features, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, params: [ancestry.id.uuidString, "\(ancestry.hp)", ancestry.size, "\(ancestry.speed)",
-                      ancestry.abilityBoosts, ancestry.abilityFlaws, ancestry.vision,
-                      langsJSON, ancestry.traits, featuresJSON, ancestry.description])
+        INSERT OR REPLACE INTO race_details (content_id, size, speed, ability_modifiers, racial_traits, languages, description)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, params: [race.id.uuidString, race.size, race.speed, race.abilityModifiers,
+                      traitsJSON, langsJSON, race.description])
 
-        try insertFTS(id: ancestry.id.uuidString, title: ancestry.title, type: "ancestry",
-                     summary: ancestry.summary,
-                     body: "\(ancestry.abilityBoosts) \(ancestry.traits) \(ancestry.description)")
+        try insertFTS(id: race.id.uuidString, title: race.title, type: "race",
+                     summary: race.summary,
+                     body: "\(race.abilityModifiers) \(race.racialTraits.joined(separator: " ")) \(race.description)")
     }
 
     func insertTrait(_ trait: TraitEntry) throws {
@@ -494,13 +424,14 @@ actor DatabaseService {
                       trait.isPremium ? "1" : "0", trait.source])
 
         try execInsert("""
-        INSERT OR REPLACE INTO trait_details (content_id, trait_type, description)
-        VALUES (?, ?, ?)
-        """, params: [trait.id.uuidString, trait.traitType, trait.description])
+        INSERT OR REPLACE INTO trait_details (content_id, trait_type, prerequisites, benefit, description)
+        VALUES (?, ?, ?, ?, ?)
+        """, params: [trait.id.uuidString, trait.traitType, trait.prerequisites,
+                      trait.benefit, trait.description])
 
         try insertFTS(id: trait.id.uuidString, title: trait.title, type: "trait",
                      summary: trait.summary,
-                     body: "\(trait.traitType) \(trait.description)")
+                     body: "\(trait.traitType) \(trait.benefit) \(trait.description)")
     }
 
     func insertRule(_ rule: RuleEntry) throws {
@@ -519,41 +450,6 @@ actor DatabaseService {
                      summary: rule.summary, body: "\(rule.category) \(rule.body)")
     }
 
-    func insertBackground(_ bg: BackgroundEntry) throws {
-        try execInsert("""
-        INSERT OR REPLACE INTO content (id, title, content_type, summary, is_premium, source)
-        VALUES (?, ?, 'background', ?, ?, ?)
-        """, params: [bg.id.uuidString, bg.title, bg.summary,
-                      bg.isPremium ? "1" : "0", bg.source])
-
-        try execInsert("""
-        INSERT OR REPLACE INTO background_details (content_id, ability_boosts, trained_skills, skill_feat, description)
-        VALUES (?, ?, ?, ?, ?)
-        """, params: [bg.id.uuidString, bg.abilityBoosts, bg.trainedSkills,
-                      bg.skillFeat, bg.description])
-
-        try insertFTS(id: bg.id.uuidString, title: bg.title, type: "background",
-                     summary: bg.summary,
-                     body: "\(bg.abilityBoosts) \(bg.trainedSkills) \(bg.skillFeat) \(bg.description)")
-    }
-
-    func insertCondition(_ condition: ConditionEntry) throws {
-        try execInsert("""
-        INSERT OR REPLACE INTO content (id, title, content_type, summary, is_premium, source)
-        VALUES (?, ?, 'condition', ?, ?, ?)
-        """, params: [condition.id.uuidString, condition.title, condition.summary,
-                      condition.isPremium ? "1" : "0", condition.source])
-
-        try execInsert("""
-        INSERT OR REPLACE INTO condition_details (content_id, is_valued, description)
-        VALUES (?, ?, ?)
-        """, params: [condition.id.uuidString, condition.isValued ? "1" : "0",
-                      condition.description])
-
-        try insertFTS(id: condition.id.uuidString, title: condition.title, type: "condition",
-                     summary: condition.summary, body: condition.description)
-    }
-
     // MARK: - FTS Insert
 
     private func insertFTS(id: String, title: String, type: String, summary: String, body: String) throws {
@@ -566,6 +462,7 @@ actor DatabaseService {
     // MARK: - Query Helpers
 
     private func ftsSearch(query: String, filters: Set<ContentType>, limit: Int) throws -> [any ContentEntry] {
+        // Sanitize query for FTS5
         let safeQuery = query
             .replacingOccurrences(of: "\"", with: "")
             .replacingOccurrences(of: "*", with: "")
@@ -574,9 +471,11 @@ actor DatabaseService {
             .joined(separator: " ")
 
         var typeClause = ""
+        var extraParams: [String] = []
         if !filters.isEmpty {
-            let types = filters.map { "'\($0.rawValue)'" }.joined(separator: ",")
-            typeClause = "AND c.content_type IN (\(types))"
+            let placeholders = filters.map { _ in "?" }.joined(separator: ",")
+            typeClause = "AND c.content_type IN (\(placeholders))"
+            extraParams = filters.map { $0.rawValue }
         }
 
         let sql = """
@@ -590,14 +489,16 @@ actor DatabaseService {
         LIMIT \(limit)
         """
 
-        return try queryEntries(sql: sql, params: [safeQuery])
+        return try queryEntries(sql: sql, params: [safeQuery] + extraParams)
     }
 
     private func likeSearch(query: String, filters: Set<ContentType>, limit: Int) throws -> [any ContentEntry] {
         var typeClause = ""
+        var extraParams: [String] = []
         if !filters.isEmpty {
-            let types = filters.map { "'\($0.rawValue)'" }.joined(separator: ",")
-            typeClause = "AND content_type IN (\(types))"
+            let placeholders = filters.map { _ in "?" }.joined(separator: ",")
+            typeClause = "AND content_type IN (\(placeholders))"
+            extraParams = filters.map { $0.rawValue }
         }
 
         let sql = """
@@ -609,14 +510,16 @@ actor DatabaseService {
         LIMIT \(limit)
         """
         let pattern = "%\(query)%"
-        return try queryEntries(sql: sql, params: [pattern, pattern])
+        return try queryEntries(sql: sql, params: [pattern, pattern] + extraParams)
     }
 
     private func browseAll(filters: Set<ContentType>, limit: Int, offset: Int) throws -> [any ContentEntry] {
         var typeClause = ""
+        var params: [String] = []
         if !filters.isEmpty {
-            let types = filters.map { "'\($0.rawValue)'" }.joined(separator: ",")
-            typeClause = "WHERE content_type IN (\(types))"
+            let placeholders = filters.map { _ in "?" }.joined(separator: ",")
+            typeClause = "WHERE content_type IN (\(placeholders))"
+            params = filters.map { $0.rawValue }
         }
 
         let sql = """
@@ -626,7 +529,7 @@ actor DatabaseService {
         ORDER BY title
         LIMIT \(limit) OFFSET \(offset)
         """
-        return try queryEntries(sql: sql, params: [])
+        return try queryEntries(sql: sql, params: params)
     }
 
     private func fetchEntries(type: ContentType, limit: Int, offset: Int) throws -> [any ContentEntry] {
@@ -646,6 +549,7 @@ actor DatabaseService {
 
     // MARK: - Entry Building
 
+    /// Query that returns minimal content rows, then enriches with detail data
     private func queryEntries(sql: String, params: [String]) throws -> [any ContentEntry] {
         guard let db else { throw DatabaseError.notOpen }
         var stmt: OpaquePointer?
@@ -676,6 +580,7 @@ actor DatabaseService {
               let id = UUID(uuidString: idStr) else {
             return nil
         }
+
         return try fetchDetailEntry(id: id, type: type, baseRow: row)
     }
 
@@ -709,46 +614,34 @@ actor DatabaseService {
     private func detailTableInfo(for type: ContentType) -> (table: String, cols: String) {
         switch type {
         case .spell:
-            return ("spell_details",
-                    "d.rank, d.traditions, d.actions, d.traits, d.range, d.area, d.targets, d.duration, d.saving_throw, d.heightened, d.description")
+            return ("spell_details", "d.school, d.levels, d.casting_time, d.components, d.range, d.duration, d.saving_throw, d.spell_resistance, d.description")
         case .class_:
-            return ("class_details",
-                    "d.key_ability, d.hp, d.perception, d.fort_save, d.ref_save, d.will_save, d.skills, d.class_features, d.description")
+            return ("class_details", "d.hit_die, d.skill_ranks, d.base_attack_bonus, d.fort_save, d.ref_save, d.will_save, d.class_skills, d.description")
         case .feat:
-            return ("feat_details",
-                    "d.level, d.feat_type, d.traits, d.prerequisites, d.requirements, d.trigger, d.benefit")
+            return ("feat_details", "d.prerequisites, d.benefit, d.normal, d.special, d.feat_type")
         case .monster:
-            return ("monster_details",
-                    "d.level, d.creature_type, d.size, d.traits, d.hit_points, d.armor_class, d.fort_save, d.ref_save, d.will_save, d.speed, d.attacks, d.special_abilities, d.description")
+            return ("monster_details", "d.challenge_rating, d.monster_type, d.size, d.alignment, d.hit_points, d.armor_class, d.speed, d.attacks, d.special_abilities, d.environment, d.description")
         case .item:
-            return ("item_details",
-                    "d.item_level, d.price, d.bulk, d.usage, d.traits, d.item_type, d.activate, d.description")
-        case .ancestry:
-            return ("ancestry_details",
-                    "d.hp, d.size, d.speed, d.ability_boosts, d.ability_flaws, d.vision, d.languages, d.traits, d.ancestral_features, d.description")
+            return ("item_details", "d.price, d.weight, d.slot, d.aura, d.caster_level, d.item_type, d.description")
+        case .race:
+            return ("race_details", "d.size, d.speed, d.ability_modifiers, d.racial_traits, d.languages, d.description")
         case .trait:
-            return ("trait_details", "d.trait_type, d.description")
+            return ("trait_details", "d.trait_type, d.prerequisites, d.benefit, d.description")
         case .rule:
             return ("rule_details", "d.category, d.body")
-        case .background:
-            return ("background_details", "d.ability_boosts, d.trained_skills, d.skill_feat, d.description")
-        case .condition:
-            return ("condition_details", "d.is_valued, d.description")
         }
     }
 
     private func makeEntry(type: ContentType, row: SQLiteRow) -> (any ContentEntry)? {
         switch type {
-        case .spell:      return SpellEntry(from: row)
-        case .class_:     return ClassEntry(from: row)
-        case .feat:       return FeatEntry(from: row)
-        case .monster:    return MonsterEntry(from: row)
-        case .item:       return ItemEntry(from: row)
-        case .ancestry:   return AncestryEntry(from: row)
-        case .trait:      return TraitEntry(from: row)
-        case .rule:       return RuleEntry(from: row)
-        case .background: return BackgroundEntry(from: row)
-        case .condition:  return ConditionEntry(from: row)
+        case .spell:   return SpellEntry(from: row)
+        case .class_:  return ClassEntry(from: row)
+        case .feat:    return FeatEntry(from: row)
+        case .monster: return MonsterEntry(from: row)
+        case .item:    return ItemEntry(from: row)
+        case .race:    return RaceEntry(from: row)
+        case .trait:   return TraitEntry(from: row)
+        case .rule:    return RuleEntry(from: row)
         }
     }
 
@@ -794,23 +687,26 @@ actor DatabaseService {
         try? exec("ROLLBACK")
     }
 
+    /// Deletes all rows from the content and detail tables. Call at the start of a re-seed.
     func clearAllContent() throws {
         guard isOpen else { throw DatabaseError.notOpen }
+        // Disable FK checks temporarily so detail tables don't block content deletion
         try exec("DELETE FROM spell_details")
         try exec("DELETE FROM class_details")
         try exec("DELETE FROM feat_details")
         try exec("DELETE FROM monster_details")
         try exec("DELETE FROM item_details")
-        try exec("DELETE FROM ancestry_details")
+        try exec("DELETE FROM race_details")
         try exec("DELETE FROM trait_details")
         try exec("DELETE FROM rule_details")
-        try exec("DELETE FROM background_details")
-        try exec("DELETE FROM condition_details")
         try exec("DELETE FROM content")
     }
 
+    /// Clears the FTS index entirely. Call at the start of a re-seed to prevent duplicate entries.
     func clearFTSIndex() throws {
         guard isOpen else { throw DatabaseError.notOpen }
+        // content_fts is a contentless FTS5 table — direct DELETE is not supported.
+        // Use the FTS5 'delete-all' command instead.
         try exec("INSERT INTO content_fts(content_fts) VALUES('delete-all')")
     }
 
@@ -847,12 +743,11 @@ actor DatabaseService {
         return String(cString: sqlite3_errmsg(db))
     }
 
+    // MARK: - Path
+
     static func writableDatabasePath() -> String {
-        guard let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            // Fallback to temp directory if documents directory is unavailable
-            return NSTemporaryDirectory() + "lodestone_pf2.db"
-        }
-        return docs.appendingPathComponent("lodestone_pf2.db").path
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        return docs.appendingPathComponent("lodestone.db").path
     }
 }
 

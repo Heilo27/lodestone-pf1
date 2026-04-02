@@ -1,7 +1,22 @@
 import SwiftUI
 
+private let sectionLimit = 20
+
 struct SearchView: View {
     @State private var viewModel = SearchViewModel()
+
+    // MARK: - Grouped results (max 20 per section)
+
+    private var groupedResults: [(type: ContentType, entries: [any ContentEntry], total: Int)] {
+        var dict: [ContentType: [any ContentEntry]] = [:]
+        for entry in viewModel.results {
+            dict[entry.contentType, default: []].append(entry)
+        }
+        return ContentType.allCases.compactMap { type in
+            guard let entries = dict[type], !entries.isEmpty else { return nil }
+            return (type: type, entries: Array(entries.prefix(sectionLimit)), total: entries.count)
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -30,6 +45,7 @@ struct SearchView: View {
                                     Label(recent, systemImage: "clock")
                                         .foregroundStyle(.primary)
                                 }
+                                .accessibilityHint("Repeats this search")
                             }
                         }
                     }
@@ -43,21 +59,25 @@ struct SearchView: View {
                     Spacer()
                 } else {
                     List {
-                        ForEach(viewModel.groupedResults, id: \.0) { (type, entries, hasMore) in
-                            Section(type.displayName) {
-                                ForEach(entries, id: \.id) { entry in
+                        ForEach(groupedResults, id: \.type) { group in
+                            Section(group.type.displayName) {
+                                ForEach(group.entries, id: \.id) { entry in
                                     NavigationLink {
                                         DetailView(entry: entry)
                                     } label: {
                                         SearchResultRow(entry: entry)
                                     }
                                 }
-                                if hasMore {
-                                    NavigationLink("Show all results for \(type.displayName)") {
-                                        CategoryListView(contentType: type)
+                                if group.total > sectionLimit {
+                                    Button {
+                                        viewModel.toggleFilter(group.type)
+                                    } label: {
+                                        Text("Show all \(group.total) results")
+                                            .font(AppFonts.caption)
+                                            .foregroundStyle(.secondary)
+                                            .frame(maxWidth: .infinity, alignment: .center)
                                     }
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
+                                    .buttonStyle(.plain)
                                 }
                             }
                         }
@@ -66,9 +86,6 @@ struct SearchView: View {
             }
             .navigationTitle("Search")
             .searchable(text: $viewModel.query, prompt: "Spells, monsters, feats...")
-            .onSubmit(of: .search) {
-                viewModel.searchImmediately()
-            }
             .onChange(of: viewModel.query) {
                 viewModel.search()
             }

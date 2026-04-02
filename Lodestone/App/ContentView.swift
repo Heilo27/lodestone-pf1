@@ -1,7 +1,17 @@
 import SwiftUI
 
+// MARK: - Tab
+
+enum Tab: Int, CaseIterable {
+    case browse    = 0
+    case search    = 1
+    case favorites = 2
+    case gmTools   = 3
+    case settings  = 4
+}
+
 struct ContentView: View {
-    @AppStorage("selectedTab") private var selectedTab: Int = 0
+    @AppStorage("selectedTab") private var selectedTabRaw: Int = Tab.browse.rawValue
     @AppStorage("selectedTheme") private var selectedTheme: String = "system"
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.colorScheme) private var colorScheme
@@ -16,7 +26,7 @@ struct ContentView: View {
 
     var body: some View {
         Group {
-            if sizeClass == .regular {
+            if sizeClass == .regular && UIDevice.current.userInterfaceIdiom == .pad {
                 iPadLayout
             } else {
                 iPhoneLayout
@@ -31,22 +41,21 @@ struct ContentView: View {
     private var iPadLayout: some View {
         NavigationSplitView {
             List {
-                SidebarItem(label: "Browse", icon: "books.vertical.fill", tag: 0, selected: $selectedTab)
-                SidebarItem(label: "Search", icon: "magnifyingglass", tag: 1, selected: $selectedTab)
-                SidebarItem(label: "Favorites", icon: "bookmark.fill", tag: 2, selected: $selectedTab)
-                SidebarItem(label: "GM Tools", icon: "shield.fill", tag: 3, selected: $selectedTab)
-                SidebarItem(label: "Settings", icon: "gearshape.fill", tag: 4, selected: $selectedTab)
+                SidebarItem(label: "Browse", icon: "books.vertical.fill", tag: Tab.browse.rawValue, selected: $selectedTabRaw)
+                SidebarItem(label: "Search", icon: "magnifyingglass", tag: Tab.search.rawValue, selected: $selectedTabRaw)
+                SidebarItem(label: "Favorites", icon: "bookmark.fill", tag: Tab.favorites.rawValue, selected: $selectedTabRaw)
+                SidebarItem(label: "GM Tools", icon: "shield.fill", tag: Tab.gmTools.rawValue, selected: $selectedTabRaw)
+                SidebarItem(label: "Settings", icon: "gearshape.fill", tag: Tab.settings.rawValue, selected: $selectedTabRaw)
             }
             .navigationTitle(AppConstants.appName)
             .listStyle(.sidebar)
         } detail: {
-            switch selectedTab {
-            case 0: BrowseView()
-            case 1: SearchView()
-            case 2: FavoritesView()
-            case 3: GMScreenView()
-            case 4: SettingsView()
-            default: BrowseView()
+            switch Tab(rawValue: selectedTabRaw) ?? .browse {
+            case .browse:    BrowseView()
+            case .search:    SearchView()
+            case .favorites: FavoritesView()
+            case .gmTools:   GMScreenView()
+            case .settings:  SettingsView()
             }
         }
     }
@@ -54,26 +63,26 @@ struct ContentView: View {
     // MARK: - iPhone Layout (TabView)
 
     private var iPhoneLayout: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: $selectedTabRaw) {
             BrowseView()
                 .tabItem { Label("Browse", systemImage: "books.vertical.fill") }
-                .tag(0)
+                .tag(Tab.browse.rawValue)
 
             SearchView()
                 .tabItem { Label("Search", systemImage: "magnifyingglass") }
-                .tag(1)
+                .tag(Tab.search.rawValue)
 
             FavoritesView()
                 .tabItem { Label("Favorites", systemImage: "bookmark.fill") }
-                .tag(2)
+                .tag(Tab.favorites.rawValue)
 
             GMScreenView()
                 .tabItem { Label("GM Tools", systemImage: "shield.fill") }
-                .tag(3)
+                .tag(Tab.gmTools.rawValue)
 
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape.fill") }
-                .tag(4)
+                .tag(Tab.settings.rawValue)
         }
     }
 }
@@ -99,6 +108,7 @@ private struct SidebarItem: View {
                 .foregroundStyle(selected == tag ? accentColor : .secondary)
                 .fontWeight(selected == tag ? .semibold : .regular)
         }
+        .accessibilityAddTraits(selected == tag ? .isSelected : [])
         .listRowBackground(
             selected == tag ? accentColor.opacity(0.12) : Color.clear
         )

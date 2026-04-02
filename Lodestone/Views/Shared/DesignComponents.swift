@@ -20,7 +20,7 @@ struct OrnamentalDivider: View {
             line
             if let label {
                 Text(label)
-                    .font(AppFonts.chip(size: 11))
+                    .font(AppFonts.chip())
                     .fontWeight(.semibold)
                     .tracking(1.5)
                     .foregroundStyle(resolvedColor)
@@ -78,7 +78,7 @@ struct SourceBadge: View {
 
     var body: some View {
         Text(text)
-            .font(AppFonts.chip(size: 11))
+            .font(AppFonts.chip())
             .fontWeight(.medium)
             .foregroundStyle(color)
             .padding(.horizontal, AppSpacing.sm)
@@ -99,7 +99,7 @@ struct PremiumBadge: View {
                 .font(.system(size: compact ? 9 : 10))
             if !compact {
                 Text("Premium")
-                    .font(AppFonts.chip(size: 11))
+                    .font(AppFonts.chip())
                     .fontWeight(.semibold)
             }
         }
@@ -108,7 +108,8 @@ struct PremiumBadge: View {
         .padding(.vertical, 3)
         .background(AppColors.premiumGold.opacity(0.12), in: Capsule())
         .overlay(Capsule().strokeBorder(AppColors.premiumGold.opacity(0.3), lineWidth: 0.5))
-        .accessibilityLabel(compact ? "Premium" : "Premium content")
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(compact ? "Premium content" : "Premium content")
     }
 }
 
@@ -119,7 +120,7 @@ struct ContentTypeBadge: View {
 
     var body: some View {
         Text(type.singularName)
-            .font(AppFonts.chip(size: 11))
+            .font(AppFonts.chip())
             .foregroundStyle(AppColors.contentTypeColor(type))
             .padding(.horizontal, AppSpacing.sm)
             .padding(.vertical, 3)
