@@ -22,7 +22,7 @@ extension SeedDataBuilder {
                   - Wisdom: Awareness; affects Perception and Will saves.
                   - Charisma: Personality; affects social skills and some magic.
                   """,
-                  isPremium: false, source: "Player Core"),
+                  isPremium: false, source: "Player Core Handbook"),
 
             .init(id: seededUUID("Action TypesPC"), title: "Actions",
                   category: "Core Rules",
@@ -43,7 +43,7 @@ extension SeedDataBuilder {
                   - Raise a Shield: Gain your shield's AC bonus.
                   - Take Cover: Gain cover if it's available.
                   """,
-                  isPremium: false, source: "Player Core"),
+                  isPremium: false, source: "Player Core Handbook"),
 
             .init(id: seededUUID("Proficiency RanksPC"), title: "Proficiency Ranks",
                   category: "Core Rules",
@@ -60,7 +60,7 @@ extension SeedDataBuilder {
 
                   You add your proficiency bonus to most rolls and DCs associated with that skill or ability. For example, if you're Expert in Athletics at level 5, your Athletics bonus is +4 (Expert) + 5 (level) + your Strength modifier.
                   """,
-                  isPremium: false, source: "Player Core"),
+                  isPremium: false, source: "Player Core Handbook"),
 
             .init(id: seededUUID("DegreeOfSuccessPC"), title: "Degrees of Success",
                   category: "Core Rules",
@@ -76,7 +76,7 @@ extension SeedDataBuilder {
                   Natural 20s and 1s
                   Rolling a natural 20 on the die (before modifiers) improves your degree of success by one step. Rolling a natural 1 worsens it by one step. A critical success can't be improved, and a critical failure can't be made worse.
                   """,
-                  isPremium: false, source: "Player Core"),
+                  isPremium: false, source: "Player Core Handbook"),
 
             .init(id: seededUUID("HitPointsPC"), title: "Hit Points and Dying",
                   category: "Core Rules",
@@ -94,7 +94,7 @@ extension SeedDataBuilder {
                   Wounded
                   When you recover from dying, you gain the wounded 1 condition. If you become dying again while wounded, your dying value increases by your wounded value.
                   """,
-                  isPremium: false, source: "Player Core"),
+                  isPremium: false, source: "Player Core Handbook"),
 
             .init(id: seededUUID("HeroPointsPC"), title: "Hero Points",
                   category: "Core Rules",
@@ -108,7 +108,7 @@ extension SeedDataBuilder {
 
                   You can hold a maximum of 3 Hero Points at a time.
                   """,
-                  isPremium: false, source: "Player Core"),
+                  isPremium: false, source: "Player Core Handbook"),
 
             .init(id: seededUUID("SkillChecksPC"), title: "Skill Checks",
                   category: "Skills",
@@ -127,7 +127,7 @@ extension SeedDataBuilder {
                   - Diplomacy: Gather Information, Make an Impression, Request
                   - Deception: Create a Diversion, Feint, Lie, Impersonate
                   """,
-                  isPremium: false, source: "Player Core"),
+                  isPremium: false, source: "Player Core Handbook"),
 
             .init(id: seededUUID("BulkEncumbrancePC"), title: "Bulk and Encumbrance",
                   category: "Equipment",
@@ -141,7 +141,7 @@ extension SeedDataBuilder {
                   Carrying Capacity
                   You can carry Bulk up to 5 + your Strength modifier without encumbrance. If you carry more than that (up to 10 + your Strength modifier), you become encumbered and suffer a -1 penalty to Dexterity-based checks and a -10-foot penalty to Speed. You can't carry more than 15 + your Strength modifier in Bulk.
                   """,
-                  isPremium: false, source: "Player Core"),
+                  isPremium: false, source: "Player Core Handbook"),
 
             .init(id: seededUUID("CombatSequencePC"), title: "Combat Sequence",
                   category: "Combat",
@@ -158,7 +158,7 @@ extension SeedDataBuilder {
                   2. Act: Use your 3 actions and 1 reaction (reactions can be used on others' turns too).
                   3. End of Turn: Apply conditions that trigger at end of turn; persistent damage; etc.
                   """,
-                  isPremium: false, source: "Player Core"),
+                  isPremium: false, source: "Player Core Handbook"),
 
             .init(id: seededUUID("SpellcastingPC"), title: "Spellcasting",
                   category: "Magic",
@@ -178,7 +178,7 @@ extension SeedDataBuilder {
                   Heightening Spells
                   Many spells have heightened entries. When you cast a spell in a higher-rank slot than its minimum rank, you can apply heightened effects.
                   """,
-                  isPremium: false, source: "Player Core"),
+                  isPremium: false, source: "Player Core Handbook"),
         ]
 
         for rule in rules {

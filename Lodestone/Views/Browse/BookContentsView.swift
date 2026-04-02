@@ -7,6 +7,7 @@ struct BookContentsView: View {
     @State private var groupedEntries: [(ContentType, [any ContentEntry])] = []
     @State private var isLoading = true
     @State private var searchText = ""
+    @State private var loadError: Error? = nil
 
     private var filteredGroups: [(ContentType, [any ContentEntry])] {
         guard !searchText.isEmpty else { return groupedEntries }
@@ -21,6 +22,12 @@ struct BookContentsView: View {
         Group {
             if isLoading {
                 ProgressView("Loading \(source.name)...")
+            } else if loadError != nil {
+                ContentUnavailableView(
+                    "Unable to Load",
+                    systemImage: "exclamationmark.triangle",
+                    description: Text("Could not load book content.")
+                )
             } else if groupedEntries.isEmpty {
                 ContentUnavailableView(
                     "No Content",
@@ -64,6 +71,7 @@ struct BookContentsView: View {
                 return (type, entries)
             }
         } catch {
+            loadError = error
             groupedEntries = []
         }
         isLoading = false
@@ -72,6 +80,6 @@ struct BookContentsView: View {
 
 #Preview {
     NavigationStack {
-        BookContentsView(source: BookSource(name: "Core Rulebook", entryCount: 130, isPremium: false))
+        BookContentsView(source: BookSource(name: "Player Core Handbook", entryCount: 130, isPremium: false))
     }
 }

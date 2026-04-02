@@ -23,7 +23,7 @@ struct ConditionEntry: ContentEntry {
         isPremium = (row["is_premium"] ?? "0") == "1"
         isValued = (row["is_valued"] ?? "0") == "1"
         description = row["description"] ?? ""
-        source = row["source"] ?? "Player Core"
+        source = row["source"] ?? "Player Core Handbook"
     }
 
     init(id: UUID, title: String, summary: String, isPremium: Bool,
@@ -42,7 +42,7 @@ struct ConditionEntry: ContentEntry {
         isValued: Bool = false,
         summary: String,
         desc: String,
-        source: String = "Player Core",
+        source: String = "Player Core Handbook",
         isPremium: Bool = false
     ) -> ConditionEntry {
         ConditionEntry(
@@ -63,6 +63,6 @@ struct ConditionEntry: ContentEntry {
         isPremium: false,
         isValued: true,
         description: "You're gripped by fear and struggle to act effectively. The frightened condition always includes a value. You take a status penalty equal to this value to all your checks and DCs. Unless specified otherwise, at the end of each of your turns, the value of your frightened condition decreases by 1.",
-        source: "Player Core"
+        source: "Player Core Handbook"
     )
 }

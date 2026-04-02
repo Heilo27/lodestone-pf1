@@ -24,9 +24,17 @@ struct AncestryDetailView: View {
                 OrnamentalDivider(label: "Ancestral Features")
                     .padding(.vertical, AppSpacing.sm)
                 ForEach(ancestry.ancestralFeatures, id: \.self) { feature in
-                    Text("• \(feature)")
-                        .font(AppFonts.body)
-                        .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                    HStack(alignment: .firstTextBaseline, spacing: AppSpacing.sm) {
+                        Text("•")
+                            .font(AppFonts.body)
+                            .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                            .accessibilityHidden(true)
+                        Text(feature)
+                            .font(AppFonts.body)
+                            .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(feature)
                 }
             }
 

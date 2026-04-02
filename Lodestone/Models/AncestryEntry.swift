@@ -44,7 +44,7 @@ struct AncestryEntry: ContentEntry {
         let featuresJSON = row["ancestral_features"] ?? "[]"
         ancestralFeatures = (try? JSONDecoder().decode([String].self, from: Data(featuresJSON.utf8))) ?? []
         description = row["description"] ?? ""
-        source = row["source"] ?? "Player Core"
+        source = row["source"] ?? "Player Core Handbook"
     }
 
     // MARK: - Memberwise init
@@ -82,7 +82,7 @@ struct AncestryEntry: ContentEntry {
         features: [String] = [],
         summary: String,
         desc: String,
-        source: String = "Player Core",
+        source: String = "Player Core Handbook",
         isPremium: Bool = false
     ) -> AncestryEntry {
         AncestryEntry(
@@ -119,6 +119,6 @@ struct AncestryEntry: ContentEntry {
         traits: "Dwarf, Humanoid",
         ancestralFeatures: ["Darkvision", "Clan Dagger"],
         description: "Dwarves have a well-earned reputation as a stoic and stern people, known for their distinctive ancient culture.",
-        source: "Player Core"
+        source: "Player Core Handbook"
     )
 }

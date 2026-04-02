@@ -79,6 +79,17 @@
 		A10090 /* SeedSecretsOfMagic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10090 /* SeedSecretsOfMagic.swift */; };
 		A10091 /* SeedGunsAndGears.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10091 /* SeedGunsAndGears.swift */; };
 		A10092 /* SeedBookOfTheDead.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10092 /* SeedBookOfTheDead.swift */; };
+		A10093 /* SpellListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10093 /* SpellListView.swift */; };
+		A10094 /* FeatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10094 /* FeatListView.swift */; };
+		A10095 /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10095 /* ItemListView.swift */; };
+		A10096 /* MonsterListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10096 /* MonsterListView.swift */; };
+		A10097 /* TraitListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10097 /* TraitListView.swift */; };
+		A10098 /* SeedMonsters2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10098 /* SeedMonsters2.swift */; };
+		A10099 /* SeedMonsters3.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10099 /* SeedMonsters3.swift */; };
+		A10100 /* SeedDarkArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10100 /* SeedDarkArchive.swift */; };
+		A10101 /* SeedRageOfElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10101 /* SeedRageOfElements.swift */; };
+		A10102 /* SeedGMCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10102 /* SeedGMCore.swift */; };
+		A10103 /* SeedPathfinderSociety.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10103 /* SeedPathfinderSociety.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,6 +183,17 @@
 		B10090 /* SeedSecretsOfMagic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedSecretsOfMagic.swift; sourceTree = "<group>"; };
 		B10091 /* SeedGunsAndGears.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedGunsAndGears.swift; sourceTree = "<group>"; };
 		B10092 /* SeedBookOfTheDead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBookOfTheDead.swift; sourceTree = "<group>"; };
+		B10093 /* SpellListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellListView.swift; sourceTree = "<group>"; };
+		B10094 /* FeatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatListView.swift; sourceTree = "<group>"; };
+		B10095 /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
+		B10096 /* MonsterListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonsterListView.swift; sourceTree = "<group>"; };
+		B10097 /* TraitListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitListView.swift; sourceTree = "<group>"; };
+		B10098 /* SeedMonsters2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedMonsters2.swift; sourceTree = "<group>"; };
+		B10099 /* SeedMonsters3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedMonsters3.swift; sourceTree = "<group>"; };
+		B10100 /* SeedDarkArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedDarkArchive.swift; sourceTree = "<group>"; };
+		B10101 /* SeedRageOfElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedRageOfElements.swift; sourceTree = "<group>"; };
+		B10102 /* SeedGMCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedGMCore.swift; sourceTree = "<group>"; };
+		B10103 /* SeedPathfinderSociety.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPathfinderSociety.swift; sourceTree = "<group>"; };
 		PR0001 /* Lodestone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lodestone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		PR0002 /* LodestoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LodestoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		PR0003 /* LodestoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LodestoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -271,6 +293,12 @@
 				B10090 /* SeedSecretsOfMagic.swift */,
 				B10091 /* SeedGunsAndGears.swift */,
 				B10092 /* SeedBookOfTheDead.swift */,
+				B10098 /* SeedMonsters2.swift */,
+				B10099 /* SeedMonsters3.swift */,
+				B10100 /* SeedDarkArchive.swift */,
+				B10101 /* SeedRageOfElements.swift */,
+				B10102 /* SeedGMCore.swift */,
+				B10103 /* SeedPathfinderSociety.swift */,
 				B10051 /* SeedSpells.swift */,
 				B10052 /* SeedFeats.swift */,
 				B10053 /* SeedMonsters.swift */,
@@ -305,6 +333,11 @@
 				B10016 /* CategoryListView.swift */,
 				B10017 /* BrowseRowView.swift */,
 				B10046 /* BookContentsView.swift */,
+				B10093 /* SpellListView.swift */,
+				B10094 /* FeatListView.swift */,
+				B10095 /* ItemListView.swift */,
+				B10096 /* MonsterListView.swift */,
+				B10097 /* TraitListView.swift */,
 			);
 			path = Browse;
 			sourceTree = "<group>";
@@ -513,7 +546,7 @@
 					};
 				};
 			};
-			buildConfigurationList = X10000 /* Build configuration list for PBXProject "Lodestone" */;
+			buildConfigurationList = X10000 /* Build configuration list for PBXProject "Lodestone-PF2" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -594,6 +627,11 @@
 				A10044 /* BookSource.swift in Sources */,
 				A10045 /* RecentlyViewedService.swift in Sources */,
 				A10046 /* BookContentsView.swift in Sources */,
+				A10093 /* SpellListView.swift in Sources */,
+				A10094 /* FeatListView.swift in Sources */,
+				A10095 /* ItemListView.swift in Sources */,
+				A10096 /* MonsterListView.swift in Sources */,
+				A10097 /* TraitListView.swift in Sources */,
 				A10047 /* DetailRow.swift in Sources */,
 				A10048 /* PaywallSheet.swift in Sources */,
 				A10061 /* AppFonts.swift in Sources */,
@@ -618,6 +656,12 @@
 				A10090 /* SeedSecretsOfMagic.swift in Sources */,
 				A10091 /* SeedGunsAndGears.swift in Sources */,
 				A10092 /* SeedBookOfTheDead.swift in Sources */,
+				A10098 /* SeedMonsters2.swift in Sources */,
+				A10099 /* SeedMonsters3.swift in Sources */,
+				A10100 /* SeedDarkArchive.swift in Sources */,
+				A10101 /* SeedRageOfElements.swift in Sources */,
+				A10102 /* SeedGMCore.swift in Sources */,
+				A10103 /* SeedPathfinderSociety.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -912,7 +956,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		X10000 /* Build configuration list for PBXProject "Lodestone" */ = {
+		X10000 /* Build configuration list for PBXProject "Lodestone-PF2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BC0001 /* Debug */,

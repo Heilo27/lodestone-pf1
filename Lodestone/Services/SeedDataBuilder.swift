@@ -19,7 +19,7 @@ func seededUUID(_ seed: String) -> UUID {
 /// Content versioning: bump `currentSeedVersion` when content is updated.
 actor SeedDataBuilder {
 
-    static let currentSeedVersion = 1
+    static let currentSeedVersion = 4
 
     let db: DatabaseService
 
@@ -46,9 +46,17 @@ actor SeedDataBuilder {
 
             // Premium: Monster Core
             try await seedMonsters()
+            try await seedMonsters2()
+            try await seedMonsters3()
 
             // Premium: Advanced Player's Guide
             try await seedAPG()
+
+            // Premium: Dark Archive
+            try await seedDarkArchive()
+
+            // Premium: Rage of Elements
+            try await seedRageOfElements()
 
             // Premium: Secrets of Magic
             try await seedSecretsOfMagic()
@@ -58,6 +66,12 @@ actor SeedDataBuilder {
 
             // Premium: Book of the Dead
             try await seedBookOfTheDead()
+
+            // Premium: GM Core (2023 Remaster)
+            try await seedGMCore()
+
+            // Premium: Pathfinder Society
+            try await seedPathfinderSociety()
 
             try await db.commitTransaction()
         } catch {

@@ -24,12 +24,12 @@ struct RuleEntry: ContentEntry {
         isPremium = (row["is_premium"] ?? "0") == "1"
         category = row["category"] ?? ""
         body = row["body"] ?? ""
-        source = row["source"] ?? "Player Core"
+        source = row["source"] ?? "Player Core Handbook"
     }
 
     // MARK: - Memberwise init
-    init(id: UUID, title: String, summary: String, isPremium: Bool,
-         category: String, body: String, source: String) {
+    init(id: UUID, title: String, category: String, summary: String,
+         body: String, isPremium: Bool, source: String) {
         self.id = id
         self.title = title
         self.summary = summary
@@ -42,9 +42,8 @@ struct RuleEntry: ContentEntry {
     static let placeholder = RuleEntry(
         id: UUID(),
         title: "Combat: Actions in Combat",
-        summary: "Overview of action types available in a round of combat.",
-        isPremium: false,
         category: "Combat",
+        summary: "Overview of action types available in a round of combat.",
         body: """
         In each round of combat, each creature takes a turn in initiative order. On your turn, you may take the following types of actions:
 
@@ -55,6 +54,7 @@ struct RuleEntry: ContentEntry {
         FREE ACTION: Negligible actions such as dropping an item or speaking a few words.
         IMMEDIATE ACTION: Actions that can be taken even when it's not your turn.
         """,
-        source: "Player Core"
+        isPremium: false,
+        source: "Player Core Handbook"
     )
 }

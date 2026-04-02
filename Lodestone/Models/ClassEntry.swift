@@ -40,7 +40,7 @@ struct ClassEntry: ContentEntry {
         skills = row["skills"] ?? ""
         classFeatures = row["class_features"] ?? ""
         description = row["description"] ?? ""
-        source = row["source"] ?? "Player Core"
+        source = row["source"] ?? "Player Core Handbook"
     }
 
     // MARK: - Memberwise init
@@ -76,7 +76,7 @@ struct ClassEntry: ContentEntry {
         features: String = "",
         summary: String,
         desc: String,
-        source: String = "Player Core",
+        source: String = "Player Core Handbook",
         isPremium: Bool = false
     ) -> ClassEntry {
         ClassEntry(
@@ -111,6 +111,6 @@ struct ClassEntry: ContentEntry {
         skills: "Acrobatics or Athletics, plus 3 + Intelligence modifier additional skills",
         classFeatures: "Attack of Opportunity (1), Shield Block (1), Bravery (3), Fighter Weapon Mastery (5), Battlefield Surveyor (7), Weapon Specialization (7), Combat Flexibility (9), Juggernaut (11)",
         description: "Fighting for honor, fame, or simple hard coin, fighters are unparalleled in their training with weapons and armor.",
-        source: "Player Core"
+        source: "Player Core Handbook"
     )
 }

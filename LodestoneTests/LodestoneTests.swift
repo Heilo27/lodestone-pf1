@@ -29,11 +29,11 @@ struct LodestoneTests {
     @Test("FavoritesService toggle")
     func favoritesToggle() {
         let service = FavoritesService()
-        let id = UUID()
-        #expect(!service.isFavorite(id))
-        service.toggle(id)
-        #expect(service.isFavorite(id))
-        service.toggle(id)
-        #expect(!service.isFavorite(id))
+        let spell = SpellEntry.placeholder
+        #expect(!service.isFavorite(spell.id))
+        service.toggle(spell)
+        #expect(service.isFavorite(spell.id))
+        service.toggle(spell)
+        #expect(!service.isFavorite(spell.id))
     }
 }

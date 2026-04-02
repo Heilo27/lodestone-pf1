@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BrowseView: View {
     @State private var viewModel = BrowseViewModel()
+    @State private var showPaywall = false
     @Environment(\.colorScheme) private var colorScheme
     @Environment(SubscriptionService.self) private var subscriptionService
     @Environment(RecentlyViewedService.self) private var recentlyViewedService
@@ -28,6 +29,11 @@ struct BrowseView: View {
             .onChange(of: subscriptionService.isUnlocked) { _, isUnlocked in
                 Task { await viewModel.loadCounts(isUnlocked: isUnlocked) }
             }
+            .sheet(isPresented: $showPaywall) {
+                PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.hidden)
+            }
         }
     }
 
@@ -42,13 +48,27 @@ struct BrowseView: View {
                 spacing: AppSpacing.md
             ) {
                 ForEach(ContentType.allCases) { type in
-                    NavigationLink(destination: CategoryListView(contentType: type)) {
+                    NavigationLink(destination: destinationView(for: type)) {
                         QuickAccessTile(type: type, count: viewModel.categoryCounts[type])
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("\(type.displayName), \(viewModel.categoryCounts[type] ?? 0) entries")
                 }
             }
+        }
+    }
+
+    // MARK: - Content Type Routing
+
+    @ViewBuilder
+    private func destinationView(for type: ContentType) -> some View {
+        switch type {
+        case .spell:      SpellListView()
+        case .feat:       FeatListView()
+        case .item:       ItemListView()
+        case .monster:    MonsterListView()
+        case .trait:      TraitListView()
+        default:          CategoryListView(contentType: type)
         }
     }
 
@@ -69,13 +89,26 @@ struct BrowseView: View {
             } else {
                 VStack(spacing: 0) {
                     ForEach(Array(viewModel.books.enumerated()), id: \.element.id) { index, book in
-                        NavigationLink(destination: BookContentsView(source: book)) {
-                            BookRow(book: book)
-                                .padding(.horizontal, AppSpacing.base)
-                                .padding(.vertical, AppSpacing.md)
-                                .background(AppColors.adaptiveSurface(colorScheme))
+                        let isLocked = book.isPremium && !subscriptionService.isUnlocked
+                        if isLocked {
+                            Button {
+                                showPaywall = true
+                            } label: {
+                                BookRow(book: book, isUnlocked: subscriptionService.isUnlocked)
+                                    .padding(.horizontal, AppSpacing.base)
+                                    .padding(.vertical, AppSpacing.md)
+                                    .background(AppColors.adaptiveSurface(colorScheme))
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            NavigationLink(destination: BookContentsView(source: book)) {
+                                BookRow(book: book, isUnlocked: subscriptionService.isUnlocked)
+                                    .padding(.horizontal, AppSpacing.base)
+                                    .padding(.vertical, AppSpacing.md)
+                                    .background(AppColors.adaptiveSurface(colorScheme))
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
 
                         if index < viewModel.books.count - 1 {
                             Divider()
@@ -116,6 +149,7 @@ struct BrowseView: View {
                             Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                                .accessibilityHidden(true)
                         }
                         .padding(.horizontal, AppSpacing.base)
                         .padding(.vertical, AppSpacing.md)
@@ -172,7 +206,7 @@ struct QuickAccessTile: View {
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 44)
         .padding(.vertical, AppSpacing.md)
         .background(AppColors.adaptiveSurface(colorScheme), in: RoundedRectangle(cornerRadius: AppRadius.medium))
         .overlay(
@@ -186,13 +220,16 @@ struct QuickAccessTile: View {
 
 struct BookRow: View {
     let book: BookSource
+    var isUnlocked: Bool = false
 
     @Environment(\.colorScheme) private var colorScheme
+
+    private var isLocked: Bool { book.isPremium && !isUnlocked }
 
     var body: some View {
         HStack(spacing: AppSpacing.md) {
             Image(systemName: "books.vertical.fill")
-                .foregroundStyle(book.isPremium ? AppColors.premiumGold : AppColors.adaptivePrimary(colorScheme))
+                .foregroundStyle(isLocked ? AppColors.premiumGold : AppColors.adaptivePrimary(colorScheme))
                 .frame(width: 28)
 
             VStack(alignment: .leading, spacing: 2) {
@@ -206,13 +243,14 @@ struct BookRow: View {
 
             Spacer()
 
-            if book.isPremium {
+            if isLocked {
                 PremiumBadge(compact: true)
             }
 
             Image(systemName: "chevron.right")
                 .font(.caption)
                 .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                .accessibilityHidden(true)
         }
     }
 }

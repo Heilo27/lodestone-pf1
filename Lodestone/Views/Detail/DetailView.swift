@@ -74,11 +74,12 @@ struct DetailView: View {
                 ContentTypeIconBadge(type: entry.contentType, size: 28)
                 ContentTypeBadge(type: entry.contentType)
                 SourceBadge(text: entry.source)
-                if entry.isPremium {
+                if isLocked {
                     PremiumBadge(compact: true)
                 }
                 Spacer()
             }
+            .accessibilityElement(children: .combine)
 
             Text(entry.title)
                 .font(AppFonts.displayMedium)
@@ -123,7 +124,7 @@ struct DetailView: View {
                         .padding(.top, AppSpacing.xs)
                     }
                 }
-                .frame(height: 220)
+                .frame(minHeight: 220)
         }
     }
 

@@ -25,7 +25,7 @@ struct TraitEntry: ContentEntry {
         isPremium = (row["is_premium"] ?? "0") == "1"
         traitType = row["trait_type"] ?? ""
         description = row["description"] ?? ""
-        source = row["source"] ?? "Player Core"
+        source = row["source"] ?? "Player Core Handbook"
     }
 
     // MARK: - Memberwise init
@@ -45,7 +45,7 @@ struct TraitEntry: ContentEntry {
         traitType: String,
         summary: String,
         desc: String,
-        source: String = "Player Core",
+        source: String = "Player Core Handbook",
         isPremium: Bool = false
     ) -> TraitEntry {
         TraitEntry(
@@ -66,6 +66,6 @@ struct TraitEntry: ContentEntry {
         isPremium: false,
         traitType: "Energy",
         description: "Effects with the fire trait deal fire damage or either manipulate or summon fire. Those that manipulate fire have no effect in an area without fire. Creatures with this trait consist primarily of fire or have a magical connection to that element.",
-        source: "Player Core"
+        source: "Player Core Handbook"
     )
 }

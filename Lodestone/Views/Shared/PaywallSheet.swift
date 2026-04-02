@@ -52,7 +52,7 @@ struct PaywallSheet: View {
 
             // Feature bullets
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                FeatureBullet(icon: "books.vertical.fill", text: "15 expansion books — APG, Ultimate Magic, Bestiary 2–5, and more")
+                FeatureBullet(icon: "books.vertical.fill", text: "Expansion books — APG, Secrets of Magic, Book of the Dead, and more")
                 FeatureBullet(icon: "magnifyingglass", text: "Full search across all content")
                 FeatureBullet(icon: "lock.open.fill", text: "Instant access — no download required")
             }
@@ -140,6 +140,7 @@ private struct FeatureBullet: View {
             Image(systemName: icon)
                 .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
                 .frame(width: 24)
+                .accessibilityHidden(true)
             Text(text)
                 .font(AppFonts.subheadline)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))

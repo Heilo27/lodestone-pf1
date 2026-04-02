@@ -42,11 +42,24 @@ struct SearchView: View {
                     )
                     Spacer()
                 } else {
-                    List(viewModel.results, id: \.id) { entry in
-                        NavigationLink {
-                            DetailView(entry: entry)
-                        } label: {
-                            SearchResultRow(entry: entry)
+                    List {
+                        ForEach(viewModel.groupedResults, id: \.0) { (type, entries, hasMore) in
+                            Section(type.displayName) {
+                                ForEach(entries, id: \.id) { entry in
+                                    NavigationLink {
+                                        DetailView(entry: entry)
+                                    } label: {
+                                        SearchResultRow(entry: entry)
+                                    }
+                                }
+                                if hasMore {
+                                    NavigationLink("Show all results for \(type.displayName)") {
+                                        CategoryListView(contentType: type)
+                                    }
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                }
+                            }
                         }
                     }
                 }
@@ -54,7 +67,7 @@ struct SearchView: View {
             .navigationTitle("Search")
             .searchable(text: $viewModel.query, prompt: "Spells, monsters, feats...")
             .onSubmit(of: .search) {
-                viewModel.search()
+                viewModel.searchImmediately()
             }
             .onChange(of: viewModel.query) {
                 viewModel.search()

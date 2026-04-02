@@ -38,7 +38,7 @@ struct ItemEntry: ContentEntry {
         itemType = row["item_type"] ?? ""
         activate = row["activate"] ?? ""
         description = row["description"] ?? ""
-        source = row["source"] ?? "Player Core"
+        source = row["source"] ?? "Player Core Handbook"
     }
 
     // MARK: - Memberwise init
@@ -72,7 +72,7 @@ struct ItemEntry: ContentEntry {
         activate: String = "",
         summary: String,
         desc: String,
-        source: String = "Player Core",
+        source: String = "Player Core Handbook",
         isPremium: Bool = false
     ) -> ItemEntry {
         ItemEntry(
@@ -105,6 +105,6 @@ struct ItemEntry: ContentEntry {
         itemType: "Weapon",
         activate: "",
         description: "This longsword has a +1 weapon potency rune and a striking rune etched into it, granting a +1 item bonus to attack rolls and increasing the weapon damage dice to 2d8.",
-        source: "Player Core"
+        source: "Player Core Handbook"
     )
 }

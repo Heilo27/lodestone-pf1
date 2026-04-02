@@ -36,13 +36,13 @@ extension Color {
 // MARK: - App Colors
 
 enum AppColors {
-    // Brand
-    static let primary = Color(hex: "7A5C00")           // dark gold (light mode) — WCAG AA on #FAF7F0 (~5.2:1)
-    static let primaryDark = Color(hex: "D4AF37")        // bright gold (dark mode)
-    static let secondary = Color(hex: "8B1A1A")          // crimson (light mode)
-    static let secondaryDark = Color(hex: "C0392B")      // crimson (dark mode)
-    static let accent = Color(hex: "2A7D6F")             // teal-green
-    static let premiumGold = Color(hex: "D4AF37")        // crown/premium
+    // Brand — PF2 uses deep crimson/royal red
+    static let primary = Color(hex: "7A1010")           // deep crimson (light mode) — WCAG AA on #FAF7F0
+    static let primaryDark = Color(hex: "C0392B")        // vivid crimson (dark mode)
+    static let secondary = Color(hex: "4A1010")          // dark burgundy (light mode)
+    static let secondaryDark = Color(hex: "8B1A1A")      // dark crimson (dark mode)
+    static let accent = Color(hex: "8B3A3A")             // dusty rose-red accent
+    static let premiumGold = Color(hex: "D4AF37")        // crown/premium (keep gold)
 
     // Background
     static let background = Color(hex: "FAF7F0")         // warm parchment (light)

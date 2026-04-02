@@ -13,14 +13,14 @@ struct BrowseRowView: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(contentType.displayName)
-                    .font(.headline)
+                    .font(AppFonts.headline)
                 if let count {
                     Text("\(count) entries")
-                        .font(.subheadline)
+                        .font(AppFonts.subheadline)
                         .foregroundStyle(.secondary)
                 } else {
                     Text("Browse all \(contentType.displayName.lowercased())")
-                        .font(.subheadline)
+                        .font(AppFonts.subheadline)
                         .foregroundStyle(.secondary)
                 }
             }

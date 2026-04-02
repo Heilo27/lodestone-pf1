@@ -61,25 +61,25 @@ extension SeedDataBuilder {
                   desc: "AC Bonus: +6. Dex Cap: +0. Check Penalty: -3. Speed Penalty: -10 ft. Strength: 18. Comprising interconnected metal plates covering the whole body, full plate is the pinnacle of personal protection. Traits: Bulwark.",
                   isPremium: false),
 
-            // MARK: - Magic Items (Level 2+, premium)
+            // MARK: - Magic Items (Level 2+, Player Core)
             .make("Cloak of Elvenkind", level: 4, price: "90 gp", bulk: "L", usage: "worn cloak",
                   traits: "Invested, Magical, Transmutation", type: "Worn Item",
                   activate: "1 action (Interact) to raise the hood",
                   summary: "This cloak has a deep hood and is made from gray cloth.",
                   desc: "This cloak has a deep hood and is made from gray cloth that shimmers and shifts colors to blend into whatever environment you are in. You gain a +1 item bonus to Stealth checks. When you activate the cloak, you pull up the hood, gaining the effects of an invisibility spell until you pull the hood down or make a hostile action.",
-                  isPremium: true),
+                  isPremium: false),
 
             .make("Ring of Sustenance", level: 5, price: "175 gp", bulk: "—", usage: "worn (1 ring)",
                   traits: "Invested, Magical, Necromancy", type: "Ring",
                   summary: "This silver ring bears arcane engravings.",
                   desc: "This silver ring, engraved with arcane sigils, provides mystical sustenance to its wearer. You require only 2 hours of sleep per day and need not eat or drink.",
-                  isPremium: true),
+                  isPremium: false),
 
             .make("Boots of Elvenkind", level: 5, price: "150 gp", bulk: "L", usage: "worn shoes",
                   traits: "Invested, Magical, Transmutation", type: "Worn Item",
                   summary: "Soft shoes with pointed tips in an elven style.",
                   desc: "These light shoes make no sound whatsoever when you walk. You gain a +1 item bonus to Stealth checks, and you can use Stealth checks to move silently without the normal speed penalty.",
-                  isPremium: true),
+                  isPremium: false),
         ]
 
         for item in items {

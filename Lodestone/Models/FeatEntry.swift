@@ -35,7 +35,7 @@ struct FeatEntry: ContentEntry {
         requirements = row["requirements"] ?? ""
         trigger = row["trigger"] ?? ""
         benefit = row["benefit"] ?? ""
-        source = row["source"] ?? "Player Core"
+        source = row["source"] ?? "Player Core Handbook"
     }
 
     // MARK: - Memberwise init
@@ -67,7 +67,7 @@ struct FeatEntry: ContentEntry {
         trigger: String = "",
         summary: String,
         benefit: String,
-        source: String = "Player Core",
+        source: String = "Player Core Handbook",
         isPremium: Bool = false
     ) -> FeatEntry {
         FeatEntry(
@@ -98,6 +98,6 @@ struct FeatEntry: ContentEntry {
         requirements: "",
         trigger: "",
         benefit: "Even in the worst circumstances, you can perform basic tasks. Choose a skill you're trained in. You can forgo rolling a skill check for that skill to instead receive a result of 10 + your proficiency bonus (do not apply any other bonuses, penalties, or modifiers).",
-        source: "Player Core"
+        source: "Player Core Handbook"
     )
 }

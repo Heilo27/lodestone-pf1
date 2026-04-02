@@ -98,10 +98,11 @@ private struct CategoryEntryRow: View {
                 Image(systemName: "lock.fill")
                     .font(.caption)
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                    .accessibilityLabel("Premium content — requires subscription")
             } else if entry.isPremium {
                 // Unlocked premium — show source badge instead of lock
                 SourceBadge(text: entry.source)
-            } else if entry.source != "Core Rulebook" {
+            } else if entry.source != "Player Core Handbook" {
                 SourceBadge(text: entry.source)
             }
         }

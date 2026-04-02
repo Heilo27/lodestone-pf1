@@ -46,6 +46,30 @@ struct OrnamentalDivider: View {
     }
 }
 
+// MARK: - Group Header
+//
+// Tinted full-width row used as section headers in list views.
+// Provides visual delineation between groups with a subtle background.
+
+struct GroupHeader: View {
+    let title: String
+    @Environment(\.colorScheme) private var colorScheme
+
+    init(_ title: String) { self.title = title }
+
+    var body: some View {
+        Text(title)
+            .font(AppFonts.caption.weight(.bold))
+            .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+            .textCase(nil)
+            .padding(.horizontal, AppSpacing.sm)
+            .padding(.vertical, 4)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(AppColors.adaptivePrimary(colorScheme).opacity(0.08))
+            .listRowInsets(EdgeInsets())
+    }
+}
+
 // MARK: - Source Badge
 
 struct SourceBadge: View {
@@ -138,7 +162,7 @@ struct PrimaryButtonStyle: ButtonStyle {
     }
 }
 
-// MARK: - Gold Gradient Button Style
+// MARK: - Crimson Gradient Button Style
 
 struct GoldGradientButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
@@ -149,7 +173,7 @@ struct GoldGradientButtonStyle: ButtonStyle {
             .padding(.vertical, AppSpacing.md)
             .background(
                 LinearGradient(
-                    colors: [Color(hex: "D4AF37"), Color(hex: "8B6508")],
+                    colors: [Color(hex: "C0392B"), Color(hex: "7A1010")],
                     startPoint: .leading,
                     endPoint: .trailing
                 )

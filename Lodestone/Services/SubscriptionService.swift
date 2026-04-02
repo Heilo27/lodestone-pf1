@@ -1,6 +1,14 @@
 import Foundation
 import StoreKit
 
+enum SubscriptionStatus: Equatable {
+    case unknown
+    case neverSubscribed
+    case active
+    case expired
+    case cancelled
+}
+
 @Observable
 final class SubscriptionService {
     #if DEBUG
@@ -12,6 +20,7 @@ final class SubscriptionService {
     #endif
 
     private(set) var isSubscribed: Bool = false
+    private(set) var subscriptionStatus: SubscriptionStatus = .unknown
 
     private var updatesTask: Task<Void, Never>?
 
@@ -43,8 +52,8 @@ final class SubscriptionService {
 
     // Subscription for Lodestone PF2
     private let productIDs = [
-        "com.heiloproject.lodestone.allaccess.monthly",
-        "com.heiloproject.lodestone.allaccess.annual",
+        "com.heiloprojects.lodestone-pf2.allaccess.monthly",
+        "com.heiloprojects.lodestone-pf2.allaccess.annual",
     ]
 
     func loadProducts() async {
@@ -63,6 +72,7 @@ final class SubscriptionService {
                 switch verification {
                 case .verified(let transaction):
                     isSubscribed = true
+                    subscriptionStatus = .active
                     activeProductID = transaction.productID
                     expirationDate = transaction.expirationDate
                     await transaction.finish()
@@ -92,10 +102,22 @@ final class SubscriptionService {
 
     func checkSubscriptionStatus() async {
         var found = false
+        var foundExpired = false
         for await result in Transaction.currentEntitlements {
             if case .verified(let transaction) = result {
                 if productIDs.contains(transaction.productID) {
+                    // Check revocation
+                    if transaction.revocationDate != nil {
+                        foundExpired = true
+                        continue
+                    }
+                    // Check expiration
+                    if let expiry = transaction.expirationDate, expiry < Date() {
+                        foundExpired = true
+                        continue
+                    }
                     isSubscribed = true
+                    subscriptionStatus = .active
                     activeProductID = transaction.productID
                     expirationDate = transaction.expirationDate
                     found = true
@@ -107,6 +129,14 @@ final class SubscriptionService {
             isSubscribed = false
             activeProductID = nil
             expirationDate = nil
+            if foundExpired {
+                subscriptionStatus = .expired
+            } else if subscriptionStatus == .active {
+                // Was active, now not found — treat as cancelled
+                subscriptionStatus = .cancelled
+            } else if subscriptionStatus == .unknown {
+                subscriptionStatus = .neverSubscribed
+            }
         }
     }
 }

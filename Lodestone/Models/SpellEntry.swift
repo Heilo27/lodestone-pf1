@@ -43,7 +43,7 @@ struct SpellEntry: ContentEntry {
         savingThrow = row["saving_throw"] ?? ""
         description = row["description"] ?? ""
         heightened = row["heightened"] ?? ""
-        source = row["source"] ?? "Player Core"
+        source = row["source"] ?? "Player Core Handbook"
     }
 
     // MARK: - Memberwise init
@@ -83,7 +83,7 @@ struct SpellEntry: ContentEntry {
         summary: String,
         desc: String,
         heightened: String = "",
-        source: String = "Player Core",
+        source: String = "Player Core Handbook",
         isPremium: Bool = false
     ) -> SpellEntry {
         SpellEntry(
@@ -122,6 +122,6 @@ struct SpellEntry: ContentEntry {
         savingThrow: "basic Reflex",
         description: "A burst of fire explodes, dealing 6d6 fire damage to each creature in the area.",
         heightened: "(+1) The damage increases by 2d6.",
-        source: "Player Core"
+        source: "Player Core Handbook"
     )
 }

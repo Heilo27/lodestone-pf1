@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FavoritesView: View {
     @Environment(FavoritesService.self) private var favoritesService
+    @Environment(\.colorScheme) private var colorScheme
     @State private var viewModel = FavoritesViewModel()
 
     var body: some View {
@@ -25,6 +26,7 @@ struct FavoritesView: View {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(entry.title)
                                         .font(AppFonts.headline)
+                                        .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                                     Text(entry.contentType.singularName)
                                         .font(AppFonts.caption)
                                         .foregroundStyle(.secondary)
@@ -43,7 +45,7 @@ struct FavoritesView: View {
                 }
             }
             .navigationTitle("Favorites")
-            .task {
+            .task(id: favoritesService.favorites) {
                 await viewModel.loadFavorites(favorites: favoritesService.favorites)
             }
         }

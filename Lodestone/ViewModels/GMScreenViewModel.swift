@@ -12,119 +12,90 @@ final class GMScreenViewModel {
 
     var references: [QuickReference] = [
 
-        // MARK: Combat
+        // MARK: Actions
 
         QuickReference(
-            title: "Combat Actions",
+            title: "Action Economy",
             content: """
-            Standard: Attack, Cast spell, Total defense, Use special ability
-            Move: Move up to speed, Draw/sheathe weapon, Open/close door, Stand up from prone
-            Full-Round: Full attack, Charge, Run, Withdraw, Cast full-round spell
-            Swift (1/round): Cast swift spell, Use swift ability
-            Immediate (1/turn): Cast immediate spell
-            Free: Drop item, Speak, Drop prone, Release held item
+            1-Action (◆): Strike, Step, Stride, Interact, Raise Shield, Cast (some spells)
+            2-Action (◆◆): Cast (most spells), Heal, Command Animal
+            3-Action (◆◆◆): Cast (some spells), Cast Heal at max effect
+            Free Action (◇): Release, Speak, Drop item (on your turn only)
+            Reaction (↺): Attack of Opportunity (Fighter), Shield Block, Riposte
+              — 1 reaction per round; regained at start of your turn
             """,
-            category: "Combat"
+            category: "Actions"
         ),
 
         QuickReference(
-            title: "Combat Maneuver DCs",
+            title: "Exploration Activities",
             content: """
-            CMD = 10 + BAB + Str mod + Dex mod + special size mod
-            Grapple: CMB vs CMD (both provoke unless improved)
-            Trip: CMB vs CMD; failure by 10+ means you fall prone
-            Disarm: CMB vs CMD; if you fail, opponent may disarm you
-            Bull Rush: CMB vs CMD; success moves foe back 5 ft per 5 over
-            Dirty Trick: CMB vs CMD; applies condition 1 round + 1/5 over
-            Steal: CMB vs CMD; take one item from foe
+            Avoid Notice: Stealth check; start encounter hidden
+            Detect Magic: Constantly cast Detect Magic; notice auras
+            Investigate: Recall Knowledge about discovered creature/object
+            Scout: Speed –25%; party gets +1 initiative
+            Search: Actively seek hidden creatures/objects (Perception)
+            Defend: Hard cover + better Reflex saves
+            Follow the Expert: Aid check; +2 (or proficiency bonus) to related skill
             """,
-            category: "Combat"
-        ),
-
-        QuickReference(
-            title: "Cover & Concealment",
-            content: """
-            Soft Cover (creature in way): +4 AC
-            Cover (half body blocked): +4 AC, +2 Reflex, Partial evasion
-            Improved Cover: +8 AC, +4 Reflex, improved evasion
-            Total Cover: Cannot be targeted with attacks/spells
-            Concealment (20%): 20% miss chance
-            Total Concealment (50%): 50% miss chance; attacker must guess square
-            """,
-            category: "Combat"
-        ),
-
-        QuickReference(
-            title: "Flanking & Attacks of Opportunity",
-            content: """
-            Flanking: Two allies on opposite sides of foe → +2 attack rolls
-            AoO Triggers: Move through threatened square, cast without Still Spell,
-              ranged attack, retrieve item, stand up, grapple attempt
-            AoO Avoidance: 5-ft step, Withdraw action, Acrobatics DC 15 (no AoO)
-            """,
-            category: "Combat"
-        ),
-
-        QuickReference(
-            title: "Critical Hits",
-            content: """
-            Confirm: Attack roll must also threaten (hit AC, or natural 20)
-            ×2: Dagger, Quarterstaff, most spells
-            ×3: Axe, Bow, Lance, Shortbow
-            ×4: Scythe
-            19–20/×2: Longsword, Rapier, Short sword, Kukri
-            18–20/×2: Falchion, Scimitar
-            Vorpal (houserule): nat 20 + confirm → decapitate
-            """,
-            category: "Combat"
-        ),
-
-        QuickReference(
-            title: "Damage & Death",
-            content: """
-            Disabled: 0 HP — can take one standard OR move, then 1 damage
-            Dying: –1 to –Con HP — unconscious, lose 1 HP/round
-            Dead: –Con HP or below
-            Stable: DC 10 Constitution check each round to stop bleeding
-            Massive Damage: Damage ≥ 50 hp in one hit → DC 15 Fort or die
-            Nonlethal: 0 HP nonlethal = unconscious; recover 1/hour or with heal
-            """,
-            category: "Combat"
+            category: "Actions"
         ),
 
         // MARK: Conditions
 
         QuickReference(
-            title: "Conditions A–F",
+            title: "Valued Conditions",
             content: """
-            Blinded: –2 AC, no Dex bonus, –4 opposed Perception, 50% miss
-            Confused: Roll d% each round (1–25 act normally, 26–50 do nothing,
-              51–75 attack nearest, 76–100 attack self)
-            Cowering: Loses Dex bonus, –2 AC, no actions
-            Dazed: Can take no actions (free/swift still ok); not flat-footed
-            Dazzled: –1 attack, –1 sight-based Perception
-            Entangled: –2 attack, –4 Dex, concentration DC 15+SL
-            Exhausted: –6 Str/Dex, cannot run or charge; rest 1 hour → fatigued
-            Fatigued: –2 Str/Dex, cannot run or charge; rest 8 hours → normal
-            Frightened: –2 attacks/saves/skills; must flee if able
+            Clumsy X: –X to Dex-based checks/DCs; ends at X=0
+            Drained X: –X to Con-based checks; –X×5 max HP; 1/day natural healing
+            Enfeebled X: –X to Str-based checks and damage
+            Frightened X: –X to checks/DCs; reduces by 1 at end of each turn
+            Sickened X: –X to checks/DCs; use an action to attempt a Fort save (DC 15) to reduce
+            Slowed X: Lose X actions each turn (min 1)
+            Stunned X: Lose X actions; if no number, lose 1 action and lose Stunned
+            Stupefied X: –X to Int/Wis/Cha checks/DCs and spell attack/DCs
+            Wounded X: Dying threshold increases by X (die at Dying X+3+Con)
             """,
             category: "Conditions"
         ),
 
         QuickReference(
-            title: "Conditions G–Z",
+            title: "Binary Conditions",
             content: """
-            Grappled: –4 Dex, –2 attack, no 2-handed weapons, no move action
-            Helpless: Dex = 0, coup de grace possible
-            Invisible: +2 attack, opponents lose Dex bonus, 50% concealment
-            Nauseated: Move action only; no attacks, spells, or concentration
-            Panicked: –2 saves/skills; drops held items, flees
-            Paralyzed: Str/Dex = 0, helpless; coup de grace possible
-            Pinned: Completely immobile; –4 AC, no Dex, can only escape grapple
-            Shaken: –2 attacks, saves, skills, and ability checks
-            Sickened: –2 attacks, damage, saves, skills, ability checks
-            Staggered: One move or standard action each round (not both)
-            Stunned: Loses Dex bonus, –2 AC, drops held items, no actions
+            Blinded: Flat-footed; –4 Perception; auto-fail sight checks; concealed targets
+            Broken: Object non-functional until repaired above BT
+            Concealed: Attackers must succeed DC 5 flat check to target you
+            Confused: Controlled by GM; must act wildly; can attack allies
+            Dazzled: All targets are concealed from you
+            Doomed X: Die when Dying reaches X (normally Dying 4)
+            Encumbered: Clumsy 1; –10 Speed; –1 penalty to most Str/Dex checks
+            Fascinated: Flat-footed; cannot take actions that don't involve fascination target
+            Fleeing: Must move away from source each turn; cannot approach
+            Grabbed: Immobilized and flat-footed; held by creature or hazard
+            Hidden: Others know your location but can't see you; flat check DC 11 to target
+            Immobilized: Cannot move from current space
+            Invisible: Undetected by sight; flat check DC 11 to target; no Dex to AC vs you
+            Off-Guard (Flat-footed): –2 circumstance to AC
+            Paralyzed: Cannot act; flat-footed; lose Dex/Str to AC/saves
+            Petrified: Can't act; immune to non-persistent damage while stone
+            Prone: –2 attack; melee vs you +2; –4 ranged attack; stand costs 1 action
+            Restrained: Grabbed + can't use move actions; flat-footed
+            Unconscious: Prone + can't act + blinded + flat-footed
+            """,
+            category: "Conditions"
+        ),
+
+        QuickReference(
+            title: "Dying & Recovery",
+            content: """
+            Dying X: Unconscious; at 0 HP gain Dying 1 (or higher with Wounded)
+            Recovery Check: DC 10 + Dying value at start of your turn
+              Crit Success: lose 2 Dying; Success: lose 1 Dying; Fail: gain 1 Dying
+              Crit Fail: gain 2 Dying → Dead at Dying 4
+            Persistent Damage: Flat check DC 15 at end of turn to end; success ends
+              — adjacent ally can use 2 actions to attempt DC 15 flat check to help
+            Hero Points: Spend 1 → reroll anything once (keep new result)
+              Spend all → stabilize at 1 HP (avoid dying)
             """,
             category: "Conditions"
         ),
@@ -132,45 +103,39 @@ final class GMScreenViewModel {
         // MARK: Skills
 
         QuickReference(
-            title: "Difficulty Classes",
+            title: "Skill Actions — Physical",
             content: """
-            Very Easy: DC 5
-            Easy: DC 10
-            Average: DC 15
-            Tough: DC 20
-            Challenging: DC 25
-            Formidable: DC 30
-            Heroic: DC 35
-            Nearly Impossible: DC 40
+            Athletics: Climb, Disarm, Grapple, High Jump, Long Jump, Shove, Swim, Trip
+              — Grapple/Shove/Trip vs defender's Fortitude DC
+            Acrobatics: Balance, Tumble Through (vs Reflex DC), Maneuver in Flight
+            Stealth: Hide (become hidden), Sneak (move while hidden), Conceal Object
+            Thievery: Pick a Lock (vs DC), Steal (vs Perception DC), Disable Device
             """,
             category: "Skills"
         ),
 
         QuickReference(
-            title: "Common Skill DCs",
+            title: "Skill Actions — Social & Knowledge",
             content: """
-            Acrobatics (balance 2-inch ledge): DC 10
-            Climb (knotted rope): DC 5 / (smooth wall): DC 25
-            Diplomacy (improve attitude 1 step): DC 15
-            Disable Device (simple lock): DC 20 / (good lock): DC 30
-            Perception (hear noise): DC 0 / (spot creature): DC 10+
-            Sleight of Hand (palm coin-sized): DC 10
-            Stealth (move silently): opposed by Perception
-            Swim (calm water): DC 10 / (turbulent): DC 20 / (stormy): DC 30
-            Use Magic Device (activate blindly): DC 25
+            Diplomacy: Make an Impression (1 min, Attitude shift), Request, Gather Info
+            Intimidation: Demoralize (→ Frightened 1; once/target/10 min), Coerce
+            Deception: Create Diversion, Feint (vs Perception DC), Impersonate, Lie
+            Recall Knowledge: (Arcana/Nature/Occultism/Religion/Society/Crafting/Lore)
+              Identifies creature abilities, item properties, historical facts
+            Medicine: Treat Wounds (DC 15/20/30/40; 1 hr; remove Wounded)
+              Administer First Aid (2 actions; Stabilize vs DC 15, remove Frightened/Fleeing)
             """,
             category: "Skills"
         ),
 
         QuickReference(
-            title: "Concentration Checks",
+            title: "Skill DCs by Difficulty",
             content: """
-            Injured while casting (melee dmg): DC 10 + damage dealt + spell level
-            Injured while casting (ranged dmg): DC 10 + damage dealt + spell level
-            Vigorous motion (boat, etc.): DC 10 + spell level
-            Violent motion: DC 15 + spell level
-            Entangled: DC 15 + spell level
-            Grappled: DC 10 + grappler CMB + spell level
+            Untrained: DC 10   Trained: DC 15    Expert: DC 20
+            Master: DC 25      Legendary: DC 30
+            By Level (approx.): L0=14  L2=16  L4=18  L6=20  L8=22  L10=23
+              L12=25  L14=27  L16=28  L18=29  L20=30  L22=32 (GM Core p.53)
+            Simple Tasks: DC 10    Moderate: DC 15–20    Hard: DC 25–30
             """,
             category: "Skills"
         ),
@@ -178,67 +143,72 @@ final class GMScreenViewModel {
         // MARK: Magic
 
         QuickReference(
-            title: "Spell Save DCs",
+            title: "Spell Ranks & Cantrips",
             content: """
-            Save DC = 10 + spell level + caster ability modifier
-            Wizard/Sorcerer: Intelligence/Charisma
-            Cleric/Druid/Oracle: Wisdom/Charisma
-            Bard/Summoner: Charisma
-            Ranger/Paladin: Wisdom/Charisma
-            Alchemist: Intelligence
-            Witch: Intelligence
+            Spell Ranks: 1–10 (replaces PF1 spell levels)
+            Cantrips: Rank = half caster's level, rounded up (min rank 1)
+              — Cantrips are heightened automatically
+            Heightening: Spell effects scale with rank cast at
+            Spell Attack Roll: d20 + spellcasting ability modifier + proficiency
+            Spell DC: 10 + spellcasting ability modifier + proficiency
+            Focus Spells: Spend 1 Focus Point; refocus 1 point with 10 min activity
             """,
             category: "Magic"
         ),
 
         QuickReference(
-            title: "Spell Resistance",
+            title: "Degrees of Success (Saves & Checks)",
             content: """
-            Overcome SR: d20 + caster level vs SR
-            Touch Spells: SR still applies unless 'harmless' or 'object'
-            Area Spells: If SR applies, each creature in area makes check
-            Stacking: SR does not stack with itself (take highest)
+            Critical Success: Beat DC by 10+ → best outcome
+            Success: Meet or beat DC → normal success
+            Failure: Miss DC → normal failure
+            Critical Failure: Miss DC by 10+ → worst outcome
+            — Natural 20: one degree better; Natural 1: one degree worse
+            Fortitude: resists poison/disease/physical effects
+            Reflex: resists area/trap/fast effects
+            Will: resists mental/charm/fear effects
             """,
             category: "Magic"
         ),
 
-        QuickReference(
-            title: "Metamagic Summary",
-            content: """
-            Empower: ×1.5 numeric effects (+2 slot)
-            Enlarge: Double range (+1 slot)
-            Extend: Double duration (+1 slot)
-            Maximize: Maximum numeric results (+3 slot)
-            Quicken: Cast as swift action (+4 slot)
-            Silent: No verbal component (+1 slot)
-            Still: No somatic component (+1 slot)
-            Widen: Double area of burst/spread (+3 slot)
-            """,
-            category: "Magic"
-        ),
-
-        // MARK: XP & Encounter
+        // MARK: Encounter
 
         QuickReference(
-            title: "XP Awards by CR",
+            title: "Encounter Budget (XP)",
             content: """
-            CR 1/8: 50 XP   CR 1/4: 100 XP  CR 1/3: 135 XP  CR 1/2: 200 XP
-            CR 1: 400 XP    CR 2: 600 XP    CR 3: 800 XP    CR 4: 1,200 XP
-            CR 5: 1,600 XP  CR 6: 2,400 XP  CR 7: 3,200 XP  CR 8: 4,800 XP
-            CR 9: 6,400 XP  CR 10: 9,600 XP CR 11: 12,800 XP CR 12: 19,200 XP
-            CR 13: 25,600 XP CR 14: 38,400 XP CR 15: 51,200 XP CR 16: 76,800 XP
-            CR 17: 102,400 XP CR 18: 153,600 XP CR 19: 204,800 XP CR 20: 307,200 XP
+            Each PC = 20 XP budget
+            Monster XP by level relative to party:
+              Party Level –4: 10 XP   –3: 15 XP   –2: 20 XP   –1: 30 XP
+              Equal: 40 XP    +1: 60 XP    +2: 80 XP    +3: 120 XP
+            Encounter Difficulty:
+              Trivial: <40 XP    Low: 40–59 XP    Moderate: 60–79 XP
+              Severe: 80–119 XP  Extreme: 120+ XP (character death likely)
             """,
             category: "Encounter"
         ),
 
         QuickReference(
-            title: "Level Advancement XP",
+            title: "Proficiency Bonuses",
             content: """
-            Slow:   2→3: 3k  3→4: 7.5k  4→5: 14k  5→6: 23k   6→7: 35k
-            Medium: 2→3: 2k  3→4: 5k    4→5: 9k   5→6: 15k   6→7: 23k
-            Fast:   2→3: 1.3k 3→4: 3.3k 4→5: 6k   5→6: 10k   6→7: 15k
-            (Full table in CRB p.30)
+            Untrained:  Level + 0 (no bonus unless stated)
+            Trained:    Level + 2
+            Expert:     Level + 4
+            Master:     Level + 6
+            Legendary:  Level + 8
+            — All DCs and attacks use: d20 + modifier + proficiency bonus
+            — Untrained: –2 penalty for trained-only skills (optional rule)
+            """,
+            category: "Encounter"
+        ),
+
+        QuickReference(
+            title: "Hero Points",
+            content: """
+            Award: 1 per session (start); GMs may give additional for heroic deeds
+            Max per session: typically 3 per character
+            Spend 1: Reroll any die roll (keep new result — no stacking)
+            Spend all: When reduced to 0 HP, instead stabilize at 1 HP (avoid Dying)
+            — Hero Points reset each session
             """,
             category: "Encounter"
         ),

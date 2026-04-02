@@ -27,7 +27,7 @@ struct BackgroundEntry: ContentEntry {
         trainedSkills = row["trained_skills"] ?? ""
         skillFeat = row["skill_feat"] ?? ""
         description = row["description"] ?? ""
-        source = row["source"] ?? "Player Core"
+        source = row["source"] ?? "Player Core Handbook"
     }
 
     init(id: UUID, title: String, summary: String, isPremium: Bool,
@@ -51,7 +51,7 @@ struct BackgroundEntry: ContentEntry {
         skillFeat: String,
         summary: String,
         desc: String,
-        source: String = "Player Core",
+        source: String = "Player Core Handbook",
         isPremium: Bool = false
     ) -> BackgroundEntry {
         BackgroundEntry(
@@ -76,6 +76,6 @@ struct BackgroundEntry: ContentEntry {
         trainedSkills: "Religion and Lore (Scribing)",
         skillFeat: "Student of the Canon",
         description: "You spent your early years in a religious institution, and are thoroughly familiar with theology and holy rites.",
-        source: "Player Core"
+        source: "Player Core Handbook"
     )
 }

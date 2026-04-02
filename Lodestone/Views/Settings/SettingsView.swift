@@ -68,25 +68,71 @@ struct SettingsView: View {
                     }
                 }
             } else {
-                Button {
-                    showPaywall = true
-                } label: {
+                switch subscriptionService.subscriptionStatus {
+                case .expired:
                     HStack {
-                        Label("Upgrade to Premium", systemImage: "crown")
-                            .font(AppFonts.body)
+                        Image(systemName: "crown.fill")
+                            .foregroundStyle(.orange)
+                        Text("Subscription Expired")
+                            .font(AppFonts.headline)
+                            .foregroundStyle(.orange)
+                        Spacer()
+                        Text("Expired")
+                            .font(AppFonts.chip(size: 11))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, AppSpacing.sm)
+                            .padding(.vertical, 3)
+                            .background(Color.orange.opacity(0.8), in: Capsule())
+                    }
+                    Text("Your premium subscription has expired. Resubscribe to regain access.")
+                        .font(AppFonts.caption)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                    Button("Resubscribe") { showPaywall = true }
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+
+                case .cancelled:
+                    HStack {
+                        Image(systemName: "crown.fill")
+                            .foregroundStyle(.secondary)
+                        Text("Subscription Cancelled")
+                            .font(AppFonts.headline)
                             .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                         Spacer()
-                        if let monthly = subscriptionService.products.first(where: { $0.id.contains("monthly") }) {
-                            Text("\(monthly.displayPrice)/mo")
-                                .font(AppFonts.subheadline.weight(.semibold))
-                                .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+                        Text("Cancelled")
+                            .font(AppFonts.chip(size: 11))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, AppSpacing.sm)
+                            .padding(.vertical, 3)
+                            .background(Color.gray.opacity(0.6), in: Capsule())
+                    }
+                    Text("Your subscription was cancelled. Subscribe again to unlock all expansion books.")
+                        .font(AppFonts.caption)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                    Button("Subscribe") { showPaywall = true }
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+
+                default:
+                    Button {
+                        showPaywall = true
+                    } label: {
+                        HStack {
+                            Label("Upgrade to Premium", systemImage: "crown")
+                                .font(AppFonts.body)
+                                .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                            Spacer()
+                            if let monthly = subscriptionService.products.first(where: { $0.id.contains("monthly") }) {
+                                Text("\(monthly.displayPrice)/mo")
+                                    .font(AppFonts.subheadline.weight(.semibold))
+                                    .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+                            }
                         }
                     }
+                    Text("Unlocks all expansion books for Lodestone PF2.")
+                        .font(AppFonts.caption)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                 }
-
-                Text("Unlocks all expansion books for Lodestone PF2.")
-                    .font(AppFonts.caption)
-                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
             }
 
             Button("Restore Purchases") {
@@ -182,7 +228,7 @@ struct SettingsView: View {
             NavigationLink {
                 OGLAttributionView()
             } label: {
-                Label("Open Game License", systemImage: "doc.plaintext")
+                Label("Compatibility License", systemImage: "doc.plaintext")
                     .font(AppFonts.body)
             }
         } header: {
@@ -318,10 +364,10 @@ private struct TermsOfServiceView: View {
 private struct OGLAttributionView: View {
     var body: some View {
         ScrollView {
-            Text("Open Game License attribution will be added before App Store submission.")
+            Text("Paizo Compatibility License attribution will be added before App Store submission.")
                 .padding()
         }
-        .navigationTitle("Open Game License")
+        .navigationTitle("Compatibility License")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

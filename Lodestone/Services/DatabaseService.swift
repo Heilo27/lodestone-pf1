@@ -132,6 +132,55 @@ actor DatabaseService {
         return results.sorted { $0.title < $1.title }
     }
 
+    // MARK: - Favorites (SQLite-backed)
+
+    func insertFavorite(id: UUID, contentType: ContentType) throws {
+        guard isOpen else { throw DatabaseError.notOpen }
+        let now = ISO8601DateFormatter().string(from: Date())
+        try execInsert("""
+        INSERT OR REPLACE INTO favorites (id, content_id, content_type, added_at)
+        VALUES (?, ?, ?, ?)
+        """, params: [id.uuidString, id.uuidString, contentType.rawValue, now])
+    }
+
+    func deleteFavorite(id: UUID) throws {
+        guard isOpen else { throw DatabaseError.notOpen }
+        try execInsert(
+            "DELETE FROM favorites WHERE id = ?",
+            params: [id.uuidString]
+        )
+    }
+
+    func getFavorites() throws -> Set<FavoriteEntry> {
+        guard isOpen else { throw DatabaseError.notOpen }
+        guard let db else { throw DatabaseError.notOpen }
+        let sql = "SELECT content_id, content_type FROM favorites ORDER BY added_at DESC"
+        var stmt: OpaquePointer?
+        defer { sqlite3_finalize(stmt) }
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
+            throw DatabaseError.queryFailed(dbError())
+        }
+        var results = Set<FavoriteEntry>()
+        while sqlite3_step(stmt) == SQLITE_ROW {
+            let idStr = String(cString: sqlite3_column_text(stmt, 0))
+            let typeStr = String(cString: sqlite3_column_text(stmt, 1))
+            if let id = UUID(uuidString: idStr),
+               let type = ContentType(rawValue: typeStr) {
+                results.insert(FavoriteEntry(id: id, contentType: type))
+            }
+        }
+        return results
+    }
+
+    func isFavorited(id: UUID) throws -> Bool {
+        guard isOpen else { throw DatabaseError.notOpen }
+        let count = try queryIntBound(
+            "SELECT COUNT(*) FROM favorites WHERE id = ?",
+            param: id.uuidString
+        )
+        return count > 0
+    }
+
     // MARK: - Schema
 
     private func configurePragmas() throws {
@@ -148,7 +197,7 @@ actor DatabaseService {
             content_type TEXT NOT NULL,
             summary TEXT NOT NULL DEFAULT '',
             is_premium INTEGER NOT NULL DEFAULT 0,
-            source TEXT NOT NULL DEFAULT 'Player Core'
+            source TEXT NOT NULL DEFAULT 'Player Core Handbook'
         )
         """)
 
@@ -303,6 +352,15 @@ actor DatabaseService {
 
         try exec("CREATE INDEX IF NOT EXISTS idx_content_type ON content(content_type)")
         try exec("CREATE INDEX IF NOT EXISTS idx_content_title ON content(title)")
+
+        try exec("""
+        CREATE TABLE IF NOT EXISTS favorites (
+            id TEXT PRIMARY KEY,
+            content_id TEXT NOT NULL,
+            content_type TEXT NOT NULL,
+            added_at TEXT NOT NULL
+        )
+        """)
     }
 
     // MARK: - Insert (used by SeedDataBuilder)
@@ -790,7 +848,10 @@ actor DatabaseService {
     }
 
     static func writableDatabasePath() -> String {
-        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        guard let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            // Fallback to temp directory if documents directory is unavailable
+            return NSTemporaryDirectory() + "lodestone_pf2.db"
+        }
         return docs.appendingPathComponent("lodestone_pf2.db").path
     }
 }
