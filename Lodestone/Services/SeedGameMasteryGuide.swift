@@ -10,7 +10,7 @@ private extension RuleEntry {
         isPremium: Bool = true
     ) -> RuleEntry {
         RuleEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,

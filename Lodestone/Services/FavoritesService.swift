@@ -1,55 +1,52 @@
 import Foundation
 import SwiftUI
 
-struct FavoriteEntry: Codable, Hashable {
-    let id: UUID
-    let contentType: ContentType
-}
-
 @Observable
 final class FavoritesService {
-    private(set) var favorites: Set<FavoriteEntry> = []
-    private let storageKey = "lodestone_favorites_v2"
+    private(set) var favoriteIDs: Set<UUID> = []
+    private let storageKey = "lodestone_favorites"
 
     init() {
         load()
     }
 
-    var favoriteIDs: Set<UUID> { Set(favorites.map(\.id)) }
-
     func isFavorite(_ id: UUID) -> Bool {
-        favorites.contains { $0.id == id }
+        favoriteIDs.contains(id)
     }
 
-    func toggle(_ entry: any ContentEntry) {
-        if let existing = favorites.first(where: { $0.id == entry.id }) {
-            favorites.remove(existing)
+    func toggle(_ id: UUID) {
+        if favoriteIDs.contains(id) {
+            favoriteIDs.remove(id)
         } else {
-            favorites.insert(FavoriteEntry(id: entry.id, contentType: entry.contentType))
+            favoriteIDs.insert(id)
         }
         save()
     }
 
+    func add(_ id: UUID) {
+        favoriteIDs.insert(id)
+        save()
+    }
+
     func remove(_ id: UUID) {
-        favorites = favorites.filter { $0.id != id }
+        favoriteIDs.remove(id)
         save()
     }
 
     func removeAll() {
-        favorites.removeAll()
+        favoriteIDs.removeAll()
         save()
     }
 
-    // MARK: - Persistence
+    // MARK: - Persistence (UserDefaults for now, will migrate to SQLite)
 
     private func save() {
-        guard let data = try? JSONEncoder().encode(Array(favorites)) else { return }
-        UserDefaults.standard.set(data, forKey: storageKey)
+        let strings = favoriteIDs.map(\.uuidString)
+        UserDefaults.standard.set(Array(strings), forKey: storageKey)
     }
 
     private func load() {
-        guard let data = UserDefaults.standard.data(forKey: storageKey),
-              let decoded = try? JSONDecoder().decode([FavoriteEntry].self, from: data) else { return }
-        favorites = Set(decoded)
+        guard let strings = UserDefaults.standard.stringArray(forKey: storageKey) else { return }
+        favoriteIDs = Set(strings.compactMap { UUID(uuidString: $0) })
     }
 }

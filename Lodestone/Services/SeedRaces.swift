@@ -194,7 +194,7 @@ private extension RaceEntry {
         isPremium: Bool = false
     ) -> RaceEntry {
         RaceEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,

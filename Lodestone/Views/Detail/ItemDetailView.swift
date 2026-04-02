@@ -6,19 +6,16 @@ struct ItemDetailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            DetailRow(label: "Item Level", value: "\(item.itemLevel)")
+            if !item.itemType.isEmpty {
+                SourceBadge(text: item.itemType, color: AppColors.contentTypeColor(.item))
+                    .padding(.bottom, AppSpacing.xs)
+            }
+
             DetailRow(label: "Price", value: item.price)
-            DetailRow(label: "Bulk", value: item.bulk)
-            if !item.usage.isEmpty {
-                DetailRow(label: "Usage", value: item.usage)
-            }
-            if !item.traits.isEmpty {
-                DetailRow(label: "Traits", value: item.traits)
-            }
-            DetailRow(label: "Type", value: item.itemType)
-            if !item.activate.isEmpty {
-                DetailRow(label: "Activate", value: item.activate)
-            }
+            DetailRow(label: "Weight", value: item.weight)
+            DetailRow(label: "Slot", value: item.slot)
+            DetailRow(label: "Aura", value: item.aura)
+            DetailRow(label: "Caster Level", value: "\(item.casterLevel)")
             DetailRow(label: "Source", value: item.source)
 
             OrnamentalDivider(label: "Description")

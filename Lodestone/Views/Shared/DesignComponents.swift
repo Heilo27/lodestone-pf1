@@ -20,7 +20,7 @@ struct OrnamentalDivider: View {
             line
             if let label {
                 Text(label)
-                    .font(AppFonts.chip())
+                    .font(AppFonts.chip(size: 11))
                     .fontWeight(.semibold)
                     .tracking(1.5)
                     .foregroundStyle(resolvedColor)
@@ -46,17 +46,30 @@ struct OrnamentalDivider: View {
     }
 }
 
+// MARK: - Source Badge
+
+struct SourceBadge: View {
+    let text: String
+    var color: Color = AppColors.accent
+
+    var body: some View {
+        Text(text)
+            .font(AppFonts.chip(size: 11))
+            .fontWeight(.medium)
+            .foregroundStyle(color)
+            .padding(.horizontal, AppSpacing.sm)
+            .padding(.vertical, 3)
+            .background(color.opacity(0.12), in: Capsule())
+            .overlay(Capsule().strokeBorder(color.opacity(0.3), lineWidth: 0.5))
+    }
+}
+
 // MARK: - Group Header
-//
-// Tinted full-width row used as section headers in list views.
-// Provides visual delineation between groups with a subtle background.
 
 struct GroupHeader: View {
     let title: String
     @Environment(\.colorScheme) private var colorScheme
-
     init(_ title: String) { self.title = title }
-
     var body: some View {
         Text(title)
             .font(AppFonts.caption.weight(.bold))
@@ -67,24 +80,6 @@ struct GroupHeader: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(AppColors.adaptivePrimary(colorScheme).opacity(0.08))
             .listRowInsets(EdgeInsets())
-    }
-}
-
-// MARK: - Source Badge
-
-struct SourceBadge: View {
-    let text: String
-    var color: Color = AppColors.accent
-
-    var body: some View {
-        Text(text)
-            .font(AppFonts.chip())
-            .fontWeight(.medium)
-            .foregroundStyle(color)
-            .padding(.horizontal, AppSpacing.sm)
-            .padding(.vertical, 3)
-            .background(color.opacity(0.12), in: Capsule())
-            .overlay(Capsule().strokeBorder(color.opacity(0.3), lineWidth: 0.5))
     }
 }
 
@@ -99,7 +94,7 @@ struct PremiumBadge: View {
                 .font(.system(size: compact ? 9 : 10))
             if !compact {
                 Text("Premium")
-                    .font(AppFonts.chip())
+                    .font(AppFonts.chip(size: 11))
                     .fontWeight(.semibold)
             }
         }
@@ -108,8 +103,7 @@ struct PremiumBadge: View {
         .padding(.vertical, 3)
         .background(AppColors.premiumGold.opacity(0.12), in: Capsule())
         .overlay(Capsule().strokeBorder(AppColors.premiumGold.opacity(0.3), lineWidth: 0.5))
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(compact ? "Premium content" : "Premium content")
+        .accessibilityLabel(compact ? "Premium" : "Premium content")
     }
 }
 
@@ -120,7 +114,7 @@ struct ContentTypeBadge: View {
 
     var body: some View {
         Text(type.singularName)
-            .font(AppFonts.chip())
+            .font(AppFonts.chip(size: 11))
             .foregroundStyle(AppColors.contentTypeColor(type))
             .padding(.horizontal, AppSpacing.sm)
             .padding(.vertical, 3)
@@ -163,7 +157,7 @@ struct PrimaryButtonStyle: ButtonStyle {
     }
 }
 
-// MARK: - Crimson Gradient Button Style
+// MARK: - Gold Gradient Button Style
 
 struct GoldGradientButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
@@ -174,7 +168,7 @@ struct GoldGradientButtonStyle: ButtonStyle {
             .padding(.vertical, AppSpacing.md)
             .background(
                 LinearGradient(
-                    colors: [Color(hex: "C0392B"), Color(hex: "7A1010")],
+                    colors: [Color(hex: "D4AF37"), Color(hex: "8B6508")],
                     startPoint: .leading,
                     endPoint: .trailing
                 )

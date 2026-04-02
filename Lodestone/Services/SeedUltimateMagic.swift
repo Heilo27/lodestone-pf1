@@ -22,7 +22,7 @@ private extension SpellEntry {
         isPremium: Bool = false
     ) -> SpellEntry {
         SpellEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,

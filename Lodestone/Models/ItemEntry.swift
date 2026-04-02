@@ -8,20 +8,17 @@ struct ItemEntry: ContentEntry {
     let summary: String
     let isPremium: Bool
 
-    // PF2 uses item level (0–20) instead of caster level; Bulk instead of weight; no slot/aura
-    let itemLevel: Int
-    let price: String               // e.g. "3 gp", "15 sp"
-    let bulk: String                // e.g. "1", "L", "—"
-    let usage: String               // e.g. "held in 1 hand", "worn"
-    let traits: String              // comma-separated
-    let itemType: String            // Weapon, Armor, Potion, Wand, etc.
-    let activate: String            // activation action/cost if applicable
+    let price: String
+    let weight: String
+    let slot: String
+    let aura: String
+    let casterLevel: Int
+    let itemType: String
     let description: String
     let source: String
 
     enum CodingKeys: String, CodingKey {
-        case id, title, summary, isPremium, itemLevel, price, bulk, usage
-        case traits, itemType, activate, description, source
+        case id, title, summary, isPremium, price, weight, slot, aura, casterLevel, itemType, description, source
     }
 
     // MARK: - Database init
@@ -30,81 +27,46 @@ struct ItemEntry: ContentEntry {
         title = row["title"] ?? ""
         summary = row["summary"] ?? ""
         isPremium = (row["is_premium"] ?? "0") == "1"
-        itemLevel = Int(row["item_level"] ?? "0") ?? 0
         price = row["price"] ?? ""
-        bulk = row["bulk"] ?? ""
-        usage = row["usage"] ?? ""
-        traits = row["traits"] ?? ""
+        weight = row["weight"] ?? ""
+        slot = row["slot"] ?? ""
+        aura = row["aura"] ?? ""
+        casterLevel = Int(row["caster_level"] ?? "0") ?? 0
         itemType = row["item_type"] ?? ""
-        activate = row["activate"] ?? ""
         description = row["description"] ?? ""
-        source = row["source"] ?? "Player Core Handbook"
+        source = row["source"] ?? "Core Rulebook"
     }
 
     // MARK: - Memberwise init
     init(id: UUID, title: String, summary: String, isPremium: Bool,
-         itemLevel: Int, price: String, bulk: String, usage: String,
-         traits: String, itemType: String, activate: String,
-         description: String, source: String) {
+         price: String, weight: String, slot: String, aura: String,
+         casterLevel: Int, itemType: String, description: String, source: String) {
         self.id = id
         self.title = title
         self.summary = summary
         self.isPremium = isPremium
-        self.itemLevel = itemLevel
         self.price = price
-        self.bulk = bulk
-        self.usage = usage
-        self.traits = traits
+        self.weight = weight
+        self.slot = slot
+        self.aura = aura
+        self.casterLevel = casterLevel
         self.itemType = itemType
-        self.activate = activate
         self.description = description
         self.source = source
     }
 
-    static func make(
-        _ title: String,
-        level: Int,
-        price: String,
-        bulk: String,
-        usage: String = "",
-        traits: String = "",
-        type: String,
-        activate: String = "",
-        summary: String,
-        desc: String,
-        source: String = "Player Core Handbook",
-        isPremium: Bool = false
-    ) -> ItemEntry {
-        ItemEntry(
-            id: seededUUID("\(title)\(source)"),
-            title: title,
-            summary: summary,
-            isPremium: isPremium,
-            itemLevel: level,
-            price: price,
-            bulk: bulk,
-            usage: usage,
-            traits: traits,
-            itemType: type,
-            activate: activate,
-            description: desc,
-            source: source
-        )
-    }
-
     static let placeholder = ItemEntry(
         id: UUID(),
-        title: "+1 Striking Longsword",
-        summary: "A longsword etched with a fundamental rune.",
+        title: "Longsword +1",
+        summary: "A finely crafted longsword with a magical enhancement.",
         isPremium: false,
-        itemLevel: 4,
-        price: "100 gp",
-        bulk: "1",
-        usage: "held in 1 hand",
-        traits: "Evocation, Magical",
+        price: "2,315 gp",
+        weight: "4 lbs.",
+        slot: "None (held)",
+        aura: "Faint evocation",
+        casterLevel: 3,
         itemType: "Weapon",
-        activate: "",
-        description: "This longsword has a +1 weapon potency rune and a striking rune etched into it, granting a +1 item bonus to attack rolls and increasing the weapon damage dice to 2d8.",
-        source: "Player Core Handbook"
+        description: "This longsword has a +1 enhancement bonus on attack and damage rolls.",
+        source: "Core Rulebook"
     )
 }

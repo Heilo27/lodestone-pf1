@@ -46,11 +46,11 @@ struct SettingsView: View {
                             .foregroundStyle(AppColors.premiumGold)
                         Spacer()
                         Text("Active")
-                            .font(AppFonts.chip())
+                            .font(AppFonts.chip(size: 11))
                             .foregroundStyle(.white)
                             .padding(.horizontal, AppSpacing.sm)
                             .padding(.vertical, 3)
-                            .background(Color(.systemGreen).opacity(0.8), in: Capsule())
+                            .background(Color.green.opacity(0.8), in: Capsule())
                     }
 
                     if let expiry = subscriptionService.expirationDate {
@@ -76,15 +76,13 @@ struct SettingsView: View {
                             .font(AppFonts.body)
                             .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                         Spacer()
-                        if let monthly = subscriptionService.products.first(where: { $0.id.contains("monthly") }) {
-                            Text("\(monthly.displayPrice)/mo")
-                                .font(AppFonts.subheadline.weight(.semibold))
-                                .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
-                        }
+                        Text("$1.99/mo")
+                            .font(AppFonts.subheadline.weight(.semibold))
+                            .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
                     }
                 }
 
-                Text("Unlocks all expansion books for Lodestone PF1, PF2, and SF1.")
+                Text("Unlocks all expansion books for Lodestone PF1.")
                     .font(AppFonts.caption)
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
             }
@@ -98,7 +96,7 @@ struct SettingsView: View {
             if let error = subscriptionService.purchaseError {
                 Text(error)
                     .font(AppFonts.caption)
-                    .foregroundStyle(Color(.systemRed))
+                    .foregroundStyle(.red)
             }
         } header: {
             Text("Subscription")
@@ -133,7 +131,8 @@ struct SettingsView: View {
     private var dataSection: some View {
         Section {
             NavigationLink {
-                DatabaseInfoView()
+                Text("Database info will go here")
+                    .navigationTitle("Database")
             } label: {
                 Label("Database", systemImage: "cylinder")
                     .font(AppFonts.body)
@@ -222,69 +221,7 @@ struct SettingsView: View {
     #endif
 }
 
-// MARK: - Database Info
-
-private struct DatabaseInfoView: View {
-    @State private var counts: [ContentType: Int] = [:]
-    @State private var isLoading = true
-    @Environment(\.colorScheme) private var colorScheme
-
-    var body: some View {
-        List {
-            Section {
-                HStack {
-                    Text("Version")
-                        .font(AppFonts.body)
-                    Spacer()
-                    Text("v\(SeedDataBuilder.currentSeedVersion)")
-                        .font(AppFonts.body)
-                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                }
-                HStack {
-                    Text("Storage")
-                        .font(AppFonts.body)
-                    Spacer()
-                    Text("On-device")
-                        .font(AppFonts.body)
-                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                }
-            } header: {
-                Text("Database").textCase(.uppercase).tracking(0.8)
-            }
-
-            Section {
-                if isLoading {
-                    HStack { Spacer(); ProgressView(); Spacer() }
-                } else {
-                    ForEach(ContentType.allCases) { type in
-                        HStack {
-                            Label(type.displayName, systemImage: type.iconName)
-                                .font(AppFonts.body)
-                            Spacer()
-                            Text("\(counts[type] ?? 0)")
-                                .font(AppFonts.body)
-                                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                        }
-                    }
-                }
-            } header: {
-                Text("Content").textCase(.uppercase).tracking(0.8)
-            }
-        }
-        .navigationTitle("Database")
-        .navigationBarTitleDisplayMode(.inline)
-        .task {
-            do {
-                for type in ContentType.allCases {
-                    counts[type] = try await DatabaseService.shared.countForType(type)
-                }
-            } catch {}
-            isLoading = false
-        }
-    }
-}
-
-// MARK: - Legal Views
+// MARK: - Placeholder Legal Views
 
 private struct PrivacyPolicyView: View {
     var body: some View {
@@ -307,34 +244,8 @@ private struct PrivacyPolicyView: View {
 private struct TermsOfServiceView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: AppSpacing.lg) {
-                Text("Terms of Service")
-                    .font(.title2.weight(.bold))
-
-                Text("Last updated: 2026-04-02")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-
-                Group {
-                    Text("Use of App")
-                        .font(.headline)
-                    Text("Lodestone is provided for personal, non-commercial use as a reference tool for tabletop role-playing games. You agree to use this app in compliance with all applicable laws and Apple's App Store terms.")
-
-                    Text("Content")
-                        .font(.headline)
-                    Text("Lodestone content is sourced from the Pathfinder System Reference Document (SRD) and is licensed under the Open Game License v1.0a. No proprietary Paizo content is included.")
-
-                    Text("Subscription")
-                        .font(.headline)
-                    Text("Premium features are available via auto-renewing subscription. Subscriptions are managed through your Apple ID. Payment is charged to your Apple ID account at confirmation of purchase. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your App Store account settings.")
-
-                    Text("Disclaimer")
-                        .font(.headline)
-                    Text("This app is provided \"as is\" without warranty of any kind. Heilo Projects is not affiliated with Paizo Inc. Pathfinder is a registered trademark of Paizo Inc.")
-                }
-                .font(.body)
-            }
-            .padding()
+            Text("Terms of Service content will be added before App Store submission.")
+                .padding()
         }
         .navigationTitle("Terms of Service")
         .navigationBarTitleDisplayMode(.inline)

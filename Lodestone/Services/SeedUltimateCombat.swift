@@ -247,7 +247,7 @@ private extension FeatEntry {
         isPremium: Bool = false
     ) -> FeatEntry {
         FeatEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,
@@ -278,7 +278,7 @@ private extension ClassEntry {
         isPremium: Bool = false
     ) -> ClassEntry {
         ClassEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,

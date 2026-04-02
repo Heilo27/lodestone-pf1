@@ -1,38 +1,18 @@
 import SwiftUI
 
-// MARK: - Tab
-
-enum Tab: Int, CaseIterable {
-    case browse    = 0
-    case search    = 1
-    case favorites = 2
-    case gmTools   = 3
-    case settings  = 4
-}
-
 struct ContentView: View {
-    @AppStorage("selectedTab") private var selectedTabRaw: Int = Tab.browse.rawValue
-    @AppStorage("selectedTheme") private var selectedTheme: String = "system"
+    @AppStorage("selectedTab") private var selectedTab: Int = 0
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.colorScheme) private var colorScheme
 
-    private var preferredScheme: ColorScheme? {
-        switch selectedTheme {
-        case "light": return .light
-        case "dark":  return .dark
-        default:      return nil
-        }
-    }
-
     var body: some View {
         Group {
-            if sizeClass == .regular && UIDevice.current.userInterfaceIdiom == .pad {
+            if sizeClass == .regular {
                 iPadLayout
             } else {
                 iPhoneLayout
             }
         }
-        .preferredColorScheme(preferredScheme)
         .tint(colorScheme == .dark ? AppColors.primaryDark : AppColors.primary)
     }
 
@@ -41,21 +21,22 @@ struct ContentView: View {
     private var iPadLayout: some View {
         NavigationSplitView {
             List {
-                SidebarItem(label: "Browse", icon: "books.vertical.fill", tag: Tab.browse.rawValue, selected: $selectedTabRaw)
-                SidebarItem(label: "Search", icon: "magnifyingglass", tag: Tab.search.rawValue, selected: $selectedTabRaw)
-                SidebarItem(label: "Favorites", icon: "bookmark.fill", tag: Tab.favorites.rawValue, selected: $selectedTabRaw)
-                SidebarItem(label: "GM Tools", icon: "shield.fill", tag: Tab.gmTools.rawValue, selected: $selectedTabRaw)
-                SidebarItem(label: "Settings", icon: "gearshape.fill", tag: Tab.settings.rawValue, selected: $selectedTabRaw)
+                SidebarItem(label: "Browse", icon: "books.vertical.fill", tag: 0, selected: $selectedTab)
+                SidebarItem(label: "Search", icon: "magnifyingglass", tag: 1, selected: $selectedTab)
+                SidebarItem(label: "Favorites", icon: "bookmark.fill", tag: 2, selected: $selectedTab)
+                SidebarItem(label: "GM Tools", icon: "shield.fill", tag: 3, selected: $selectedTab)
+                SidebarItem(label: "Settings", icon: "gearshape.fill", tag: 4, selected: $selectedTab)
             }
             .navigationTitle(AppConstants.appName)
             .listStyle(.sidebar)
         } detail: {
-            switch Tab(rawValue: selectedTabRaw) ?? .browse {
-            case .browse:    BrowseView().id(Tab.browse.rawValue)
-            case .search:    SearchView().id(Tab.search.rawValue)
-            case .favorites: FavoritesView().id(Tab.favorites.rawValue)
-            case .gmTools:   GMScreenView().id(Tab.gmTools.rawValue)
-            case .settings:  SettingsView().id(Tab.settings.rawValue)
+            switch selectedTab {
+            case 0: BrowseView()
+            case 1: SearchView()
+            case 2: FavoritesView()
+            case 3: GMScreenView()
+            case 4: SettingsView()
+            default: BrowseView()
             }
         }
     }
@@ -63,26 +44,26 @@ struct ContentView: View {
     // MARK: - iPhone Layout (TabView)
 
     private var iPhoneLayout: some View {
-        TabView(selection: $selectedTabRaw) {
+        TabView(selection: $selectedTab) {
             BrowseView()
                 .tabItem { Label("Browse", systemImage: "books.vertical.fill") }
-                .tag(Tab.browse.rawValue)
+                .tag(0)
 
             SearchView()
                 .tabItem { Label("Search", systemImage: "magnifyingglass") }
-                .tag(Tab.search.rawValue)
+                .tag(1)
 
             FavoritesView()
                 .tabItem { Label("Favorites", systemImage: "bookmark.fill") }
-                .tag(Tab.favorites.rawValue)
+                .tag(2)
 
             GMScreenView()
                 .tabItem { Label("GM Tools", systemImage: "shield.fill") }
-                .tag(Tab.gmTools.rawValue)
+                .tag(3)
 
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape.fill") }
-                .tag(Tab.settings.rawValue)
+                .tag(4)
         }
     }
 }
@@ -108,7 +89,6 @@ private struct SidebarItem: View {
                 .foregroundStyle(selected == tag ? accentColor : .secondary)
                 .fontWeight(selected == tag ? .semibold : .regular)
         }
-        .accessibilityAddTraits(selected == tag ? .isSelected : [])
         .listRowBackground(
             selected == tag ? accentColor.opacity(0.12) : Color.clear
         )

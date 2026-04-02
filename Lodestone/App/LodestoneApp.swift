@@ -45,9 +45,9 @@ struct LodestoneApp: App {
             loadError = error.localizedDescription
         }
 
-        // Ensure splash shows for at least 0.3s
+        // Ensure splash shows for at least 2.4s
         let elapsed = Date().timeIntervalSince(start)
-        let remaining = 0.3 - elapsed
+        let remaining = 2.4 - elapsed
         if remaining > 0 {
             try? await Task.sleep(for: .seconds(remaining))
         }

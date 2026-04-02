@@ -3,23 +3,7 @@ import SwiftUI
 struct PaywallSheet: View {
     @Binding var isPresented: Bool
     let subscriptionService: SubscriptionService
-    /// When set, the paywall copy is tailored to the specific locked entry.
-    var entry: (any ContentEntry)? = nil
     @Environment(\.colorScheme) private var colorScheme
-
-    private var headline: String {
-        guard let entry else { return "Unlock Premium" }
-        return "Unlock \(entry.title)"
-    }
-
-    private var subtitle: String {
-        guard let entry else {
-            return "Expand your Pathfinder 1E library with all 15 expansion books."
-        }
-        let typeLabel = entry.contentType.singularName.lowercased()
-        let source = entry.source
-        return "This \(typeLabel) is from \(source). Subscribe to unlock it along with hundreds more from all 15 expansion books."
-    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -29,7 +13,6 @@ struct PaywallSheet: View {
                 .frame(width: 36, height: 5)
                 .padding(.top, AppSpacing.md)
                 .padding(.bottom, AppSpacing.xl)
-                .accessibilityHidden(true)
 
             // Crown icon
             Image(systemName: "crown.fill")
@@ -38,13 +21,11 @@ struct PaywallSheet: View {
                 .padding(.bottom, AppSpacing.base)
 
             // Headline
-            Text(headline)
+            Text("Unlock Premium")
                 .font(AppFonts.displayMedium)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, AppSpacing.xl)
 
-            Text(subtitle)
+            Text("Expand your Pathfinder 1E library with premium expansion books.")
                 .font(AppFonts.callout)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
@@ -53,9 +34,9 @@ struct PaywallSheet: View {
 
             // Feature bullets
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                FeatureBullet(icon: "books.vertical.fill", text: "15 expansion books — APG, Ultimate Magic, Bestiary 2–5, and more")
+                FeatureBullet(icon: "books.vertical.fill", text: "All expansion books for PF1")
                 FeatureBullet(icon: "magnifyingglass", text: "Full search across all content")
-                FeatureBullet(icon: "lock.open.fill", text: "Instant access — no download required")
+                FeatureBullet(icon: "arrow.triangle.2.circlepath", text: "Always up to date")
             }
             .padding(.top, AppSpacing.xl)
             .padding(.horizontal, AppSpacing.xxl)
@@ -64,8 +45,13 @@ struct PaywallSheet: View {
 
             VStack(spacing: AppSpacing.md) {
                 if subscriptionService.products.isEmpty {
-                    ProgressView()
-                        .frame(height: 50)
+                    Button {
+                        Task { await subscriptionService.loadProducts() }
+                    } label: {
+                        Text("Subscribe for $1.99/mo")
+                    }
+                    .buttonStyle(GoldGradientButtonStyle())
+                    .padding(.horizontal, AppSpacing.xl)
                 } else {
                     ForEach(subscriptionService.products, id: \.id) { product in
                         Button {
@@ -100,13 +86,11 @@ struct PaywallSheet: View {
                 .frame(minHeight: 44)
                 .contentShape(Rectangle())
 
-                if let monthly = subscriptionService.products.first(where: { $0.id.contains("monthly") }) {
-                    Text("\(monthly.displayPrice)/month. Cancel anytime in App Store settings.")
-                        .font(AppFonts.caption2)
-                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme).opacity(0.7))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, AppSpacing.xxl)
-                }
+                Text("$1.99/month. Cancel anytime in App Store settings.")
+                    .font(AppFonts.caption2)
+                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme).opacity(0.7))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, AppSpacing.xxl)
             }
             .padding(.horizontal, AppSpacing.xl)
             .padding(.bottom, AppSpacing.xxl)
@@ -124,9 +108,6 @@ struct PaywallSheet: View {
             if subscriptionService.products.isEmpty {
                 await subscriptionService.loadProducts()
             }
-        }
-        .onChange(of: subscriptionService.isSubscribed) { _, isSubscribed in
-            if isSubscribed { isPresented = false }
         }
     }
 }

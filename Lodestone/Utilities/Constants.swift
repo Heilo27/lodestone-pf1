@@ -41,7 +41,7 @@ enum AppColors {
     static let primaryDark = Color(hex: "D4AF37")        // bright gold (dark mode)
     static let secondary = Color(hex: "8B1A1A")          // crimson (light mode)
     static let secondaryDark = Color(hex: "C0392B")      // crimson (dark mode)
-    static let accent = Color(hex: "1F6358")             // teal-green (darkened for WCAG AA contrast)
+    static let accent = Color(hex: "1F6358")             // teal-green — WCAG AA
     static let premiumGold = Color(hex: "D4AF37")        // crown/premium
 
     // Background
@@ -55,7 +55,7 @@ enum AppColors {
     // Text
     static let textPrimary = Color(hex: "1A1714")
     static let textPrimaryDark = Color(hex: "F0EDE6")
-    static let textSecondary = Color(hex: "4A4440")
+    static let textSecondary = Color(hex: "4A4440")      // darkened for WCAG AA (~4.6:1)
     static let textSecondaryDark = Color(hex: "9A9590")
 
     // Border

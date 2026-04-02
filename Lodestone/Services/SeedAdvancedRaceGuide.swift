@@ -389,7 +389,7 @@ private extension RaceEntry {
         isPremium: Bool
     ) -> RaceEntry {
         RaceEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,
@@ -417,7 +417,7 @@ private extension TraitEntry {
         isPremium: Bool
     ) -> TraitEntry {
         TraitEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,

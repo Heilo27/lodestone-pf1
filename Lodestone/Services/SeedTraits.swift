@@ -555,7 +555,7 @@ private extension TraitEntry {
         isPremium: Bool = false
     ) -> TraitEntry {
         TraitEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,

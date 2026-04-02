@@ -4,7 +4,6 @@ struct BrowseView: View {
     @State private var viewModel = BrowseViewModel()
     @Environment(\.colorScheme) private var colorScheme
     @Environment(SubscriptionService.self) private var subscriptionService
-    @Environment(RecentlyViewedService.self) private var recentlyViewedService
 
     var body: some View {
         NavigationStack {
@@ -23,10 +22,7 @@ struct BrowseView: View {
             .background(AppColors.adaptiveBackground(colorScheme))
             .navigationTitle(AppConstants.appName)
             .task {
-                await viewModel.loadHomeData(isUnlocked: subscriptionService.isUnlocked, recentlyViewedService: recentlyViewedService)
-            }
-            .onChange(of: subscriptionService.isUnlocked) { _, isUnlocked in
-                Task { await viewModel.loadCounts(isUnlocked: isUnlocked) }
+                await viewModel.loadHomeData()
             }
         }
     }
@@ -42,11 +38,11 @@ struct BrowseView: View {
                 spacing: AppSpacing.md
             ) {
                 ForEach(ContentType.allCases) { type in
-                    NavigationLink(destination: destinationView(for: type)) {
+                    NavigationLink(destination: CategoryListView(contentType: type)) {
                         QuickAccessTile(type: type, count: viewModel.categoryCounts[type])
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(viewModel.categoryCounts[type].map { "\(type.displayName), \($0) entries" } ?? type.displayName)
+                    .accessibilityLabel("\(type.displayName), \(viewModel.categoryCounts[type] ?? 0) entries")
                 }
             }
         }
@@ -59,7 +55,7 @@ struct BrowseView: View {
             sectionHeader("Your Books")
 
             if viewModel.isLoadingBooks {
-                HStack { Spacer(); ProgressView("Loading books..."); Spacer() }
+                HStack { Spacer(); ProgressView(); Spacer() }
                     .padding(.vertical, AppSpacing.lg)
             } else if viewModel.books.isEmpty {
                 Text("No books found")
@@ -116,7 +112,6 @@ struct BrowseView: View {
                             Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                                .accessibilityHidden(true)
                         }
                         .padding(.horizontal, AppSpacing.base)
                         .padding(.vertical, AppSpacing.md)
@@ -136,20 +131,6 @@ struct BrowseView: View {
                 RoundedRectangle(cornerRadius: AppRadius.medium)
                     .strokeBorder(AppColors.adaptiveBorder(colorScheme), lineWidth: 0.5)
             )
-        }
-    }
-
-    // MARK: - Destination Routing
-
-    @ViewBuilder
-    private func destinationView(for type: ContentType) -> some View {
-        switch type {
-        case .monster: MonsterListView()
-        case .spell:   SpellListView()
-        case .feat:    FeatListView()
-        case .item:    ItemListView()
-        case .trait:   TraitListView()
-        default:       CategoryListView(contentType: type)
         }
     }
 

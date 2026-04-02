@@ -1,0 +1,90 @@
+{
+  "identifier" : "LodestonePF1",
+  "nonConsumableProducts" : [
+
+  ],
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_timeRate" : "MONTHLY_RENEWAL_EVERY_30_MINUTES",
+    "askToBuyEnabled" : false,
+    "failTransactionsEnabled" : false,
+    "interruptedPurchasesEnabled" : false,
+    "paymentsEnabled" : true
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "lodestone-allaccess",
+      "localizations" : [
+        {
+          "description" : "Unlock all 15 expansion books for Lodestone PF1, PF2, and SF1.",
+          "displayName" : "Lodestone All Access",
+          "locale" : "en_US"
+        }
+      ],
+      "name" : "All Access",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "1.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "lodestone-pf1-monthly",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlock all expansion content across Lodestone PF1, PF2, and SF1.",
+              "displayName" : "Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.heiloprojects.lodestone-pf1.allaccess.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "All Access Monthly",
+          "subscriptionGroupID" : "lodestone-allaccess",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "14.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "lodestone-pf1-annual",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlock all expansion content across Lodestone PF1, PF2, and SF1.",
+              "displayName" : "Annual",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.heiloprojects.lodestone-pf1.allaccess.annual",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "All Access Annual",
+          "subscriptionGroupID" : "lodestone-allaccess",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}

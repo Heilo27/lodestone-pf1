@@ -51,7 +51,7 @@ struct DetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    favoritesService.toggle(entry)
+                    favoritesService.toggle(entry.id)
                 } label: {
                     Image(systemName: favoritesService.isFavorite(entry.id) ? "heart.fill" : "heart")
                         .foregroundStyle(favoritesService.isFavorite(entry.id) ? .red : AppColors.adaptiveTextSecondary(colorScheme))
@@ -60,9 +60,12 @@ struct DetailView: View {
             }
         }
         .sheet(isPresented: $showPaywall) {
-            PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService, entry: isLocked ? entry : nil)
+            PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.hidden)
+        }
+        .task {
+            await subscriptionService.checkSubscriptionStatus()
         }
         .onAppear {
             recentlyViewedService.record(entry)
@@ -124,12 +127,11 @@ struct DetailView: View {
                             Label("Unlock with Premium", systemImage: "crown.fill")
                         }
                         .buttonStyle(PrimaryButtonStyle())
-                        .accessibilityHint("Opens subscription options")
                         .padding(.horizontal, AppSpacing.xl)
                         .padding(.top, AppSpacing.xs)
                     }
                 }
-                .frame(maxWidth: .infinity)
+                .frame(height: 220)
         }
     }
 

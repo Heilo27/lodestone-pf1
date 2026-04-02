@@ -51,10 +51,10 @@ final class SubscriptionService {
     private(set) var expirationDate: Date?
     private(set) var activeProductID: String?
 
-    // Subscription for Lodestone PF2
+    // Subscription for Lodestone PF1
     private let productIDs = [
-        "com.heiloprojects.lodestone-pf2.allaccess.monthly",
-        "com.heiloprojects.lodestone-pf2.allaccess.annual",
+        "com.heiloprojects.lodestone-pf1.allaccess.monthly",
+        "com.heiloprojects.lodestone-pf1.allaccess.annual",
     ]
 
     func loadProducts() async {

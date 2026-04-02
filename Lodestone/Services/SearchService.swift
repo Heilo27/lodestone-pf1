@@ -26,12 +26,9 @@ final class SearchService {
         isSearching = true
 
         searchTask = Task {
-            // Debounce
-            try? await Task.sleep(nanoseconds: UInt64(AppConstants.searchDebounceSeconds * 1_000_000_000))
-            guard !Task.isCancelled else {
-                isSearching = false
-                return
-            }
+            // Debounce: 300ms
+            try? await Task.sleep(nanoseconds: 300_000_000)
+            guard !Task.isCancelled else { return }
 
             let cacheKey = cacheKey(query: currentQuery, filters: activeFilters)
             if let cached = cache.object(forKey: cacheKey as NSString) {

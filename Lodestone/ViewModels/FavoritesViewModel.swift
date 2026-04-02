@@ -6,14 +6,27 @@ final class FavoritesViewModel {
     var entries: [any ContentEntry] = []
     var isLoading: Bool = false
 
+    private let favoritesService: FavoritesService
     private let database = DatabaseService.shared
 
-    init() {}
+    init(favoritesService: FavoritesService) {
+        self.favoritesService = favoritesService
+    }
 
-    func loadFavorites(favorites: Set<FavoriteEntry>) async {
+    var favoriteIDs: Set<UUID> {
+        favoritesService.favoriteIDs
+    }
+
+    func loadFavorites() async {
         isLoading = true
         do {
-            entries = try await database.getAllFavorites(favorites: favorites)
+            try await database.open()
+            let ids = favoritesService.favoriteIDs
+            if ids.isEmpty {
+                entries = []
+            } else {
+                entries = try await database.getAllFavorites(ids: ids)
+            }
         } catch {
             entries = []
         }
@@ -21,6 +34,12 @@ final class FavoritesViewModel {
     }
 
     func removeFavorite(_ id: UUID) {
+        favoritesService.remove(id)
         entries.removeAll { $0.id == id }
+    }
+
+    func removeAll() {
+        favoritesService.removeAll()
+        entries.removeAll()
     }
 }

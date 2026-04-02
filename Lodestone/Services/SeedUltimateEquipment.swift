@@ -15,7 +15,7 @@ private extension ItemEntry {
         isPremium: Bool = true
     ) -> ItemEntry {
         ItemEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,

@@ -17,7 +17,7 @@ private extension FeatEntry {
         isPremium: Bool = false
     ) -> FeatEntry {
         FeatEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,

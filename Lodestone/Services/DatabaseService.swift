@@ -66,7 +66,7 @@ actor DatabaseService {
         return results
     }
 
-    func browse(type: ContentType, limit: Int = 1000, offset: Int = 0) throws -> [any ContentEntry] {
+    func browse(type: ContentType, limit: Int = 200, offset: Int = 0) throws -> [any ContentEntry] {
         guard isOpen else { throw DatabaseError.notOpen }
         return try fetchEntries(type: type, limit: limit, offset: offset)
     }
@@ -116,41 +116,37 @@ actor DatabaseService {
         return try fetchEntry(id: id, type: type)
     }
 
-    func countForType(_ type: ContentType, unlockedOnly: Bool = false) throws -> Int {
+    func countForType(_ type: ContentType) throws -> Int {
         guard isOpen else { throw DatabaseError.notOpen }
-        let sql = unlockedOnly
-            ? "SELECT COUNT(*) FROM content WHERE content_type = ? AND is_premium = 0"
-            : "SELECT COUNT(*) FROM content WHERE content_type = ?"
-        return try queryIntBound(sql, param: type.rawValue)
+        let tableValue: String
+        switch type {
+        case .spell:   tableValue = "spell"
+        case .class_:  tableValue = "class"
+        case .monster: tableValue = "monster"
+        case .feat:    tableValue = "feat"
+        case .item:    tableValue = "item"
+        case .race:    tableValue = "race"
+        case .trait:   tableValue = "trait"
+        case .rule:    tableValue = "rule"
+        }
+        return try queryIntBound("SELECT COUNT(*) FROM content WHERE content_type = ?", param: tableValue)
     }
 
-    func getAllFavorites(favorites: Set<FavoriteEntry>) throws -> [any ContentEntry] {
+    func getAllFavorites(ids: Set<UUID>) throws -> [any ContentEntry] {
         guard isOpen else { throw DatabaseError.notOpen }
-        guard !favorites.isEmpty else { return [] }
+        guard !ids.isEmpty else { return [] }
 
-        // Group favorites by content type to batch per-type queries
-        var byType: [ContentType: [UUID]] = [:]
-        for fav in favorites {
-            byType[fav.contentType, default: []].append(fav.id)
-        }
-
+        // Use generic browse with ID filter
         var results: [any ContentEntry] = []
-        for (type, ids) in byType {
-            let (detailTable, detailCols) = detailTableInfo(for: type)
-            let placeholders = ids.map { _ in "?" }.joined(separator: ",")
-            let sql = """
-            SELECT c.id, c.title, c.content_type, c.summary, c.is_premium, c.source,
-                   \(detailCols)
-            FROM content c
-            LEFT JOIN \(detailTable) d ON d.content_id = c.id
-            WHERE c.id IN (\(placeholders))
-            ORDER BY c.title
-            """
-            let params = ids.map { $0.uuidString }
-            let batch = try queryEntries(sql: sql, params: params)
-            results.append(contentsOf: batch)
+        for id in ids {
+            for type in ContentType.allCases {
+                if let entry = try fetchEntry(id: id, type: type) {
+                    results.append(entry)
+                    break
+                }
+            }
         }
-        return results.sorted { $0.title < $1.title }
+        return results
     }
 
     // MARK: - Schema
@@ -471,11 +467,9 @@ actor DatabaseService {
             .joined(separator: " ")
 
         var typeClause = ""
-        var extraParams: [String] = []
         if !filters.isEmpty {
-            let placeholders = filters.map { _ in "?" }.joined(separator: ",")
-            typeClause = "AND c.content_type IN (\(placeholders))"
-            extraParams = filters.map { $0.rawValue }
+            let types = filters.map { "'\($0.rawValue)'" }.joined(separator: ",")
+            typeClause = "AND c.content_type IN (\(types))"
         }
 
         let sql = """
@@ -489,16 +483,14 @@ actor DatabaseService {
         LIMIT \(limit)
         """
 
-        return try queryEntries(sql: sql, params: [safeQuery] + extraParams)
+        return try queryEntries(sql: sql, params: [safeQuery])
     }
 
     private func likeSearch(query: String, filters: Set<ContentType>, limit: Int) throws -> [any ContentEntry] {
         var typeClause = ""
-        var extraParams: [String] = []
         if !filters.isEmpty {
-            let placeholders = filters.map { _ in "?" }.joined(separator: ",")
-            typeClause = "AND content_type IN (\(placeholders))"
-            extraParams = filters.map { $0.rawValue }
+            let types = filters.map { "'\($0.rawValue)'" }.joined(separator: ",")
+            typeClause = "AND content_type IN (\(types))"
         }
 
         let sql = """
@@ -510,16 +502,14 @@ actor DatabaseService {
         LIMIT \(limit)
         """
         let pattern = "%\(query)%"
-        return try queryEntries(sql: sql, params: [pattern, pattern] + extraParams)
+        return try queryEntries(sql: sql, params: [pattern, pattern])
     }
 
     private func browseAll(filters: Set<ContentType>, limit: Int, offset: Int) throws -> [any ContentEntry] {
         var typeClause = ""
-        var params: [String] = []
         if !filters.isEmpty {
-            let placeholders = filters.map { _ in "?" }.joined(separator: ",")
-            typeClause = "WHERE content_type IN (\(placeholders))"
-            params = filters.map { $0.rawValue }
+            let types = filters.map { "'\($0.rawValue)'" }.joined(separator: ",")
+            typeClause = "WHERE content_type IN (\(types))"
         }
 
         let sql = """
@@ -529,7 +519,7 @@ actor DatabaseService {
         ORDER BY title
         LIMIT \(limit) OFFSET \(offset)
         """
-        return try queryEntries(sql: sql, params: params)
+        return try queryEntries(sql: sql, params: [])
     }
 
     private func fetchEntries(type: ContentType, limit: Int, offset: Int) throws -> [any ContentEntry] {
@@ -687,27 +677,10 @@ actor DatabaseService {
         try? exec("ROLLBACK")
     }
 
-    /// Deletes all rows from the content and detail tables. Call at the start of a re-seed.
-    func clearAllContent() throws {
-        guard isOpen else { throw DatabaseError.notOpen }
-        // Disable FK checks temporarily so detail tables don't block content deletion
-        try exec("DELETE FROM spell_details")
-        try exec("DELETE FROM class_details")
-        try exec("DELETE FROM feat_details")
-        try exec("DELETE FROM monster_details")
-        try exec("DELETE FROM item_details")
-        try exec("DELETE FROM race_details")
-        try exec("DELETE FROM trait_details")
-        try exec("DELETE FROM rule_details")
-        try exec("DELETE FROM content")
-    }
-
     /// Clears the FTS index entirely. Call at the start of a re-seed to prevent duplicate entries.
     func clearFTSIndex() throws {
         guard isOpen else { throw DatabaseError.notOpen }
-        // content_fts is a contentless FTS5 table — direct DELETE is not supported.
-        // Use the FTS5 'delete-all' command instead.
-        try exec("INSERT INTO content_fts(content_fts) VALUES('delete-all')")
+        try exec("DELETE FROM content_fts")
     }
 
     private func queryInt(_ sql: String) throws -> Int {

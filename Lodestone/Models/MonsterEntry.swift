@@ -8,26 +8,22 @@ struct MonsterEntry: ContentEntry {
     let summary: String
     let isPremium: Bool
 
-    // PF2 uses level (-1 to 25+) instead of CR
-    let level: Int
-    let creatureType: String        // Humanoid, Beast, Undead, etc.
+    let challengeRating: String
+    let type: String
     let size: String
-    let traits: String              // comma-separated (creature type tags + rarity)
+    let alignment: String
     let hitPoints: String
     let armorClass: Int
-    let fortSave: Int
-    let refSave: Int
-    let willSave: Int
     let speed: String
     let attacks: String
     let specialAbilities: String
+    let environment: String
     let description: String
     let source: String
 
     enum CodingKeys: String, CodingKey {
-        case id, title, summary, isPremium, level, creatureType, size, traits
-        case hitPoints, armorClass, fortSave, refSave, willSave
-        case speed, attacks, specialAbilities, description, source
+        case id, title, summary, isPremium, challengeRating, type, size, alignment
+        case hitPoints, armorClass, speed, attacks, specialAbilities, environment, description, source
     }
 
     // MARK: - Database init
@@ -36,84 +32,77 @@ struct MonsterEntry: ContentEntry {
         title = row["title"] ?? ""
         summary = row["summary"] ?? ""
         isPremium = (row["is_premium"] ?? "0") == "1"
-        level = Int(row["level"] ?? "1") ?? 1
-        creatureType = row["creature_type"] ?? ""
+        challengeRating = row["challenge_rating"] ?? ""
+        type = row["monster_type"] ?? ""
         size = row["size"] ?? ""
-        traits = row["traits"] ?? ""
+        alignment = row["alignment"] ?? ""
         hitPoints = row["hit_points"] ?? ""
         armorClass = Int(row["armor_class"] ?? "10") ?? 10
-        fortSave = Int(row["fort_save"] ?? "0") ?? 0
-        refSave = Int(row["ref_save"] ?? "0") ?? 0
-        willSave = Int(row["will_save"] ?? "0") ?? 0
         speed = row["speed"] ?? ""
         attacks = row["attacks"] ?? ""
         specialAbilities = row["special_abilities"] ?? ""
+        environment = row["environment"] ?? ""
         description = row["description"] ?? ""
-        source = row["source"] ?? "Monster Core"
+        source = row["source"] ?? "Bestiary"
     }
 
     // MARK: - Memberwise init
     init(id: UUID, title: String, summary: String, isPremium: Bool,
-         level: Int, creatureType: String, size: String, traits: String,
-         hitPoints: String, armorClass: Int, fortSave: Int, refSave: Int, willSave: Int,
-         speed: String, attacks: String, specialAbilities: String,
-         description: String, source: String) {
+         challengeRating: String, type: String, size: String, alignment: String,
+         hitPoints: String, armorClass: Int, speed: String, attacks: String,
+         specialAbilities: String, environment: String, description: String, source: String) {
         self.id = id
         self.title = title
         self.summary = summary
         self.isPremium = isPremium
-        self.level = level
-        self.creatureType = creatureType
+        self.challengeRating = challengeRating
+        self.type = type
         self.size = size
-        self.traits = traits
+        self.alignment = alignment
         self.hitPoints = hitPoints
         self.armorClass = armorClass
-        self.fortSave = fortSave
-        self.refSave = refSave
-        self.willSave = willSave
         self.speed = speed
         self.attacks = attacks
         self.specialAbilities = specialAbilities
+        self.environment = environment
         self.description = description
         self.source = source
     }
 
+    // MARK: - Factory
+
     static func make(
         _ title: String,
-        level: Int,
-        creatureType: String,
-        size: String = "Medium",
-        traits: String = "",
+        cr: String,
+        type: String,
+        size: String,
+        alignment: String,
         hp: String,
         ac: Int,
-        fort: Int,
-        ref: Int,
-        will: Int,
-        speed: String = "25 feet",
-        attacks: String = "",
-        specialAbilities: String = "",
+        speed: String,
+        attacks: String,
+        specialAbilities: String,
+        environment: String,
         summary: String,
         desc: String,
-        source: String = "Monster Core",
+        source: String = "Bestiary",
         isPremium: Bool = false
     ) -> MonsterEntry {
         MonsterEntry(
-            id: seededUUID("\(title)\(source)"),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,
-            level: level,
-            creatureType: creatureType,
+            challengeRating: cr,
+            type: type,
             size: size,
-            traits: traits,
+            alignment: alignment,
             hitPoints: hp,
             armorClass: ac,
-            fortSave: fort,
-            refSave: ref,
-            willSave: will,
             speed: speed,
             attacks: attacks,
             specialAbilities: specialAbilities,
+            environment: environment,
             description: desc,
             source: source
         )
@@ -121,22 +110,20 @@ struct MonsterEntry: ContentEntry {
 
     static let placeholder = MonsterEntry(
         id: UUID(),
-        title: "Goblin Warrior",
-        summary: "A small humanoid creature infamous for its love of fire and mayhem.",
+        title: "Goblin",
+        summary: "A small, green-skinned humanoid with sharp teeth and a mean disposition.",
         isPremium: false,
-        level: -1,
-        creatureType: "Humanoid",
+        challengeRating: "1/3",
+        type: "Humanoid (goblinoid)",
         size: "Small",
-        traits: "Goblin, Humanoid",
-        hitPoints: "6",
+        alignment: "NE",
+        hitPoints: "6 (1d8+1)",
         armorClass: 16,
-        fortSave: 5,
-        refSave: 5,
-        willSave: 3,
-        speed: "25 feet",
-        attacks: "Jaws +7 (1d6 piercing), Dogslicer +7 (1d6 slashing, Agile, Backstabber)",
-        specialAbilities: "Darkvision",
-        description: "Goblins who have some experience raiding and fighting are quick to taunt and distract their foes.",
-        source: "Monster Core"
+        speed: "30 ft.",
+        attacks: "Bite +2 (1d4), or short sword +2 (1d4)",
+        specialAbilities: "Darkvision 60 ft.",
+        environment: "Temperate forest and plains",
+        description: "Goblins are a race of childishly cruel humanoids who are too cowardly to pose a real threat by themselves.",
+        source: "Bestiary"
     )
 }

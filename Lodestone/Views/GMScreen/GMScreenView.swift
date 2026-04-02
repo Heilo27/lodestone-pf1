@@ -50,7 +50,6 @@ struct GMScreenView: View {
                                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                                 .textSelection(.enabled)
                                 .lineSpacing(3)
-                                .minimumScaleFactor(0.8)
                         }
                     }
                 }
@@ -94,8 +93,6 @@ private struct GMCategoryChip: View {
         .buttonStyle(.plain)
         .frame(minHeight: 44)
         .contentShape(Rectangle())
-        .accessibilityLabel(title)
-        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 }
 

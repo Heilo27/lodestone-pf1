@@ -16,7 +16,7 @@ private extension ClassEntry {
         isPremium: Bool = true
     ) -> ClassEntry {
         ClassEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,
@@ -43,7 +43,7 @@ private extension RuleEntry {
         isPremium: Bool = true
     ) -> RuleEntry {
         RuleEntry(
-            id: seededUUID(title + source),
+            id: UUID(),
             title: title,
             summary: summary,
             isPremium: isPremium,
