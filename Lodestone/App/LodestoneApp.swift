@@ -7,6 +7,15 @@ struct LodestoneApp: App {
     @State private var subscriptionService = SubscriptionService()
     @State private var favoritesService = FavoritesService()
     @State private var recentlyViewedService = RecentlyViewedService()
+    @AppStorage("selectedTheme") private var selectedTheme: String = "system"
+
+    private var preferredColorScheme: ColorScheme? {
+        switch selectedTheme {
+        case "light": return .light
+        case "dark":  return .dark
+        default:      return nil
+        }
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -20,6 +29,7 @@ struct LodestoneApp: App {
                     .environment(subscriptionService)
                     .environment(favoritesService)
                     .environment(recentlyViewedService)
+                    .preferredColorScheme(preferredColorScheme)
             }
         }
     }
@@ -141,6 +151,5 @@ struct DatabaseLoadingView: View {
             }
             .padding(.horizontal, AppSpacing.xxl)
         }
-        .preferredColorScheme(.dark)
     }
 }
