@@ -23,7 +23,7 @@
       "id" : "lodestone-allaccess",
       "localizations" : [
         {
-          "description" : "Unlock all 15 expansion books for Lodestone PF1, PF2, and SF1.",
+          "description" : "Unlock all 15 expansion books for Lodestone PF1.",
           "displayName" : "Lodestone All Access",
           "locale" : "en_US"
         }
@@ -44,7 +44,7 @@
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Unlock all expansion content across Lodestone PF1, PF2, and SF1.",
+              "description" : "Unlock all expansion content for Lodestone PF1.",
               "displayName" : "Monthly",
               "locale" : "en_US"
             }
@@ -69,7 +69,7 @@
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Unlock all expansion content across Lodestone PF1, PF2, and SF1.",
+              "description" : "Unlock all expansion content for Lodestone PF1.",
               "displayName" : "Annual",
               "locale" : "en_US"
             }
