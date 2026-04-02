@@ -51,11 +51,11 @@ struct ContentView: View {
             .listStyle(.sidebar)
         } detail: {
             switch Tab(rawValue: selectedTabRaw) ?? .browse {
-            case .browse:    BrowseView()
-            case .search:    SearchView()
-            case .favorites: FavoritesView()
-            case .gmTools:   GMScreenView()
-            case .settings:  SettingsView()
+            case .browse:    BrowseView().id(Tab.browse.rawValue)
+            case .search:    SearchView().id(Tab.search.rawValue)
+            case .favorites: FavoritesView().id(Tab.favorites.rawValue)
+            case .gmTools:   GMScreenView().id(Tab.gmTools.rawValue)
+            case .settings:  SettingsView().id(Tab.settings.rawValue)
             }
         }
     }
