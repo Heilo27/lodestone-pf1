@@ -62,9 +62,7 @@ struct SearchView: View {
                         ForEach(groupedResults, id: \.type) { group in
                             Section(group.type.displayName) {
                                 ForEach(group.entries, id: \.id) { entry in
-                                    NavigationLink {
-                                        DetailView(entry: entry)
-                                    } label: {
+                                    NavigationLink(value: BrowseDestination.detail(AnyContentEntry(erasing: entry))) {
                                         SearchResultRow(entry: entry)
                                     }
                                 }
@@ -86,6 +84,11 @@ struct SearchView: View {
             }
             .navigationTitle("Search")
             .searchable(text: $viewModel.query, prompt: "Spells, monsters, feats...")
+            .navigationDestination(for: BrowseDestination.self) { destination in
+                if case .detail(let wrapped) = destination {
+                    DetailView(entry: wrapped)
+                }
+            }
             .onChange(of: viewModel.query) {
                 viewModel.search()
             }

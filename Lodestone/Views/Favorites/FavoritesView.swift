@@ -18,9 +18,7 @@ struct FavoritesView: View {
                         )
                     } else {
                         List(vm.entries, id: \.id) { entry in
-                            NavigationLink {
-                                DetailView(entry: entry)
-                            } label: {
+                            NavigationLink(value: BrowseDestination.detail(AnyContentEntry(erasing: entry))) {
                                 HStack(spacing: AppSpacing.md) {
                                     ContentTypeIconBadge(type: entry.contentType, size: 32)
                                     VStack(alignment: .leading, spacing: 2) {
@@ -46,6 +44,11 @@ struct FavoritesView: View {
                 }
             }
             .navigationTitle("Favorites")
+            .navigationDestination(for: BrowseDestination.self) { destination in
+                if case .detail(let wrapped) = destination {
+                    DetailView(entry: wrapped)
+                }
+            }
             .onAppear {
                 if viewModel == nil {
                     viewModel = FavoritesViewModel(favoritesService: favoritesService)

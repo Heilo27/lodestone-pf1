@@ -29,9 +29,7 @@ struct CategoryListView: View {
                 )
             } else {
                 List(filteredEntries, id: \.id) { entry in
-                    NavigationLink {
-                        DetailView(entry: entry)
-                    } label: {
+                    NavigationLink(value: BrowseDestination.detail(AnyContentEntry(erasing: entry))) {
                         CategoryEntryRow(entry: entry)
                     }
                 }

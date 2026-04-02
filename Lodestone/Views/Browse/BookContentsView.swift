@@ -32,9 +32,7 @@ struct BookContentsView: View {
                     ForEach(filteredGroups, id: \.0) { (type, entries) in
                         Section(type.displayName) {
                             ForEach(entries, id: \.id) { entry in
-                                NavigationLink(entry.title) {
-                                    DetailView(entry: entry)
-                                }
+                                NavigationLink(entry.title, value: BrowseDestination.detail(AnyContentEntry(erasing: entry)))
                             }
                         }
                     }

@@ -202,9 +202,7 @@ private struct FeatRow: View {
     }
 
     var body: some View {
-        NavigationLink {
-            DetailView(entry: entry)
-        } label: {
+        NavigationLink(value: BrowseDestination.detail(AnyContentEntry(erasing: entry))) {
             HStack(spacing: AppSpacing.md) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(entry.title)

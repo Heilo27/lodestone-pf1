@@ -62,7 +62,7 @@ struct TraitListView: View {
                     ForEach(groupedByType, id: \.type) { group in
                         Section(header: GroupHeader(group.type)) {
                             ForEach(group.traits, id: \.id) { trait in
-                                NavigationLink { DetailView(entry: trait) } label: {
+                                NavigationLink(value: BrowseDestination.detail(AnyContentEntry(erasing: trait))) {
                                     TraitRow(trait: trait, isUnlocked: subscriptionService.isUnlocked)
                                 }
                             }

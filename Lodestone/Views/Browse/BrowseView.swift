@@ -21,6 +21,14 @@ struct BrowseView: View {
         }
         .background(AppColors.adaptiveBackground(colorScheme))
         .navigationTitle(AppConstants.appName)
+        .navigationDestination(for: BrowseDestination.self) { destination in
+            switch destination {
+            case .contentTypeList(let type): CategoryListView(contentType: type)
+            case .bookContents(let book):    BookContentsView(source: book)
+            case .recentEntry(let recent):   RecentEntryLoader(recent: recent)
+            case .detail(let wrapped):       DetailView(entry: wrapped)
+            }
+        }
         .task {
             await viewModel.loadHomeData()
         }
@@ -43,7 +51,7 @@ struct BrowseView: View {
                 spacing: AppSpacing.md
             ) {
                 ForEach(ContentType.allCases) { type in
-                    NavigationLink(destination: CategoryListView(contentType: type)) {
+                    NavigationLink(value: BrowseDestination.contentTypeList(type)) {
                         QuickAccessTile(type: type, count: viewModel.categoryCounts[type])
                     }
                     .buttonStyle(.plain)
@@ -70,7 +78,7 @@ struct BrowseView: View {
             } else {
                 VStack(spacing: 0) {
                     ForEach(Array(viewModel.books.enumerated()), id: \.element.id) { index, book in
-                        NavigationLink(destination: BookContentsView(source: book)) {
+                        NavigationLink(value: BrowseDestination.bookContents(book)) {
                             BookRow(book: book, isUnlocked: subscriptionService.isUnlocked)
                                 .padding(.horizontal, AppSpacing.base)
                                 .padding(.vertical, AppSpacing.md)
@@ -102,7 +110,7 @@ struct BrowseView: View {
 
             VStack(spacing: 0) {
                 ForEach(Array(viewModel.recentlyViewed.enumerated()), id: \.element.id) { index, recent in
-                    NavigationLink(destination: RecentEntryLoader(recent: recent)) {
+                    NavigationLink(value: BrowseDestination.recentEntry(recent)) {
                         HStack(spacing: AppSpacing.md) {
                             ContentTypeIconBadge(type: recent.contentType, size: 32)
                             VStack(alignment: .leading, spacing: 2) {

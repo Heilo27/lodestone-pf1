@@ -77,6 +77,8 @@
 		A10101 /* SeedBestiary4.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10101 /* SeedBestiary4.swift */; };
 		A10102 /* SeedBestiary5.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10102 /* SeedBestiary5.swift */; };
 		A10103 /* SeedNPCCodex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10103 /* SeedNPCCodex.swift */; };
+		A10104 /* AnyContentEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10104 /* AnyContentEntry.swift */; };
+		A10105 /* BrowseDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10105 /* BrowseDestination.swift */; };
 		A10077 /* RaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10077 /* RaceDetailView.swift */; };
 		A10078 /* RaceEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10078 /* RaceEntry.swift */; };
 		A10066 /* SeedUltimateMagic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10066 /* SeedUltimateMagic.swift */; };
@@ -181,6 +183,8 @@
 		B10101 /* SeedBestiary4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBestiary4.swift; sourceTree = "<group>"; };
 		B10102 /* SeedBestiary5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBestiary5.swift; sourceTree = "<group>"; };
 		B10103 /* SeedNPCCodex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedNPCCodex.swift; sourceTree = "<group>"; };
+		B10104 /* AnyContentEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyContentEntry.swift; sourceTree = "<group>"; };
+		B10105 /* BrowseDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseDestination.swift; sourceTree = "<group>"; };
 		B10077 /* RaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceDetailView.swift; sourceTree = "<group>"; };
 		B10078 /* RaceEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceEntry.swift; sourceTree = "<group>"; };
 		B10066 /* SeedUltimateMagic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedUltimateMagic.swift; sourceTree = "<group>"; };
@@ -263,6 +267,8 @@
 			children = (
 				B10004 /* ContentEntry.swift */,
 				B10003 /* ContentType.swift */,
+				B10104 /* AnyContentEntry.swift */,
+				B10105 /* BrowseDestination.swift */,
 				B10005 /* SpellEntry.swift */,
 				B10006 /* ClassEntry.swift */,
 				B10007 /* MonsterEntry.swift */,
@@ -648,6 +654,8 @@
 				A10101 /* SeedBestiary4.swift in Sources */,
 				A10102 /* SeedBestiary5.swift in Sources */,
 				A10103 /* SeedNPCCodex.swift in Sources */,
+				A10104 /* AnyContentEntry.swift in Sources */,
+				A10105 /* BrowseDestination.swift in Sources */,
 				A10077 /* RaceDetailView.swift in Sources */,
 				A10078 /* RaceEntry.swift in Sources */,
 				A10066 /* SeedUltimateMagic.swift in Sources */,

@@ -4,6 +4,7 @@ struct ContentView: View {
     @AppStorage("selectedTab") private var selectedTab: Int = 0
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(RecentlyViewedService.self) private var recentlyViewedService
 
     // One path per tab — held here so we can reset on tab switch
     @State private var paths: [NavigationPath] = Array(repeating: NavigationPath(), count: 5)
@@ -24,11 +25,29 @@ struct ContentView: View {
     private var iPadLayout: some View {
         NavigationSplitView {
             List {
-                SidebarItem(label: "Browse", icon: "books.vertical.fill", tag: 0, selected: $selectedTab)
-                SidebarItem(label: "Search", icon: "magnifyingglass", tag: 1, selected: $selectedTab)
-                SidebarItem(label: "Favorites", icon: "bookmark.fill", tag: 2, selected: $selectedTab)
-                SidebarItem(label: "GM Tools", icon: "shield.fill", tag: 3, selected: $selectedTab)
-                SidebarItem(label: "Settings", icon: "gearshape.fill", tag: 4, selected: $selectedTab)
+                Section {
+                    SidebarItem(label: "Browse", icon: "books.vertical.fill", tag: 0, selected: $selectedTab)
+                    SidebarItem(label: "Search", icon: "magnifyingglass", tag: 1, selected: $selectedTab)
+                    SidebarItem(label: "Favorites", icon: "bookmark.fill", tag: 2, selected: $selectedTab)
+                    SidebarItem(label: "GM Tools", icon: "shield.fill", tag: 3, selected: $selectedTab)
+                    SidebarItem(label: "Settings", icon: "gearshape.fill", tag: 4, selected: $selectedTab)
+                }
+
+                if !recentlyViewedService.entries.isEmpty {
+                    Section("Recently Viewed") {
+                        ForEach(recentlyViewedService.entries.prefix(5)) { recent in
+                            Button {
+                                selectedTab = 0
+                                paths[0].append(BrowseDestination.recentEntry(recent))
+                            } label: {
+                                Label(recent.title, systemImage: recent.contentType.iconName)
+                                    .font(AppFonts.subheadline)
+                                    .lineLimit(1)
+                            }
+                            .foregroundStyle(colorScheme == .dark ? AppColors.primaryDark : AppColors.primary)
+                        }
+                    }
+                }
             }
             .navigationTitle(AppConstants.appName)
             .listStyle(.sidebar)
