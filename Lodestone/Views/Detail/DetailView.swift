@@ -15,7 +15,6 @@ struct DetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                // Header area
                 headerView
                     .padding(.horizontal, AppSpacing.base)
                     .padding(.top, AppSpacing.base)
@@ -29,7 +28,6 @@ struct DetailView: View {
                     lockedContentOverlay
                         .padding(.horizontal, AppSpacing.base)
                 } else {
-                    // Summary
                     if !entry.summary.isEmpty {
                         Text(entry.summary)
                             .font(AppFonts.body)
@@ -38,7 +36,6 @@ struct DetailView: View {
                             .padding(.bottom, AppSpacing.base)
                     }
 
-                    // Type-specific detail
                     typeSpecificView(for: entry)
                         .padding(.horizontal, AppSpacing.base)
                 }
@@ -51,7 +48,7 @@ struct DetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    favoritesService.toggle(entry.id)
+                    favoritesService.toggle(entry)
                 } label: {
                     Image(systemName: favoritesService.isFavorite(entry.id) ? "heart.fill" : "heart")
                         .foregroundStyle(favoritesService.isFavorite(entry.id) ? .red : AppColors.adaptiveTextSecondary(colorScheme))
@@ -60,12 +57,9 @@ struct DetailView: View {
             }
         }
         .sheet(isPresented: $showPaywall) {
-            PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService)
+            PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService, entry: isLocked ? entry : nil)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.hidden)
-        }
-        .task {
-            await subscriptionService.checkSubscriptionStatus()
         }
         .onAppear {
             recentlyViewedService.record(entry)
@@ -76,7 +70,6 @@ struct DetailView: View {
 
     private var headerView: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            // Badges row
             HStack(spacing: AppSpacing.xs) {
                 ContentTypeIconBadge(type: entry.contentType, size: 28)
                 ContentTypeBadge(type: entry.contentType)
@@ -87,7 +80,6 @@ struct DetailView: View {
                 Spacer()
             }
 
-            // Full-width title
             Text(entry.title)
                 .font(AppFonts.displayMedium)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
@@ -142,20 +134,24 @@ struct DetailView: View {
         switch entry {
         case let spell as SpellEntry:
             SpellDetailView(spell: spell)
-        case let classEntry as ClassEntry:
-            ClassDetailView(classEntry: classEntry)
+        case let cls as ClassEntry:
+            ClassDetailView(cls: cls)
         case let monster as MonsterEntry:
             MonsterDetailView(monster: monster)
         case let feat as FeatEntry:
             FeatDetailView(feat: feat)
         case let item as ItemEntry:
             ItemDetailView(item: item)
-        case let race as RaceEntry:
-            RaceDetailView(race: race)
+        case let ancestry as AncestryEntry:
+            AncestryDetailView(ancestry: ancestry)
         case let trait as TraitEntry:
             TraitDetailView(trait: trait)
         case let rule as RuleEntry:
             RuleDetailView(rule: rule)
+        case let background as BackgroundEntry:
+            BackgroundDetailView(background: background)
+        case let condition as ConditionEntry:
+            ConditionDetailView(condition: condition)
         default:
             Text(entry.summary)
                 .font(AppFonts.body)

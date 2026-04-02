@@ -1,0 +1,16 @@
+REVIEW NOTES — Lodestone PF1
+
+App Type: Offline reference library for the Pathfinder 1E tabletop RPG ruleset.
+
+No login required. No account creation. App is fully functional without network access.
+
+In-App Purchase: One auto-renewing subscription ($2/month) unlocks premium content (additional spells, monsters, feats, prestige classes). The Core Rulebook content (classes, races, core spells, core feats) is free with no purchase required.
+
+Content: All game content is sourced from Archives of Nethys (aonprd.com) under the Open Game License (OGL). No proprietary Paizo content is included. Text-only — no artwork.
+
+Permissions used:
+- UserDefaults (NSPrivacyAccessedAPICategoryUserDefaults / CA92.1): Used to store user preferences (favorites, recently viewed entries, subscription status cache).
+
+No camera, microphone, location, contacts, or other sensitive APIs used.
+No analytics, tracking, or third-party SDKs.
+No server-side data collection of any kind.

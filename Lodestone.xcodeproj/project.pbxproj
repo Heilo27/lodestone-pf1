@@ -16,7 +16,6 @@
 		A10007 /* MonsterEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007 /* MonsterEntry.swift */; };
 		A10008 /* FeatEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008 /* FeatEntry.swift */; };
 		A10009 /* ItemEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009 /* ItemEntry.swift */; };
-		A10010 /* RaceEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010 /* RaceEntry.swift */; };
 		A10011 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011 /* DatabaseService.swift */; };
 		A10012 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012 /* SearchService.swift */; };
 		A10013 /* FavoritesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013 /* FavoritesService.swift */; };
@@ -49,7 +48,6 @@
 		A10040 /* SQLiteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10040 /* SQLiteRow.swift */; };
 		A10041 /* TraitDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10041 /* TraitDetailView.swift */; };
 		A10042 /* RuleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10042 /* RuleDetailView.swift */; };
-		A10043 /* RaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10043 /* RaceDetailView.swift */; };
 		A10044 /* BookSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10044 /* BookSource.swift */; };
 		A10045 /* RecentlyViewedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10045 /* RecentlyViewedService.swift */; };
 		A10046 /* BookContentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10046 /* BookContentsView.swift */; };
@@ -63,28 +61,24 @@
 		A10055 /* SeedTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10055 /* SeedTraits.swift */; };
 		A10056 /* SeedRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10056 /* SeedRules.swift */; };
 		A10057 /* SeedClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10057 /* SeedClasses.swift */; };
-		A10058 /* SeedRaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10058 /* SeedRaces.swift */; };
 		A10060 /* LodestoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10060 /* LodestoneUITests.swift */; };
 		A10061 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10061 /* AppFonts.swift */; };
 		A10062 /* DesignComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10062 /* DesignComponents.swift */; };
 		A10063 /* PlayfairDisplay-Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B10063 /* PlayfairDisplay-Variable.ttf */; };
 		A10064 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B10064 /* PrivacyInfo.xcprivacy */; };
 		A10065 /* SeedAPG.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10065 /* SeedAPG.swift */; };
-		A10066 /* SeedUltimateMagic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10066 /* SeedUltimateMagic.swift */; };
-		A10067 /* SeedUltimateCombat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10067 /* SeedUltimateCombat.swift */; };
-		A10068 /* SeedBestiary2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10068 /* SeedBestiary2.swift */; };
-		A10069 /* SeedUltimateEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10069 /* SeedUltimateEquipment.swift */; };
-		A10070 /* SeedAdvancedClassGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10070 /* SeedAdvancedClassGuide.swift */; };
-		A10071 /* SeedUnchained.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10071 /* SeedUnchained.swift */; };
-		A10072 /* SeedNPCCodex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10072 /* SeedNPCCodex.swift */; };
-		A10073 /* SeedGameMasteryGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10073 /* SeedGameMasteryGuide.swift */; };
-		A10074 /* SeedMythicAdventures.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10074 /* SeedMythicAdventures.swift */; };
-		A10075 /* SeedOccultAdventures.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10075 /* SeedOccultAdventures.swift */; };
-		A10076 /* SeedBestiary3.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10076 /* SeedBestiary3.swift */; };
-		A10077 /* SeedBestiary4.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10077 /* SeedBestiary4.swift */; };
-		A10078 /* SeedBestiary5.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10078 /* SeedBestiary5.swift */; };
-		A10079 /* SeedAdvancedRaceGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10079 /* SeedAdvancedRaceGuide.swift */; };
-		A10080 /* SeedUltimateCampaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10080 /* SeedUltimateCampaign.swift */; };
+		A10081 /* AncestryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10081 /* AncestryEntry.swift */; };
+		A10082 /* BackgroundEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10082 /* BackgroundEntry.swift */; };
+		A10083 /* ConditionEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10083 /* ConditionEntry.swift */; };
+		A10084 /* AncestryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10084 /* AncestryDetailView.swift */; };
+		A10085 /* BackgroundDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10085 /* BackgroundDetailView.swift */; };
+		A10086 /* ConditionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10086 /* ConditionDetailView.swift */; };
+		A10087 /* SeedAncestries.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10087 /* SeedAncestries.swift */; };
+		A10088 /* SeedBackgrounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10088 /* SeedBackgrounds.swift */; };
+		A10089 /* SeedConditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10089 /* SeedConditions.swift */; };
+		A10090 /* SeedSecretsOfMagic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10090 /* SeedSecretsOfMagic.swift */; };
+		A10091 /* SeedGunsAndGears.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10091 /* SeedGunsAndGears.swift */; };
+		A10092 /* SeedBookOfTheDead.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10092 /* SeedBookOfTheDead.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,7 +108,6 @@
 		B10007 /* MonsterEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonsterEntry.swift; sourceTree = "<group>"; };
 		B10008 /* FeatEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatEntry.swift; sourceTree = "<group>"; };
 		B10009 /* ItemEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEntry.swift; sourceTree = "<group>"; };
-		B10010 /* RaceEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceEntry.swift; sourceTree = "<group>"; };
 		B10011 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		B10012 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		B10013 /* FavoritesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesService.swift; sourceTree = "<group>"; };
@@ -148,7 +141,6 @@
 		B10040 /* SQLiteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteRow.swift; sourceTree = "<group>"; };
 		B10041 /* TraitDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitDetailView.swift; sourceTree = "<group>"; };
 		B10042 /* RuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleDetailView.swift; sourceTree = "<group>"; };
-		B10043 /* RaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceDetailView.swift; sourceTree = "<group>"; };
 		B10044 /* BookSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSource.swift; sourceTree = "<group>"; };
 		B10045 /* RecentlyViewedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyViewedService.swift; sourceTree = "<group>"; };
 		B10046 /* BookContentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookContentsView.swift; sourceTree = "<group>"; };
@@ -162,28 +154,24 @@
 		B10055 /* SeedTraits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedTraits.swift; sourceTree = "<group>"; };
 		B10056 /* SeedRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedRules.swift; sourceTree = "<group>"; };
 		B10057 /* SeedClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedClasses.swift; sourceTree = "<group>"; };
-		B10058 /* SeedRaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedRaces.swift; sourceTree = "<group>"; };
 		B10060 /* LodestoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodestoneUITests.swift; sourceTree = "<group>"; };
 		B10061 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
 		B10062 /* DesignComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignComponents.swift; sourceTree = "<group>"; };
 		B10063 /* PlayfairDisplay-Variable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Variable.ttf"; sourceTree = "<group>"; };
 		B10064 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B10065 /* SeedAPG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedAPG.swift; sourceTree = "<group>"; };
-		B10066 /* SeedUltimateMagic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedUltimateMagic.swift; sourceTree = "<group>"; };
-		B10067 /* SeedUltimateCombat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedUltimateCombat.swift; sourceTree = "<group>"; };
-		B10068 /* SeedBestiary2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBestiary2.swift; sourceTree = "<group>"; };
-		B10069 /* SeedUltimateEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedUltimateEquipment.swift; sourceTree = "<group>"; };
-		B10070 /* SeedAdvancedClassGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedAdvancedClassGuide.swift; sourceTree = "<group>"; };
-		B10071 /* SeedUnchained.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedUnchained.swift; sourceTree = "<group>"; };
-		B10072 /* SeedNPCCodex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedNPCCodex.swift; sourceTree = "<group>"; };
-		B10073 /* SeedGameMasteryGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedGameMasteryGuide.swift; sourceTree = "<group>"; };
-		B10074 /* SeedMythicAdventures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedMythicAdventures.swift; sourceTree = "<group>"; };
-		B10075 /* SeedOccultAdventures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedOccultAdventures.swift; sourceTree = "<group>"; };
-		B10076 /* SeedBestiary3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBestiary3.swift; sourceTree = "<group>"; };
-		B10077 /* SeedBestiary4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBestiary4.swift; sourceTree = "<group>"; };
-		B10078 /* SeedBestiary5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBestiary5.swift; sourceTree = "<group>"; };
-		B10079 /* SeedAdvancedRaceGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedAdvancedRaceGuide.swift; sourceTree = "<group>"; };
-		B10080 /* SeedUltimateCampaign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedUltimateCampaign.swift; sourceTree = "<group>"; };
+		B10081 /* AncestryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AncestryEntry.swift; sourceTree = "<group>"; };
+		B10082 /* BackgroundEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundEntry.swift; sourceTree = "<group>"; };
+		B10083 /* ConditionEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionEntry.swift; sourceTree = "<group>"; };
+		B10084 /* AncestryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AncestryDetailView.swift; sourceTree = "<group>"; };
+		B10085 /* BackgroundDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDetailView.swift; sourceTree = "<group>"; };
+		B10086 /* ConditionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionDetailView.swift; sourceTree = "<group>"; };
+		B10087 /* SeedAncestries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedAncestries.swift; sourceTree = "<group>"; };
+		B10088 /* SeedBackgrounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBackgrounds.swift; sourceTree = "<group>"; };
+		B10089 /* SeedConditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedConditions.swift; sourceTree = "<group>"; };
+		B10090 /* SeedSecretsOfMagic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedSecretsOfMagic.swift; sourceTree = "<group>"; };
+		B10091 /* SeedGunsAndGears.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedGunsAndGears.swift; sourceTree = "<group>"; };
+		B10092 /* SeedBookOfTheDead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBookOfTheDead.swift; sourceTree = "<group>"; };
 		PR0001 /* Lodestone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lodestone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		PR0002 /* LodestoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LodestoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		PR0003 /* LodestoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LodestoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -259,9 +247,11 @@
 				B10007 /* MonsterEntry.swift */,
 				B10008 /* FeatEntry.swift */,
 				B10009 /* ItemEntry.swift */,
-				B10010 /* RaceEntry.swift */,
 				B10037a /* TraitEntry.swift */,
 				B10038 /* RuleEntry.swift */,
+				B10081 /* AncestryEntry.swift */,
+				B10082 /* BackgroundEntry.swift */,
+				B10083 /* ConditionEntry.swift */,
 				B10044 /* BookSource.swift */,
 			);
 			path = Models;
@@ -275,6 +265,12 @@
 				B10013 /* FavoritesService.swift */,
 				B10014 /* SubscriptionService.swift */,
 				B10039 /* SeedDataBuilder.swift */,
+				B10087 /* SeedAncestries.swift */,
+				B10088 /* SeedBackgrounds.swift */,
+				B10089 /* SeedConditions.swift */,
+				B10090 /* SeedSecretsOfMagic.swift */,
+				B10091 /* SeedGunsAndGears.swift */,
+				B10092 /* SeedBookOfTheDead.swift */,
 				B10051 /* SeedSpells.swift */,
 				B10052 /* SeedFeats.swift */,
 				B10053 /* SeedMonsters.swift */,
@@ -282,23 +278,7 @@
 				B10055 /* SeedTraits.swift */,
 				B10056 /* SeedRules.swift */,
 				B10057 /* SeedClasses.swift */,
-				B10058 /* SeedRaces.swift */,
 				B10065 /* SeedAPG.swift */,
-				B10066 /* SeedUltimateMagic.swift */,
-				B10067 /* SeedUltimateCombat.swift */,
-				B10068 /* SeedBestiary2.swift */,
-				B10069 /* SeedUltimateEquipment.swift */,
-				B10070 /* SeedAdvancedClassGuide.swift */,
-				B10071 /* SeedUnchained.swift */,
-				B10072 /* SeedNPCCodex.swift */,
-				B10073 /* SeedGameMasteryGuide.swift */,
-				B10074 /* SeedMythicAdventures.swift */,
-				B10075 /* SeedOccultAdventures.swift */,
-				B10076 /* SeedBestiary3.swift */,
-				B10077 /* SeedBestiary4.swift */,
-				B10078 /* SeedBestiary5.swift */,
-				B10079 /* SeedAdvancedRaceGuide.swift */,
-				B10080 /* SeedUltimateCampaign.swift */,
 				B10045 /* RecentlyViewedService.swift */,
 			);
 			path = Services;
@@ -350,7 +330,9 @@
 				B10026 /* ItemDetailView.swift */,
 				B10041 /* TraitDetailView.swift */,
 				B10042 /* RuleDetailView.swift */,
-				B10043 /* RaceDetailView.swift */,
+				B10084 /* AncestryDetailView.swift */,
+				B10085 /* BackgroundDetailView.swift */,
+				B10086 /* ConditionDetailView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -578,7 +560,6 @@
 				A10007 /* MonsterEntry.swift in Sources */,
 				A10008 /* FeatEntry.swift in Sources */,
 				A10009 /* ItemEntry.swift in Sources */,
-				A10010 /* RaceEntry.swift in Sources */,
 				A10011 /* DatabaseService.swift in Sources */,
 				A10012 /* SearchService.swift in Sources */,
 				A10013 /* FavoritesService.swift in Sources */,
@@ -610,7 +591,6 @@
 				A10040 /* SQLiteRow.swift in Sources */,
 				A10041 /* TraitDetailView.swift in Sources */,
 				A10042 /* RuleDetailView.swift in Sources */,
-				A10043 /* RaceDetailView.swift in Sources */,
 				A10044 /* BookSource.swift in Sources */,
 				A10045 /* RecentlyViewedService.swift in Sources */,
 				A10046 /* BookContentsView.swift in Sources */,
@@ -625,23 +605,19 @@
 				A10055 /* SeedTraits.swift in Sources */,
 				A10056 /* SeedRules.swift in Sources */,
 				A10057 /* SeedClasses.swift in Sources */,
-				A10058 /* SeedRaces.swift in Sources */,
 				A10065 /* SeedAPG.swift in Sources */,
-				A10066 /* SeedUltimateMagic.swift in Sources */,
-				A10067 /* SeedUltimateCombat.swift in Sources */,
-				A10068 /* SeedBestiary2.swift in Sources */,
-				A10069 /* SeedUltimateEquipment.swift in Sources */,
-				A10070 /* SeedAdvancedClassGuide.swift in Sources */,
-				A10071 /* SeedUnchained.swift in Sources */,
-				A10072 /* SeedNPCCodex.swift in Sources */,
-				A10073 /* SeedGameMasteryGuide.swift in Sources */,
-				A10074 /* SeedMythicAdventures.swift in Sources */,
-				A10075 /* SeedOccultAdventures.swift in Sources */,
-				A10076 /* SeedBestiary3.swift in Sources */,
-				A10077 /* SeedBestiary4.swift in Sources */,
-				A10078 /* SeedBestiary5.swift in Sources */,
-				A10079 /* SeedAdvancedRaceGuide.swift in Sources */,
-				A10080 /* SeedUltimateCampaign.swift in Sources */,
+				A10081 /* AncestryEntry.swift in Sources */,
+				A10082 /* BackgroundEntry.swift in Sources */,
+				A10083 /* ConditionEntry.swift in Sources */,
+				A10084 /* AncestryDetailView.swift in Sources */,
+				A10085 /* BackgroundDetailView.swift in Sources */,
+				A10086 /* ConditionDetailView.swift in Sources */,
+				A10087 /* SeedAncestries.swift in Sources */,
+				A10088 /* SeedBackgrounds.swift in Sources */,
+				A10089 /* SeedConditions.swift in Sources */,
+				A10090 /* SeedSecretsOfMagic.swift in Sources */,
+				A10091 /* SeedGunsAndGears.swift in Sources */,
+				A10092 /* SeedBookOfTheDead.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -818,7 +794,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -849,7 +825,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -868,7 +844,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1.tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf2.tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -887,7 +863,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1.tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf2.tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -905,7 +881,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1.uitests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf2.uitests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -923,7 +899,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf1.uitests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.heiloprojects.lodestone-pf2.uitests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;

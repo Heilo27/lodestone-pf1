@@ -6,39 +6,29 @@ struct FeatDetailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            if !feat.featType.isEmpty {
-                SourceBadge(text: feat.featType, color: AppColors.contentTypeColor(.feat))
-                    .padding(.bottom, AppSpacing.xs)
+            DetailRow(label: "Level", value: "\(feat.level)")
+            DetailRow(label: "Type", value: feat.featType)
+            if !feat.traits.isEmpty {
+                DetailRow(label: "Traits", value: feat.traits)
             }
-
-            DetailRow(label: "Prerequisites", value: feat.prerequisites)
+            if !feat.prerequisites.isEmpty {
+                DetailRow(label: "Prerequisites", value: feat.prerequisites)
+            }
+            if !feat.requirements.isEmpty {
+                DetailRow(label: "Requirements", value: feat.requirements)
+            }
+            if !feat.trigger.isEmpty {
+                DetailRow(label: "Trigger", value: feat.trigger)
+            }
             DetailRow(label: "Source", value: feat.source)
 
-            OrnamentalDivider(label: "Benefit")
+            OrnamentalDivider(label: "Effect")
                 .padding(.vertical, AppSpacing.sm)
 
             Text(feat.benefit)
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .lineSpacing(4)
-
-            if !feat.normal.isEmpty {
-                OrnamentalDivider(label: "Normal")
-                    .padding(.vertical, AppSpacing.sm)
-                Text(feat.normal)
-                    .font(AppFonts.body)
-                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                    .lineSpacing(4)
-            }
-
-            if !feat.special.isEmpty {
-                OrnamentalDivider(label: "Special")
-                    .padding(.vertical, AppSpacing.sm)
-                Text(feat.special)
-                    .font(AppFonts.body)
-                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                    .lineSpacing(4)
-            }
         }
     }
 }

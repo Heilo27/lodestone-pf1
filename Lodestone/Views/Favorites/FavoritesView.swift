@@ -2,57 +2,49 @@ import SwiftUI
 
 struct FavoritesView: View {
     @Environment(FavoritesService.self) private var favoritesService
-    @State private var viewModel: FavoritesViewModel?
+    @State private var viewModel = FavoritesViewModel()
 
     var body: some View {
         NavigationStack {
             Group {
-                if let vm = viewModel {
-                    if vm.isLoading {
-                        ProgressView("Loading favorites...")
-                    } else if vm.entries.isEmpty {
-                        ContentUnavailableView(
-                            "No Favorites",
-                            systemImage: "heart.slash",
-                            description: Text("Tap the heart icon on any entry to add it to your favorites.")
-                        )
-                    } else {
-                        List(vm.entries, id: \.id) { entry in
-                            NavigationLink {
-                                DetailView(entry: entry)
-                            } label: {
-                                HStack(spacing: AppSpacing.md) {
-                                    ContentTypeIconBadge(type: entry.contentType, size: 32)
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(entry.title)
-                                            .font(AppFonts.headline)
-                                        Text(entry.contentType.singularName)
-                                            .font(AppFonts.caption)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                }
-                            }
-                            .swipeActions(edge: .trailing) {
-                                Button(role: .destructive) {
-                                    vm.removeFavorite(entry.id)
-                                } label: {
-                                    Label("Remove", systemImage: "heart.slash")
+                if viewModel.isLoading {
+                    ProgressView("Loading favorites...")
+                } else if viewModel.entries.isEmpty {
+                    ContentUnavailableView(
+                        "No Favorites",
+                        systemImage: "heart.slash",
+                        description: Text("Tap the heart icon on any entry to add it to your favorites.")
+                    )
+                } else {
+                    List(viewModel.entries, id: \.id) { entry in
+                        NavigationLink {
+                            DetailView(entry: entry)
+                        } label: {
+                            HStack(spacing: AppSpacing.md) {
+                                ContentTypeIconBadge(type: entry.contentType, size: 32)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(entry.title)
+                                        .font(AppFonts.headline)
+                                    Text(entry.contentType.singularName)
+                                        .font(AppFonts.caption)
+                                        .foregroundStyle(.secondary)
                                 }
                             }
                         }
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                favoritesService.remove(entry.id)
+                                viewModel.removeFavorite(entry.id)
+                            } label: {
+                                Label("Remove", systemImage: "heart.slash")
+                            }
+                        }
                     }
-                } else {
-                    ProgressView()
                 }
             }
             .navigationTitle("Favorites")
-            .onAppear {
-                if viewModel == nil {
-                    viewModel = FavoritesViewModel(favoritesService: favoritesService)
-                }
-            }
             .task {
-                await viewModel?.loadFavorites()
+                await viewModel.loadFavorites(favorites: favoritesService.favorites)
             }
         }
     }

@@ -24,7 +24,7 @@ struct RuleEntry: ContentEntry {
         isPremium = (row["is_premium"] ?? "0") == "1"
         category = row["category"] ?? ""
         body = row["body"] ?? ""
-        source = row["source"] ?? "Core Rulebook"
+        source = row["source"] ?? "Player Core"
     }
 
     // MARK: - Memberwise init
@@ -55,6 +55,6 @@ struct RuleEntry: ContentEntry {
         FREE ACTION: Negligible actions such as dropping an item or speaking a few words.
         IMMEDIATE ACTION: Actions that can be taken even when it's not your turn.
         """,
-        source: "Core Rulebook"
+        source: "Player Core"
     )
 }

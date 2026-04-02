@@ -16,6 +16,6 @@ final class DetailViewModel {
     }
 
     func toggleFavorite() {
-        favoritesService.toggle(entry.id)
+        favoritesService.toggle(entry)
     }
 }

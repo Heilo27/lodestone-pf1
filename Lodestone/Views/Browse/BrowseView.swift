@@ -3,6 +3,8 @@ import SwiftUI
 struct BrowseView: View {
     @State private var viewModel = BrowseViewModel()
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(SubscriptionService.self) private var subscriptionService
+    @Environment(RecentlyViewedService.self) private var recentlyViewedService
 
     var body: some View {
         NavigationStack {
@@ -21,7 +23,10 @@ struct BrowseView: View {
             .background(AppColors.adaptiveBackground(colorScheme))
             .navigationTitle(AppConstants.appName)
             .task {
-                await viewModel.loadHomeData()
+                await viewModel.loadHomeData(isUnlocked: subscriptionService.isUnlocked, recentlyViewedService: recentlyViewedService)
+            }
+            .onChange(of: subscriptionService.isUnlocked) { _, isUnlocked in
+                Task { await viewModel.loadCounts(isUnlocked: isUnlocked) }
             }
         }
     }

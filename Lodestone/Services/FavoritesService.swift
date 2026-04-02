@@ -1,52 +1,55 @@
 import Foundation
 import SwiftUI
 
+struct FavoriteEntry: Codable, Hashable {
+    let id: UUID
+    let contentType: ContentType
+}
+
 @Observable
 final class FavoritesService {
-    private(set) var favoriteIDs: Set<UUID> = []
-    private let storageKey = "lodestone_favorites"
+    private(set) var favorites: Set<FavoriteEntry> = []
+    private let storageKey = "lodestone_favorites_v2"
 
     init() {
         load()
     }
 
+    var favoriteIDs: Set<UUID> { Set(favorites.map(\.id)) }
+
     func isFavorite(_ id: UUID) -> Bool {
-        favoriteIDs.contains(id)
+        favorites.contains { $0.id == id }
     }
 
-    func toggle(_ id: UUID) {
-        if favoriteIDs.contains(id) {
-            favoriteIDs.remove(id)
+    func toggle(_ entry: any ContentEntry) {
+        if let existing = favorites.first(where: { $0.id == entry.id }) {
+            favorites.remove(existing)
         } else {
-            favoriteIDs.insert(id)
+            favorites.insert(FavoriteEntry(id: entry.id, contentType: entry.contentType))
         }
         save()
     }
 
-    func add(_ id: UUID) {
-        favoriteIDs.insert(id)
-        save()
-    }
-
     func remove(_ id: UUID) {
-        favoriteIDs.remove(id)
+        favorites = favorites.filter { $0.id != id }
         save()
     }
 
     func removeAll() {
-        favoriteIDs.removeAll()
+        favorites.removeAll()
         save()
     }
 
-    // MARK: - Persistence (UserDefaults for now, will migrate to SQLite)
+    // MARK: - Persistence
 
     private func save() {
-        let strings = favoriteIDs.map(\.uuidString)
-        UserDefaults.standard.set(Array(strings), forKey: storageKey)
+        guard let data = try? JSONEncoder().encode(Array(favorites)) else { return }
+        UserDefaults.standard.set(data, forKey: storageKey)
     }
 
     private func load() {
-        guard let strings = UserDefaults.standard.stringArray(forKey: storageKey) else { return }
-        favoriteIDs = Set(strings.compactMap { UUID(uuidString: $0) })
+        guard let data = UserDefaults.standard.data(forKey: storageKey),
+              let decoded = try? JSONDecoder().decode([FavoriteEntry].self, from: data) else { return }
+        favorites = Set(decoded)
     }
 }

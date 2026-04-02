@@ -15,20 +15,19 @@ final class BrowseViewModel {
     var recentlyViewed: [RecentEntry] = []
 
     private let database = DatabaseService.shared
-    let recentlyViewedService = RecentlyViewedService()
 
-    func loadHomeData() async {
-        async let counts: () = loadCounts()
+    func loadHomeData(isUnlocked: Bool, recentlyViewedService: RecentlyViewedService) async {
+        async let counts: () = loadCounts(isUnlocked: isUnlocked)
         async let booksLoad: () = loadBooks()
         _ = await (counts, booksLoad)
         recentlyViewed = recentlyViewedService.entries
     }
 
-    func loadCounts() async {
+    func loadCounts(isUnlocked: Bool) async {
         do {
             try await database.open()
             for type in ContentType.allCases {
-                let count = try await database.countForType(type)
+                let count = try await database.countForType(type, unlockedOnly: !isUnlocked)
                 categoryCounts[type] = count
             }
         } catch {

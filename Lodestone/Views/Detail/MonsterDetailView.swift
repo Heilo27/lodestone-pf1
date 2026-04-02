@@ -6,52 +6,43 @@ struct MonsterDetailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            // Stat block grid
-            HStack(spacing: AppSpacing.sm) {
-                StatBlock(label: "CR", value: monster.challengeRating)
-                StatBlock(label: "AC", value: "\(monster.armorClass)")
-                StatBlock(label: "HP", value: monster.hitPoints)
-            }
-            .padding(.bottom, AppSpacing.sm)
-
-            DetailRow(label: "Type", value: monster.type)
+            DetailRow(label: "Level", value: "\(monster.level)")
+            DetailRow(label: "Type", value: monster.creatureType)
             DetailRow(label: "Size", value: monster.size)
-            DetailRow(label: "Alignment", value: monster.alignment)
+            if !monster.traits.isEmpty {
+                DetailRow(label: "Traits", value: monster.traits)
+            }
+            DetailRow(label: "HP", value: monster.hitPoints)
+            DetailRow(label: "AC", value: "\(monster.armorClass)")
+            DetailRow(label: "Fort / Ref / Will", value: "+\(monster.fortSave) / +\(monster.refSave) / +\(monster.willSave)")
             DetailRow(label: "Speed", value: monster.speed)
-            DetailRow(label: "Environment", value: monster.environment)
             DetailRow(label: "Source", value: monster.source)
+
+            if !monster.attacks.isEmpty {
+                OrnamentalDivider(label: "Attacks")
+                    .padding(.vertical, AppSpacing.sm)
+                Text(monster.attacks)
+                    .font(AppFonts.body)
+                    .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                    .lineSpacing(4)
+            }
+
+            if !monster.specialAbilities.isEmpty {
+                OrnamentalDivider(label: "Special Abilities")
+                    .padding(.vertical, AppSpacing.sm)
+                Text(monster.specialAbilities)
+                    .font(AppFonts.body)
+                    .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                    .lineSpacing(4)
+            }
 
             OrnamentalDivider(label: "Description")
                 .padding(.vertical, AppSpacing.sm)
-
             Text(monster.description)
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .lineSpacing(4)
         }
-    }
-}
-
-private struct StatBlock: View {
-    let label: String
-    let value: String
-
-    @Environment(\.colorScheme) private var colorScheme
-
-    var body: some View {
-        VStack(spacing: AppSpacing.xs) {
-            Text(label)
-                .font(AppFonts.caption.weight(.semibold))
-                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                .textCase(.uppercase)
-                .tracking(0.8)
-            Text(value)
-                .font(AppFonts.displaySmall)
-                .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, AppSpacing.md)
-        .background(AppColors.adaptiveSurfaceElevated(colorScheme), in: RoundedRectangle(cornerRadius: AppRadius.medium))
     }
 }
 

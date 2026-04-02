@@ -76,13 +76,15 @@ struct SettingsView: View {
                             .font(AppFonts.body)
                             .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                         Spacer()
-                        Text("$1.99/mo")
-                            .font(AppFonts.subheadline.weight(.semibold))
-                            .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+                        if let monthly = subscriptionService.products.first(where: { $0.id.contains("monthly") }) {
+                            Text("\(monthly.displayPrice)/mo")
+                                .font(AppFonts.subheadline.weight(.semibold))
+                                .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+                        }
                     }
                 }
 
-                Text("Unlocks all expansion books for Lodestone PF1.")
+                Text("Unlocks all expansion books for Lodestone PF2.")
                     .font(AppFonts.caption)
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
             }
@@ -131,8 +133,7 @@ struct SettingsView: View {
     private var dataSection: some View {
         Section {
             NavigationLink {
-                Text("Database info will go here")
-                    .navigationTitle("Database")
+                DatabaseInfoView()
             } label: {
                 Label("Database", systemImage: "cylinder")
                     .font(AppFonts.body)
@@ -221,7 +222,69 @@ struct SettingsView: View {
     #endif
 }
 
-// MARK: - Placeholder Legal Views
+// MARK: - Database Info
+
+private struct DatabaseInfoView: View {
+    @State private var counts: [ContentType: Int] = [:]
+    @State private var isLoading = true
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        List {
+            Section {
+                HStack {
+                    Text("Version")
+                        .font(AppFonts.body)
+                    Spacer()
+                    Text("v\(SeedDataBuilder.currentSeedVersion)")
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                }
+                HStack {
+                    Text("Storage")
+                        .font(AppFonts.body)
+                    Spacer()
+                    Text("On-device")
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                }
+            } header: {
+                Text("Database").textCase(.uppercase).tracking(0.8)
+            }
+
+            Section {
+                if isLoading {
+                    HStack { Spacer(); ProgressView(); Spacer() }
+                } else {
+                    ForEach(ContentType.allCases) { type in
+                        HStack {
+                            Label(type.displayName, systemImage: type.iconName)
+                                .font(AppFonts.body)
+                            Spacer()
+                            Text("\(counts[type] ?? 0)")
+                                .font(AppFonts.body)
+                                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                        }
+                    }
+                }
+            } header: {
+                Text("Content").textCase(.uppercase).tracking(0.8)
+            }
+        }
+        .navigationTitle("Database")
+        .navigationBarTitleDisplayMode(.inline)
+        .task {
+            do {
+                for type in ContentType.allCases {
+                    counts[type] = try await DatabaseService.shared.countForType(type)
+                }
+            } catch {}
+            isLoading = false
+        }
+    }
+}
+
+// MARK: - Legal Views
 
 private struct PrivacyPolicyView: View {
     var body: some View {

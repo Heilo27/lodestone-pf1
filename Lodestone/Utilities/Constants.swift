@@ -1,8 +1,8 @@
 import SwiftUI
 
 enum AppConstants {
-    static let appName = "Lodestone"
-    static let bundleID = "com.heiloproject.lodestone.pf1"
+    static let appName = "Lodestone PF2"
+    static let bundleID = "com.heiloprojects.lodestone-pf2"
     static let maxRecentSearches = 10
     static let searchDebounceSeconds: Double = 0.3
 }
@@ -98,14 +98,16 @@ enum AppColors {
     // Content type colors
     static func contentTypeColor(_ type: ContentType) -> Color {
         switch type {
-        case .spell:   Color(hex: "7B3FA0")
-        case .class_:  Color(hex: "1A6B9A")
-        case .monster: Color(hex: "C0392B")
-        case .feat:    Color(hex: "D05A16")
-        case .item:    Color(hex: "2E8B57")
-        case .race:    Color(hex: "1A7A7A")
-        case .trait:   Color(hex: "5B4B9A")
-        case .rule:    Color(hex: "5A5A5A")
+        case .spell:      Color(hex: "7B3FA0")
+        case .class_:     Color(hex: "1A6B9A")
+        case .monster:    Color(hex: "C0392B")
+        case .feat:       Color(hex: "D05A16")
+        case .item:       Color(hex: "2E8B57")
+        case .ancestry:   Color(hex: "1A7A7A")
+        case .trait:      Color(hex: "5B4B9A")
+        case .rule:       Color(hex: "5A5A5A")
+        case .background: Color(hex: "8B6508")
+        case .condition:  Color(hex: "A0522D")
         }
     }
 }

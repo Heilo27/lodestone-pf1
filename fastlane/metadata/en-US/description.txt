@@ -1,0 +1,31 @@
+Lodestone PF1 is the complete Pathfinder 1E reference library for iOS. Everything you need at the table — instantly searchable, deeply cross-linked, and fully offline.
+
+WHAT'S INCLUDED (FREE)
+- 11 Core Classes with full feature progressions
+- 7 Core Races with racial traits
+- 300+ Core Feats
+- 500+ Core Spells
+- Core Rules, Equipment, and Combat mechanics
+- Quick-reference GM Screen
+
+PREMIUM ($2/month)
+- 2,000+ Feats across all sourcebooks
+- 2,000+ Spells from every Pathfinder supplement
+- 4,000+ Monsters with full stat blocks
+- Prestige Classes, Alternate Class Variants, Mythic Rules
+- Magic Items, Artifacts, Technology
+- Advanced Game Systems
+
+POWERFUL SEARCH
+Full-text search across every rule, spell, monster, feat, and item. Results grouped by type. No WiFi required.
+
+DEEP CROSS-LINKING
+Every reference in every entry is a live link. Tap a spell on a class list and jump straight to its full description. Tap a feat prerequisite and see the source.
+
+BUILT FOR THE TABLE
+- Offline-first: works without any network connection after first launch
+- Fast: sub-100ms search on any query
+- iPad optimized: full-screen two-column layout for GM use
+- Dynamic Type and VoiceOver fully supported
+
+Content sourced from Archives of Nethys under the Open Game License (OGL).

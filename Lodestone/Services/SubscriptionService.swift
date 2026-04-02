@@ -5,9 +5,9 @@ import StoreKit
 final class SubscriptionService {
     #if DEBUG
     /// Bypasses StoreKit entirely. Toggle in Settings → Debug.
-    var debugUnlockAll: Bool {
-        get { UserDefaults.standard.bool(forKey: "debug_unlockAll") }
-        set { UserDefaults.standard.set(newValue, forKey: "debug_unlockAll") }
+    /// Stored as a regular property so @Observable tracks changes and views re-render.
+    var debugUnlockAll: Bool = UserDefaults.standard.bool(forKey: "debug_unlockAll") {
+        didSet { UserDefaults.standard.set(debugUnlockAll, forKey: "debug_unlockAll") }
     }
     #endif
 
@@ -41,7 +41,7 @@ final class SubscriptionService {
     private(set) var expirationDate: Date?
     private(set) var activeProductID: String?
 
-    // Subscription for Lodestone PF1
+    // Subscription for Lodestone PF2
     private let productIDs = [
         "com.heiloproject.lodestone.allaccess.monthly",
         "com.heiloproject.lodestone.allaccess.annual",

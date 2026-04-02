@@ -2,8 +2,17 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("selectedTab") private var selectedTab: Int = 0
+    @AppStorage("selectedTheme") private var selectedTheme: String = "system"
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.colorScheme) private var colorScheme
+
+    private var preferredScheme: ColorScheme? {
+        switch selectedTheme {
+        case "light": return .light
+        case "dark":  return .dark
+        default:      return nil
+        }
+    }
 
     var body: some View {
         Group {
@@ -13,6 +22,7 @@ struct ContentView: View {
                 iPhoneLayout
             }
         }
+        .preferredColorScheme(preferredScheme)
         .tint(colorScheme == .dark ? AppColors.primaryDark : AppColors.primary)
     }
 

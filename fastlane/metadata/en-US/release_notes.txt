@@ -1,0 +1,7 @@
+Initial release.
+
+- Full Pathfinder 1E Core Rulebook: classes, races, feats, spells, equipment, and combat rules
+- Full-text search with FTS5 — results in under 100ms
+- Deep cross-linking between all entries
+- Offline-first: everything works without WiFi after first launch
+- Free tier includes Core Rulebook; Premium subscription unlocks all expansions

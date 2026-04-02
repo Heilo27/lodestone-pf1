@@ -8,14 +8,13 @@ struct TraitEntry: ContentEntry {
     let summary: String
     let isPremium: Bool
 
-    let traitType: String       // Combat, Magic, Social, Faith, Regional, Race
-    let prerequisites: String
-    let benefit: String
+    // PF2 traits are categorical tags, not character options
+    let traitType: String   // Ancestry, Class, Creature, Equipment, General, Magical, etc.
     let description: String
     let source: String
 
     enum CodingKeys: String, CodingKey {
-        case id, title, summary, isPremium, traitType, prerequisites, benefit, description, source
+        case id, title, summary, isPremium, traitType, description, source
     }
 
     // MARK: - Database init
@@ -25,36 +24,48 @@ struct TraitEntry: ContentEntry {
         summary = row["summary"] ?? ""
         isPremium = (row["is_premium"] ?? "0") == "1"
         traitType = row["trait_type"] ?? ""
-        prerequisites = row["prerequisites"] ?? ""
-        benefit = row["benefit"] ?? ""
         description = row["description"] ?? ""
-        source = row["source"] ?? "Core Rulebook"
+        source = row["source"] ?? "Player Core"
     }
 
     // MARK: - Memberwise init
     init(id: UUID, title: String, summary: String, isPremium: Bool,
-         traitType: String, prerequisites: String, benefit: String,
-         description: String, source: String) {
+         traitType: String, description: String, source: String) {
         self.id = id
         self.title = title
         self.summary = summary
         self.isPremium = isPremium
         self.traitType = traitType
-        self.prerequisites = prerequisites
-        self.benefit = benefit
         self.description = description
         self.source = source
     }
 
+    static func make(
+        _ title: String,
+        traitType: String,
+        summary: String,
+        desc: String,
+        source: String = "Player Core",
+        isPremium: Bool = false
+    ) -> TraitEntry {
+        TraitEntry(
+            id: seededUUID("\(title)\(source)"),
+            title: title,
+            summary: summary,
+            isPremium: isPremium,
+            traitType: traitType,
+            description: desc,
+            source: source
+        )
+    }
+
     static let placeholder = TraitEntry(
         id: UUID(),
-        title: "Reactionary",
-        summary: "You have quick reflexes that allow you to react rapidly to danger.",
+        title: "Fire",
+        summary: "Effects with the fire trait deal fire damage or manipulate fire.",
         isPremium: false,
-        traitType: "Combat",
-        prerequisites: "",
-        benefit: "You gain a +2 trait bonus on initiative checks.",
-        description: "You were bullied often as a child, but never quite developed an offensive response. Instead, you became adept at anticipating sudden attacks and reacting to danger quickly.",
-        source: "Advanced Player's Guide"
+        traitType: "Energy",
+        description: "Effects with the fire trait deal fire damage or either manipulate or summon fire. Those that manipulate fire have no effect in an area without fire. Creatures with this trait consist primarily of fire or have a magical connection to that element.",
+        source: "Player Core"
     )
 }

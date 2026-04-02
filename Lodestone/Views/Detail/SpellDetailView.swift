@@ -6,14 +6,27 @@ struct SpellDetailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            DetailRow(label: "School", value: spell.school)
-            DetailRow(label: "Level", value: spell.levels)
-            DetailRow(label: "Casting Time", value: spell.castingTime)
-            DetailRow(label: "Components", value: spell.components)
-            DetailRow(label: "Range", value: spell.range)
-            DetailRow(label: "Duration", value: spell.duration)
-            DetailRow(label: "Saving Throw", value: spell.savingThrow)
-            DetailRow(label: "Spell Resistance", value: spell.spellResistance ? "Yes" : "No")
+            DetailRow(label: "Rank", value: "Rank \(spell.rank)")
+            DetailRow(label: "Traditions", value: spell.traditions)
+            DetailRow(label: "Actions", value: spell.actions)
+            if !spell.traits.isEmpty {
+                DetailRow(label: "Traits", value: spell.traits)
+            }
+            if !spell.range.isEmpty {
+                DetailRow(label: "Range", value: spell.range)
+            }
+            if !spell.area.isEmpty {
+                DetailRow(label: "Area", value: spell.area)
+            }
+            if !spell.targets.isEmpty {
+                DetailRow(label: "Targets", value: spell.targets)
+            }
+            if !spell.duration.isEmpty {
+                DetailRow(label: "Duration", value: spell.duration)
+            }
+            if !spell.savingThrow.isEmpty {
+                DetailRow(label: "Saving Throw", value: spell.savingThrow)
+            }
             DetailRow(label: "Source", value: spell.source)
 
             OrnamentalDivider(label: "Description")
@@ -23,6 +36,15 @@ struct SpellDetailView: View {
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .lineSpacing(4)
+
+            if !spell.heightened.isEmpty {
+                OrnamentalDivider(label: "Heightened")
+                    .padding(.vertical, AppSpacing.sm)
+                Text(spell.heightened)
+                    .font(AppFonts.body)
+                    .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                    .lineSpacing(4)
+            }
         }
     }
 }

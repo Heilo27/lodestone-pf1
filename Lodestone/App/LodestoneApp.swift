@@ -95,12 +95,12 @@ struct DatabaseLoadingView: View {
                 .padding(.bottom, AppSpacing.xl)
 
                 // Wordmark
-                Text("Lodestone")
+                Text("Lodestone PF2")
                     .font(AppFonts.displayLarge)
                     .foregroundStyle(Color(hex: "F0EDE6"))
                     .padding(.bottom, AppSpacing.sm)
 
-                Text("Pathfinder 1E Reference")
+                Text("Pathfinder 2E Reference")
                     .font(AppFonts.callout)
                     .foregroundStyle(Color(hex: "9A9590"))
                     .padding(.bottom, AppSpacing.xl)
