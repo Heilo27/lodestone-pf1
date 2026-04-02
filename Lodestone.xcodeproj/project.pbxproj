@@ -172,6 +172,7 @@
 		B10062 /* DesignComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignComponents.swift; sourceTree = "<group>"; };
 		B10063 /* PlayfairDisplay-Variable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Variable.ttf"; sourceTree = "<group>"; };
 		B10064 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		BSK001 /* Lodestone-PF1.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Lodestone-PF1.storekit"; sourceTree = "<group>"; };
 		B10065 /* SeedAPG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedAPG.swift; sourceTree = "<group>"; };
 		B10090 /* SeedBestiary2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBestiary2.swift; sourceTree = "<group>"; };
 		B10091 /* SeedBestiary3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBestiary3.swift; sourceTree = "<group>"; };
@@ -414,6 +415,7 @@
 			isa = PBXGroup;
 			children = (
 				B10036 /* Assets.xcassets */,
+				BSK001 /* Lodestone-PF1.storekit */,
 				G10016 /* Fonts */,
 			);
 			path = Resources;
