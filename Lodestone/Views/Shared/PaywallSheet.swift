@@ -45,28 +45,69 @@ struct PaywallSheet: View {
 
             VStack(spacing: AppSpacing.md) {
                 if subscriptionService.products.isEmpty {
-                    Button {
-                        Task { await subscriptionService.loadProducts() }
-                    } label: {
-                        Text("Subscribe for $1.99/mo")
-                    }
-                    .buttonStyle(GoldGradientButtonStyle())
-                    .padding(.horizontal, AppSpacing.xl)
+                    ProgressView()
+                        .frame(height: 50)
                 } else {
-                    ForEach(subscriptionService.products, id: \.id) { product in
-                        Button {
-                            Task { await subscriptionService.purchase(product) }
-                        } label: {
-                            HStack {
-                                Text(product.displayName)
-                                Spacer()
-                                Text(product.displayPrice)
-                                    .fontWeight(.semibold)
+                    // PF1-only tier
+                    let pf1Products = subscriptionService.products.filter { subscriptionService.isPF1Product($0) }
+                    let bundleProducts = subscriptionService.products.filter { subscriptionService.isBundleProduct($0) }
+
+                    if !pf1Products.isEmpty {
+                        Text("PF1 Only")
+                            .font(AppFonts.caption.weight(.semibold))
+                            .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                            .textCase(.uppercase)
+                            .tracking(0.8)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, AppSpacing.xl)
+
+                        ForEach(pf1Products, id: \.id) { product in
+                            Button {
+                                Task { await subscriptionService.purchase(product) }
+                            } label: {
+                                HStack {
+                                    Text(product.displayName)
+                                    Spacer()
+                                    Text(product.displayPrice)
+                                        .fontWeight(.semibold)
+                                }
+                                .padding(.horizontal, AppSpacing.xs)
                             }
-                            .padding(.horizontal, AppSpacing.xs)
+                            .buttonStyle(GoldGradientButtonStyle())
+                            .padding(.horizontal, AppSpacing.xl)
                         }
-                        .buttonStyle(GoldGradientButtonStyle())
+                    }
+
+                    if !bundleProducts.isEmpty {
+                        HStack {
+                            Text("All Apps Bundle")
+                                .font(AppFonts.caption.weight(.semibold))
+                                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                                .textCase(.uppercase)
+                                .tracking(0.8)
+                            Spacer()
+                            Text("PF1 + PF2 + SF1")
+                                .font(AppFonts.caption2.weight(.semibold))
+                                .foregroundStyle(AppColors.premiumGold)
+                        }
                         .padding(.horizontal, AppSpacing.xl)
+                        .padding(.top, AppSpacing.sm)
+
+                        ForEach(bundleProducts, id: \.id) { product in
+                            Button {
+                                Task { await subscriptionService.purchase(product) }
+                            } label: {
+                                HStack {
+                                    Text(product.displayName)
+                                    Spacer()
+                                    Text(product.displayPrice)
+                                        .fontWeight(.semibold)
+                                }
+                                .padding(.horizontal, AppSpacing.xs)
+                            }
+                            .buttonStyle(GoldGradientButtonStyle())
+                            .padding(.horizontal, AppSpacing.xl)
+                        }
                     }
                 }
 
@@ -86,7 +127,7 @@ struct PaywallSheet: View {
                 .frame(minHeight: 44)
                 .contentShape(Rectangle())
 
-                Text("$1.99/month. Cancel anytime in App Store settings.")
+                Text("Cancel anytime in App Store settings.")
                     .font(AppFonts.caption2)
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme).opacity(0.7))
                     .multilineTextAlignment(.center)

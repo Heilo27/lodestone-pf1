@@ -51,11 +51,27 @@ final class SubscriptionService {
     private(set) var expirationDate: Date?
     private(set) var activeProductID: String?
 
-    // Subscription for Lodestone PF1
-    private let productIDs = [
+    // PF1-only products (single-app subscription)
+    private let pf1ProductIDs = [
         "com.heiloprojects.lodestone-pf1.allaccess.monthly",
         "com.heiloprojects.lodestone-pf1.allaccess.annual",
     ]
+
+    // Shared All Access bundle (unlocks PF1 + PF2 + SF1)
+    private let bundleProductIDs = [
+        "com.heiloproject.lodestone.allaccess.monthly",
+        "com.heiloproject.lodestone.allaccess.annual",
+    ]
+
+    private var productIDs: [String] { pf1ProductIDs + bundleProductIDs }
+
+    func isPF1Product(_ product: Product) -> Bool {
+        pf1ProductIDs.contains(product.id)
+    }
+
+    func isBundleProduct(_ product: Product) -> Bool {
+        bundleProductIDs.contains(product.id)
+    }
 
     func loadProducts() async {
         do {
