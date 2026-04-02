@@ -5,6 +5,9 @@ struct ContentView: View {
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.colorScheme) private var colorScheme
 
+    // One path per tab — held here so we can reset on tab switch
+    @State private var paths: [NavigationPath] = Array(repeating: NavigationPath(), count: 5)
+
     var body: some View {
         Group {
             if sizeClass == .regular {
@@ -30,14 +33,19 @@ struct ContentView: View {
             .navigationTitle(AppConstants.appName)
             .listStyle(.sidebar)
         } detail: {
+            // Each tab gets its own NavigationStack with an externally-owned path.
+            // Switching tabs resets the path via onChange, popping to root.
             switch selectedTab {
-            case 0: BrowseView()
-            case 1: SearchView()
-            case 2: FavoritesView()
-            case 3: GMScreenView()
-            case 4: SettingsView()
-            default: BrowseView()
+            case 0: NavigationStack(path: $paths[0]) { BrowseView() }.environment(\.isEmbeddedInSplitView, true)
+            case 1: NavigationStack(path: $paths[1]) { SearchView() }.environment(\.isEmbeddedInSplitView, true)
+            case 2: NavigationStack(path: $paths[2]) { FavoritesView() }.environment(\.isEmbeddedInSplitView, true)
+            case 3: NavigationStack(path: $paths[3]) { GMScreenView() }.environment(\.isEmbeddedInSplitView, true)
+            case 4: NavigationStack(path: $paths[4]) { SettingsView() }.environment(\.isEmbeddedInSplitView, true)
+            default: NavigationStack(path: $paths[0]) { BrowseView() }.environment(\.isEmbeddedInSplitView, true)
             }
+        }
+        .onChange(of: selectedTab) { _, newTab in
+            paths[newTab] = NavigationPath()
         }
     }
 

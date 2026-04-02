@@ -4,6 +4,7 @@ private let sectionLimit = 20
 
 struct SearchView: View {
     @State private var viewModel = SearchViewModel()
+    @Environment(\.isEmbeddedInSplitView) private var isEmbedded
 
     // MARK: - Grouped results (max 20 per section)
 
@@ -19,8 +20,7 @@ struct SearchView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
+        let inner = VStack(spacing: 0) {
                 FilterView(
                     activeFilters: viewModel.activeFilters,
                     onToggle: { viewModel.toggleFilter($0) }
@@ -89,6 +89,11 @@ struct SearchView: View {
             .onChange(of: viewModel.query) {
                 viewModel.search()
             }
+
+        if isEmbedded {
+            inner
+        } else {
+            NavigationStack { inner }
         }
     }
 }

@@ -4,6 +4,7 @@ struct GMScreenView: View {
     @State private var viewModel = GMScreenViewModel()
     @State private var searchText = ""
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.isEmbeddedInSplitView) private var isEmbedded
 
     private var displayedReferences: [GMScreenViewModel.QuickReference] {
         let filtered = viewModel.filteredReferences
@@ -16,8 +17,7 @@ struct GMScreenView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            List {
+        let inner = List {
                 // Category filter chips
                 Section {
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -57,6 +57,11 @@ struct GMScreenView: View {
             .listStyle(.insetGrouped)
             .navigationTitle("GM Screen")
             .searchable(text: $searchText, prompt: "Search tables…")
+
+        if isEmbedded {
+            inner
+        } else {
+            NavigationStack { inner }
         }
     }
 }

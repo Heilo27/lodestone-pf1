@@ -64,8 +64,7 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
-      queueDebuggingEnableBacktraceRecording = "Yes"
-      storeKitConfigurationFileReference = "../Lodestone/Resources/Lodestone-PF1.storekit">
+      queueDebuggingEnableBacktraceRecording = "Yes">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
@@ -76,6 +75,9 @@
             ReferencedContainer = "container:Lodestone.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <StoreKitConfigurationFileReference
+         identifier = "../../Lodestone/Resources/Lodestone-PF1.storekit">
+      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

@@ -3,10 +3,10 @@ import SwiftUI
 struct FavoritesView: View {
     @Environment(FavoritesService.self) private var favoritesService
     @State private var viewModel: FavoritesViewModel?
+    @Environment(\.isEmbeddedInSplitView) private var isEmbedded
 
     var body: some View {
-        NavigationStack {
-            Group {
+        let inner = Group {
                 if let vm = viewModel {
                     if vm.isLoading {
                         ProgressView("Loading favorites...")
@@ -54,6 +54,11 @@ struct FavoritesView: View {
             .task {
                 await viewModel?.loadFavorites()
             }
+
+        if isEmbedded {
+            inner
+        } else {
+            NavigationStack { inner }
         }
     }
 }

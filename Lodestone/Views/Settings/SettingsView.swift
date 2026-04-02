@@ -5,28 +5,33 @@ struct SettingsView: View {
     @Environment(SubscriptionService.self) private var subscriptionService
     @State private var showPaywall = false
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.isEmbeddedInSplitView) private var isEmbedded
 
     var body: some View {
-        NavigationStack {
-            List {
-                subscriptionSection
-                appearanceSection
-                dataSection
-                aboutSection
-                #if DEBUG
-                debugSection
-                #endif
-            }
-            .listStyle(.insetGrouped)
-            .navigationTitle("Settings")
-            .sheet(isPresented: $showPaywall) {
-                PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService)
-                    .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.hidden)
-            }
-            .task {
-                await subscriptionService.checkSubscriptionStatus()
-            }
+        let inner = List {
+            subscriptionSection
+            appearanceSection
+            dataSection
+            aboutSection
+            #if DEBUG
+            debugSection
+            #endif
+        }
+        .listStyle(.insetGrouped)
+        .navigationTitle("Settings")
+        .sheet(isPresented: $showPaywall) {
+            PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.hidden)
+        }
+        .task {
+            await subscriptionService.checkSubscriptionStatus()
+        }
+
+        if isEmbedded {
+            inner
+        } else {
+            NavigationStack { inner }
         }
     }
 

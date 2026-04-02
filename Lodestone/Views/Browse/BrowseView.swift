@@ -4,26 +4,31 @@ struct BrowseView: View {
     @State private var viewModel = BrowseViewModel()
     @Environment(\.colorScheme) private var colorScheme
     @Environment(SubscriptionService.self) private var subscriptionService
+    @Environment(\.isEmbeddedInSplitView) private var isEmbedded
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: AppSpacing.xl) {
-                    quickAccessSection
-                    booksSection
-                    if !viewModel.recentlyViewed.isEmpty {
-                        recentlyViewedSection
-                    }
+        let inner = ScrollView {
+            VStack(alignment: .leading, spacing: AppSpacing.xl) {
+                quickAccessSection
+                booksSection
+                if !viewModel.recentlyViewed.isEmpty {
+                    recentlyViewedSection
                 }
-                .padding(.horizontal, AppSpacing.base)
-                .padding(.vertical, AppSpacing.base)
-                .padding(.bottom, AppSpacing.xxxl)
             }
-            .background(AppColors.adaptiveBackground(colorScheme))
-            .navigationTitle(AppConstants.appName)
-            .task {
-                await viewModel.loadHomeData()
-            }
+            .padding(.horizontal, AppSpacing.base)
+            .padding(.vertical, AppSpacing.base)
+            .padding(.bottom, AppSpacing.xxxl)
+        }
+        .background(AppColors.adaptiveBackground(colorScheme))
+        .navigationTitle(AppConstants.appName)
+        .task {
+            await viewModel.loadHomeData()
+        }
+
+        if isEmbedded {
+            inner
+        } else {
+            NavigationStack { inner }
         }
     }
 

@@ -67,6 +67,7 @@
 		A10058 /* SeedRaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10058 /* SeedRaces.swift */; };
 		A10060 /* LodestoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10060 /* LodestoneUITests.swift */; };
 		A10061 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10061 /* AppFonts.swift */; };
+		A10099 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10099 /* EnvironmentKeys.swift */; };
 		A10062 /* DesignComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10062 /* DesignComponents.swift */; };
 		A10063 /* PlayfairDisplay-Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B10063 /* PlayfairDisplay-Variable.ttf */; };
 		A10064 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B10064 /* PrivacyInfo.xcprivacy */; };
@@ -169,6 +170,7 @@
 		B10058 /* SeedRaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedRaces.swift; sourceTree = "<group>"; };
 		B10060 /* LodestoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodestoneUITests.swift; sourceTree = "<group>"; };
 		B10061 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
+		B10099 /* EnvironmentKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentKeys.swift; sourceTree = "<group>"; };
 		B10062 /* DesignComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignComponents.swift; sourceTree = "<group>"; };
 		B10063 /* PlayfairDisplay-Variable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Variable.ttf"; sourceTree = "<group>"; };
 		B10064 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 			children = (
 				B10035 /* Constants.swift */,
 				B10061 /* AppFonts.swift */,
+				B10099 /* EnvironmentKeys.swift */,
 				B10040 /* SQLiteRow.swift */,
 			);
 			path = Utilities;
@@ -629,6 +632,7 @@
 				A10047 /* DetailRow.swift in Sources */,
 				A10048 /* PaywallSheet.swift in Sources */,
 				A10061 /* AppFonts.swift in Sources */,
+				A10099 /* EnvironmentKeys.swift in Sources */,
 				A10062 /* DesignComponents.swift in Sources */,
 				A10051 /* SeedSpells.swift in Sources */,
 				A10052 /* SeedFeats.swift in Sources */,
