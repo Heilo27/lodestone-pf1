@@ -53,8 +53,8 @@ final class SubscriptionService {
 
     // PF1-only products (single-app subscription)
     private let pf1ProductIDs = [
-        "com.heiloprojects.lodestone-pf1.allaccess.monthly",
-        "com.heiloprojects.lodestone-pf1.allaccess.annual",
+        "com.heiloprojects.lodestonepf1.allaccess.monthly",
+        "com.heiloprojects.lodestonepf1.allaccess.annual",
     ]
 
     // Shared All Access bundle (unlocks PF1 + PF2 + SF1)

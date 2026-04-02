@@ -44,14 +44,14 @@
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Unlock all expansion content for Lodestone PF1.",
-              "displayName" : "Monthly",
+              "description" : "Unlocks all 15 PF1 expansion books.",
+              "displayName" : "PF1 Only — Monthly",
               "locale" : "en_US"
             }
           ],
-          "productID" : "com.heiloprojects.lodestone-pf1.allaccess.monthly",
+          "productID" : "com.heiloprojects.lodestonepf1.allaccess.monthly",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "All Access Monthly",
+          "referenceName" : "PF1 Monthly",
           "subscriptionGroupID" : "lodestone-allaccess",
           "type" : "RecurringSubscription"
         },
@@ -62,21 +62,21 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "14.99",
+          "displayPrice" : "12.99",
           "familyShareable" : false,
           "groupNumber" : 2,
           "internalID" : "lodestone-pf1-annual",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Unlock all expansion content for Lodestone PF1.",
-              "displayName" : "Annual",
+              "description" : "Unlocks all 15 PF1 books. Save 46%.",
+              "displayName" : "PF1 Only — Annual",
               "locale" : "en_US"
             }
           ],
-          "productID" : "com.heiloprojects.lodestone-pf1.allaccess.annual",
+          "productID" : "com.heiloprojects.lodestonepf1.allaccess.annual",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "All Access Annual",
+          "referenceName" : "PF1 Annual",
           "subscriptionGroupID" : "lodestone-allaccess",
           "type" : "RecurringSubscription"
         },
