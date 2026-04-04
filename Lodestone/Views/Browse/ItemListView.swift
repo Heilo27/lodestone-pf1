@@ -71,9 +71,16 @@ struct ItemListView: View {
                 )
             } else {
                 List(categoryCounts, id: \.category.id) { pair in
-                    NavigationLink {
-                        categoryDestination(pair.category)
-                    } label: {
+                    let categoryItems = allEntries.filter { entry in
+                        let cat = ItemCategory.category(for: entry.itemType)
+                        return cat.id == pair.category.id
+                    }
+
+                    let destination: BrowseDestination = pair.category.isSpecial
+                        ? .itemSpecialCategory(pair.category, categoryItems)
+                        : .itemCategory(pair.category.id, categoryItems)
+
+                    NavigationLink(value: destination) {
                         HStack {
                             Text(pair.category.id)
                                 .font(AppFonts.headline)

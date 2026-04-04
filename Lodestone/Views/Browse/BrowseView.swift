@@ -2,8 +2,10 @@ import SwiftUI
 
 struct BrowseView: View {
     @State private var viewModel = BrowseViewModel()
+    @State private var showPaywall = false
     @Environment(\.colorScheme) private var colorScheme
     @Environment(SubscriptionService.self) private var subscriptionService
+    @Environment(RecentlyViewedService.self) private var recentlyViewedService
     @Environment(\.isEmbeddedInSplitView) private var isEmbedded
 
     var body: some View {
@@ -23,20 +25,44 @@ struct BrowseView: View {
         .navigationTitle(AppConstants.appName)
         .navigationDestination(for: BrowseDestination.self) { destination in
             switch destination {
-            case .contentTypeList(let type): CategoryListView(contentType: type)
+            case .contentTypeList(let type): destinationView(for: type)
             case .bookContents(let book):    BookContentsView(source: book)
             case .recentEntry(let recent):   RecentEntryLoader(recent: recent)
+            case .itemCategory(let name, let items): ItemCategoryDetailView(categoryName: name, items: items)
+            case .itemSpecialCategory(let category, let items): ItemSpecialCategoryView(category: category, items: items)
             case .detail(let wrapped):       DetailView(entry: wrapped)
             }
         }
         .task {
-            await viewModel.loadHomeData()
+            await viewModel.loadHomeData(isUnlocked: subscriptionService.isUnlocked, recentlyViewedService: recentlyViewedService)
+        }
+        .onChange(of: subscriptionService.isUnlocked) { _, isUnlocked in
+            Task { await viewModel.loadCounts(isUnlocked: isUnlocked) }
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.hidden)
         }
 
         if isEmbedded {
             inner
         } else {
             NavigationStack { inner }
+        }
+    }
+
+    // MARK: - Content Type Routing
+
+    @ViewBuilder
+    private func destinationView(for type: ContentType) -> some View {
+        switch type {
+        case .spell:   SpellListView()
+        case .feat:    FeatListView()
+        case .item:    ItemListView()
+        case .monster: MonsterListView()
+        case .trait:   TraitListView()
+        default:       CategoryListView(contentType: type)
         }
     }
 
@@ -63,6 +89,15 @@ struct BrowseView: View {
 
     // MARK: - Books
 
+    private var booksBySeriesGroups: [(series: BookSeries, books: [BookSource])] {
+        var dict: [BookSeries: [BookSource]] = [:]
+        for book in viewModel.books { dict[book.series, default: []].append(book) }
+        return BookSeries.ordered.compactMap { series in
+            guard let books = dict[series], !books.isEmpty else { return nil }
+            return (series, books)
+        }
+    }
+
     private var booksSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
             sectionHeader("Your Books")
@@ -76,28 +111,62 @@ struct BrowseView: View {
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                     .padding(.vertical, AppSpacing.sm)
             } else {
-                VStack(spacing: 0) {
-                    ForEach(Array(viewModel.books.enumerated()), id: \.element.id) { index, book in
-                        NavigationLink(value: BrowseDestination.bookContents(book)) {
-                            BookRow(book: book, isUnlocked: subscriptionService.isUnlocked)
-                                .padding(.horizontal, AppSpacing.base)
-                                .padding(.vertical, AppSpacing.md)
-                                .background(AppColors.adaptiveSurface(colorScheme))
-                        }
-                        .buttonStyle(.plain)
+                VStack(alignment: .leading, spacing: AppSpacing.md) {
+                    ForEach(booksBySeriesGroups, id: \.series) { group in
+                        VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                            // Series header
+                            HStack(spacing: AppSpacing.xs) {
+                                Image(systemName: group.series.iconName)
+                                    .font(.caption)
+                                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                                    .accessibilityHidden(true)
+                                Text(group.series.rawValue)
+                                    .font(AppFonts.caption.weight(.semibold))
+                                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                                    .textCase(.uppercase)
+                                    .tracking(0.8)
+                            }
+                            .padding(.horizontal, 2)
 
-                        if index < viewModel.books.count - 1 {
-                            Divider()
-                                .padding(.leading, AppSpacing.base)
-                                .background(AppColors.adaptiveSurface(colorScheme))
+                            // Books card
+                            VStack(spacing: 0) {
+                                ForEach(Array(group.books.enumerated()), id: \.element.id) { index, book in
+                                    let isLocked = book.isPremium && !subscriptionService.isUnlocked
+                                    if isLocked {
+                                        Button {
+                                            showPaywall = true
+                                        } label: {
+                                            BookRow(book: book, isUnlocked: subscriptionService.isUnlocked)
+                                                .padding(.horizontal, AppSpacing.base)
+                                                .padding(.vertical, AppSpacing.md)
+                                                .background(AppColors.adaptiveSurface(colorScheme))
+                                        }
+                                        .buttonStyle(.plain)
+                                    } else {
+                                        NavigationLink(value: BrowseDestination.bookContents(book)) {
+                                            BookRow(book: book, isUnlocked: subscriptionService.isUnlocked)
+                                                .padding(.horizontal, AppSpacing.base)
+                                                .padding(.vertical, AppSpacing.md)
+                                                .background(AppColors.adaptiveSurface(colorScheme))
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
+
+                                    if index < group.books.count - 1 {
+                                        Divider()
+                                            .padding(.leading, AppSpacing.base)
+                                            .background(AppColors.adaptiveSurface(colorScheme))
+                                    }
+                                }
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: AppRadius.medium))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: AppRadius.medium)
+                                    .strokeBorder(AppColors.adaptiveBorder(colorScheme), lineWidth: 0.5)
+                            )
                         }
                     }
                 }
-                .clipShape(RoundedRectangle(cornerRadius: AppRadius.medium))
-                .overlay(
-                    RoundedRectangle(cornerRadius: AppRadius.medium)
-                        .strokeBorder(AppColors.adaptiveBorder(colorScheme), lineWidth: 0.5)
-                )
             }
         }
     }
@@ -125,6 +194,7 @@ struct BrowseView: View {
                             Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                                .accessibilityHidden(true)
                         }
                         .padding(.horizontal, AppSpacing.base)
                         .padding(.vertical, AppSpacing.md)
@@ -181,7 +251,7 @@ struct QuickAccessTile: View {
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 44)
         .padding(.vertical, AppSpacing.md)
         .background(AppColors.adaptiveSurface(colorScheme), in: RoundedRectangle(cornerRadius: AppRadius.medium))
         .overlay(
@@ -206,6 +276,7 @@ struct BookRow: View {
             Image(systemName: "books.vertical.fill")
                 .foregroundStyle(isLocked ? AppColors.premiumGold : AppColors.adaptivePrimary(colorScheme))
                 .frame(width: 28)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(book.name)
