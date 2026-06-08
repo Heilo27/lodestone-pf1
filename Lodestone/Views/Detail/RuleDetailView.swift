@@ -22,6 +22,8 @@ struct RuleDetailView: View {
             if let tables = referenceTables(for: rule.title), !tables.isEmpty {
                 ReferenceTableSection(tables: tables)
             }
+
+            CrossLinkSection(sourceId: rule.id, heading: "Used by Classes")
         }
     }
 }

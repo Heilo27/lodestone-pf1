@@ -55,7 +55,7 @@ struct GMScreenView: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("GM Screen")
+            .navigationTitle("GM Tools")
             .searchable(text: $searchText, prompt: "Search tables…")
 
         if isEmbedded {

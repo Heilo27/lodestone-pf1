@@ -2,7 +2,7 @@ import SwiftUI
 
 enum AppConstants {
     static let appName = "Lodestone PF1"
-    static let bundleID = "com.heiloproject.lodestone.pf1"
+    static let bundleID = "com.heiloprojects.lodestone-pf1"
     static let maxRecentSearches = 10
     static let searchDebounceSeconds: Double = 0.2
 }
@@ -106,7 +106,7 @@ enum AppColors {
         case .race:    Color(hex: "1A7A7A")
         case .trait:   Color(hex: "5B4B9A")
         case .skill:   Color(hex: "1E6B4A")
-        case .rule:    Color(hex: "4A4A4A")
+        case .rule:    Color(.secondaryLabel)
         }
     }
 }

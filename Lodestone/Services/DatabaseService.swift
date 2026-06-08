@@ -225,12 +225,12 @@ actor DatabaseService {
         return results
     }
 
-    func insertCrossReference(sourceId: UUID, targetId: UUID, linkText: String) throws {
+    func insertCrossReference(sourceId: UUID, targetId: UUID, targetType: ContentType, linkText: String) throws {
         guard isOpen else { throw DatabaseError.notOpen }
         try execInsert("""
-        INSERT OR REPLACE INTO cross_references (id, source_id, target_id, link_text)
+        INSERT OR REPLACE INTO cross_references (source_id, target_id, target_type, link_text)
         VALUES (?, ?, ?, ?)
-        """, params: [UUID().uuidString, sourceId.uuidString, targetId.uuidString, linkText])
+        """, params: [sourceId.uuidString, targetId.uuidString, targetType.rawValue, linkText])
     }
 
     func getContentType(for id: UUID) throws -> ContentType? {
@@ -252,9 +252,8 @@ actor DatabaseService {
         guard isOpen else { throw DatabaseError.notOpen }
         guard let db else { throw DatabaseError.notOpen }
         let sql = """
-            SELECT cr.target_id, c.content_type, cr.link_text
+            SELECT DISTINCT cr.target_id, cr.target_type, cr.link_text
             FROM cross_references cr
-            JOIN content c ON c.id = cr.target_id
             WHERE cr.source_id = ?
             ORDER BY cr.link_text ASC
         """
@@ -520,13 +519,14 @@ actor DatabaseService {
 
         try exec("""
         CREATE TABLE IF NOT EXISTS cross_references (
-            id TEXT NOT NULL,
             source_id TEXT NOT NULL,
             target_id TEXT NOT NULL,
-            link_text TEXT,
+            target_type TEXT NOT NULL DEFAULT '',
+            link_text TEXT NOT NULL DEFAULT '',
             PRIMARY KEY (source_id, target_id, link_text)
         )
         """)
+        try exec("CREATE INDEX IF NOT EXISTS idx_crossref_source ON cross_references(source_id)")
 
         try exec("""
         CREATE TABLE IF NOT EXISTS books (

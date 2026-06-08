@@ -41,7 +41,7 @@ struct RaceDetailView: View {
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .lineSpacing(4)
 
-            CrossLinkSection(sourceId: race.id, heading: "Racial Traits")
+            CrossLinkSection(sourceId: race.id, heading: "Trait Details")
         }
     }
 }

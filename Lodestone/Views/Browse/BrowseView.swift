@@ -88,7 +88,7 @@ struct BrowseView: View {
             sectionHeader("Quick Access")
 
             LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 96, maximum: 130))],
+                columns: [GridItem(.adaptive(minimum: 112, maximum: 130))],
                 spacing: AppSpacing.md
             ) {
                 ForEach(ContentType.allCases) { type in

@@ -19,8 +19,8 @@ struct CrossLinkSection: View {
                 }
             }
         }
-        .task {
-            guard links.isEmpty else { return }
+        .task(id: sourceId) {
+            links = []
             if let fetched = try? await DatabaseService.shared.fetchCrossReferencesWithType(for: sourceId) {
                 links = fetched
             }
@@ -63,6 +63,7 @@ private struct CrossLinkRow: View {
             Text(linkText)
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                .lineLimit(2)
             Spacer()
             Image(systemName: "chevron.right")
                 .font(.caption2)

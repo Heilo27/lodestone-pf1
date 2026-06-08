@@ -45,6 +45,9 @@ struct ClassDetailView: View {
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .lineSpacing(4)
+
+            CrossLinkSection(sourceId: classEntry.id, heading: "Class Spells")
+            CrossLinkSection(sourceId: classEntry.id, heading: "Class Skills")
         }
     }
 }

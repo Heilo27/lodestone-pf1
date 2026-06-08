@@ -225,7 +225,7 @@ actor SeedDataBuilder {
     // v15: Force full DB wipe to fix schema truncation from v13→v14.
     // v16: Seed data moved from Swift source literals to bundled JSON resources —
     //      eliminates 105K+ lines of Swift and compiler type-checker bottleneck.
-    static let currentSeedVersion = 16
+    static let currentSeedVersion = 17
 
     let db: DatabaseService
 
@@ -254,14 +254,18 @@ actor SeedDataBuilder {
             try await seedFile("feats_premium")  { try await db.insertFeat(makeFeat($0)) }
             try await seedFile("monsters_core")  { try await db.insertMonster(makeMonster($0)) }
 
-            // Build cross-references after all entries are inserted
-            let xrefBuilder = CrossReferenceBuilder(db: db)
-            try await xrefBuilder.buildAll()
-
             try await db.commitTransaction()
         } catch {
             await db.rollbackTransaction()
             throw error
+        }
+
+        // Cross-refs run outside the content transaction — failure is non-fatal
+        do {
+            let xrefBuilder = CrossReferenceBuilder(db: db)
+            try await xrefBuilder.buildAll()
+        } catch {
+            print("[SeedDataBuilder] Cross-reference build failed (non-fatal): \(error)")
         }
     }
 

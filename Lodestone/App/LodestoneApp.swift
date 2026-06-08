@@ -66,8 +66,9 @@ struct LodestoneApp: App {
         isInitializing = true
         defer { isInitializing = false }
 
-        let bgTask = await UIApplication.shared.beginBackgroundTask(withName: "seed") {
-            UIApplication.shared.endBackgroundTask(.invalid)
+        var bgTask: UIBackgroundTaskIdentifier = .invalid
+        bgTask = await UIApplication.shared.beginBackgroundTask(withName: "seed") {
+            UIApplication.shared.endBackgroundTask(bgTask)
         }
         defer { UIApplication.shared.endBackgroundTask(bgTask) }
 
