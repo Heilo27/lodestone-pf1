@@ -1,12 +1,6 @@
-Content expansion and stability improvements.
+Navigation and cross-link fixes.
 
-New content:
-- 308 NPC Codex entries (all core classes and prestige classes, CR 1/3 to 19)
-- 104 additional rules entries from Game Master Guide and Pathfinder Unchained (Revised Action Economy, Wound Thresholds, Variant Multiclassing, Settlements, Drugs, Sanity/Madness, Planar Adventures)
-- 23 Ultimate Combat spells including all communal variants (Air Walk Communal, Stoneskin Communal, and more)
-
-Bug fixes:
-- Fixed a crash that could occur when the application support directory was unavailable at launch
-- Fixed subscription status display in Settings showing incorrect state for active subscribers
-- Improved stability when app is backgrounded during initial database load
-- Fixed performance issues in Monster and Feat list views for large collections
+- Fixed cross-reference links (See Also, Class Spells, Spell-Like Abilities) not navigating correctly from the Search and Favorites tabs — tapping a link now opens the full detail page
+- Fixed Class detail pages showing the same list twice for "Class Spells" and "Class Skills" — each section now shows the correct filtered content
+- GM Tools tab can now navigate to any entry linked from its reference tables
+- All navigation tabs now fully handle every destination type, eliminating silent dead-ends when following cross-links
