@@ -2,11 +2,20 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("selectedTab") private var selectedTab: Int = 0
+    @AppStorage("selectedTheme") private var selectedTheme: String = "system"
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.colorScheme) private var colorScheme
     @Environment(RecentlyViewedService.self) private var recentlyViewedService
 
-    // One path per tab — held here so we can reset on tab switch
+    private var preferredScheme: ColorScheme? {
+        switch selectedTheme {
+        case "light": return .light
+        case "dark":  return .dark
+        default:      return nil
+        }
+    }
+
+    // One path per tab — persists independently when switching tabs
     @State private var paths: [NavigationPath] = Array(repeating: NavigationPath(), count: 5)
 
     var body: some View {
@@ -17,6 +26,7 @@ struct ContentView: View {
                 iPhoneLayout
             }
         }
+        .preferredColorScheme(preferredScheme)
         .tint(colorScheme == .dark ? AppColors.primaryDark : AppColors.primary)
     }
 
@@ -52,8 +62,8 @@ struct ContentView: View {
             .navigationTitle(AppConstants.appName)
             .listStyle(.sidebar)
         } detail: {
-            // Each tab gets its own NavigationStack with an externally-owned path.
-            // Switching tabs resets the path via onChange, popping to root.
+            // Each tab gets its own NavigationStack with an independently-owned path.
+            // Switching tabs preserves each tab's navigation state.
             switch selectedTab {
             case 0: NavigationStack(path: $paths[0]) { BrowseView() }.environment(\.isEmbeddedInSplitView, true)
             case 1: NavigationStack(path: $paths[1]) { SearchView() }.environment(\.isEmbeddedInSplitView, true)
@@ -62,9 +72,6 @@ struct ContentView: View {
             case 4: NavigationStack(path: $paths[4]) { SettingsView() }.environment(\.isEmbeddedInSplitView, true)
             default: NavigationStack(path: $paths[0]) { BrowseView() }.environment(\.isEmbeddedInSplitView, true)
             }
-        }
-        .onChange(of: selectedTab) { _, newTab in
-            paths[newTab] = NavigationPath()
         }
     }
 

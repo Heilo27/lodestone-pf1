@@ -11,13 +11,15 @@ struct FeatDetailView: View {
                     .padding(.bottom, AppSpacing.xs)
             }
 
-            DetailRow(label: "Prerequisites", value: feat.prerequisites)
-            DetailRow(label: "Source", value: feat.source)
+            if !feat.prerequisites.isEmpty {
+                DetailRow(label: "Prerequisites", value: feat.prerequisites)
+            }
+            DetailRow(label: "Source", value: feat.page > 0 ? "\(feat.source), p. \(feat.page)" : feat.source)
 
             OrnamentalDivider(label: "Benefit")
                 .padding(.vertical, AppSpacing.sm)
 
-            Text(feat.benefit)
+            Text(.init(feat.benefit))
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .lineSpacing(4)
@@ -25,7 +27,7 @@ struct FeatDetailView: View {
             if !feat.normal.isEmpty {
                 OrnamentalDivider(label: "Normal")
                     .padding(.vertical, AppSpacing.sm)
-                Text(feat.normal)
+                Text(.init(feat.normal))
                     .font(AppFonts.body)
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                     .lineSpacing(4)
@@ -34,11 +36,13 @@ struct FeatDetailView: View {
             if !feat.special.isEmpty {
                 OrnamentalDivider(label: "Special")
                     .padding(.vertical, AppSpacing.sm)
-                Text(feat.special)
+                Text(.init(feat.special))
                     .font(AppFonts.body)
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                     .lineSpacing(4)
             }
+
+            CrossLinkSection(sourceId: feat.id, heading: "See Also")
         }
     }
 }

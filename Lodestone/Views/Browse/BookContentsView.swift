@@ -33,6 +33,7 @@ struct BookContentsView: View {
                         Section(type.displayName) {
                             ForEach(entries, id: \.id) { entry in
                                 NavigationLink(entry.title, value: BrowseDestination.detail(AnyContentEntry(erasing: entry)))
+                                    .padding(.vertical, AppSpacing.xs)
                             }
                         }
                     }
@@ -70,6 +71,6 @@ struct BookContentsView: View {
 
 #Preview {
     NavigationStack {
-        BookContentsView(source: BookSource(name: "Core Rulebook", entryCount: 130, isPremium: false))
+        BookContentsView(source: BookSource(name: "Core Rulebook", entryCount: 130, isPremium: false, series: .core))
     }
 }

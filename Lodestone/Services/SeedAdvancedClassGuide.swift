@@ -33,33 +33,6 @@ private extension ClassEntry {
     }
 }
 
-private extension FeatEntry {
-    static func make(
-        _ title: String,
-        featType: String,
-        prerequisites: String,
-        benefit: String,
-        normal: String = "",
-        special: String = "",
-        summary: String,
-        source: String = "Advanced Class Guide",
-        isPremium: Bool = true
-    ) -> FeatEntry {
-        FeatEntry(
-            id: UUID(),
-            title: title,
-            summary: summary,
-            isPremium: isPremium,
-            prerequisites: prerequisites,
-            benefit: benefit,
-            normal: normal,
-            special: special,
-            featType: featType,
-            source: source
-        )
-    }
-}
-
 extension SeedDataBuilder {
     func seedAdvancedClassGuide() async throws {
         try await seedACGClassesA()

@@ -56,34 +56,6 @@ private extension RuleEntry {
     }
 }
 
-// MARK: - FeatEntry factory (local — mirrors SeedFeats.swift pattern)
-private extension FeatEntry {
-    static func make(
-        _ title: String,
-        featType: String,
-        prerequisites: String,
-        benefit: String,
-        normal: String = "",
-        special: String = "",
-        summary: String,
-        source: String,
-        isPremium: Bool
-    ) -> FeatEntry {
-        FeatEntry(
-            id: UUID(),
-            title: title,
-            summary: summary,
-            isPremium: isPremium,
-            prerequisites: prerequisites,
-            benefit: benefit,
-            normal: normal,
-            special: special,
-            featType: featType,
-            source: source
-        )
-    }
-}
-
 extension SeedDataBuilder {
     func seedMythicAdventures() async throws {
 

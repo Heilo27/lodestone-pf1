@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 @Observable
 final class BrowseViewModel {
     // Quick access
@@ -15,20 +16,19 @@ final class BrowseViewModel {
     var recentlyViewed: [RecentEntry] = []
 
     private let database = DatabaseService.shared
-    let recentlyViewedService = RecentlyViewedService()
 
-    func loadHomeData() async {
-        async let counts: () = loadCounts()
+    func loadHomeData(isUnlocked: Bool, sourcesFilter: Set<String> = [], recentlyViewedService: RecentlyViewedService) async {
+        async let counts: () = loadCounts(isUnlocked: isUnlocked, sourcesFilter: sourcesFilter)
         async let booksLoad: () = loadBooks()
         _ = await (counts, booksLoad)
         recentlyViewed = recentlyViewedService.entries
     }
 
-    func loadCounts() async {
+    func loadCounts(isUnlocked: Bool, sourcesFilter: Set<String> = []) async {
         do {
             try await database.open()
             for type in ContentType.allCases {
-                let count = try await database.countForType(type)
+                let count = try await database.countForType(type, sourcesFilter: sourcesFilter, unlockedOnly: !isUnlocked)
                 categoryCounts[type] = count
             }
         } catch {

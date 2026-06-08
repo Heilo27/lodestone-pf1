@@ -14,11 +14,18 @@ struct ItemEntry: ContentEntry {
     let aura: String
     let casterLevel: Int
     let itemType: String
+    // Weapon-specific fields (empty for non-weapon items)
+    let damage: String
+    let critical: String
+    let damageType: String
+    let rangeIncrement: String
     let description: String
     let source: String
+    let page: Int
 
     enum CodingKeys: String, CodingKey {
-        case id, title, summary, isPremium, price, weight, slot, aura, casterLevel, itemType, description, source
+        case id, title, summary, isPremium, price, weight, slot, aura, casterLevel, itemType
+        case damage, critical, damageType, rangeIncrement, description, source, page
     }
 
     // MARK: - Database init
@@ -33,14 +40,22 @@ struct ItemEntry: ContentEntry {
         aura = row["aura"] ?? ""
         casterLevel = Int(row["caster_level"] ?? "0") ?? 0
         itemType = row["item_type"] ?? ""
+        damage = row["damage"] ?? ""
+        critical = row["critical"] ?? ""
+        damageType = row["damage_type"] ?? ""
+        rangeIncrement = row["range_increment"] ?? ""
         description = row["description"] ?? ""
         source = row["source"] ?? "Core Rulebook"
+        page = Int(row["page"] ?? "0") ?? 0
     }
 
     // MARK: - Memberwise init
     init(id: UUID, title: String, summary: String, isPremium: Bool,
          price: String, weight: String, slot: String, aura: String,
-         casterLevel: Int, itemType: String, description: String, source: String) {
+         casterLevel: Int, itemType: String,
+         damage: String = "", critical: String = "",
+         damageType: String = "", rangeIncrement: String = "",
+         description: String, source: String, page: Int = 0) {
         self.id = id
         self.title = title
         self.summary = summary
@@ -51,8 +66,13 @@ struct ItemEntry: ContentEntry {
         self.aura = aura
         self.casterLevel = casterLevel
         self.itemType = itemType
+        self.damage = damage
+        self.critical = critical
+        self.damageType = damageType
+        self.rangeIncrement = rangeIncrement
         self.description = description
         self.source = source
+        self.page = page
     }
 
     static let placeholder = ItemEntry(

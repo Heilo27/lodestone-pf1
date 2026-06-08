@@ -6,10 +6,14 @@ struct DetailView: View {
     @Environment(RecentlyViewedService.self) private var recentlyViewedService
     @Environment(SubscriptionService.self) private var subscriptionService
     @State private var showPaywall = false
+    @State private var resolvedEntry: (any ContentEntry)?
     @Environment(\.colorScheme) private var colorScheme
 
+    /// The fully-typed entry to display — fetched from DB if entry was type-erased.
+    private var displayEntry: any ContentEntry { resolvedEntry ?? entry }
+
     private var isLocked: Bool {
-        entry.isPremium && !subscriptionService.isUnlocked
+        displayEntry.isPremium && !subscriptionService.isUnlocked
     }
 
     var body: some View {
@@ -29,43 +33,44 @@ struct DetailView: View {
                     lockedContentOverlay
                         .padding(.horizontal, AppSpacing.base)
                 } else {
-                    // Summary
-                    if !entry.summary.isEmpty {
-                        Text(entry.summary)
-                            .font(AppFonts.body)
-                            .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                            .padding(.horizontal, AppSpacing.base)
-                            .padding(.bottom, AppSpacing.base)
-                    }
-
-                    // Type-specific detail
-                    typeSpecificView(for: entry)
+                    // Type-specific detail (includes description — no summary duplication)
+                    typeSpecificView(for: displayEntry)
                         .padding(.horizontal, AppSpacing.base)
                 }
             }
             .padding(.bottom, AppSpacing.xxl)
         }
         .background(AppColors.adaptiveBackground(colorScheme))
-        .navigationTitle(entry.title)
+        .navigationTitle(displayEntry.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    favoritesService.toggle(entry.id)
+                    favoritesService.toggle(displayEntry)
                 } label: {
-                    Image(systemName: favoritesService.isFavorite(entry.id) ? "heart.fill" : "heart")
-                        .foregroundStyle(favoritesService.isFavorite(entry.id) ? .red : AppColors.adaptiveTextSecondary(colorScheme))
+                    Image(systemName: favoritesService.isFavorite(displayEntry.id) ? "heart.fill" : "heart")
+                        .foregroundStyle(favoritesService.isFavorite(displayEntry.id) ? .red : AppColors.adaptiveTextSecondary(colorScheme))
                 }
-                .accessibilityLabel(favoritesService.isFavorite(entry.id) ? "Remove from favorites" : "Add to favorites")
+                .accessibilityLabel(favoritesService.isFavorite(displayEntry.id) ? "Remove from favorites" : "Add to favorites")
+                .accessibilityValue(favoritesService.isFavorite(displayEntry.id) ? "Added to favorites" : "Not in favorites")
             }
         }
         .sheet(isPresented: $showPaywall) {
-            PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService)
-                .presentationDetents([.medium, .large])
+            PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService, entry: isLocked ? displayEntry : nil)
+                .presentationDetents([.large])
                 .presentationDragIndicator(.hidden)
         }
+        .onChange(of: subscriptionService.isSubscribed) { _, isSubscribed in
+            if isSubscribed { showPaywall = false }
+        }
         .task {
-            await subscriptionService.checkSubscriptionStatus()
+            // If we received a type-erased AnyContentEntry, re-fetch the full typed entry from DB
+            if entry is AnyContentEntry {
+                resolvedEntry = try? await DatabaseService.shared.getEntry(id: entry.id, type: entry.contentType)
+            }
+            if subscriptionService.subscriptionStatus == .unknown {
+                await subscriptionService.checkSubscriptionStatus()
+            }
         }
         .onAppear {
             recentlyViewedService.record(entry)
@@ -78,17 +83,18 @@ struct DetailView: View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
             // Badges row
             HStack(spacing: AppSpacing.xs) {
-                ContentTypeIconBadge(type: entry.contentType, size: 28)
-                ContentTypeBadge(type: entry.contentType)
-                SourceBadge(text: entry.source)
-                if entry.isPremium {
+                ContentTypeIconBadge(type: displayEntry.contentType, size: 28)
+                ContentTypeBadge(type: displayEntry.contentType)
+                SourceBadge(text: displayEntry.source)
+                if isLocked {
                     PremiumBadge(compact: true)
                 }
                 Spacer()
             }
+            .accessibilityElement(children: .combine)
 
             // Full-width title
-            Text(entry.title)
+            Text(displayEntry.title)
                 .font(AppFonts.displayMedium)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .fixedSize(horizontal: false, vertical: true)
@@ -99,8 +105,8 @@ struct DetailView: View {
 
     private var lockedContentOverlay: some View {
         VStack(spacing: AppSpacing.lg) {
-            if !entry.summary.isEmpty {
-                Text(entry.summary)
+            if !displayEntry.summary.isEmpty {
+                Text(displayEntry.summary)
                     .font(AppFonts.body)
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
             }
@@ -112,12 +118,13 @@ struct DetailView: View {
                         Image(systemName: "lock.fill")
                             .font(.title)
                             .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                            .accessibilityHidden(true)
 
                         Text("Premium Content")
                             .font(AppFonts.displaySmall)
                             .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
 
-                        Text("From \(entry.source)")
+                        Text("From \(displayEntry.source)")
                             .font(AppFonts.caption)
                             .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
 
@@ -131,7 +138,7 @@ struct DetailView: View {
                         .padding(.top, AppSpacing.xs)
                     }
                 }
-                .frame(height: 220)
+                .frame(minHeight: 220)
         }
     }
 
@@ -139,24 +146,23 @@ struct DetailView: View {
 
     @ViewBuilder
     private func typeSpecificView(for entry: any ContentEntry) -> some View {
-        switch entry {
-        case let spell as SpellEntry:
+        if let spell = entry as? SpellEntry {
             SpellDetailView(spell: spell)
-        case let classEntry as ClassEntry:
+        } else if let classEntry = entry as? ClassEntry {
             ClassDetailView(classEntry: classEntry)
-        case let monster as MonsterEntry:
+        } else if let monster = entry as? MonsterEntry {
             MonsterDetailView(monster: monster)
-        case let feat as FeatEntry:
+        } else if let feat = entry as? FeatEntry {
             FeatDetailView(feat: feat)
-        case let item as ItemEntry:
+        } else if let item = entry as? ItemEntry {
             ItemDetailView(item: item)
-        case let race as RaceEntry:
+        } else if let race = entry as? RaceEntry {
             RaceDetailView(race: race)
-        case let trait as TraitEntry:
+        } else if let trait = entry as? TraitEntry {
             TraitDetailView(trait: trait)
-        case let rule as RuleEntry:
+        } else if let rule = entry as? RuleEntry {
             RuleDetailView(rule: rule)
-        default:
+        } else {
             Text(entry.summary)
                 .font(AppFonts.body)
         }

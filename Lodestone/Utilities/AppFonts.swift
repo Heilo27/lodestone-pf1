@@ -51,9 +51,9 @@ enum AppFonts {
     /// 17pt Semibold — row titles, nav items
     static let headline: Font = .system(.headline)
 
-    /// 13pt Medium — badges, chips
+    /// Badges, chips — scales with Dynamic Type (caption baseline)
     static func chip(size: CGFloat = 13) -> Font {
-        .system(size: size, weight: .medium)
+        .system(.caption, design: .default).weight(.medium)
     }
 
     // MARK: Fallback

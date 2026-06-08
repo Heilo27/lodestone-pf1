@@ -14,6 +14,16 @@ struct CategoryListView: View {
         return entries.filter { $0.title.lowercased().contains(q) }
     }
 
+    private var alphabeticalGroups: [(letter: String, entries: [any ContentEntry])] {
+        let sorted = filteredEntries.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+        var dict: [String: [any ContentEntry]] = [:]
+        for entry in sorted {
+            let letter = String(entry.title.prefix(1)).uppercased()
+            dict[letter, default: []].append(entry)
+        }
+        return dict.keys.sorted().map { ($0, dict[$0] ?? []) }
+    }
+
     var body: some View {
         Group {
             if isLoading {
@@ -28,9 +38,36 @@ struct CategoryListView: View {
                         : "No results for \"\(searchText)\".")
                 )
             } else {
-                List(filteredEntries, id: \.id) { entry in
-                    NavigationLink(value: BrowseDestination.detail(AnyContentEntry(erasing: entry))) {
-                        CategoryEntryRow(entry: entry)
+                let showIndex = filteredEntries.count >= 300
+                let indexLetters = alphabeticalGroups.map(\.letter)
+                ScrollViewReader { proxy in
+                    List {
+                        if showIndex {
+                            ForEach(alphabeticalGroups, id: \.letter) { group in
+                                Section(header: GroupHeader(group.letter)) {
+                                    ForEach(group.entries, id: \.id) { entry in
+                                        NavigationLink(value: BrowseDestination.detail(AnyContentEntry(erasing: entry))) {
+                                            CategoryEntryRow(entry: entry)
+                                        }
+                                    }
+                                }
+                                .id(group.letter)
+                            }
+                        } else {
+                            ForEach(filteredEntries, id: \.id) { entry in
+                                NavigationLink(value: BrowseDestination.detail(AnyContentEntry(erasing: entry))) {
+                                    CategoryEntryRow(entry: entry)
+                                }
+                            }
+                        }
+                    }
+                    .overlay(alignment: .trailing) {
+                        if showIndex {
+                            SectionIndexView(letters: indexLetters) { letter in
+                                withAnimation { proxy.scrollTo(letter, anchor: .top) }
+                            }
+                            .padding(.trailing, 6)
+                        }
                     }
                 }
             }
@@ -58,6 +95,7 @@ struct CategoryListView: View {
 private struct CategoryEntryRow: View {
     let entry: any ContentEntry
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(SubscriptionService.self) private var subscriptionService
 
     var body: some View {
         HStack(spacing: AppSpacing.md) {
@@ -78,7 +116,7 @@ private struct CategoryEntryRow: View {
 
             Spacer()
 
-            if entry.isPremium {
+            if entry.isPremium && !subscriptionService.isUnlocked {
                 PremiumBadge(compact: true)
             } else if entry.source != "Core Rulebook" {
                 SourceBadge(text: entry.source)

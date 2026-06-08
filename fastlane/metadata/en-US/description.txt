@@ -1,4 +1,4 @@
-Lodestone PF1 is the complete Pathfinder 1E reference library for iOS. Everything you need at the table — instantly searchable, deeply cross-linked, and fully offline.
+Lodestone PF1 is the complete Pathfinder 1E reference library for iOS. Everything you need at the table — instantly searchable and fully offline.
 
 WHAT'S INCLUDED (FREE)
 - 11 Core Classes with full feature progressions
@@ -11,21 +11,26 @@ WHAT'S INCLUDED (FREE)
 PREMIUM ($2/month)
 - 2,000+ Feats across all sourcebooks
 - 2,000+ Spells from every Pathfinder supplement
-- 4,000+ Monsters with full stat blocks
+- 4,000+ Monsters with full stat blocks including NPC Codex entries
 - Prestige Classes, Alternate Class Variants, Mythic Rules
+- Unchained and Advanced Game Systems
 - Magic Items, Artifacts, Technology
-- Advanced Game Systems
 
 POWERFUL SEARCH
-Full-text search across every rule, spell, monster, feat, and item. Results grouped by type. No WiFi required.
-
-DEEP CROSS-LINKING
-Every reference in every entry is a live link. Tap a spell on a class list and jump straight to its full description. Tap a feat prerequisite and see the source.
+Full-text search across every rule, spell, monster, feat, and item. No WiFi required.
 
 BUILT FOR THE TABLE
 - Offline-first: works without any network connection after first launch
 - Fast: sub-100ms search on any query
-- iPad optimized: full-screen two-column layout for GM use
-- Dynamic Type and VoiceOver fully supported
+- iPad optimized: full-screen layout for GM use
+- Dynamic Type and VoiceOver supported
 
 Content sourced from Archives of Nethys under the Open Game License (OGL).
+
+SUBSCRIPTION INFORMATION
+Name: Lodestone PF1 Premium
+Price: $1.99/month or $15.99/year
+Billing: Subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple ID account at confirmation of purchase. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions in your App Store account settings.
+Free Content: Core Rulebook content (classes, races, core spells, core feats) is available free with no purchase.
+Privacy Policy: https://heiloprojects.com/privacy
+Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

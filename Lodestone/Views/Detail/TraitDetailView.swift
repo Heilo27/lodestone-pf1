@@ -19,7 +19,7 @@ struct TraitDetailView: View {
             OrnamentalDivider(label: "Benefit")
                 .padding(.vertical, AppSpacing.sm)
 
-            Text(trait.benefit)
+            Text(.init(trait.benefit))
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .lineSpacing(4)
@@ -27,11 +27,13 @@ struct TraitDetailView: View {
             if !trait.description.isEmpty && trait.description != trait.benefit {
                 OrnamentalDivider(label: "Description")
                     .padding(.vertical, AppSpacing.sm)
-                Text(trait.description)
+                Text(.init(trait.description))
                     .font(AppFonts.body)
                     .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                     .lineSpacing(4)
             }
+
+            CrossLinkSection(sourceId: trait.id, heading: "See Also")
         }
     }
 }

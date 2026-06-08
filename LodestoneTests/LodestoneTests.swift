@@ -27,6 +27,7 @@ struct LodestoneTests {
     }
 
     @Test("FavoritesService toggle")
+    @MainActor
     func favoritesToggle() {
         let service = FavoritesService()
         let spell = SpellEntry.placeholder

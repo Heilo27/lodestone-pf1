@@ -3,6 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("selectedTheme") private var selectedTheme: String = "system"
     @Environment(SubscriptionService.self) private var subscriptionService
+    @Environment(LibraryFilterService.self) private var libraryFilter
     @State private var showPaywall = false
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.isEmbeddedInSplitView) private var isEmbedded
@@ -10,18 +11,19 @@ struct SettingsView: View {
     var body: some View {
         let inner = List {
             subscriptionSection
+            librarySection
             appearanceSection
             dataSection
             aboutSection
-            #if DEBUG
-            debugSection
-            #endif
+            if SubscriptionService.isTestFlightOrDebug {
+                debugSection
+            }
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Settings")
         .sheet(isPresented: $showPaywall) {
             PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService)
-                .presentationDetents([.medium, .large])
+                .presentationDetents([.large])
                 .presentationDragIndicator(.hidden)
         }
         .task {
@@ -46,6 +48,7 @@ struct SettingsView: View {
                     HStack {
                         Image(systemName: "crown.fill")
                             .foregroundStyle(AppColors.premiumGold)
+                            .accessibilityHidden(true)
                         Text("Premium Active")
                             .font(AppFonts.headline)
                             .foregroundStyle(AppColors.premiumGold)
@@ -56,6 +59,7 @@ struct SettingsView: View {
                             .padding(.horizontal, AppSpacing.sm)
                             .padding(.vertical, 3)
                             .background(Color.green.opacity(0.8), in: Capsule())
+                            .accessibilityLabel("Status: Active")
                     }
 
                     if let expiry = subscriptionService.expirationDate {
@@ -73,23 +77,79 @@ struct SettingsView: View {
                     }
                 }
             } else {
-                Button {
-                    showPaywall = true
-                } label: {
+                switch subscriptionService.subscriptionStatus {
+                case .expired:
                     HStack {
-                        Label("Upgrade to Premium", systemImage: "crown")
-                            .font(AppFonts.body)
+                        Image(systemName: "crown.fill")
+                            .foregroundStyle(.orange)
+                            .accessibilityHidden(true)
+                        Text("Subscription Expired")
+                            .font(AppFonts.headline)
+                            .foregroundStyle(.orange)
+                        Spacer()
+                        Text("Expired")
+                            .font(AppFonts.chip(size: 11))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, AppSpacing.sm)
+                            .padding(.vertical, 3)
+                            .background(Color.orange.opacity(0.8), in: Capsule())
+                            .accessibilityLabel("Status: Expired")
+                    }
+                    Text("Your premium subscription has expired. Resubscribe to regain access.")
+                        .font(AppFonts.caption)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                    Button("Resubscribe") { showPaywall = true }
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+
+                case .cancelled:
+                    HStack {
+                        Image(systemName: "crown.fill")
+                            .foregroundStyle(.secondary)
+                            .accessibilityHidden(true)
+                        Text("Subscription Cancelled")
+                            .font(AppFonts.headline)
                             .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                         Spacer()
-                        Text("$1.99/mo")
-                            .font(AppFonts.subheadline.weight(.semibold))
-                            .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+                        Text("Cancelled")
+                            .font(AppFonts.chip(size: 11))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, AppSpacing.sm)
+                            .padding(.vertical, 3)
+                            .background(Color.gray.opacity(0.6), in: Capsule())
+                            .accessibilityLabel("Status: Cancelled")
                     }
-                }
+                    Text("Your subscription was cancelled. Subscribe again to unlock all expansion books.")
+                        .font(AppFonts.caption)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                    Button("Subscribe") { showPaywall = true }
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
 
-                Text("Unlocks all expansion books for Lodestone PF1.")
-                    .font(AppFonts.caption)
-                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                case .active, .neverSubscribed, .unknown:
+                    Button {
+                        showPaywall = true
+                    } label: {
+                        HStack {
+                            Label("Upgrade to Premium", systemImage: "crown")
+                                .font(AppFonts.body)
+                                .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                            Spacer()
+                            if let monthly = subscriptionService.products.first(where: { $0.id.contains("monthly") }) {
+                                Text("\(monthly.displayPrice)/mo")
+                                    .font(AppFonts.subheadline.weight(.semibold))
+                                    .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+                            }
+                        }
+                    }
+                    Text("Unlocks all expansion books for Lodestone PF1.")
+                        .font(AppFonts.caption)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                }
             }
 
             Button("Restore Purchases") {
@@ -97,6 +157,8 @@ struct SettingsView: View {
             }
             .font(AppFonts.body)
             .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+            .frame(minHeight: 44)
+            .contentShape(Rectangle())
 
             if let error = subscriptionService.purchaseError {
                 Text(error)
@@ -109,6 +171,35 @@ struct SettingsView: View {
                 .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                 .textCase(.uppercase)
                 .tracking(0.8)
+        }
+    }
+
+    // MARK: - Library
+
+    private var librarySection: some View {
+        Section {
+            NavigationLink {
+                LibrarySelectionView()
+            } label: {
+                HStack {
+                    Label("My Library", systemImage: "books.vertical")
+                        .font(AppFonts.body)
+                    Spacer()
+                    Text(libraryFilter.statusLabel)
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                }
+            }
+        } header: {
+            Text("Library")
+                .font(AppFonts.caption.weight(.semibold))
+                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                .textCase(.uppercase)
+                .tracking(0.8)
+        } footer: {
+            Text("Choose which books appear in Browse and Search.")
+                .font(AppFonts.caption)
+                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
         }
     }
 
@@ -136,8 +227,7 @@ struct SettingsView: View {
     private var dataSection: some View {
         Section {
             NavigationLink {
-                Text("Database info will go here")
-                    .navigationTitle("Database")
+                DatabaseInfoView()
             } label: {
                 Label("Database", systemImage: "cylinder")
                     .font(AppFonts.body)
@@ -186,7 +276,7 @@ struct SettingsView: View {
             NavigationLink {
                 OGLAttributionView()
             } label: {
-                Label("Open Game License", systemImage: "doc.plaintext")
+                Label("Compatibility License", systemImage: "doc.plaintext")
                     .font(AppFonts.body)
             }
         } header: {
@@ -200,7 +290,6 @@ struct SettingsView: View {
 
     // MARK: - Debug
 
-    #if DEBUG
     private var debugSection: some View {
         Section {
             Toggle(isOn: Binding(
@@ -212,7 +301,7 @@ struct SettingsView: View {
             }
             .tint(AppColors.premiumGold)
 
-            Text("Bypasses StoreKit. Debug builds only — never ships to users.")
+            Text("Bypasses StoreKit. TestFlight and debug builds only.")
                 .font(AppFonts.caption)
                 .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
         } header: {
@@ -223,16 +312,88 @@ struct SettingsView: View {
                 .tracking(0.8)
         }
     }
-    #endif
 }
 
-// MARK: - Placeholder Legal Views
+// MARK: - Database Info
+
+private struct DatabaseInfoView: View {
+    @State private var counts: [ContentType: Int] = [:]
+    @State private var isLoading = true
+    @State private var loadError: String?
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        List {
+            Section {
+                HStack {
+                    Text("Version")
+                        .font(AppFonts.body)
+                    Spacer()
+                    Text("v\(SeedDataBuilder.currentSeedVersion)")
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                }
+                HStack {
+                    Text("Storage")
+                        .font(AppFonts.body)
+                    Spacer()
+                    Text("On-device")
+                        .font(AppFonts.body)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                }
+            } header: {
+                Text("Database").textCase(.uppercase).tracking(0.8)
+            }
+
+            Section {
+                if isLoading {
+                    HStack { Spacer(); ProgressView(); Spacer() }
+                } else {
+                    ForEach(ContentType.allCases) { type in
+                        HStack {
+                            Label(type.displayName, systemImage: type.iconName)
+                                .font(AppFonts.body)
+                            Spacer()
+                            Text("\(counts[type] ?? 0)")
+                                .font(AppFonts.body)
+                                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                        }
+                    }
+                }
+            } header: {
+                Text("Content").textCase(.uppercase).tracking(0.8)
+            }
+
+            if let error = loadError {
+                Section {
+                    Text(error)
+                        .font(AppFonts.caption)
+                        .foregroundStyle(.red)
+                }
+            }
+        }
+        .navigationTitle("Database")
+        .navigationBarTitleDisplayMode(.inline)
+        .task {
+            do {
+                for type in ContentType.allCases {
+                    counts[type] = try await DatabaseService.shared.countForType(type)
+                }
+            } catch {
+                loadError = error.localizedDescription
+            }
+            isLoading = false
+        }
+    }
+}
+
+// MARK: - Legal Views
 
 private struct PrivacyPolicyView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: AppSpacing.lg) {
-                Text("Our full privacy policy is available at:")
+                Text("This app does not collect, store, or transmit any personal data. No analytics, tracking, or third-party SDKs are used. All content is stored locally on your device.")
                     .padding(.horizontal)
                 if let url = URL(string: "https://heiloprojects.com/privacy") {
                     Link("heiloprojects.com/privacy", destination: url)
@@ -249,7 +410,7 @@ private struct PrivacyPolicyView: View {
 private struct TermsOfServiceView: View {
     var body: some View {
         ScrollView {
-            Text("Terms of Service content will be added before App Store submission.")
+            Text("Content is provided under the Open Game License v1.0a. This app is not affiliated with or endorsed by Paizo Inc. Pathfinder is a registered trademark of Paizo Inc.")
                 .padding()
         }
         .navigationTitle("Terms of Service")
@@ -260,10 +421,24 @@ private struct TermsOfServiceView: View {
 private struct OGLAttributionView: View {
     var body: some View {
         ScrollView {
-            Text("Open Game License attribution will be added before App Store submission.")
-                .padding()
+            VStack(alignment: .leading, spacing: AppSpacing.lg) {
+                Text("""
+This product is compliant with the Open Game License (OGL) and is suitable for use with the Pathfinder Roleplaying Game or the 3.5 edition of the world's oldest fantasy roleplaying game.
+
+Product Identity: The following items are hereby identified as Product Identity, as defined in the Open Game License version 1.0a, Section 1(e), and are not Open Content: All trademarks, registered trademarks, proper names (characters, deities, etc.), dialogue, plots, storylines, locations, characters, artwork, and trade dress.
+
+Open Content: Except for material designated as Product Identity (see above), the game mechanics of this game product are Open Game Content, as defined in the Open Gaming License version 1.0a Section 1(d).
+
+OPEN GAME LICENSE Version 1.0a
+The following text is the property of Wizards of the Coast, Inc. and is Copyright 2000 Wizards of the Coast, Inc. ("Wizards"). All Rights Reserved.
+
+Content sourced from the Archives of Nethys (aonprd.com), the official Pathfinder rules reference.
+""")
+                    .padding(.horizontal)
+            }
+            .padding(.vertical)
         }
-        .navigationTitle("Open Game License")
+        .navigationTitle("Compatibility License")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

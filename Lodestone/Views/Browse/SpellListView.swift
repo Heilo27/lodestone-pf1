@@ -18,6 +18,7 @@ struct SpellListView: View {
     @State private var searchText = ""
     @State private var sortOrder: SortOrder = .alphabetical
     @State private var selectedClass: String = "Sorcerer/Wizard"
+    @State private var expandedLevels: Set<Int> = []
     @Environment(\.colorScheme) private var colorScheme
     @Environment(SubscriptionService.self) private var subscriptionService
 
@@ -70,7 +71,7 @@ struct SpellListView: View {
             dict[letter, default: []].append(spell)
         }
         return dict.keys.sorted().map { letter in
-            (letter, dict[letter]!)
+            (letter, dict[letter] ?? [])
         }
     }
 
@@ -81,7 +82,7 @@ struct SpellListView: View {
             dict[level, default: []].append(spell)
         }
         return dict.keys.sorted().map { level in
-            (level, dict[level]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
+            (level, (dict[level] ?? []).sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
         }
     }
 
@@ -98,7 +99,7 @@ struct SpellListView: View {
             dict[level, default: []].append(spell)
         }
         return dict.keys.sorted().map { level in
-            (level, dict[level]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
+            (level, (dict[level] ?? []).sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
         }
     }
 
@@ -122,6 +123,8 @@ struct SpellListView: View {
                     Divider()
 
                     spellList
+                        .onChange(of: sortOrder) { expandedLevels = [] }
+                        .onChange(of: selectedClass) { expandedLevels = [] }
                 }
             }
         }
@@ -180,31 +183,71 @@ struct SpellListView: View {
                     : "No results for \"\(searchText)\".")
             )
         } else {
-            List {
-                switch sortOrder {
-                case .alphabetical:
-                    ForEach(alphabeticalGroups, id: \.letter) { group in
-                        Section(header: GroupHeader(group.letter)) {
-                            ForEach(group.spells, id: \.id) { spell in
-                                SpellRow(entry: spell, isUnlocked: subscriptionService.isUnlocked)
+            let showIndex = sortOrder == .alphabetical && filteredEntries.count >= 300
+            let indexLetters = alphabeticalGroups.map(\.letter)
+            ScrollViewReader { proxy in
+                List {
+                    switch sortOrder {
+                    case .alphabetical:
+                        ForEach(alphabeticalGroups, id: \.letter) { group in
+                            Section(header: GroupHeader(group.letter)) {
+                                ForEach(group.spells, id: \.id) { spell in
+                                    SpellRow(entry: spell, isUnlocked: subscriptionService.isUnlocked)
+                                }
+                            }
+                            .id(group.letter)
+                        }
+                    case .byLevel:
+                        ForEach(levelGroups, id: \.level) { group in
+                            Section(header: GroupHeader("Level \(group.level)")) {
+                                ForEach(group.spells, id: \.id) { spell in
+                                    SpellRow(entry: spell, isUnlocked: subscriptionService.isUnlocked)
+                                }
+                            }
+                        }
+                    case .byClass:
+                        ForEach(classFilteredLevelGroups, id: \.level) { group in
+                            let label = "Level \(group.level)"
+                            let isExpanded = expandedLevels.contains(group.level)
+                            Section {
+                                if isExpanded {
+                                    ForEach(group.spells, id: \.id) { spell in
+                                        SpellRow(entry: spell, isUnlocked: subscriptionService.isUnlocked)
+                                    }
+                                }
+                            } header: {
+                                Button {
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        if isExpanded { expandedLevels.remove(group.level) }
+                                        else { expandedLevels.insert(group.level) }
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text(label)
+                                            .font(AppFonts.caption.weight(.semibold))
+                                            .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                                            .textCase(nil)
+                                        Spacer()
+                                        Text("\(group.spells.count)")
+                                            .font(AppFonts.caption)
+                                            .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                                        Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                                            .font(.caption2)
+                                            .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                                    }
+                                    .contentShape(Rectangle())
+                                }
+                                .buttonStyle(.plain)
                             }
                         }
                     }
-                case .byLevel:
-                    ForEach(levelGroups, id: \.level) { group in
-                        Section(header: GroupHeader("Level \(group.level)")) {
-                            ForEach(group.spells, id: \.id) { spell in
-                                SpellRow(entry: spell, isUnlocked: subscriptionService.isUnlocked)
-                            }
+                }
+                .overlay(alignment: .trailing) {
+                    if showIndex {
+                        SectionIndexView(letters: indexLetters) { letter in
+                            withAnimation { proxy.scrollTo(letter, anchor: .top) }
                         }
-                    }
-                case .byClass:
-                    ForEach(classFilteredLevelGroups, id: \.level) { group in
-                        Section(header: GroupHeader("Level \(group.level)")) {
-                            ForEach(group.spells, id: \.id) { spell in
-                                SpellRow(entry: spell, isUnlocked: subscriptionService.isUnlocked)
-                            }
-                        }
+                        .padding(.trailing, 6)
                     }
                 }
             }

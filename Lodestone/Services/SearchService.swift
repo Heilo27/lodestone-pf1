@@ -1,11 +1,12 @@
 import Foundation
 import SwiftUI
 
-@Observable
+@MainActor @Observable
 final class SearchService {
     var query: String = ""
     var results: [any ContentEntry] = []
     var activeFilters: Set<ContentType> = []
+    var activeSourceFilter: Set<String> = []
     var isSearching: Bool = false
     var recentSearches: [String] = []
 
@@ -26,12 +27,12 @@ final class SearchService {
         isSearching = true
 
         searchTask = Task {
-            // Debounce: 300ms
-            try? await Task.sleep(nanoseconds: 300_000_000)
+            // Debounce: 200ms
+            try? await Task.sleep(nanoseconds: 200_000_000)
             guard !Task.isCancelled else { return }
 
-            let cacheKey = cacheKey(query: currentQuery, filters: activeFilters)
-            if let cached = cache.object(forKey: cacheKey as NSString) {
+            let key = cacheKey(query: currentQuery, filters: activeFilters, sources: activeSourceFilter)
+            if let cached = cache.object(forKey: key as NSString) {
                 if !Task.isCancelled {
                     results = cached.entries
                     isSearching = false
@@ -41,10 +42,10 @@ final class SearchService {
 
             do {
                 try await database.open()
-                let found = try await database.search(query: currentQuery, filters: activeFilters)
+                let found = try await database.search(query: currentQuery, filters: activeFilters, sourcesFilter: activeSourceFilter)
                 guard !Task.isCancelled else { return }
                 results = found
-                cache.setObject(ResultWrapper(entries: found), forKey: cacheKey as NSString)
+                cache.setObject(ResultWrapper(entries: found), forKey: key as NSString)
                 addToRecent(currentQuery)
             } catch {
                 guard !Task.isCancelled else { return }
@@ -87,9 +88,10 @@ final class SearchService {
         }
     }
 
-    private func cacheKey(query: String, filters: Set<ContentType>) -> String {
+    private func cacheKey(query: String, filters: Set<ContentType>, sources: Set<String>) -> String {
         let filterStr = filters.map(\.rawValue).sorted().joined(separator: ",")
-        return "\(query)|\(filterStr)"
+        let sourceStr = sources.sorted().joined(separator: ",")
+        return "\(query)|\(filterStr)|\(sourceStr)"
     }
 }
 

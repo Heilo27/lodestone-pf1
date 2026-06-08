@@ -58,19 +58,14 @@ struct MonsterListView: View {
     }
 
     private var crGroups: [(cr: String, monsters: [MonsterEntry])] {
-        var seen: [String] = []
-        var result: [(String, [MonsterEntry])] = []
+        var dict: [String: [MonsterEntry]] = [:]
+        var order: [String] = []
         for monster in sortedEntries {
             let cr = monster.challengeRating.isEmpty ? "?" : monster.challengeRating
-            if !seen.contains(cr) {
-                seen.append(cr)
-                result.append((cr, []))
-            }
-            if let idx = result.firstIndex(where: { $0.0 == cr }) {
-                result[idx].1.append(monster)
-            }
+            if dict[cr] == nil { order.append(cr) }
+            dict[cr, default: []].append(monster)
         }
-        return result.map { ($0.0, $0.1) }
+        return order.map { ($0, dict[$0]!) }
     }
 
     private var alphabeticalGroups: [(letter: String, monsters: [MonsterEntry])] {
@@ -80,7 +75,7 @@ struct MonsterListView: View {
             dict[letter, default: []].append(monster)
         }
         return dict.keys.sorted().map { letter in
-            (letter, dict[letter]!.sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
+            (letter, (dict[letter] ?? []).sorted { $0.title.localizedCompare($1.title) == .orderedAscending })
         }
     }
 
@@ -100,22 +95,35 @@ struct MonsterListView: View {
                         : "No results for \"\(searchText)\".")
                 )
             } else {
-                List {
-                    if sortOrder == .byCR {
-                        ForEach(crGroups, id: \.cr) { group in
-                            Section(header: GroupHeader("CR \(group.cr)")) {
-                                ForEach(group.monsters, id: \.id) { monster in
-                                    MonsterRow(entry: monster, isUnlocked: subscriptionService.isUnlocked)
+                let showIndex = sortOrder == .alphabetical && filteredEntries.count >= 300
+                let indexLetters = alphabeticalGroups.map(\.letter)
+                ScrollViewReader { proxy in
+                    List {
+                        if sortOrder == .byCR {
+                            ForEach(crGroups, id: \.cr) { group in
+                                Section(header: GroupHeader("CR \(group.cr)")) {
+                                    ForEach(group.monsters, id: \.id) { monster in
+                                        MonsterRow(entry: monster, isUnlocked: subscriptionService.isUnlocked)
+                                    }
                                 }
+                            }
+                        } else {
+                            ForEach(alphabeticalGroups, id: \.letter) { group in
+                                Section(header: GroupHeader(group.letter)) {
+                                    ForEach(group.monsters, id: \.id) { monster in
+                                        MonsterRow(entry: monster, isUnlocked: subscriptionService.isUnlocked)
+                                    }
+                                }
+                                .id(group.letter)
                             }
                         }
-                    } else {
-                        ForEach(alphabeticalGroups, id: \.letter) { group in
-                            Section(header: GroupHeader(group.letter)) {
-                                ForEach(group.monsters, id: \.id) { monster in
-                                    MonsterRow(entry: monster, isUnlocked: subscriptionService.isUnlocked)
-                                }
+                    }
+                    .overlay(alignment: .trailing) {
+                        if showIndex {
+                            SectionIndexView(letters: indexLetters) { letter in
+                                withAnimation { proxy.scrollTo(letter, anchor: .top) }
                             }
+                            .padding(.trailing, 6)
                         }
                     }
                 }

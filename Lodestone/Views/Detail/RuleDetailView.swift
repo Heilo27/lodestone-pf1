@@ -13,11 +13,15 @@ struct RuleDetailView: View {
             OrnamentalDivider(label: "Rule Text")
                 .padding(.vertical, AppSpacing.sm)
 
-            Text(rule.body)
+            Text(.init(rule.body))
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .textSelection(.enabled)
                 .lineSpacing(4)
+
+            if let tables = referenceTables(for: rule.title), !tables.isEmpty {
+                ReferenceTableSection(tables: tables)
+            }
         }
     }
 }

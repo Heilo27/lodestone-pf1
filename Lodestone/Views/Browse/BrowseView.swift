@@ -6,6 +6,7 @@ struct BrowseView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(SubscriptionService.self) private var subscriptionService
     @Environment(RecentlyViewedService.self) private var recentlyViewedService
+    @Environment(LibraryFilterService.self) private var libraryFilter
     @Environment(\.isEmbeddedInSplitView) private var isEmbedded
 
     var body: some View {
@@ -23,6 +24,16 @@ struct BrowseView: View {
         }
         .background(AppColors.adaptiveBackground(colorScheme))
         .navigationTitle(AppConstants.appName)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink {
+                    LibrarySelectionView()
+                } label: {
+                    Image(systemName: libraryFilter.isFiltered ? "books.vertical.fill" : "books.vertical")
+                        .accessibilityLabel(libraryFilter.isFiltered ? "Library filter active" : "My Library")
+                }
+            }
+        }
         .navigationDestination(for: BrowseDestination.self) { destination in
             switch destination {
             case .contentTypeList(let type): destinationView(for: type)
@@ -34,14 +45,17 @@ struct BrowseView: View {
             }
         }
         .task {
-            await viewModel.loadHomeData(isUnlocked: subscriptionService.isUnlocked, recentlyViewedService: recentlyViewedService)
+            await viewModel.loadHomeData(isUnlocked: subscriptionService.isUnlocked, sourcesFilter: libraryFilter.activeNames, recentlyViewedService: recentlyViewedService)
         }
         .onChange(of: subscriptionService.isUnlocked) { _, isUnlocked in
-            Task { await viewModel.loadCounts(isUnlocked: isUnlocked) }
+            Task { await viewModel.loadCounts(isUnlocked: isUnlocked, sourcesFilter: libraryFilter.activeNames) }
+        }
+        .onChange(of: libraryFilter.activeNames) { _, sources in
+            Task { await viewModel.loadCounts(isUnlocked: subscriptionService.isUnlocked, sourcesFilter: sources) }
         }
         .sheet(isPresented: $showPaywall) {
             PaywallSheet(isPresented: $showPaywall, subscriptionService: subscriptionService)
-                .presentationDetents([.medium, .large])
+                .presentationDetents([.large])
                 .presentationDragIndicator(.hidden)
         }
 
@@ -62,6 +76,7 @@ struct BrowseView: View {
         case .item:    ItemListView()
         case .monster: MonsterListView()
         case .trait:   TraitListView()
+        case .skill:   SkillListView()
         default:       CategoryListView(contentType: type)
         }
     }
@@ -91,7 +106,8 @@ struct BrowseView: View {
 
     private var booksBySeriesGroups: [(series: BookSeries, books: [BookSource])] {
         var dict: [BookSeries: [BookSource]] = [:]
-        for book in viewModel.books { dict[book.series, default: []].append(book) }
+        let visibleBooks = viewModel.books.filter { libraryFilter.isActive($0) }
+        for book in visibleBooks { dict[book.series, default: []].append(book) }
         return BookSeries.ordered.compactMap { series in
             guard let books = dict[series], !books.isEmpty else { return nil }
             return (series, books)
@@ -100,7 +116,7 @@ struct BrowseView: View {
 
     private var booksSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            sectionHeader("Your Books")
+            sectionHeader(libraryFilter.isFiltered ? "Your Library (\(libraryFilter.activeNames.count) books)" : "Your Library")
 
             if viewModel.isLoadingBooks {
                 HStack { Spacer(); ProgressView(); Spacer() }

@@ -8,6 +8,7 @@ enum ContentType: String, Codable, CaseIterable, Identifiable, Hashable {
     case item
     case race
     case trait
+    case skill
     case rule
 
     var id: String { rawValue }
@@ -21,6 +22,7 @@ enum ContentType: String, Codable, CaseIterable, Identifiable, Hashable {
         case .item: "Items"
         case .race: "Races"
         case .trait: "Traits"
+        case .skill: "Skills"
         case .rule: "Rules"
         }
     }
@@ -34,6 +36,7 @@ enum ContentType: String, Codable, CaseIterable, Identifiable, Hashable {
         case .item: "Item"
         case .race: "Race"
         case .trait: "Trait"
+        case .skill: "Skill"
         case .rule: "Rule"
         }
     }
@@ -47,6 +50,7 @@ enum ContentType: String, Codable, CaseIterable, Identifiable, Hashable {
         case .item: "bag.fill"
         case .race: "figure.stand"
         case .trait: "sparkles"
+        case .skill: "brain.head.profile"
         case .rule: "book.closed.fill"
         }
     }

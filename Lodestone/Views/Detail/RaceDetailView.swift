@@ -36,10 +36,12 @@ struct RaceDetailView: View {
             OrnamentalDivider(label: "Description")
                 .padding(.vertical, AppSpacing.sm)
 
-            Text(race.description)
+            Text(.init(race.description))
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .lineSpacing(4)
+
+            CrossLinkSection(sourceId: race.id, heading: "Racial Traits")
         }
     }
 }

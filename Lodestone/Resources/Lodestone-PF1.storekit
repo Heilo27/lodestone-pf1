@@ -62,14 +62,14 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "12.99",
+          "displayPrice" : "15.99",
           "familyShareable" : false,
           "groupNumber" : 2,
           "internalID" : "lodestone-pf1-annual",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Unlocks all 15 PF1 books. Save 46%.",
+              "description" : "Unlocks all 15 PF1 books. Save 33%.",
               "displayName" : "PF1 Only — Annual",
               "locale" : "en_US"
             }
@@ -77,56 +77,6 @@
           "productID" : "com.heiloprojects.lodestonepf1.allaccess.annual",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "PF1 Annual",
-          "subscriptionGroupID" : "lodestone-allaccess",
-          "type" : "RecurringSubscription"
-        },
-        {
-          "adHocOffers" : [
-
-          ],
-          "codeOffers" : [
-
-          ],
-          "displayPrice" : "3.99",
-          "familyShareable" : false,
-          "groupNumber" : 3,
-          "internalID" : "lodestone-bundle-monthly",
-          "introductoryOffer" : null,
-          "localizations" : [
-            {
-              "description" : "Unlocks PF1, PF2, and SF1 expansions.",
-              "displayName" : "All Access — Monthly",
-              "locale" : "en_US"
-            }
-          ],
-          "productID" : "com.heiloproject.lodestone.allaccess.monthly",
-          "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "All Access Bundle Monthly",
-          "subscriptionGroupID" : "lodestone-allaccess",
-          "type" : "RecurringSubscription"
-        },
-        {
-          "adHocOffers" : [
-
-          ],
-          "codeOffers" : [
-
-          ],
-          "displayPrice" : "29.99",
-          "familyShareable" : false,
-          "groupNumber" : 4,
-          "internalID" : "lodestone-bundle-annual",
-          "introductoryOffer" : null,
-          "localizations" : [
-            {
-              "description" : "Unlocks PF1, PF2, and SF1. Save 37%.",
-              "displayName" : "All Access — Annual",
-              "locale" : "en_US"
-            }
-          ],
-          "productID" : "com.heiloproject.lodestone.allaccess.annual",
-          "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "All Access Bundle Annual",
           "subscriptionGroupID" : "lodestone-allaccess",
           "type" : "RecurringSubscription"
         }

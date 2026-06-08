@@ -13,15 +13,18 @@ struct SpellEntry: ContentEntry {
     let castingTime: String
     let components: String
     let range: String
+    let area: String
+    let targets: String
     let duration: String
     let savingThrow: String
     let spellResistance: Bool
     let description: String
     let source: String
+    let page: Int
 
     enum CodingKeys: String, CodingKey {
         case id, title, summary, isPremium, school, levels, castingTime, components
-        case range, duration, savingThrow, spellResistance, description, source
+        case range, area, targets, duration, savingThrow, spellResistance, description, source, page
     }
 
     // MARK: - Database init
@@ -35,18 +38,22 @@ struct SpellEntry: ContentEntry {
         castingTime = row["casting_time"] ?? ""
         components = row["components"] ?? ""
         range = row["range"] ?? ""
+        area = row["area"] ?? ""
+        targets = row["targets"] ?? ""
         duration = row["duration"] ?? ""
         savingThrow = row["saving_throw"] ?? ""
         spellResistance = (row["spell_resistance"] ?? "0") == "1"
         description = row["description"] ?? ""
         source = row["source"] ?? "Core Rulebook"
+        page = Int(row["page"] ?? "0") ?? 0
     }
 
     // MARK: - Memberwise init
     init(id: UUID, title: String, summary: String, isPremium: Bool,
          school: String, levels: String, castingTime: String, components: String,
-         range: String, duration: String, savingThrow: String, spellResistance: Bool,
-         description: String, source: String) {
+         range: String, area: String, targets: String,
+         duration: String, savingThrow: String, spellResistance: Bool,
+         description: String, source: String, page: Int = 0) {
         self.id = id
         self.title = title
         self.summary = summary
@@ -56,11 +63,14 @@ struct SpellEntry: ContentEntry {
         self.castingTime = castingTime
         self.components = components
         self.range = range
+        self.area = area
+        self.targets = targets
         self.duration = duration
         self.savingThrow = savingThrow
         self.spellResistance = spellResistance
         self.description = description
         self.source = source
+        self.page = page
     }
 
     static let placeholder = SpellEntry(
@@ -73,6 +83,8 @@ struct SpellEntry: ContentEntry {
         castingTime: "1 standard action",
         components: "V, S, M (a ball of bat guano and sulfur)",
         range: "Long (400 ft. + 40 ft./level)",
+        area: "20-ft.-radius spread",
+        targets: "",
         duration: "Instantaneous",
         savingThrow: "Reflex half",
         spellResistance: true,

@@ -6,13 +6,23 @@ struct ClassDetailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            GroupHeader("At a Glance")
+                .padding(.bottom, AppSpacing.xs)
+
             DetailRow(label: "Hit Die", value: classEntry.hitDie)
             DetailRow(label: "Skill Ranks", value: "\(classEntry.skillRanks) + Int modifier per level")
-            DetailRow(label: "BAB", value: classEntry.baseAttackBonus)
-            DetailRow(label: "Fort Save", value: classEntry.fortSave)
-            DetailRow(label: "Ref Save", value: classEntry.refSave)
-            DetailRow(label: "Will Save", value: classEntry.willSave)
+            DetailRow(label: "Base Attack Bonus", value: classEntry.baseAttackBonus)
+
+            GroupHeader("Saving Throws")
+                .padding(.top, AppSpacing.sm)
+                .padding(.bottom, AppSpacing.xs)
+
+            DetailRow(label: "Fortitude", value: classEntry.fortSave)
+            DetailRow(label: "Reflex", value: classEntry.refSave)
+            DetailRow(label: "Will", value: classEntry.willSave)
+
             DetailRow(label: "Source", value: classEntry.source)
+                .padding(.top, AppSpacing.xs)
 
             OrnamentalDivider(label: "Class Skills")
                 .padding(.vertical, AppSpacing.sm)
@@ -31,7 +41,7 @@ struct ClassDetailView: View {
             OrnamentalDivider(label: "Description")
                 .padding(.vertical, AppSpacing.sm)
 
-            Text(classEntry.description)
+            Text(.init(classEntry.description))
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .lineSpacing(4)

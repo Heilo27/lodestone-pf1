@@ -4,6 +4,7 @@ private let sectionLimit = 20
 
 struct SearchView: View {
     @State private var viewModel = SearchViewModel()
+    @Environment(LibraryFilterService.self) private var libraryFilter
     @Environment(\.isEmbeddedInSplitView) private var isEmbedded
 
     // MARK: - Grouped results (max 20 per section)
@@ -76,6 +77,7 @@ struct SearchView: View {
                                             .frame(maxWidth: .infinity, alignment: .center)
                                     }
                                     .buttonStyle(.plain)
+                                    .frame(minHeight: 44)
                                 }
                             }
                         }
@@ -91,6 +93,13 @@ struct SearchView: View {
             }
             .onChange(of: viewModel.query) {
                 viewModel.search()
+            }
+            .onChange(of: libraryFilter.activeNames) { _, sources in
+                viewModel.searchService.activeSourceFilter = sources
+                viewModel.search()
+            }
+            .onAppear {
+                viewModel.searchService.activeSourceFilter = libraryFilter.activeNames
             }
 
         if isEmbedded {

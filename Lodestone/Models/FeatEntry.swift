@@ -14,9 +14,10 @@ struct FeatEntry: ContentEntry {
     let special: String
     let featType: String
     let source: String
+    let page: Int
 
     enum CodingKeys: String, CodingKey {
-        case id, title, summary, isPremium, prerequisites, benefit, normal, special, featType, source
+        case id, title, summary, isPremium, prerequisites, benefit, normal, special, featType, source, page
     }
 
     // MARK: - Database init
@@ -31,12 +32,13 @@ struct FeatEntry: ContentEntry {
         special = row["special"] ?? ""
         featType = row["feat_type"] ?? ""
         source = row["source"] ?? "Core Rulebook"
+        page = Int(row["page"] ?? "0") ?? 0
     }
 
     // MARK: - Memberwise init
     init(id: UUID, title: String, summary: String, isPremium: Bool,
          prerequisites: String, benefit: String, normal: String,
-         special: String, featType: String, source: String) {
+         special: String, featType: String, source: String, page: Int = 0) {
         self.id = id
         self.title = title
         self.summary = summary
@@ -47,6 +49,7 @@ struct FeatEntry: ContentEntry {
         self.special = special
         self.featType = featType
         self.source = source
+        self.page = page
     }
 
     static let placeholder = FeatEntry(
@@ -61,4 +64,29 @@ struct FeatEntry: ContentEntry {
         featType: "Combat",
         source: "Core Rulebook"
     )
+
+    static func make(
+        _ title: String,
+        featType: String,
+        prerequisites: String = "",
+        benefit: String,
+        normal: String = "",
+        special: String = "",
+        summary: String,
+        source: String = "Core Rulebook",
+        isPremium: Bool = false
+    ) -> FeatEntry {
+        FeatEntry(
+            id: UUID(),
+            title: title,
+            summary: summary,
+            isPremium: isPremium,
+            prerequisites: prerequisites,
+            benefit: benefit,
+            normal: normal,
+            special: special,
+            featType: featType,
+            source: source
+        )
+    }
 }

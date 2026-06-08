@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Item Category
 
-struct ItemCategory: Identifiable {
+struct ItemCategory: Identifiable, Hashable {
     let id: String          // display name
     let itemTypes: [String] // itemType values that map here
     var isSpecial: Bool = false

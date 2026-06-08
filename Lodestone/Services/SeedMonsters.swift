@@ -2,912 +2,2177 @@ import Foundation
 
 extension SeedDataBuilder {
     func seedMonsters() async throws {
-        let monsters: [MonsterEntry] = [
-
-            // MARK: - CR 1/4
-
-            .make("Bat", cr: "1/8", type: "Animal", size: "Diminutive", alignment: "N",
-                  hp: "1 (1d8–3)", ac: 16, speed: "5 ft., fly 40 ft. (good)",
-                  attacks: "Bite –1 (1d3–4)",
-                  specialAbilities: "Blindsense 20 ft., low-light vision",
-                  environment: "Temperate and tropical forests",
-                  summary: "A small nocturnal flying mammal that navigates by echolocation.",
-                  desc: "Bats are small, nocturnal mammals that roost in caves, hollow trees, and abandoned structures. They navigate almost exclusively by blindsense, emitting high-pitched squeaks and interpreting the echoes. Though harmless individually, swarms of bats can pose a genuine threat to travelers caught in confined spaces."),
-
-            .make("Cat", cr: "1/4", type: "Animal", size: "Tiny", alignment: "N",
-                  hp: "2 (1d8–2)", ac: 14, speed: "30 ft.",
-                  attacks: "Claws –2 (1d2–4 plus grab)",
-                  specialAbilities: "Low-light vision, scent",
-                  environment: "Temperate and tropical plains",
-                  summary: "A small, agile feline predator common as a household pet.",
-                  desc: "Cats are nimble, independent predators that have adapted to life alongside humanoids. They are accomplished hunters of small prey such as birds and rodents. Domestic cats tolerate their owners but remain fundamentally wild animals, and feral cats quickly revert to hunting instincts."),
-
-            .make("Dire Rat", cr: "1/3", type: "Animal", size: "Small", alignment: "N",
-                  hp: "5 (1d8+1)", ac: 13, speed: "40 ft., climb 20 ft.",
-                  attacks: "Bite +1 (1d4 plus disease)",
-                  specialAbilities: "Disease (filth fever, DC 11), low-light vision, scent",
-                  environment: "Any",
-                  summary: "An aggressive, dog-sized rat that carries dangerous diseases.",
-                  desc: "Dire rats are aggressive and territorial rodents roughly the size of a small dog. They infest sewers, dungeons, and refuse heaps, gnawing through almost any material to reach food or nesting sites. Their bites carry filth fever, making even a single dire rat a threat to the unwary."),
-
-            .make("Dog", cr: "1/3", type: "Animal", size: "Small", alignment: "N",
-                  hp: "6 (1d8+2)", ac: 13, speed: "40 ft.",
-                  attacks: "Bite +2 (1d4+1)",
-                  specialAbilities: "Low-light vision, scent",
-                  environment: "Temperate plains",
-                  summary: "A loyal and capable domesticated canine used for hunting and companionship.",
-                  desc: "Dogs have been bred by humanoids for thousands of years into countless shapes and temperaments. Most are friendly toward those they know and alert to strangers. Their keen senses of smell and hearing make them valuable as guards and scouts."),
-
-            .make("Eagle", cr: "1/2", type: "Animal", size: "Small", alignment: "N",
-                  hp: "4 (1d8)", ac: 14, speed: "10 ft., fly 80 ft. (average)",
-                  attacks: "2 talons +3 (1d4), bite +3 (1d4)",
-                  specialAbilities: "Low-light vision",
-                  environment: "Temperate mountains",
-                  summary: "A large bird of prey with sharp talons and exceptional eyesight.",
-                  desc: "Eagles soar on thermals high above open terrain, scanning for prey with their extraordinary vision. They strike swiftly, snatching small animals in powerful talons before carrying them to a high perch to feed. Eagles are highly territorial and will drive off other large birds near their nests."),
-
-            .make("Goblin", cr: "1/3", type: "Humanoid (goblinoid)", size: "Small", alignment: "NE",
-                  hp: "6 (1d8+1)", ac: 16, speed: "30 ft.",
-                  attacks: "Short sword +2 (1d4), or shortbow +4 (1d4)",
-                  specialAbilities: "Darkvision 60 ft., goblin fast (move action to avoid AoO)",
-                  environment: "Temperate forest and plains",
-                  summary: "A small, green-skinned humanoid driven by cruelty and cunning.",
-                  desc: "Goblins are childishly cruel, cowardly humanoids who compensate for their weakness with numbers and ambush tactics. They dwell in warrens beneath hills or ruins, raiding nearby farms and travelers under cover of darkness. Their rapid movements and small size make them surprisingly difficult to corner."),
-
-            .make("Kobold", cr: "1/4", type: "Humanoid (reptilian)", size: "Small", alignment: "LE",
-                  hp: "5 (1d8+1)", ac: 15, speed: "30 ft.",
-                  attacks: "Spear +1 (1d6–1), or sling +3 (1d3–1)",
-                  specialAbilities: "Darkvision 60 ft., light sensitivity",
-                  environment: "Temperate underground",
-                  summary: "A small, cunning reptilian humanoid that excels at trap-laying.",
-                  desc: "Kobolds are timid, weak creatures who survive through numbers, cunning, and their legendary skill at constructing traps. They worship dragons as divine ancestors and will go to great lengths to curry favor with any nearby draconic entity. Kobold warrens are honeycombéd with hidden pits, collapsing ceilings, and triggered crossbows."),
-
-            .make("Monkey", cr: "1/4", type: "Animal", size: "Tiny", alignment: "N",
-                  hp: "3 (1d8–1)", ac: 14, speed: "30 ft., climb 30 ft.",
-                  attacks: "Bite –1 (1d3–4)",
-                  specialAbilities: "Low-light vision",
-                  environment: "Warm forests",
-                  summary: "An agile, small primate found in warm forests.",
-                  desc: "Monkeys are curious, social animals that spend most of their lives in the forest canopy. They move with remarkable speed through trees and are quick to flee from larger predators. Their nimble hands make them adept at manipulation, and they will investigate interesting objects with enthusiasm."),
-
-            .make("Rat", cr: "1/8", type: "Animal", size: "Tiny", alignment: "N",
-                  hp: "1 (1d8–2)", ac: 14, speed: "15 ft., climb 15 ft., swim 15 ft.",
-                  attacks: "Bite –3 (1d3–4)",
-                  specialAbilities: "Low-light vision, scent",
-                  environment: "Any",
-                  summary: "A small, adaptable rodent found in virtually every environment.",
-                  desc: "Rats are among the most successful mammals in the world, thriving in sewers, granaries, and wilderness alike. They are primarily scavengers and rarely attack unless cornered. Rats breed rapidly and can overwhelm food stores if left unchecked."),
-
-            .make("Raven", cr: "1/6", type: "Animal", size: "Tiny", alignment: "N",
-                  hp: "3 (1d8–1)", ac: 14, speed: "10 ft., fly 40 ft. (average)",
-                  attacks: "Bite +5 (1d3–4)",
-                  specialAbilities: "Low-light vision",
-                  environment: "Temperate forests",
-                  summary: "An intelligent black bird known for mimicry and problem-solving.",
-                  desc: "Ravens are among the most intelligent birds, capable of mimicking speech, using simple tools, and recognizing individual faces. They are highly social within their groups but aggressive toward other ravens outside the flock. Their all-black plumage and intelligence have made them symbols of mystery and ill omen in many cultures."),
-
-            .make("Riding Dog", cr: "1", type: "Animal", size: "Medium", alignment: "N",
-                  hp: "13 (2d8+4)", ac: 13, speed: "40 ft.",
-                  attacks: "Bite +3 (1d6+3)",
-                  specialAbilities: "Low-light vision, scent",
-                  environment: "Temperate plains",
-                  summary: "A large, trained dog capable of serving as a mount for Small riders.",
-                  desc: "Riding dogs are large, powerful canines selectively bred for strength and a calm temperament under saddle. They are common mounts for halflings and gnomes, and are prized by scouts and rangers for their tracking abilities. A well-trained riding dog is fiercely loyal and will defend its rider to the death."),
-
-            .make("Skeleton (Human)", cr: "1/3", type: "Undead", size: "Medium", alignment: "NE",
-                  hp: "4 (1d8)", ac: 16, speed: "30 ft.",
-                  attacks: "2 claws +0 (1d4+1)",
-                  specialAbilities: "DR 5/bludgeoning, immunity to cold, undead traits",
-                  environment: "Any",
-                  summary: "An animated human skeleton driven by necromantic energy to attack the living.",
-                  desc: "Human skeletons are among the most commonly raised undead, created by necromancers who require cheap, disposable soldiers. They feel no pain, no fatigue, and no fear, attacking relentlessly until destroyed or ordered to stop. Skeletons crumble to dust when their animating magic dissipates."),
-
-            .make("Viper (Small)", cr: "1/2", type: "Animal", size: "Small", alignment: "N",
-                  hp: "4 (1d8)", ac: 13, speed: "20 ft., climb 20 ft., swim 20 ft.",
-                  attacks: "Bite +2 (1d3–1 plus poison)",
-                  specialAbilities: "Poison (Con damage, DC 10), low-light vision, scent",
-                  environment: "Temperate and tropical forests",
-                  summary: "A small venomous snake capable of delivering a dangerous bite.",
-                  desc: "Small vipers are ambush predators that rely on camouflage and patience to catch prey. They deliver venom through fangs that fold flat when the mouth is closed. Most vipers are not aggressive toward creatures too large to eat, but will strike defensively if threatened or cornered."),
-
-            // MARK: - CR 1/2
-
-            .make("Giant Centipede", cr: "1/2", type: "Vermin", size: "Small", alignment: "N",
-                  hp: "5 (1d8+1)", ac: 14, speed: "40 ft., climb 40 ft.",
-                  attacks: "Bite +1 (1d3–1 plus poison)",
-                  specialAbilities: "Poison (Dex damage, DC 13), darkvision 60 ft.",
-                  environment: "Temperate and tropical underground",
-                  summary: "A fast-moving multi-legged vermin with a poisonous bite.",
-                  desc: "Giant centipedes are swift, aggressive predators that hunt any creature small enough to subdue. They are found in caves, rotting logs, and deep undergrowth. Their bite injects a venom that paralyzes muscles, making even small centipedes dangerous to low-level adventurers."),
-
-            .make("Gnoll", cr: "1", type: "Humanoid (gnoll)", size: "Medium", alignment: "CE",
-                  hp: "11 (2d8+2)", ac: 15, speed: "30 ft.",
-                  attacks: "Battleaxe +3 (1d8+2) or shortbow +1 (1d6)",
-                  specialAbilities: "Darkvision 60 ft.",
-                  environment: "Warm plains and deserts",
-                  summary: "A hyena-headed humanoid raider that lives in nomadic war-bands.",
-                  desc: "Gnolls are savage humanoids who resemble upright hyenas. They organize themselves into loose tribal bands that range across savannas and deserts, raiding settlements and taking slaves for labor or sacrifice to dark powers. Gnolls are physically imposing and genuinely fearsome in combat."),
-
-            .make("Orc", cr: "1/3", type: "Humanoid (orc)", size: "Medium", alignment: "CE",
-                  hp: "6 (1d8+2)", ac: 13, speed: "30 ft.",
-                  attacks: "Falchion +4 (2d4+4) or javelin +1 (1d6+3)",
-                  specialAbilities: "Darkvision 60 ft., ferocity",
-                  environment: "Temperate hills and mountains",
-                  summary: "A fierce, violent humanoid with protruding tusks and a brutal culture.",
-                  desc: "Orcs are aggressive, powerful humanoids who celebrate strength and hold weakness in contempt. They organize into warbands ruled by the strongest fighter, who holds power until a stronger challenger defeats them. Orc ferocity allows them to fight on when most creatures would fall."),
-
-            .make("Stirge", cr: "1/2", type: "Magical Beast", size: "Tiny", alignment: "N",
-                  hp: "5 (1d10)", ac: 16, speed: "10 ft., fly 40 ft. (average)",
-                  attacks: "Touch +7 (attach)",
-                  specialAbilities: "Attach, blood drain (1d4 Con), darkvision 60 ft., low-light vision",
-                  environment: "Temperate and tropical marshes and forests",
-                  summary: "A mosquito-like flying beast that drains blood from its victims.",
-                  desc: "Stirges are bat-winged creatures with a long, hollow proboscis that they drive through armor to reach flesh. Once attached, a stirge drains blood rapidly, dropping off only when engorged or slain. They roost in large colonies and swarm prey in numbers that can overwhelm even experienced warriors."),
-
-            .make("Wolf", cr: "1", type: "Animal", size: "Medium", alignment: "N",
-                  hp: "13 (2d8+4)", ac: 14, speed: "50 ft.",
-                  attacks: "Bite +2 (1d6+1 plus trip)",
-                  specialAbilities: "Low-light vision, scent, trip",
-                  environment: "Cold and temperate forests and plains",
-                  summary: "A pack-hunting canine predator with a powerful trip attack.",
-                  desc: "Wolves are highly social predators that coordinate complex hunting strategies within their packs. A lone wolf is cautious, but a pack will take on prey many times its size. Wolves are capable of pulling down large animals by targeting legs and flanks, exhausting their quarry before moving in for the kill."),
-
-            .make("Zombie (Human)", cr: "1/2", type: "Undead", size: "Medium", alignment: "NE",
-                  hp: "12 (2d8+3)", ac: 12, speed: "30 ft.",
-                  attacks: "Slam +4 (1d6+4)",
-                  specialAbilities: "DR 5/slashing, undead traits",
-                  environment: "Any",
-                  summary: "A shambling animated corpse that mindlessly obeys its creator's commands.",
-                  desc: "Zombies are the most basic of undead constructs, formed when a necromancer animates a fresh or preserved corpse. They retain no memory or personality from life and exist solely to follow orders and attack the living. Their resilience to ordinary damage makes them surprisingly dangerous despite their slowness."),
-
-            // MARK: - CR 1
-
-            .make("Crocodile", cr: "2", type: "Animal", size: "Large", alignment: "N",
-                  hp: "22 (3d8+9)", ac: 14, speed: "20 ft., swim 30 ft.",
-                  attacks: "Bite +6 (1d8+6 plus grab) or tail slap +6 (1d12+6)",
-                  specialAbilities: "Hold breath, low-light vision",
-                  environment: "Warm rivers and marshes",
-                  summary: "A massive aquatic reptile that drags prey beneath the water to drown.",
-                  desc: "Crocodiles are ambush predators that lurk just below the water surface, exploding upward with fearsome speed when prey comes close. They grip prey in their jaws and perform a death roll to disorient and drown it. Ancient and adapted to extreme environments, they have changed little over millions of years."),
-
-            .make("Dire Bat", cr: "2", type: "Animal", size: "Large", alignment: "N",
-                  hp: "22 (4d8+4)", ac: 14, speed: "20 ft., fly 40 ft. (good)",
-                  attacks: "Bite +5 (1d8+4)",
-                  specialAbilities: "Blindsense 40 ft., low-light vision",
-                  environment: "Temperate and tropical caves",
-                  summary: "A massive bat with a wingspan exceeding 15 feet.",
-                  desc: "Dire bats are enormous, aggressive cousins of common bats that nest in large cave complexes and underground ruins. They navigate entirely by blindsense and are capable of catching medium-sized prey on the wing. A colony of dire bats disturbed in their roost can fill a cavern with a storm of leathery wings and snapping jaws."),
-
-            .make("Giant Spider", cr: "1", type: "Vermin", size: "Medium", alignment: "N",
-                  hp: "16 (3d8+3)", ac: 14, speed: "30 ft., climb 30 ft.",
-                  attacks: "Bite +2 (1d6 plus poison)",
-                  specialAbilities: "Poison (Str damage, DC 14), darkvision 60 ft., tremorsense 60 ft., web (+5 ranged)",
-                  environment: "Temperate forests and underground",
-                  summary: "A man-sized spider that uses venom and webs to capture prey.",
-                  desc: "Giant spiders are among the most common large predators of dungeon environments. They build extensive webs across passages and chambers, waiting motionless for prey to become entangled. Their venom weakens prey quickly, and they wrap struggling victims in silk before dragging them to a secure location."),
-
-            .make("Goblin Dog", cr: "1", type: "Magical Beast", size: "Medium", alignment: "N",
-                  hp: "9 (2d10–2)", ac: 12, speed: "50 ft.",
-                  attacks: "Bite +2 (1d6+1 plus allergic reaction)",
-                  specialAbilities: "Allergic reaction (DC 11 Fort or 1 Dex damage, itching), darkvision 60 ft., scent",
-                  environment: "Temperate and tropical plains and hills",
-                  summary: "A hairless, repulsive canine used as a mount and attack beast by goblins.",
-                  desc: "Goblin dogs are mangy, hairless quadrupeds with disproportionately large heads and patchy, oily skin. Their skin secretes a substance that causes itching and irritation on contact, making them unpleasant to grapple. Despite their repulsive appearance, goblins keep them as mounts and beloved pets."),
-
-            .make("Horse", cr: "1", type: "Animal", size: "Large", alignment: "N",
-                  hp: "15 (2d8+6)", ac: 13, speed: "50 ft.",
-                  attacks: "2 hooves +3 (1d6+3)",
-                  specialAbilities: "Low-light vision, scent",
-                  environment: "Temperate plains",
-                  summary: "A strong, fast equine used widely as a mount and beast of burden.",
-                  desc: "Horses are herd animals bred and domesticated throughout the civilized world as mounts, draft animals, and livestock. Trained war horses are more aggressive and can be directed to attack in combat. Wild horses live in herds led by a dominant stallion and will flee from most predators."),
-
-            .make("Hyena", cr: "1", type: "Animal", size: "Medium", alignment: "N",
-                  hp: "10 (2d8+2)", ac: 13, speed: "50 ft.",
-                  attacks: "Bite +3 (1d6+3 plus trip)",
-                  specialAbilities: "Low-light vision, scent, trip",
-                  environment: "Warm plains and deserts",
-                  summary: "A powerful scavenger and pack hunter with crushing jaws.",
-                  desc: "Hyenas are opportunistic predators and scavengers that live in large social groups called clans. Their bone-crushing jaws can break through the toughest hides and shells, and they will fight tenaciously over food. Despite their reputation as mere scavengers, hyenas are effective pack hunters capable of taking down large prey."),
-
-            .make("Mite", cr: "1/4", type: "Fey", size: "Small", alignment: "NE",
-                  hp: "3 (1d6)", ac: 13, speed: "20 ft., climb 20 ft.",
-                  attacks: "Dagger –1 (1d3–2), or javelin +1 (1d4–2)",
-                  specialAbilities: "Darkvision 120 ft., spell-like abilities (doom 1/day), vermin empathy",
-                  environment: "Temperate and cold underground",
-                  summary: "A tiny, mean-spirited fey cousin to the svirfneblin that covets insects and filth.",
-                  desc: "Mites are wretched, unsightly fey who dwell in the deepest underground passages and warrens. They are violently jealous of their territorial boundaries and will attack anything that intrudes. They keep giant vermin as pets and companions, considering the creatures to be allies and family."),
-
-            .make("Tengu", cr: "1/2", type: "Humanoid (tengu)", size: "Medium", alignment: "N",
-                  hp: "9 (2d8)", ac: 15, speed: "30 ft.",
-                  attacks: "Wakizashi +1 (1d6), or bite +1 (1d3)",
-                  specialAbilities: "Gifted linguist, low-light vision, swordtrained",
-                  environment: "Temperate forests",
-                  summary: "A crow-headed humanoid with a gift for language and swordsmanship.",
-                  desc: "Tengu are avian humanoids descended from celestial ravens, bearing glossy black feathers, sharp beaks, and an uncanny facility with spoken language. They are drawn to shiny objects and novelty. Many tengu become wanderers, mercenaries, or scholars, leveraging their linguistic gifts and keen intelligence."),
-
-            .make("Troglodyte", cr: "1", type: "Humanoid (reptilian)", size: "Medium", alignment: "CE",
-                  hp: "13 (2d8+4)", ac: 16, speed: "30 ft.",
-                  attacks: "Club +2 (1d6+1), 2 claws +2 (1d4+1), bite +2 (1d4+1)",
-                  specialAbilities: "Darkvision 90 ft., stench (DC 13, 10 rounds, sickened)",
-                  environment: "Underground",
-                  summary: "A foul-smelling reptilian humanoid that lurks in underground caves.",
-                  desc: "Troglodytes are primitive cave-dwelling reptilians with powerful limbs and a nauseating musk that they use as a weapon. Their natural armor is surprisingly tough, and they are capable melee combatants despite their lack of sophisticated tactics. They worship dark gods and conduct brutal rituals in their underground temples."),
-
-            // MARK: - CR 2
-
-            .make("Boar", cr: "2", type: "Animal", size: "Medium", alignment: "N",
-                  hp: "18 (2d8+9)", ac: 14, speed: "40 ft.",
-                  attacks: "Gore +4 (1d8+6)",
-                  specialAbilities: "Ferocity, low-light vision, scent",
-                  environment: "Temperate forests",
-                  summary: "A large, aggressive wild pig with dangerous tusks and fierce tenacity.",
-                  desc: "Boars are aggressive omnivores that will charge almost any intruder into their territory. Their tusks can disembowel a wolf, and their ferocity allows them to fight on even when mortally wounded. Wild boars travel alone or in small family groups and are widely hunted for their excellent meat."),
-
-            .make("Bugbear", cr: "2", type: "Humanoid (goblinoid)", size: "Medium", alignment: "CE",
-                  hp: "16 (3d8+3)", ac: 17, speed: "30 ft.",
-                  attacks: "Morningstar +5 (1d8+3), or javelin +3 (1d6+3)",
-                  specialAbilities: "Darkvision 60 ft., scent, stalker",
-                  environment: "Temperate mountains and forests",
-                  summary: "A large, stealthy goblinoid that preys on weaker creatures through ambush.",
-                  desc: "Bugbears are the largest and most dangerous of the goblinoid races, combining the cunning of their smaller kin with genuine physical power. They are predators first, preferring to stalk prey silently and attack from ambush. Bugbears have a deep love of cruelty and often keep goblin tribes as laborers and food sources."),
-
-            .make("Deinonychus", cr: "3", type: "Animal", size: "Medium", alignment: "N",
-                  hp: "26 (4d8+8)", ac: 15, speed: "60 ft.",
-                  attacks: "2 talons +5 (1d8+2 plus grab), 2 claws +5 (1d4+2), bite +5 (2d6+2)",
-                  specialAbilities: "Low-light vision, pounce, scent",
-                  environment: "Warm forests and plains",
-                  summary: "A swift feathered dinosaur that attacks with slashing talons and a bone-crushing bite.",
-                  desc: "Deinonychuses are fast, intelligent pack hunters that coordinate attacks on prey much larger than themselves. They pin prey with oversized sickle-shaped talons while delivering a killing bite. Fond of ambush, they are among the most dangerous dinosaurs that adventurers might encounter."),
-
-            .make("Dire Wolf", cr: "3", type: "Animal", size: "Large", alignment: "N",
-                  hp: "37 (5d8+15)", ac: 14, speed: "50 ft.",
-                  attacks: "Bite +7 (1d8+10 plus trip)",
-                  specialAbilities: "Low-light vision, scent, trip",
-                  environment: "Cold and temperate forests",
-                  summary: "A massive prehistoric wolf with enormous jaws and pack intelligence.",
-                  desc: "Dire wolves are the apex canine predators of many regions, standing nearly as tall at the shoulder as a pony. They hunt in packs and bring down prey with coordinated flanking and tripping attacks. Ancient and relentless, dire wolves will pursue prey for miles, wearing it down before moving in."),
-
-            .make("Giant Frog", cr: "1", type: "Animal", size: "Medium", alignment: "N",
-                  hp: "11 (2d8+2)", ac: 12, speed: "30 ft., swim 30 ft.",
-                  attacks: "Tongue +1 (grab), bite +1 (1d6+1)",
-                  specialAbilities: "Low-light vision, pull (tongue, 5 ft.), swallow whole",
-                  environment: "Temperate and tropical marshes",
-                  summary: "An oversized frog that snatches prey with its long, sticky tongue.",
-                  desc: "Giant frogs are ambush predators that float motionless among lily pads or crouch at the water's edge waiting for prey. Their enormous sticky tongues can reach surprising distances, yanking victims off their feet. Large giant frogs can swallow medium-sized prey whole."),
-
-            .make("Leopard", cr: "2", type: "Animal", size: "Medium", alignment: "N",
-                  hp: "19 (3d8+6)", ac: 15, speed: "30 ft., climb 20 ft.",
-                  attacks: "Bite +6 (1d6+3), 2 claws +6 (1d3+3)",
-                  specialAbilities: "Low-light vision, pounce, rake (2 claws, 1d3+3), scent",
-                  environment: "Warm forests and plains",
-                  summary: "A sleek spotted big cat that excels at climbing and ambush attacks.",
-                  desc: "Leopards are solitary, elusive predators that stalk prey through a variety of terrain. They are exceptional climbers and frequently drag kills up into trees to protect them from larger scavengers. Their spotted coats provide excellent camouflage in dappled forest light."),
-
-            .make("Lizardfolk", cr: "1", type: "Humanoid (reptilian)", size: "Medium", alignment: "N",
-                  hp: "11 (2d8+2)", ac: 15, speed: "30 ft., swim 15 ft.",
-                  attacks: "Claws +2 (1d4+2), bite +2 (1d4+2), or club +2 (1d6+2)",
-                  specialAbilities: "Hold breath",
-                  environment: "Temperate and warm marshes",
-                  summary: "A primitive reptilian humanoid that dwells in swamps and river deltas.",
-                  desc: "Lizardfolk are marsh-dwelling reptilians who live in small tribal communities centered around food gathering and clan defense. They are not inherently hostile but are intensely territorial and will attack those who threaten their villages without warning. Lizardfolk have a deeply practical worldview and little interest in abstract concepts."),
-
-            .make("Shark (Medium)", cr: "1", type: "Animal", size: "Medium", alignment: "N",
-                  hp: "13 (3d8)", ac: 13, speed: "swim 60 ft.",
-                  attacks: "Bite +3 (1d6+1)",
-                  specialAbilities: "Blindsense 30 ft., keen scent, low-light vision",
-                  environment: "Cold and temperate aquatic",
-                  summary: "A streamlined ocean predator that detects blood in the water from enormous distances.",
-                  desc: "Medium sharks are efficient, remorseless predators built for speed and bite force. They are attracted to blood and movement in water, investigating disturbances with increasing aggression. Though they rarely attack without provocation, a shark that has tasted blood becomes a determined and dangerous foe."),
-
-            .make("Spider Swarm", cr: "1", type: "Vermin (swarm)", size: "Diminutive", alignment: "N",
-                  hp: "9 (2d8)", ac: 17, speed: "20 ft., climb 20 ft.",
-                  attacks: "Swarm (1d6 plus poison plus distraction)",
-                  specialAbilities: "Distraction (DC 11), poison (Str damage, DC 11), swarm traits, tremorsense 30 ft., darkvision 60 ft.",
-                  environment: "Temperate and tropical forests and underground",
-                  summary: "A seething mass of thousands of tiny venomous spiders.",
-                  desc: "Spider swarms form when thousands of spiderlings emerge from a hatching and move as a unified mass in search of prey. They can flow through tiny cracks, under doors, and around almost any obstacle. Their collective venom delivers a surprisingly effective dose and their sheer numbers make them difficult to drive off."),
-
-            .make("Wererat", cr: "2", type: "Humanoid (human, shapechanger)", size: "Medium", alignment: "LE",
-                  hp: "26 (4d8+8)", ac: 16, speed: "30 ft.",
-                  attacks: "Short sword +5 (1d6+1), or bite +5 (1d4+1 plus lycanthropy)",
-                  specialAbilities: "Change shape, DR 10/silver, lycanthropy (DC 14), low-light vision, scent",
-                  environment: "Urban",
-                  summary: "A human afflicted with lycanthropy who can transform into a giant rat.",
-                  desc: "Wererats are cunning lycanthropes who prefer urban environments, infiltrating criminal organizations and using their rat form to spy and travel through city sewer systems. In their human guise they appear unremarkable, betraying their nature only through nervous, twitchy behavior. They spread their curse deliberately to build networks of loyal infected servants."),
-
-            .make("Wolverine", cr: "2", type: "Animal", size: "Medium", alignment: "N",
-                  hp: "25 (3d8+12)", ac: 14, speed: "30 ft., climb 10 ft.",
-                  attacks: "2 claws +4 (1d6+2), bite +4 (1d4+2)",
-                  specialAbilities: "Low-light vision, rage, scent",
-                  environment: "Cold forests",
-                  summary: "A ferocious mustelid that attacks with berserk fury regardless of its own injuries.",
-                  desc: "Wolverines are among the most aggressive animals pound for pound, known to drive bears and mountain lions away from kills many times their size. When threatened or hungry, wolverines fly into a savage rage that increases their already-formidable combat ability. They are solitary, wide-ranging predators respected and feared throughout northern regions."),
-
-            // MARK: - CR 3
-
-            .make("Ankheg", cr: "3", type: "Magical Beast", size: "Large", alignment: "N",
-                  hp: "28 (3d10+12)", ac: 18, speed: "30 ft., burrow 20 ft.",
-                  attacks: "Bite +7 (2d6+7 plus grab)",
-                  specialAbilities: "Acid spray (4d4 acid, 30 ft. line, DC 14, recharge 6 hrs), darkvision 60 ft., low-light vision, tremorsense 60 ft.",
-                  environment: "Temperate and warm plains and hills",
-                  summary: "A giant burrowing insect that spits acid and grabs prey from below.",
-                  desc: "Ankhegs are giant arthropods that burrow beneath farmland and plains, sensing prey through vibration before erupting from the ground to attack. They can spit a powerful stream of acid to soften resistance before closing with their crushing mandibles. Farmers and ranchers dread ankhegs for the livestock and crops they destroy."),
-
-            .make("Cockatrice", cr: "3", type: "Magical Beast", size: "Small", alignment: "N",
-                  hp: "27 (6d10–6)", ac: 14, speed: "20 ft., fly 60 ft. (poor)",
-                  attacks: "Bite +9 (1d4–2 plus petrification)",
-                  specialAbilities: "Petrification (DC 13 Fort or permanently petrified), darkvision 60 ft., low-light vision",
-                  environment: "Temperate and warm plains",
-                  summary: "A rooster-headed reptile whose bite turns flesh to stone.",
-                  desc: "The cockatrice is a small but deeply feared magical beast whose saliva carries a powerful petrification agent. A single bite from these foul-tempered creatures can doom a warrior to an eternity as a garden ornament. Travelers in cockatrice territory carry basilisk oil as a prophylactic against the creature's bite."),
-
-            .make("Ghoul", cr: "1", type: "Undead", size: "Medium", alignment: "CE",
-                  hp: "13 (2d8+4)", ac: 14, speed: "30 ft.",
-                  attacks: "Bite +3 (1d6+1 plus disease plus paralysis), 2 claws +3 (1d3+1 plus paralysis)",
-                  specialAbilities: "Ghoul fever (DC 13 Fort), paralysis (DC 13 Fort, 1d4+1 rounds), darkvision 60 ft., undead traits",
-                  environment: "Any land",
-                  summary: "A feral undead creature that feeds on corpses and paralyzes the living.",
-                  desc: "Ghouls are undead creatures who retain a mockery of intelligence but are consumed by an insatiable hunger for flesh. They haunt graveyards, battlefields, and dungeon ossuaries, gnawing on corpses and attacking any living creature they encounter. Their paralytic saliva makes them far more dangerous than their humble statistics suggest."),
-
-            .make("Giant Fire Beetle", cr: "1/3", type: "Vermin", size: "Small", alignment: "N",
-                  hp: "4 (1d8)", ac: 12, speed: "30 ft., fly 30 ft. (poor)",
-                  attacks: "Bite +1 (1d4)",
-                  specialAbilities: "Darkvision 60 ft., glowing glands (light 10 ft., 1d6 days after death)",
-                  environment: "Temperate and tropical forests",
-                  summary: "A large beetle with bioluminescent glands prized by dungeon delvers.",
-                  desc: "Giant fire beetles are nocturnal vermin that use their glowing glands for communication and to attract mates. They are not particularly aggressive and generally flee from large creatures unless cornered. Their light-producing organs retain their glow for up to a day and a half after death, making them valuable to miners and dungeon explorers."),
-
-            .make("Hell Hound", cr: "3", type: "Outsider (evil, extraplanar, fire, lawful)", size: "Medium", alignment: "LE",
-                  hp: "22 (3d10+6)", ac: 16, speed: "40 ft.",
-                  attacks: "Bite +6 (1d8+3 plus 1d6 fire)",
-                  specialAbilities: "Darkvision 60 ft., immunity to fire, scent, vulnerability to cold, breath weapon (10 ft. cone of fire, 2d6, DC 13)",
-                  environment: "Lawful evil planes",
-                  summary: "A fire-breathing, devil-bound hound that hunts escaped souls across the planes.",
-                  desc: "Hell hounds are fiendish canines that serve as guardians, trackers, and executioners for powerful devils. Their coats are jet black and radiate intense heat. They breathe a short cone of fire and their bites leave burning wounds. Powerful sorcerers occasionally summon hell hounds as guardians, though the creatures serve only from compulsion."),
-
-            .make("Hippogriff", cr: "2", type: "Magical Beast", size: "Large", alignment: "N",
-                  hp: "25 (3d10+9)", ac: 14, speed: "40 ft., fly 100 ft. (average)",
-                  attacks: "2 talons +7 (1d6+4), bite +7 (1d8+4)",
-                  specialAbilities: "Low-light vision, scent",
-                  environment: "Temperate hills and mountains",
-                  summary: "A majestic lion-eagle hybrid prized as a flying mount.",
-                  desc: "Hippogriffs are large predators with the forebodis of an eagle and the hindquarters of a horse. They nest on rocky cliff faces and hunt across a wide range, attacking horses with particular ferocity. Tamed hippogriffs make exceptional aerial mounts and fetch extraordinary prices in markets where they are available."),
-
-            .make("Ogre", cr: "3", type: "Humanoid (giant)", size: "Large", alignment: "CE",
-                  hp: "30 (4d8+12)", ac: 17, speed: "30 ft.",
-                  attacks: "Greatclub +8 (2d8+7), or javelin +1 (1d8+5)",
-                  specialAbilities: "Darkvision 60 ft., low-light vision",
-                  environment: "Temperate hills and mountains",
-                  summary: "A large, brutish giant with tremendous physical strength and a violent temper.",
-                  desc: "Ogres are enormous bullies who prey on anything weaker than themselves, which is most things. They are not particularly intelligent and tend to solve every problem with brute force. Ogres live in simple caves or ruins, accumulating piles of bones, stolen goods, and half-eaten food. They are frequently dominated or employed by more powerful giants."),
-
-            .make("Sea Hag", cr: "4", type: "Monstrous Humanoid (aquatic)", size: "Medium", alignment: "CE",
-                  hp: "38 (7d10)", ac: 14, speed: "30 ft., swim 40 ft.",
-                  attacks: "2 claws +8 (1d4+3)",
-                  specialAbilities: "Evil eye (1/day, DC 16), horrific appearance (DC 14 Fort or 2d6 Str/Con damage), amphibious",
-                  environment: "Temperate and cold aquatic and coastlines",
-                  summary: "A hideous aquatic witch who uses dark magic to drive victims to despair.",
-                  desc: "Sea hags are malevolent aquatic creatures of terrible ugliness who dwell in coastal caves and sunken ruins. The sight of a sea hag's true face is literally dangerous, capable of draining the life from the weak-willed. They delight in corrupting fishermen and sailors with curses and bargains that always favor the hag."),
-
-            .make("Vampire Spawn", cr: "4", type: "Undead", size: "Medium", alignment: "NE",
-                  hp: "22 (4d8+4)", ac: 14, speed: "30 ft.",
-                  attacks: "2 slams +5 (1d4+2 plus energy drain)",
-                  specialAbilities: "Blood drain, energy drain (DC 14), fast healing 2, gaseous form, spider climb, DR 5/silver, cold/electricity resistance 10, undead traits",
-                  environment: "Any",
-                  summary: "A lesser vampire bound in servitude to its more powerful vampire lord.",
-                  desc: "Vampire spawn are created when a true vampire drains a mortal to death without completing the full ritual that would create a new vampire lord. They are bound absolutely to their creator, unable to resist direct commands. Spawn retain some memories of their living existence, which makes their servitude all the more torturous."),
-
-            .make("Werewolf", cr: "2", type: "Humanoid (human, shapechanger)", size: "Medium", alignment: "CE",
-                  hp: "34 (4d8+16)", ac: 17, speed: "30 ft.",
-                  attacks: "Longsword +5 (1d8+3), or bite +5 (1d6+3 plus lycanthropy)",
-                  specialAbilities: "Change shape, DR 10/silver, lycanthropy (DC 15), low-light vision, scent",
-                  environment: "Any",
-                  summary: "A humanoid afflicted with the curse of lycanthropy who transforms into a powerful wolf.",
-                  desc: "Werewolves are the most feared and widespread of all lycanthropes. In human form they appear normal, often unaware of their condition for years after contracting it. The transformation is painful and complete, producing a powerful wolf-hybrid with supernatural resilience. Many werewolves struggle against their nature while others embrace it fully."),
-
-            .make("Will-o'-Wisp", cr: "6", type: "Aberration (air)", size: "Small", alignment: "CE",
-                  hp: "40 (9d8)", ac: 29, speed: "fly 50 ft. (perfect)",
-                  attacks: "Shock +12 (2d8 electricity)",
-                  specialAbilities: "Immunity to magic (partial), natural invisibility, feed (on fear/despair), darkvision 60 ft.",
-                  environment: "Temperate marshes",
-                  summary: "A malevolent ball of light that lures travelers into treacherous swamps.",
-                  desc: "Will-o'-wisps are ancient, malicious entities that feed on the emotional energy of dying creatures. They manifest as floating, flickering lights in a variety of colors that mimic torches or campfires, luring travelers into bogs and quicksand. They are nearly invulnerable to most magical attacks, making them extraordinarily dangerous despite their size."),
-
-            // MARK: - CR 4
-
-            .make("Centaur", cr: "3", type: "Monstrous Humanoid", size: "Large", alignment: "CG",
-                  hp: "26 (4d10+4)", ac: 14, speed: "50 ft.",
-                  attacks: "2 hooves +4 (1d6+3), lance +4 (2d6+3), or composite longbow +3 (1d8)",
-                  specialAbilities: "Darkvision 60 ft.",
-                  environment: "Temperate and warm plains and forests",
-                  summary: "A proud half-human, half-horse creature with skill in combat and archery.",
-                  desc: "Centaurs are ancient beings who occupy a position between civilization and wild nature, belonging wholly to neither. They form nomadic tribes that roam open plains and forest margins, following the migrations of prey animals. Though they often appear threatening to travelers, many centaur tribes are genuinely honorable and will trade peacefully."),
-
-            .make("Gargoyle", cr: "4", type: "Monstrous Humanoid (earth)", size: "Medium", alignment: "CE",
-                  hp: "42 (5d10+15)", ac: 16, speed: "40 ft., fly 60 ft. (average)",
-                  attacks: "2 claws +8 (1d6+3), bite +8 (1d4+3), gore +8 (1d4+3)",
-                  specialAbilities: "DR 10/magic, darkvision 60 ft., freeze (statue)",
-                  environment: "Any warm land",
-                  summary: "A winged stone-skinned predator that poses as architectural decoration.",
-                  desc: "Gargoyles are intelligent, malicious creatures of living stone who perch motionlessly on buildings and ruins to disguise themselves as decorative statuary. When prey approaches, they reveal themselves in a sudden explosive assault. Their stone hides resist most weapons, and they can sustain significant damage before being brought down."),
-
-            .make("Giant Wasp", cr: "3", type: "Vermin", size: "Large", alignment: "N",
-                  hp: "18 (3d8+6)", ac: 14, speed: "20 ft., fly 60 ft. (good)",
-                  attacks: "Sting +4 (1d6+3 plus poison)",
-                  specialAbilities: "Poison (Dex paralysis, DC 14), darkvision 60 ft.",
-                  environment: "Temperate forests",
-                  summary: "A horse-sized wasp with a paralyzing sting used to stock its nest with living prey.",
-                  desc: "Giant wasps are terrifying aerial predators that hunt in loose groups, paralysing prey with their stingers and dragging it back to underground nests. They lay eggs in their still-living victims, which the hatching larvae consume from within. Their large compound eyes and rapid flight make them difficult to avoid once they begin a pursuit."),
-
-            .make("Green Hag", cr: "5", type: "Monstrous Humanoid", size: "Medium", alignment: "NE",
-                  hp: "58 (9d10+9)", ac: 22, speed: "30 ft., swim 30 ft.",
-                  attacks: "2 claws +11 (1d4+5 plus weakness)",
-                  specialAbilities: "Spell-like abilities, weakness (2d6 Str, DC 16), mimicry, darkvision 90 ft., amphibious",
-                  environment: "Cold and temperate marshes and forests",
-                  summary: "A malevolent witch of terrifying ugliness who drains the strength from her victims.",
-                  desc: "Green hags are ancient, hateful creatures who delight in misery and ruin. They disguise themselves as attractive women to lure victims close before revealing their true forms and draining their strength. Green hags form covens with other hags, multiplying their already-formidable magical power through dark rituals."),
-
-            .make("Minotaur", cr: "4", type: "Monstrous Humanoid", size: "Large", alignment: "CE",
-                  hp: "45 (6d10+12)", ac: 14, speed: "30 ft.",
-                  attacks: "Greataxe +9 (3d6+6) or gore +9 (1d6+4)",
-                  specialAbilities: "Darkvision 60 ft., natural cunning, powerful charge (gore, 2d6+8), scent",
-                  environment: "Underground",
-                  summary: "A bull-headed giant of immense strength that never gets lost in a maze.",
-                  desc: "Minotaurs are fierce, proud creatures with the bodies of large humans and the heads of bulls. They possess an supernatural sense of direction in labyrinthine environments and delight in establishing elaborate maze-lairs in which they hunt intruders. Minotaur culture prizes cunning and fury in equal measure."),
-
-            .make("Owlbear", cr: "4", type: "Magical Beast", size: "Large", alignment: "N",
-                  hp: "47 (5d10+20)", ac: 15, speed: "30 ft.",
-                  attacks: "2 claws +9 (1d6+5 plus grab), bite +9 (1d6+5)",
-                  specialAbilities: "Darkvision 60 ft., low-light vision, scent",
-                  environment: "Temperate forests",
-                  summary: "A terrifying fusion of owl and bear that is aggressive beyond all reason.",
-                  desc: "Owlbears are thought to be the creation of some long-dead wizard who combined the ferocity of a bear with the predatory instincts of an owl. The experiment, whatever its original purpose, escaped to establish itself as a genuine apex predator in temperate forests. Owlbears attack everything they encounter with a fury that seems almost personal."),
-
-            .make("Troll (Young)", cr: "3", type: "Humanoid (giant)", size: "Large", alignment: "CE",
-                  hp: "30 (4d8+12)", ac: 13, speed: "30 ft.",
-                  attacks: "2 claws +5 (1d6+3), bite +5 (1d6+3)",
-                  specialAbilities: "Darkvision 60 ft., low-light vision, rend (2 claws, 1d6+4), regeneration 5 (acid or fire), scent",
-                  environment: "Cold mountains",
-                  summary: "A smaller troll that already exhibits the terrifying regenerative abilities of its kind.",
-                  desc: "Young trolls are nearly as dangerous as adults, regenerating injuries almost as quickly as they are dealt. They are aggressive and territorial, attacking most creatures on sight. Only fire and acid can permanently stop a troll's regeneration, a fact that experienced adventurers keep firmly in mind."),
-
-            .make("Yeth Hound", cr: "3", type: "Outsider (evil, extraplanar)", size: "Large", alignment: "NE",
-                  hp: "30 (4d10+8)", ac: 18, speed: "40 ft., fly 60 ft. (good)",
-                  attacks: "Bite +8 (2d8+6)",
-                  specialAbilities: "Bay (DC 14 Will or panicked), DR 10/silver, darkvision 60 ft., flight",
-                  environment: "Neutral evil planes",
-                  summary: "A terrifying outsider hound whose howl causes supernatural panic.",
-                  desc: "Yeth hounds are extraplanar predators that serve powerful evil entities as hunters and executioners. Their supernatural howl can freeze even brave warriors in their tracks with paralyzing fear. They fly without wings, moving through the air with eerie, silent grace, and their bite wounds do not bleed, making the act of fighting them unnervingly clinical."),
-
-            // MARK: - CR 5
-
-            .make("Barghest", cr: "4", type: "Outsider (evil, extraplanar, lawful, shapechanger)", size: "Medium", alignment: "LE",
-                  hp: "33 (6d10)", ac: 17, speed: "30 ft.",
-                  attacks: "Bite +8 (1d6+3), 2 claws +8 (1d4+3)",
-                  specialAbilities: "Change shape (goblin or wolf), feed (soul consumption to grow), pass without trace, spell-like abilities, darkvision 60 ft.",
-                  environment: "Lawful evil planes",
-                  summary: "A fiendish shapechanger that infiltrates goblin tribes to devour souls.",
-                  desc: "Barghests are outsiders sent to the Material Plane to feed on mortal souls, growing in power with each spirit consumed. They disguise themselves as large wolves or as goblins, leading tribes and manipulating situations to create opportunities for slaughter. As they grow, they advance in power until they can return to their home plane as full Greater Barghests."),
-
-            .make("Basilisk", cr: "5", type: "Magical Beast", size: "Medium", alignment: "N",
-                  hp: "52 (7d10+14)", ac: 16, speed: "20 ft.",
-                  attacks: "Bite +10 (2d6+6)",
-                  specialAbilities: "Darkvision 60 ft., low-light vision, petrifying gaze (DC 15 Fort or permanently petrified)",
-                  environment: "Warm and temperate deserts and underground",
-                  summary: "An eight-legged lizard with a gaze that turns flesh to stone.",
-                  desc: "The basilisk is a legendary predator feared throughout civilized lands for its petrifying gaze. A creature that meets its eyes is transformed to stone, and the basilisk's lair is typically ringed with the stony remains of its past victims. Ointment made from basilisk blood can reverse petrification, making basilisk hunting a lucrative if lethal profession."),
-
-            .make("Bulette", cr: "7", type: "Magical Beast", size: "Huge", alignment: "N",
-                  hp: "84 (9d10+36)", ac: 22, speed: "40 ft., burrow 20 ft.",
-                  attacks: "Bite +13 (2d8+8), 2 claws +13 (2d6+8)",
-                  specialAbilities: "Darkvision 60 ft., low-light vision, scent, leap, tremorsense 60 ft.",
-                  environment: "Temperate hills and plains",
-                  summary: "A massive armored predator that burrows through earth to erupt beneath prey.",
-                  desc: "The bulette, often called the landshark, is one of the most feared predators in any region it inhabits. Its heavily armored hide deflects most weapons, and its powerful legs allow it to leap great distances to reach prey. Bulettes consume nearly anything organic and are responsible for the destruction of entire farming communities."),
-
-            .make("Cyclops", cr: "5", type: "Humanoid (giant)", size: "Large", alignment: "CN",
-                  hp: "60 (8d8+24)", ac: 16, speed: "30 ft.",
-                  attacks: "Greatclub +12 (2d6+9) or rock +8 (2d6+9)",
-                  specialAbilities: "Darkvision 60 ft., limited precognition (1/day, reroll die roll), low-light vision",
-                  environment: "Warm coastlines and mountains",
-                  summary: "A single-eyed giant with a limited precognitive ability from its unique gaze.",
-                  desc: "Cyclopes are giant solitary creatures with a single large eye that grants them a limited prophetic vision. In ages past they maintained a great empire through this gift, but long decades of degeneracy and inbreeding have reduced most to lonely savages. Modern cyclopes are melancholic and violent, mourning a greatness they dimly remember."),
-
-            .make("Giant Scorpion", cr: "3", type: "Vermin", size: "Large", alignment: "N",
-                  hp: "40 (7d8+7)", ac: 16, speed: "50 ft.",
-                  attacks: "2 claws +6 (1d6+3 plus grab), sting +6 (1d6+3 plus poison)",
-                  specialAbilities: "Constrict (1d6+3), darkvision 60 ft., poison (Con damage, DC 18)",
-                  environment: "Warm and temperate deserts and underground",
-                  summary: "A car-sized scorpion with crushing claws and a lethal venomous sting.",
-                  desc: "Giant scorpions are apex predators of hot, arid environments. They hunt by vibration, grabbing prey with powerful claws and delivering a venomous sting to the captive creature. Their venom attacks the constitution directly, capable of slaying even a healthy warrior who receives multiple stings in rapid succession."),
-
-            .make("Lamia", cr: "6", type: "Magical Beast", size: "Large", alignment: "CE",
-                  hp: "67 (9d10+18)", ac: 20, speed: "40 ft.",
-                  attacks: "2 claws +13 (1d4+5 plus Wisdom drain), touch +13 (Wisdom drain)",
-                  specialAbilities: "Darkvision 60 ft., low-light vision, spell-like abilities, Wisdom drain (2d4)",
-                  environment: "Warm deserts",
-                  summary: "A lion-bodied seductress with a serpentine lower body who drains wisdom.",
-                  desc: "Lamias appear as beautiful women from the waist up merging into powerful leonine bodies below. They lure prey with illusory beauty and then drain their victims' minds, leaving them pliable and hollow. Lamias rule desert tribes through a combination of supernatural charisma and the constant threat of their wisdom-stealing touch."),
-
-            .make("Manticore", cr: "5", type: "Magical Beast", size: "Large", alignment: "LE",
-                  hp: "57 (6d10+24)", ac: 17, speed: "30 ft., fly 50 ft. (clumsy)",
-                  attacks: "2 claws +8 (2d4+5), bite +8 (1d8+5)",
-                  specialAbilities: "Darkvision 60 ft., low-light vision, tail spikes (24 spikes, +8 ranged, 1d8+2, 180 ft.)",
-                  environment: "Warm hills and marshes",
-                  summary: "A lion-bodied, bat-winged monster with a human face and a spike-shooting tail.",
-                  desc: "Manticores are vicious creatures that combine features of multiple animals into a whole greater than the sum of its parts. They hunt from the air, softening prey with volleys of tail spikes before diving in for the kill. Manticores speak a crude form of Common and sometimes parley with potential prey, though usually only to make the hunting more interesting."),
-
-            .make("Mummy", cr: "5", type: "Undead", size: "Medium", alignment: "LE",
-                  hp: "60 (8d8+24)", ac: 20, speed: "20 ft.",
-                  attacks: "Slam +14 (1d8+10 plus mummy rot)",
-                  specialAbilities: "Despair (DC 16 Will or paralyzed 1d4 rounds), DR 5/—, mummy rot (DC 16 Con damage), darkvision 60 ft., undead traits, vulnerability to fire",
-                  environment: "Any land",
-                  summary: "A bandaged undead guardian of ancient tombs that spreads a desiccating curse.",
-                  desc: "Mummies are undead guardians created through elaborate preservation rituals to defend tombs and sacred places. They are wrapped in preserved linen and carry the accumulated hatred of their long vigil against the living. Their touch spreads mummy rot, a disease that rapidly desiccates flesh and is difficult to cure without magical intervention."),
-
-            .make("Troll", cr: "5", type: "Humanoid (giant)", size: "Large", alignment: "CE",
-                  hp: "63 (6d8+36)", ac: 16, speed: "30 ft.",
-                  attacks: "2 claws +9 (1d6+6 plus rend), bite +9 (1d6+6)",
-                  specialAbilities: "Darkvision 60 ft., low-light vision, rend (2 claws, 1d6+9), regeneration 5 (acid or fire), scent",
-                  environment: "Cold mountains",
-                  summary: "A lanky giant with rubbery flesh that regenerates at a terrifying rate.",
-                  desc: "Trolls are among the most feared of all giants, not for their intelligence (which is meager) but for their extraordinary regeneration. A troll hacked to pieces in one round will reassemble itself the next unless the pieces are destroyed with fire or acid. This makes them extraordinarily difficult to permanently slay, and many a dungeon party has been slaughtered by a troll they believed defeated."),
-
-            // MARK: - CR 6
-
-            .make("Bearded Devil (Barbazu)", cr: "6", type: "Outsider (devil, evil, extraplanar, lawful)", size: "Medium", alignment: "LE",
-                  hp: "57 (6d10+24)", ac: 21, speed: "40 ft.",
-                  attacks: "Glaive +10 (1d10+6 plus bleed), beard +10 (1d8+3 plus beard infection)",
-                  specialAbilities: "Beard infection (DC 17, Fort), bleed (1d6), DR 10/good or silver, immunity to fire/poison, resistance to acid/cold 10, see in darkness",
-                  environment: "Lawful evil planes",
-                  summary: "A devil warrior with a writhing, infectious beard and a serrated glaive.",
-                  desc: "Bearded devils are the brutal shock troops of Hell's armies, warriors who exist to kill and to train other soldiers in the art of killing. Their beards are animate masses of wiry filaments tipped with hooks, and the wounds they inflict resist healing through infernal magic. They are aggressive, contemptuous of weakness, and completely loyal to their pit fiend commanders."),
-
-            .make("Chimera", cr: "7", type: "Magical Beast", size: "Large", alignment: "CE",
-                  hp: "85 (9d10+36)", ac: 19, speed: "30 ft., fly 50 ft. (poor)",
-                  attacks: "Bite +12 (2d6+5), gore +12 (1d8+5), 2 claws +12 (1d6+5)",
-                  specialAbilities: "Darkvision 60 ft., low-light vision, scent, breath weapon (dragon type varies, 2/day)",
-                  environment: "Temperate hills and mountains",
-                  summary: "A three-headed monster combining a lion, a goat, and a dragon.",
-                  desc: "The chimera is a legendary monster with a lion's forequarters, a goat's head growing from its back, and a dragon's head at the end of a scaled neck. Its dragon head can breathe fire, acid, cold, electricity, or poison depending on the individual. Chimeras are aggressive, territorial predators that lair in cave systems and mountain passes."),
-
-            .make("Cloaker", cr: "5", type: "Aberration", size: "Large", alignment: "CN",
-                  hp: "51 (6d8+24)", ac: 19, speed: "10 ft., fly 40 ft. (average)",
-                  attacks: "Tail slap +8 (1d6+5), moan (DC 14 Will), engulf",
-                  specialAbilities: "Darkvision 60 ft., engulf (1d6+5 plus suffocation), moan (DC 14 Will, effect varies), shadow shift",
-                  environment: "Underground",
-                  summary: "A manta-like aberration that mimics dungeon floors and swallows prey whole.",
-                  desc: "Cloakers are manta-shaped aberrations that hang from ceilings or sprawl across floors of dungeons and caves, mimicking piles of old cloaks or sections of natural rock. When prey ventures close, they attack with a lashing tail and wrap their bodies around victims to engulf them. Their moan ability creates supernatural fear in those who hear it."),
-
-            .make("Dire Lion", cr: "5", type: "Animal", size: "Large", alignment: "N",
-                  hp: "60 (8d8+24)", ac: 15, speed: "40 ft.",
-                  attacks: "2 claws +11 (1d6+5), bite +11 (1d8+5)",
-                  specialAbilities: "Low-light vision, pounce, rake (2 claws, 1d6+5), scent",
-                  environment: "Warm plains",
-                  summary: "A massive prehistoric lion with devastating pounce and rake attacks.",
-                  desc: "Dire lions are enormous predators that dwarf their mundane cousins. They hunt alone or in small groups, ambushing prey from tall grass with a terrifying pounce. A dire lion that brings down prey rolls it flat and uses its powerful rear claws to disembowel it before the creature can recover. They are apex predators with no natural enemies."),
-
-            .make("Ettin", cr: "6", type: "Humanoid (giant)", size: "Large", alignment: "CE",
-                  hp: "65 (10d8+20)", ac: 18, speed: "40 ft.",
-                  attacks: "2 clubs +10/+5 (2d6+6)",
-                  specialAbilities: "Low-light vision, two-weapon fighting (natural two heads), superior two-weapon fighting",
-                  environment: "Cold and temperate hills and mountains",
-                  summary: "A two-headed giant that can fight with two weapons simultaneously with great effect.",
-                  desc: "Ettins are two-headed giants whose two personalities are usually in constant bickering argument but cooperate reasonably well in a fight. Each head controls one arm, allowing them to fight with two weapons more naturally than other giants. Ettins are among the most social of giant-kin, sometimes leading warbands of orcs or bugbears."),
-
-            .make("Hill Giant", cr: "7", type: "Humanoid (giant)", size: "Large", alignment: "CE",
-                  hp: "85 (10d8+40)", ac: 20, speed: "40 ft.",
-                  attacks: "Greatclub +14/+9 (2d8+13) or rock +8 (2d6+8)",
-                  specialAbilities: "Low-light vision, rock catching, rock throwing (120 ft.)",
-                  environment: "Temperate hills",
-                  summary: "The least of the true giants, a brutish creature that bullies everything smaller than itself.",
-                  desc: "Hill giants are the smallest and most common of the true giants, dwelling in rocky highland regions and raiding the lowland farms and villages. They are slovenly, brutish, and cruel, organizing themselves into loose clans ruled by the largest individual. Hill giants sometimes ally with ogres or orcs when planning particularly ambitious raids."),
-
-            .make("Medusa", cr: "7", type: "Monstrous Humanoid", size: "Medium", alignment: "LE",
-                  hp: "76 (8d10+32)", ac: 15, speed: "30 ft.",
-                  attacks: "Shortbow +11/+6 (1d6), dagger +8/+3 (1d4), snakes +8 (1d4 plus poison)",
-                  specialAbilities: "Darkvision 60 ft., petrifying gaze (DC 16 Fort), poison (Str damage, DC 16)",
-                  environment: "Temperate marshes and underground",
-                  summary: "A snake-haired monster whose gaze permanently petrifies victims.",
-                  desc: "Medusas appear as beautiful humans from a distance, with only the writhing mass of vipers where hair should be betraying their nature. Their gaze is among the most feared effects in the natural world — a single prolonged look results in permanent petrification. Medusas are vain and highly intelligent, often ruling domains of stone statues that were once adventurers."),
-
-            .make("Mimic", cr: "4", type: "Aberration", size: "Medium", alignment: "N",
-                  hp: "52 (7d8+21)", ac: 12, speed: "10 ft.",
-                  attacks: "2 slams +8 (1d8+4 plus adhesive)",
-                  specialAbilities: "Adhesive (DC 16 Str to break free), crush, darkvision 60 ft., mimic shape, immunity to acid",
-                  environment: "Underground",
-                  summary: "A shapeshifting predator that disguises itself as a chest or door to ambush prey.",
-                  desc: "Mimics are strange creatures capable of reshaping their bodies to precisely imitate any object made of stone, metal, or wood. They most commonly adopt the form of treasure chests, knowing that adventurers will approach with less caution. Once a limb or weapon contacts their adhesive surface, the mimic reveals itself with violent speed."),
-
-            .make("Shadow Demon", cr: "7", type: "Outsider (chaotic, demon, evil, extraplanar, incorporeal)", size: "Medium", alignment: "CE",
-                  hp: "59 (9d10+9)", ac: 23, speed: "fly 40 ft. (perfect)",
-                  attacks: "2 claws +12 (1d6 Str damage)",
-                  specialAbilities: "Incorporeal, light vulnerability, shadow blend, DR 10/cold iron or good, immune to cold/fire/lightning",
-                  environment: "Chaotic evil planes",
-                  summary: "A demon of living shadow that drains strength from its victims.",
-                  desc: "Shadow demons are incorporeal fiends who exist as animate malevolent darkness. They thrive in conditions of low light and become nearly invisible in shade or darkness. Their claws pass through armor to drain strength directly from their victims. Exposure to bright sunlight weakens them significantly."),
-
-            .make("Vampire", cr: "9", type: "Undead (augmented humanoid)", size: "Medium", alignment: "NE",
-                  hp: "93 (11d8+44)", ac: 24, speed: "30 ft.",
-                  attacks: "Slam +13 (1d4+6 plus energy drain)",
-                  specialAbilities: "Blood drain (1d4 Con drain), children of the night, create spawn, dominate (DC 18 Will), energy drain (2 levels, DC 18), gaseous form, spider climb, DR 10/magic and silver, fast healing 5, resistance to cold/electricity 10, undead traits",
-                  environment: "Any",
-                  summary: "An immortal undead predator that drains blood and dominates the minds of mortals.",
-                  desc: "Vampires are the pinnacle of corporeal undead, retaining their intelligence and personality from life while gaining tremendous supernatural power. They are bound by significant weaknesses but possess an almost unparalleled combination of physical and mental abilities. The creation of a new vampire lord is always an event that reshapes the power dynamics of an entire region."),
-
-            // MARK: - CR 7
-
-            .make("Bone Devil (Osyluth)", cr: "9", type: "Outsider (devil, evil, extraplanar, lawful)", size: "Large", alignment: "LE",
-                  hp: "105 (10d10+50)", ac: 25, speed: "40 ft., fly 60 ft. (average)",
-                  attacks: "Bite +14 (2d6+7), 2 claws +14 (1d8+7), tail +14 (3d4+3 plus poison)",
-                  specialAbilities: "Interrogation, see in darkness, DR 10/good, immunity to fire/poison, resistance to acid/cold 10, telepathy 100 ft.",
-                  environment: "Lawful evil planes",
-                  summary: "An interrogation specialist devil with a scorpion tail and fearsome claws.",
-                  desc: "Bone devils serve Hell's bureaucracy as interrogators and spies, moving between the planes to extract information or carry out targeted assassinations. Their skeletal frames are deceptively resilient, and their scorpion-like tails deliver powerful venom. Osyluths are obsessively dedicated to the precise letter of any agreement, never lying outright but capable of extraordinary deception."),
-
-            .make("Fire Giant", cr: "10", type: "Humanoid (giant)", size: "Large", alignment: "LE",
-                  hp: "142 (15d8+75)", ac: 27, speed: "40 ft.",
-                  attacks: "Greatsword +22/+17/+12 (3d6+13) or rock +16 (2d6+9)",
-                  specialAbilities: "Immunity to fire, low-light vision, rock catching, rock throwing (60 ft.)",
-                  environment: "Warm mountains",
-                  summary: "A disciplined giant warrior with coal-black skin and immunity to fire.",
-                  desc: "Fire giants are among the most dangerous of all giant-kin, combining military discipline with the raw physical power common to all giants. They inhabit volcanic regions and build fortress-cities of dark stone. Fire giant society is highly stratified and militaristic, and their warbands are a genuine match for organized armies."),
-
-            .make("Frost Giant", cr: "9", type: "Humanoid (giant, cold)", size: "Large", alignment: "CE",
-                  hp: "133 (14d8+70)", ac: 21, speed: "40 ft.",
-                  attacks: "Greataxe +19/+14/+9 (3d6+13) or rock +13 (2d6+8)",
-                  specialAbilities: "Immunity to cold, low-light vision, rock catching, rock throwing (120 ft.), vulnerability to fire",
-                  environment: "Cold mountains",
-                  summary: "A Viking-like ice giant with pale blue skin and a love of raiding.",
-                  desc: "Frost giants are fierce raiders who dominate cold mountain regions, launching seasonal raids on lowland settlements. They value strength and combat prowess above all else, with their leaders typically being the most powerful warriors. Frost giants are immune to cold but vulnerable to fire, a weakness their enemies exploit whenever possible."),
-
-            .make("Ghost", cr: "7", type: "Undead (augmented humanoid, incorporeal)", size: "Medium", alignment: "Any",
-                  hp: "58 (9d8+18)", ac: 15, speed: "fly 30 ft. (perfect)",
-                  attacks: "Corrupting touch +7 (7d6)",
-                  specialAbilities: "Corrupting touch (7d6), frightful moan (DC 16 Will), malevolence (DC 16 Will), manifestation, rejuvenation, telekinesis, darkvision 60 ft., incorporeal",
-                  environment: "Any",
-                  summary: "The lingering spirit of the dead, tied to the mortal world by unfinished business.",
-                  desc: "Ghosts are the restless spirits of the deceased, unable to pass on to the afterlife due to some powerful emotional attachment or unresolved purpose. They manifest in the locations of their deaths or in places significant to their lives. Ghosts are extraordinarily difficult to permanently destroy, reforming after defeat unless the underlying cause of their haunting is resolved."),
-
-            .make("Girallon", cr: "6", type: "Magical Beast", size: "Large", alignment: "N",
-                  hp: "69 (9d10+18)", ac: 16, speed: "40 ft., climb 40 ft.",
-                  attacks: "4 claws +12 (1d4+4), bite +12 (1d6+4)",
-                  specialAbilities: "Low-light vision, rend (2 claws, 2d4+6), scent",
-                  environment: "Warm forests and hills",
-                  summary: "A four-armed white ape of terrifying size and strength.",
-                  desc: "Girallons are massive white-furred apes with four arms, each ending in powerful hands with retractable claws. They inhabit thick jungles and ancient ruins, frequently venerated by local tribes as sacred guardians. A girallon that grabs prey with multiple limbs can tear it apart with frightening speed."),
-
-            .make("Oni (Ogre Mage)", cr: "8", type: "Outsider (giant, native, oni)", size: "Large", alignment: "LE",
-                  hp: "104 (11d10+44)", ac: 20, speed: "40 ft., fly 60 ft. (good)",
-                  attacks: "Greatsword +14/+9 (3d6+8) or longbow +9/+4 (2d6)",
-                  specialAbilities: "Spell-like abilities (cone of cold, darkness, charm monster, change shape, fly, gaseous form, invisibility), regen 5 (fire/acid), darkvision 60 ft., low-light vision",
-                  environment: "Cold and temperate mountains and hills",
-                  summary: "A powerful giant-blooded outsider with significant magical abilities.",
-                  desc: "Ogre mages are the most sophisticated and dangerous of oni, possessing a broad array of magical abilities that make them effective leaders of goblinoid armies and formidable individual opponents. They are long-lived and patient, often working toward goals that span decades. An ogre mage can regenerate from wounds that would kill lesser creatures."),
-
-            .make("Wyvern", cr: "6", type: "Dragon", size: "Large", alignment: "N",
-                  hp: "73 (7d12+28)", ac: 18, speed: "20 ft., fly 60 ft. (poor)",
-                  attacks: "Sting +10 (1d6+4 plus poison), bite +10 (2d6+4), 2 talons +10 (2d6+4)",
-                  specialAbilities: "Darkvision 60 ft., immunity to sleep and paralysis, low-light vision, poison (Con damage, DC 17)",
-                  environment: "Warm hills and mountains",
-                  summary: "A two-legged, venomous dragon-kin with a deadly tail stinger.",
-                  desc: "Wyverns are distant cousins of true dragons, lacking their intelligence and breath weapons but compensating with powerful physical attacks and venomous tail stingers. They are territorial aerial predators that rule their assigned peaks with aggressive ferocity. Wyverns can be trained, though the process is dangerous, and serve as mounts for powerful warriors who can dominate them."),
-
-            // MARK: - CR 8
-
-            .make("Barbed Devil (Hamatula)", cr: "11", type: "Outsider (devil, evil, extraplanar, lawful)", size: "Medium", alignment: "LE",
-                  hp: "138 (12d10+72)", ac: 26, speed: "30 ft.",
-                  attacks: "2 claws +18 (2d8+7 plus fear and grab)",
-                  specialAbilities: "Barbed hide (1d6+3 piercing to grappler), fear (DC 22 Will), constrictive grip, DR 10/good, immunity to fire/poison, see in darkness",
-                  environment: "Lawful evil planes",
-                  summary: "A devil covered in sharp barbs that impales those who attack or grapple with it.",
-                  desc: "Hamatulas are the jailers and torturers of Hell, guarding its most precious prisoners with pitiless efficiency. Their bodies are covered in razor-sharp barbs that injure anyone who strikes or grapples them. Those who look upon a hamatula too long experience waves of supernatural fear. They are methodical and sadistic in equal measure."),
-
-            .make("Night Hag", cr: "9", type: "Outsider (evil, extraplanar)", size: "Medium", alignment: "NE",
-                  hp: "92 (8d10+48)", ac: 22, speed: "30 ft.",
-                  attacks: "2 claws +13 (1d4+4 plus disease), bite +13 (2d6+4)",
-                  specialAbilities: "Dream haunting, ethereal jaunt, heartstone, DR 10/cold iron and magic, immunity to cold/charm/sleep/fear, resistance to fire/electricity 10",
-                  environment: "Neutral evil planes",
-                  summary: "A terrifying fiendish hag that invades dreams to drive mortals to madness and death.",
-                  desc: "Night hags are powerful outsiders who harvest the souls of mortals for trade in infernal markets. They use their dream haunting ability to torment sleeping victims over many nights, drawing out their suffering until they die in their sleep. Night hags collect soul gems as currency and have developed elaborate networks of trade among all the dark planes."),
-
-            .make("Rakshasa", cr: "10", type: "Outsider (native, shapechanger)", size: "Medium", alignment: "LE",
-                  hp: "115 (11d10+55)", ac: 25, speed: "40 ft.",
-                  attacks: "2 claws +14 (1d4+2 plus detect thoughts), bite +14 (1d6+2)",
-                  specialAbilities: "Change shape, detect thoughts (DC 18 Will), DR 15/good and piercing, immunity to mind-affecting effects (below 7th-level), all spell-like abilities",
-                  environment: "Any",
-                  summary: "A shapeshifting outsider of immense magical power that craves mastery over mortals.",
-                  desc: "Rakshasas are ancient fiendish beings who reincarnate repeatedly across lifetimes of mortal flesh. They are master manipulators who use their shapechanging and mind-reading abilities to insert themselves into positions of power in mortal society. Their unique DR makes them extremely difficult to harm through mundane means."),
-
-            .make("Stone Giant", cr: "8", type: "Humanoid (giant)", size: "Large", alignment: "N",
-                  hp: "102 (12d8+48)", ac: 25, speed: "40 ft.",
-                  attacks: "Greatclub +17/+12 (2d8+11) or rock +14 (2d8+7)",
-                  specialAbilities: "Low-light vision, rock catching, rock throwing (180 ft.), stone camouflage",
-                  environment: "Cold and temperate mountains",
-                  summary: "A reclusive, stony-skinned giant with extraordinary rock-throwing precision.",
-                  desc: "Stone giants are the most reclusive of all true giants, dwelling deep in mountain caves and rarely venturing into the lowlands. They revere stone and view themselves as its living embodiment. Stone giants are exceptional rock throwers, capable of hitting targets at remarkable distances with almost casual accuracy. They are not inherently malicious, but they guard their territories fiercely."),
-
-            .make("Storm Giant", cr: "13", type: "Humanoid (giant)", size: "Huge", alignment: "CG",
-                  hp: "230 (20d8+140)", ac: 28, speed: "50 ft., swim 40 ft.",
-                  attacks: "Greatsword +26/+21/+16/+11 (4d6+15) or rock +20 (2d8+10)",
-                  specialAbilities: "Immunity to electricity and cold, low-light vision, rock catching, rock throwing (200 ft.), spell-like abilities (call lightning, chain lightning, control weather, levitate), underwater mobility",
-                  environment: "Warm mountains and aquatic",
-                  summary: "The most powerful of all true giants, commanding storms and lightning.",
-                  desc: "Storm giants are the mightiest of all giantkind, dwelling in isolated mountain peaks and undersea palaces. They have an affinity for storms and the sea, commanding lightning and weather as naturally as breathing. Storm giants are generally benevolent and take a long view of the world's events, occasionally serving as mediators in conflicts between lesser races."),
-
-            // MARK: - CR 9
-
-            .make("Aboleth", cr: "7", type: "Aberration (aquatic)", size: "Huge", alignment: "LE",
-                  hp: "105 (14d8+42)", ac: 16, speed: "10 ft., swim 60 ft.",
-                  attacks: "4 tentacles +12 (1d8+6 plus slime)",
-                  specialAbilities: "Enslave (DC 17 Will), mucus cloud (DC 20), slime (DC 20, skin becomes transparent, must stay wet), spell-like abilities, telepathy 300 ft., darkvision 60 ft.",
-                  environment: "Underground aquatic",
-                  summary: "An ancient, tentacled aberration of staggering psionic power and sinister intellect.",
-                  desc: "Aboleths are among the oldest intelligent beings on the planet, their memory stretching back to before the age of the gods. They view all other creatures as either slaves or food. Their mucus can transform flesh into a slimy membrane that must stay constantly wet, allowing aboleths to maintain control over enslaved air-breathing creatures. They dwell in sunless underground lakes."),
-
-            .make("Froghemoth", cr: "13", type: "Aberration", size: "Huge", alignment: "N",
-                  hp: "161 (14d8+98)", ac: 19, speed: "20 ft., swim 30 ft.",
-                  attacks: "4 tentacles +19 (2d6+8 plus grab), bite +19 (4d6+8), tongue +14 (grab, 30 ft.)",
-                  specialAbilities: "Electricity resistance 20, swallow whole (2d6+8 bludgeon plus 1d6 acid, AC 16, 16 hp), amphibious, darkvision 60 ft.",
-                  environment: "Temperate marshes",
-                  summary: "A massive alien frog-beast with tentacles, a sticky tongue, and an insatiable appetite.",
-                  desc: "Froghemoths are clearly not of this world, their alien physiology suggesting an origin on a distant plane or perhaps from beyond the stars. They are ambush predators of terrifying size, lurking in deep swamps with only their eyestalks visible above the waterline. A froghemoth's appetite is matched only by its resilience."),
-
-            .make("Glabrezu", cr: "13", type: "Outsider (chaotic, demon, evil, extraplanar)", size: "Huge", alignment: "CE",
-                  hp: "186 (12d10+120)", ac: 27, speed: "40 ft.",
-                  attacks: "2 pincers +19 (2d8+8 plus grab), 2 claws +19 (1d6+8), bite +19 (1d8+8)",
-                  specialAbilities: "Spell-like abilities (power word stun, reverse gravity, confusion, etc.), DR 10/good, immunity to electricity/poison, resistance to acid/cold/fire 10, true seeing, telepathy 100 ft.",
-                  environment: "Chaotic evil planes",
-                  summary: "A four-armed demon lord that grants wishes as a trap for mortals.",
-                  desc: "Glabrezus are treachery demons who specialize in corrupting mortals through the granting of wishes. They approach desperate humans in the guise of friendly outsiders, offering to grant desires in exchange for small favors that escalate into ruinous corruption. In their true form they are enormous four-armed demons of extraordinary power."),
-
-            // MARK: - CR 10
-
-            .make("Clay Golem", cr: "10", type: "Construct", size: "Large", alignment: "N",
-                  hp: "96 (12d10+30)", ac: 22, speed: "30 ft.",
-                  attacks: "2 slams +14 (2d10+7)",
-                  specialAbilities: "Berserk (10% chance, attacks nearest), DR 10/adamantine, immunity to magic (most spells), haste (after taking fire or electricity damage), cursed wound (healed only by cure spells, no natural healing)",
-                  environment: "Any",
-                  summary: "A lumbering construct of shaped clay animated by ancient magical processes.",
-                  desc: "Clay golems are massive constructs created by powerful clerics and wizards to serve as tireless, unkillable guardians. Their clay bodies are inscribed with magical runes that power their animation. Clay golems have a disturbing tendency to go berserk when damaged, attacking the nearest creature regardless of allegiance."),
-
-            .make("Retriever", cr: "11", type: "Construct (extraplanar)", size: "Huge", alignment: "CE",
-                  hp: "144 (12d10+78)", ac: 22, speed: "50 ft.",
-                  attacks: "4 claws +18 (2d6+9), bite +18 (2d8+9)",
-                  specialAbilities: "Eye rays (fire/cold/electricity/petrifaction, 100 ft., DC 20), find target (tracks any creature it has been set to find), DR 10/good",
-                  environment: "Chaotic evil planes",
-                  summary: "A massive spider-like construct built by demons to hunt and retrieve targets.",
-                  desc: "Retrievers are enormous mechanical spiders crafted by the demon princes to track and return specific targets, alive or dead. Once given a target, a retriever will cross planes, oceans, and continents without rest until it locates and returns its quarry. Their multiple eye rays make them versatile and extremely difficult combatants."),
-
-            .make("Stone Golem (Lesser)", cr: "11", type: "Construct", size: "Large", alignment: "N",
-                  hp: "107 (14d10+30)", ac: 26, speed: "20 ft.",
-                  attacks: "2 slams +17 (2d10+9)",
-                  specialAbilities: "DR 10/adamantine, immunity to magic (most), slow (DC 17, as spell), haste (after taking cold damage)",
-                  environment: "Any",
-                  summary: "A massive construct carved from solid stone, nearly immune to magic.",
-                  desc: "Stone golems are among the most durable of all constructs, their stone bodies providing enormous natural armor and their magical immunity making them nearly impossible to harm through spells. They are created by powerful wizards and noble houses as the ultimate guardians, placed in vaults and important rooms to eliminate intruders. A stone golem's slow attack can cripple even experienced adventurers."),
-
-            // MARK: - CR 11
-
-            .make("Horned Devil (Cornugon)", cr: "16", type: "Outsider (devil, evil, extraplanar, lawful)", size: "Large", alignment: "LE",
-                  hp: "217 (15d10+135)", ac: 35, speed: "30 ft., fly 50 ft. (average)",
-                  attacks: "Spiked chain +22/+17/+12 (2d6+14 plus stun), 2 claws +22 (2d6+9 plus 1d6 fire), bite +22 (2d8+9 plus poison), tail +17 (2d6+4)",
-                  specialAbilities: "Fear (DC 25 Will), poison (Str damage, DC 27), stun (DC 26 Fort), DR 15/good and silver, immunity to fire/poison, regeneration 5 (good weapons/spells), see in darkness, telepathy 100 ft.",
-                  environment: "Lawful evil planes",
-                  summary: "A massive winged devil general that commands armies in Hell's hierarchy.",
-                  desc: "Cornugons are among the most powerful of true devils, serving as commanders and generals in Hell's disciplined legions. Their spiked chains are weapons of exquisite cruelty, and their stun ability can drop opponents before they can react. Horned devils are favored generals of the archdevils, trusted with missions that require both power and discretion."),
-
-            // MARK: - CR 12
-
-            .make("Lich", cr: "12", type: "Undead (augmented humanoid)", size: "Medium", alignment: "NE",
-                  hp: "111 (13d8+52)", ac: 26, speed: "30 ft.",
-                  attacks: "Touch +11 (1d8+5 plus paralyzing touch)",
-                  specialAbilities: "Paralyzing touch (DC 18 Fort), fear aura (DC 18 Will), DR 15/bludgeoning and magic, immunity to cold/electricity and undead traits, phylactery (rejuvenation), channel resistance +4, damage reduction, spells as 13th-level wizard",
-                  environment: "Any land",
-                  summary: "A powerful undead archmage who has sacrificed mortality for immortality and power.",
-                  desc: "Liches are spellcasters who have willingly undergone a horrifying ritual of transformation to achieve immortality through undeath. They store their life essence in a hidden phylactery, returning to unlife even if their bodies are destroyed. Liches pursue long-term magical research and power accumulation with the patience available only to those who cannot die."),
-
-            .make("Remorhaz", cr: "7", type: "Magical Beast", size: "Huge", alignment: "N",
-                  hp: "80 (7d10+42)", ac: 20, speed: "30 ft., burrow 20 ft.",
-                  attacks: "Bite +15 (2d8+12 plus grab)",
-                  specialAbilities: "Swallow whole (2d8+8 fire plus 8 fire damage per round, AC 15, 8 hp), heat (fire damage to attackers in melee), darkvision 60 ft., tremorsense 60 ft.",
-                  environment: "Cold mountains",
-                  summary: "A massive centipede-like predator whose body burns with intense heat.",
-                  desc: "Remorphazes are enormous white-furred predators with superheated bodies that generate intense warmth despite living in polar environments. Their undersides glow with internal heat that melts ice and snow, and attacking them in melee risks severe burns. They can swallow prey whole, where internal heat finishes what the bite began."),
-
-            // MARK: - CR 13
-
-            .make("Adult Red Dragon", cr: "13", type: "Dragon (fire)", size: "Huge", alignment: "CE",
-                  hp: "184 (16d12+80)", ac: 29, speed: "40 ft., fly 200 ft. (poor)",
-                  attacks: "Bite +22 (2d8+12), 2 claws +22 (2d6+8), 2 wings +20 (1d8+4), tail +20 (2d6+12)",
-                  specialAbilities: "Breath weapon (50 ft. cone of fire, 14d10, DC 24 Ref), crush, frightful presence (DC 22 Will), fire immunity, spell-like abilities, spells as 7th-level sorcerer, locate object, darkvision 60 ft., blindsense 60 ft.",
-                  environment: "Warm mountains",
-                  summary: "A supremely powerful fire-breathing dragon of immense pride and cruelty.",
-                  desc: "Adult red dragons are among the most feared creatures on the Material Plane. They are supremely arrogant, viewing all other creatures as subjects, slaves, or food. Their hoards are legendary in size, and they defend them with apocalyptic fury. Red dragons demand tribute from nearby settlements and destroy those who refuse without hesitation."),
-
-            .make("Demilich", cr: "14", type: "Undead", size: "Tiny", alignment: "NE",
-                  hp: "136 (21d8+42)", ac: 23, speed: "fly 30 ft. (perfect)",
-                  attacks: "Touch +18 (soul trap, DC 20 Will)",
-                  specialAbilities: "Soul trap (DC 20 Will), avoidance, perfect incorporeality, immunity (all spells up to 8th), turn resistance +20, 80% spell failure for spells above 8th level, darkvision 60 ft.",
-                  environment: "Any land",
-                  summary: "A withered lich skull of incredible power that traps souls in its gem teeth.",
-                  desc: "A demilich forms when an ancient lich withdraws its consciousness from the physical world, leaving behind only its skull, which transforms over centuries into a gem-encrusted artifact of terrifying power. Demiliches have transcended most physical vulnerabilities and exist in a state of power that makes them nearly unkillable. Their soul-trapping ability can eliminate enemies instantaneously."),
-
-            .make("Iron Golem", cr: "13", type: "Construct", size: "Large", alignment: "N",
-                  hp: "129 (18d10+35)", ac: 30, speed: "20 ft.",
-                  attacks: "2 slams +24 (2d10+11)",
-                  specialAbilities: "Breath weapon (10 ft. cube of poison gas, 1d4 Con/round, DC 19), DR 15/adamantine, immunity to magic (nearly all), haste (after electricity exposure)",
-                  environment: "Any",
-                  summary: "A massive construct of enchanted iron with a poisonous breath weapon.",
-                  desc: "Iron golems are among the most powerful of all golems, constructed from thousands of pounds of solid iron and animated by powerful magic sealed within a small furnace heart. They are virtually immune to physical and magical attacks. Their poison breath can incapacitate entire groups of adventurers, and only the most powerful weapons can penetrate their iron hides."),
-
-            // MARK: - CR 15
-
-            .make("Adult Gold Dragon", cr: "15", type: "Dragon (fire)", size: "Huge", alignment: "LG",
-                  hp: "248 (19d12+114)", ac: 31, speed: "60 ft., fly 200 ft. (poor), swim 60 ft.",
-                  attacks: "Bite +26 (2d8+13), 2 claws +26 (2d6+9), 2 wings +24 (1d8+4), tail +24 (2d6+13)",
-                  specialAbilities: "Breath weapon (50 ft. cone of fire DC 26 or 40 ft. cone of weakening gas DC 26), crush, frightful presence (DC 24 Will), fire immunity, luck bonus, detect evil, alter self, divine arcana, spells as 9th-level sorcerer",
-                  environment: "Warm plains and hills",
-                  summary: "The greatest of all metallic dragons, a champion of justice and wisdom.",
-                  desc: "Adult gold dragons are among the most powerful forces of good in the world. They are deeply moral beings who take an active role in opposing evil and protecting mortals. Gold dragons often take humanoid form to live among other species for years, studying them and learning to understand their joys and sorrows before revealing their true nature."),
-
-            .make("Elder Earth Elemental", cr: "11", type: "Outsider (earth, elemental, extraplanar)", size: "Huge", alignment: "N",
-                  hp: "136 (13d10+65)", ac: 22, speed: "20 ft., burrow 20 ft.",
-                  attacks: "2 slams +19 (2d10+10 plus earth mastery)",
-                  specialAbilities: "Earth mastery (+1 attack/damage when both on ground), push (slam, free action), DR 10/—, darkvision 60 ft., immunity to acid, elemental traits",
-                  environment: "Elemental Plane of Earth",
-                  summary: "A massive animate earth entity of enormous physical power.",
-                  desc: "Elder earth elementals are immense beings of living stone that move with surprising speed through solid rock as though it were water. On the Material Plane they are called up by powerful spellcasters as defenders or as forces of destruction. They are single-minded in purpose and extraordinarily difficult to permanently destroy."),
-
-            // MARK: - CR 17
-
-            .make("Ancient Red Dragon", cr: "19", type: "Dragon (fire)", size: "Gargantuan", alignment: "CE",
-                  hp: "336 (24d12+168)", ac: 37, speed: "40 ft., fly 250 ft. (clumsy)",
-                  attacks: "Bite +33 (4d8+18), 2 claws +33 (4d6+12), 2 wings +31 (2d8+6), tail +31 (4d6+18)",
-                  specialAbilities: "Breath weapon (60 ft. cone of fire, 20d10, DC 32 Ref), crush, tail sweep, frightful presence (DC 30 Will, 300 ft.), fire immunity, spell-like abilities, spells as 13th-level sorcerer",
-                  environment: "Warm mountains",
-                  summary: "A titanic red dragon whose hoard and arrogance are legendary across the world.",
-                  desc: "Ancient red dragons are catastrophically powerful beings whose very presence warps local weather and ecology. Their hoards are measured in tons of gold and centuries of accumulated tribute. Nations build their foreign policy around avoiding the notice of ancient red dragons, and a wyrm of this age that decides to attack a major city represents an event that reshapes history."),
-
-            .make("Pit Fiend", cr: "20", type: "Outsider (devil, evil, extraplanar, lawful)", size: "Large", alignment: "LE",
-                  hp: "290 (20d10+180)", ac: 38, speed: "40 ft., fly 60 ft. (average)",
-                  attacks: "2 claws +29 (2d8+13/19–20 plus grab), 2 wings +29 (2d6+6), bite +29 (4d6+6 plus poison), tail +29 (2d8+6 plus grab)",
-                  specialAbilities: "Constrict (2d8+19), poison (Con damage, DC 33), fear aura (DC 31 Will), DR 15/good and silver, immunity to fire/poison, regeneration 5 (good weapons/spells), see in darkness, spell-like abilities, summon (DC 25, various devils), telepathy 100 ft.",
-                  environment: "Lawful evil planes",
-                  summary: "The most powerful of all true devils, a ruler in Hell's eternal hierarchy.",
-                  desc: "Pit fiends are the undisputed rulers among true devils, answering only to the archdevils themselves. They are military commanders, political masterminds, and weapons of apocalyptic power all in one form. A pit fiend's arrival on the Material Plane is treated as a world-ending event by most mortal nations, requiring the combined might of armies and powerful spellcasters to counter."),
-
-            // MARK: - CR 20
-
-            .make("Balor", cr: "20", type: "Outsider (chaotic, demon, evil, extraplanar)", size: "Huge", alignment: "CE",
-                  hp: "362 (25d10+225)", ac: 36, speed: "40 ft., fly 90 ft. (poor)",
-                  attacks: "+1 vorpal longsword +35/+30/+25/+20 (3d6+14/17–20 plus 1d6 fire) and +1 flaming whip +35 (1d4+7 plus entangle plus 1d6 fire)",
-                  specialAbilities: "Death throes (20d6 fire, DC 31 Ref), DR 15/cold iron and good, immunity to electricity/fire/poison, unholy aura, vorpal longsword, whip (entangle, free bull rush to 100 ft.), summon demons, spell-like abilities",
-                  environment: "Chaotic evil planes",
-                  summary: "The most terrible of all demons, a lord of the Abyss wreathed in fire.",
-                  desc: "Balors are among the mightiest of all demons, generals of the demonic hordes and lords of entire layers of the Abyss. Their very presence scorches the air, and their death throes unleash a catastrophic explosion of infernal energy. The destruction of a balor is considered a major victory even by the most powerful mortal heroes."),
-
-            .make("Kraken", cr: "18", type: "Magical Beast (aquatic)", size: "Gargantuan", alignment: "CE",
-                  hp: "290 (20d10+180)", ac: 32, speed: "swim 30 ft.",
-                  attacks: "2 tentacle rakes +28 (2d8+15/19–20 plus grab), 6 arms +28 (1d8+10 plus grab), bite +28 (4d8+10)",
-                  specialAbilities: "Constrict (2d8+20 or 1d8+15), ink cloud (100 ft., DC 28 Fort or blinded), jet (280 ft., DC 28 Ref), spell-like abilities (control weather, dominate animal, control winds, etc.), darkvision 60 ft., low-light vision",
-                  environment: "Cold and temperate deep oceans",
-                  summary: "A legendary sea monster of immense size that can destroy entire ships.",
-                  desc: "Krakens are the most feared creatures of the deep ocean, enormous cephalopods of supernatural intelligence that regard ships and their crews as meals. They are immeasurably old and patient, rising from the deepest trenches when they choose to hunt. Sailors whisper of entire merchant fleets that vanished overnight when a kraken decided it was hungry."),
-
-            .make("Tarrasque", cr: "25", type: "Magical Beast", size: "Colossal", alignment: "N",
-                  hp: "525 (30d10+360)", ac: 40, speed: "40 ft.",
-                  attacks: "Bite +43 (4d8+17/15–20 plus grab), 2 claws +43 (1d12+17), 2 gores +43 (1d10+17), tail slap +43 (3d8+8), 2 horns +43 (1d10+17)",
-                  specialAbilities: "Carapace (reflect ranged), frightful presence (DC 27 Will, 300 ft.), regeneration 40 (no weakness), rush (charge 1/minute), swallow whole (AC 20, 52 hp), DR 15/epic, immunity to fire/poison/disease/energy drain/ability damage, SR 36",
-                  environment: "Any",
-                  summary: "The most destructive creature in existence, an unstoppable engine of annihilation.",
-                  desc: "The tarrasque is unique — there is only one, and its awakening is the stuff of apocalyptic prophecy. It moves through civilized lands like a natural disaster, consuming everything and cannot be permanently slain by conventional means. Whole cities have been evacuated and armies annihilated trying to slow its advance. Only the most powerful magic can force it back into its long slumber."),
-
-        ]
-
-        for monster in monsters {
-            try await db.insertMonster(monster)
-        }
+        try await db.insertMonster(
+        .make("Familiar, Bat", cr: "1/8", type: "animal", size: "Diminutive", alignment: "N",
+                          hp: "2 (1d8–2)", ac: 16,
+                          fort: 0, ref: 4, will: 2, init_: 2,
+                          str: 1, dex: 15, con: 6, int_: 2, wis: 14, cha: 5,
+                          senses: "blindsense 20 ft., low-light vision; Perception +6Defense", speed: "5 ft., fly 40 ft. (good)",
+                          attacks: "bite +6 (1d3–5)",
+                          specialAbilities: "",
+                          environment: "temperate and hot forests and deserts",
+                          summary: "Familiar, Bat Bat CR 1/8 Source Pathfinder RPG Bestiary pg. 131 XP 50 N Diminutive animal Init +2; Senses blindsense 20 …",
+                          desc: "Familiar, Bat Bat CR 1/8 Source Pathfinder RPG Bestiary pg. 131 XP 50 N Diminutive animal Init +2; Senses blindsense 20 ft., low-light vision; Perception +6 Defense AC 16, touch 16, flat-footed 14 (+2 Dex, +4 size) hp 2 (1d8–2) Fort +0, Ref +4, Will +2 Offense Speed 5 ft., fly 40 ft. (good) Melee bite +6 (1d3–5) Space 1 ft., Reach 0 ft. Statistics Str 1, Dex 15, Con 6, Int 2, Wis 14, Cha 5 Base Atk +0; CMB –2; CMD 3 Feats Weapon Finesse Skills Fly +16, Perception +6; Racial Modifiers +4 Perception Ecology Environment temperate and hot forests and deserts Organization colony (10–400) Treasure none Description Most bats are insectivores or fruit-eaters, but at least one species drinks blood.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Familiar, Toad", cr: "1/8", type: "animal", size: "Diminutive", alignment: "N",
+                          hp: "2 (1d8–2)", ac: 15,
+                          fort: 0, ref: 3, will: 2, init_: 1,
+                          str: 1, dex: 12, con: 6, int_: 1, wis: 15, cha: 4,
+                          senses: "low-light vision, scent; Perception +5Defense", speed: "5 ft.",
+                          attacks: "",
+                          specialAbilities: "",
+                          environment: "temperate and warm forests",
+                          summary: "Familiar, Toad Toad CR 1/8 Source Pathfinder RPG Bestiary pg. 133 XP 50 N Diminutive animal Init +1; Senses low-light vi…",
+                          desc: "Familiar, Toad Toad CR 1/8 Source Pathfinder RPG Bestiary pg. 133 XP 50 N Diminutive animal Init +1; Senses low-light vision, scent; Perception +5 Defense AC 15, touch 15, flat-footed 14 (+1 Dex, +4 size) hp 2 (1d8–2) Fort +0, Ref +3, Will +2 Offense Speed 5 ft. Space 1 ft., Reach 0 ft. Statistics Str 1, Dex 12, Con 6, Int 1, Wis 15, Cha 4 Base Atk +0; CMB –3; CMD 2 (6 vs. trip) Feats Skill Focus (Perception) Skills Perception +5, Stealth +21; Racial Modifiers +4 Stealth Ecology Environment temperate and warm forests Organization solitary, pair, or knot (3–100) Treasure none Description Toads are harmless, rough-skinned amphibians.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Familiar, Lizard", cr: "1/6", type: "animal", size: "Tiny", alignment: "N",
+                          hp: "3 (1d8–1)", ac: 14,
+                          fort: 1, ref: 4, will: 1, init_: 2,
+                          str: 3, dex: 15, con: 8, int_: 1, wis: 12, cha: 2,
+                          senses: "low-light vision; Perception +1Defense", speed: "20 ft., climb 20 ft.",
+                          attacks: "bite +4 (1d4–4)",
+                          specialAbilities: "",
+                          environment: "any temperate or warm",
+                          summary: "Familiar, Lizard Lizard CR 1/6 Source Pathfinder RPG Bestiary pg. 131 XP 65 N Tiny animal Init +2; Senses low-light visi…",
+                          desc: "Familiar, Lizard Lizard CR 1/6 Source Pathfinder RPG Bestiary pg. 131 XP 65 N Tiny animal Init +2; Senses low-light vision; Perception +1 Defense AC 14, touch 14, flat-footed 12 (+2 Dex, +2 size) hp 3 (1d8–1) Fort +1, Ref +4, Will +1 Offense Speed 20 ft., climb 20 ft. Melee bite +4 (1d4–4) Space 2-1/2 ft., Reach 0 ft. Statistics Str 3, Dex 15, Con 8, Int 1, Wis 12, Cha 2 Base Atk +0; CMB +0; CMD 6 (10 vs. trip) Feats Weapon Finesse Skills Acrobatics +10, Climb +10, Stealth +14; Racial Modifiers +8 Acrobatics Ecology Environment any temperate or warm Organization solitary, pair, or nest (3–8) Treasure none Description Lizards can be found in any temperate or tropical climate. When confronted with predators, a lizard flees and hides.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Familiar, Raven", cr: "1/6", type: "animal", size: "Tiny", alignment: "N",
+                          hp: "3 (1d8–1)", ac: 14,
+                          fort: 1, ref: 4, will: 2, init_: 2,
+                          str: 2, dex: 15, con: 8, int_: 2, wis: 15, cha: 7,
+                          senses: "low-light vision; Perception +6Defense", speed: "10 ft., fly 40 ft. (average)",
+                          attacks: "bite +4 (1d3–4)",
+                          specialAbilities: "",
+                          environment: "any temperate",
+                          summary: "Familiar, Raven Raven CR 1/6 Source Pathfinder RPG Bestiary pg. 133 XP 65 N Tiny animal Init +2; Senses low-light vision…",
+                          desc: "Familiar, Raven Raven CR 1/6 Source Pathfinder RPG Bestiary pg. 133 XP 65 N Tiny animal Init +2; Senses low-light vision; Perception +6 Defense AC 14, touch 14, flat-footed 12 (+2 Dex, +2 size) hp 3 (1d8–1) Fort +1, Ref +4, Will +2 Offense Speed 10 ft., fly 40 ft. (average) Melee bite +4 (1d3–4) Space 2-1/2 ft., Reach 0 ft. Statistics Str 2, Dex 15, Con 8, Int 2, Wis 15, Cha 7 Base Atk +0; CMB +0; CMD 6 Feats Skill Focus (Perception) , Weapon Finesse Skills Fly +6, Perception +6 Ecology Environment any temperate Organization solitary, pair, flock (3–12), or unkindness (13–100) Treasure none Description The raven is an omnivorous scavenger that eats carrion, insects, food waste, berries, and even small animals.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Familiar, Cat", cr: "1/4", type: "animal", size: "Tiny", alignment: "N",
+                          hp: "3 (1d8–1)", ac: 14,
+                          fort: 1, ref: 4, will: 1, init_: 2,
+                          str: 3, dex: 15, con: 8, int_: 2, wis: 12, cha: 7,
+                          senses: "low-light vision, scent; Perception +5Defense", speed: "30 ft.",
+                          attacks: "2 claws +4 (1d2–4), bite +4 (1d3–4)",
+                          specialAbilities: "",
+                          environment: "temperate and hot plains or urban",
+                          summary: "Familiar, Cat Cat CR 1/4 Source Pathfinder RPG Bestiary pg. 131 XP 100 N Tiny animal Init +2; Senses low-light vision, s…",
+                          desc: "Familiar, Cat Cat CR 1/4 Source Pathfinder RPG Bestiary pg. 131 XP 100 N Tiny animal Init +2; Senses low-light vision, scent; Perception +5 Defense AC 14, touch 14, flat-footed 12 (+2 Dex, +2 size) hp 3 (1d8–1) Fort +1, Ref +4, Will +1 Offense Speed 30 ft. Melee 2 claws +4 (1d2–4), bite +4 (1d3–4) Space 2-1/2 ft., Reach 0 ft. Statistics Str 3, Dex 15, Con 8, Int 2, Wis 12, Cha 7 Base Atk +0; CMB +0; CMD 6 (10 vs. trip) Feats Weapon Finesse Skills Climb +6, Perception +5, Stealth +14; Racial Modifiers +4 Climb, +4 Stealth Ecology Environment temperate and hot plains or urban Organization solitary, pair, or pack (3–12) Treasure none Description Cats typically weigh 5–15 pounds when fully grown.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Familiar, Monkey", cr: "1/4", type: "animal", size: "Tiny", alignment: "N",
+                          hp: "4 (1d8)", ac: 14,
+                          fort: 2, ref: 4, will: 1, init_: 2,
+                          str: 3, dex: 15, con: 10, int_: 2, wis: 12, cha: 5,
+                          senses: "low-light vision; Perception +5Defense", speed: "30 ft., climb 30 ft.",
+                          attacks: "bite +4 melee (1d3–4)",
+                          specialAbilities: "",
+                          environment: "warm forests",
+                          summary: "Familiar, Monkey Monkey CR 1/4 Source Pathfinder RPG Bestiary pg. 132 XP 100 N Tiny animal Init +2; Senses low-light vis…",
+                          desc: "Familiar, Monkey Monkey CR 1/4 Source Pathfinder RPG Bestiary pg. 132 XP 100 N Tiny animal Init +2; Senses low-light vision; Perception +5 Defense AC 14, touch 14, flat-footed 12 (+2 Dex, +2 size) hp 4 (1d8) Fort +2, Ref +4, Will +1 Offense Speed 30 ft., climb 30 ft. Melee bite +4 melee (1d3–4) Space 2-1/2 ft., Reach 0 ft. Statistics Str 3, Dex 15, Con 10, Int 2, Wis 12, Cha 5 Base Atk +0; CMB +0; CMD 6 Feats Weapon Finesse Skills Acrobatics +10, Climb +10, Perception +5; Racial Modifiers +8 Acrobatics Ecology Environment warm forests Organization solitary, pair, band (3–9), or troop (10–40) Treasure none Description Monkeys are highly social creatures. They spend the majority of their day searching for food.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Familiar, Rat", cr: "1/4", type: "animal", size: "Tiny", alignment: "N",
+                          hp: "4 (1d8)", ac: 14,
+                          fort: 2, ref: 4, will: 1, init_: 2,
+                          str: 2, dex: 15, con: 11, int_: 2, wis: 13, cha: 2,
+                          senses: "low-light vision, scent; Perception +1Defense", speed: "15 ft., climb 15 ft., swim 15 ft.",
+                          attacks: "bite +4 (1d3–4)",
+                          specialAbilities: "",
+                          environment: "any temperate",
+                          summary: "Familiar, Rat Rat CR 1/4 Source Pathfinder RPG Bestiary pg. 132 XP 100 N Tiny animal Init +2; Senses low-light vision, s…",
+                          desc: "Familiar, Rat Rat CR 1/4 Source Pathfinder RPG Bestiary pg. 132 XP 100 N Tiny animal Init +2; Senses low-light vision, scent; Perception +1 Defense AC 14, touch 14, flat-footed 12 (+2 Dex, +2 size) hp 4 (1d8) Fort +2, Ref +4, Will +1 Offense Speed 15 ft., climb 15 ft., swim 15 ft. Melee bite +4 (1d3–4) Space 2-1/2 ft., Reach 0 ft. Statistics Str 2, Dex 15, Con 11, Int 2, Wis 13, Cha 2 Base Atk +0; CMB +0; CMD 6 (10 vs. trip) Feats Weapon Finesse Skills Climb +10, Stealth +18, Swim +10; Racial Modifiers +4 Stealth Ecology Environment any temperate Organization solitary, pair, nest (3–12), or plague (13–100) Treasure none Description Fecund and secretive, rats are omnivorous rodents that particularly thrive in urban areas.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Kobold", cr: "1/4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "5 (1d10)", ac: 15,
+                          fort: 2, ref: 1, will: 1, init_: 1,
+                          str: 9, dex: 13, con: 10, int_: 10, wis: 9, cha: 8,
+                          senses: "darkvision 60 ft.; Perception +5Defense", speed: "30 ft.",
+                          attacks: "spear +1 (1d6–1)",
+                          specialAbilities: "",
+                          environment: "temperate underground or deep forest",
+                          summary: "This short, reptilian humanoid has scaled skin, a snout filled with tiny teeth, and a long tail.",
+                          desc: "Kobold This short, reptilian humanoid has scaled skin, a snout filled with tiny teeth, and a long tail. Kobold CR 1/4 Source Pathfinder RPG Bestiary pg. 183 XP 100 Kobold warrior 1 LE Small humanoid (reptilian) Init +1; Senses darkvision 60 ft.; Perception +5 Defense AC 15, touch 12, flat-footed 14 (+2 armor, +1 Dex, +1 natural, +1 size) hp 5 (1d10) Fort +2, Ref +1, Will –1 Weaknesses light sensitivity Offense Speed 30 ft. Melee spear +1 (1d6–1) Ranged sling +3 (1d3-1) Statistics Str 9, Dex 13, Con 10, Int 10, Wis 9, Cha 8 Base Atk +1; CMB –1; CMD 10 Feats Skill Focus (Perception) Skills Craft (trapmaking) +6, Perception +5, Stealth +5; Racial Modifiers +2 Craft (trapmaking), +2 Perception, +2 Profession (miner) Languages Draconic SQ crafty Ecology Environment temperate underground or deep forest Organization solitary, gang (2–4), nest (5–30 plus equal number of noncombatants, 1 sergeant of 3rd level per 20 adults, and 1 leader of 4th–6th level), or tribe (31–300 plus 35% noncombatants, 1 sergeant of 3rd level per 20 adults, 2 lieutenants of 4th level, 1 leader of 6th–8th level, and 5–16 dire rats) Treasure NPC gear (leather armor, spear, sling, other treasure) Special Abilities Crafty (Ex) Craft (trapmaking) and Stealth are always class skills for a kobold. Description Kobolds are creatures of the dark, found most commonly in enormous underground warrens or the dark corners of the forest where the sun is unable to reach. Due to their physical similarities, kobolds loudly proclaim themselves the scions of dragonkind, destined to rule the earth beneath the wings of their great god-cousins, but most dragons have little use for the obnoxious pests. While they may speak loudly of divine right and manifest destiny, kobolds are keenly aware of their own weakness. Cowards and schemers, they never fight fair if they can help it, instead setting up ambushes and double-crosses, holing up in their warrens behind countless crude but ingenious traps, or rolling over the enemy in",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Mite", cr: "1/4", type: "fey", size: "Small", alignment: "LE",
+                          hp: "3 (1d6)", ac: 12,
+                          fort: 0, ref: 3, will: 3, init_: 1,
+                          str: 8, dex: 13, con: 11, int_: 8, wis: 13, cha: 8,
+                          senses: "darkvision 120 ft., low-light vision, scent; Perception +5Defense", speed: "20 ft., climb 20 ft.",
+                          attacks: "dagger +0 (1d3–1/19–20)",
+                          specialAbilities: "hatred",
+                          environment: "any underground",
+                          summary: "This squat humanoid seems to be nearly all head—an unfortunate circumstance, considering how ugly its puffy blue face is.",
+                          desc: "Mite This squat humanoid seems to be nearly all head—an unfortunate circumstance, considering how ugly its puffy blue face is. Mite CR 1/4 Source Pathfinder RPG Bestiary pg. 207 XP 100 LE Small fey Init +1; Senses darkvision 120 ft., low-light vision, scent; Perception +5 Defense AC 12, touch 12, flat-footed 11 (+1 Dex, +1 size) hp 3 (1d6) Fort +0, Ref +3, Will +3 DR 2/cold iron Weaknesses light sensitivity Offense Speed 20 ft., climb 20 ft. Melee dagger +0 (1d3–1/19–20) Ranged dart +2 (1d3–1) Special Attacks hatred Spell-Like Abilities (CL 1st) At will— prestidigitation 1/day— doom (DC 10) Statistics Str 8, Dex 13, Con 11, Int 8, Wis 13, Cha 8 Base Atk +0; CMB –2; CMD 9 Feats Point-Blank Shot Skills Climb +7, Handle Animal +0, Perception +5, Ride +2, Sleight of Hand +9, Stealth +13; Racial Modifiers +4 Sleight of Hand, +4 Stealth Languages Undercommon SQ vermin empathy +4 Ecology Environment any underground Organization solitary, band (2–8), or tribe (9–20 plus 1 chieftain of 2nd–4th level and 2–6 giant vermin) Treasure standard (dagger, 6 darts, other treasure) Special Abilities Hatred (Ex) Mites receive a +1 bonus on attack rolls against humanoid creatures of the dwarf or gnome subtype due to special training against these hated foes. Vermin Empathy (Ex) This ability functions as a druid’s wild empathy, save that a mite can only use this ability on vermin. A mite gains a +4 racial bonus on this check. Vermin are normally mindless, but this empathic communication imparts on them a modicum of implanted intelligence, allowing mites to train Medium vermin and use them as mounts. Vermin empathy treats swarms as if they were one creature possessing a single mind—a mite can thus use this ability to influence and direct the actions of swarms with relative ease. Description Descended from even smaller fey, the mites are among the most pitiful and craven dwellers of the dark. Hideously ugly, even goblins have been known to mock mites for their homely appearances, mockery m",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Beetle, Fire Beetle", cr: "1/3", type: "vermin", size: "Small", alignment: "N",
+                          hp: "4 (1d8)", ac: 12,
+                          fort: 2, ref: 0, will: 0, init_: 0,
+                          str: 10, dex: 11, con: 11, int_: 10, wis: 10, cha: 7,
+                          senses: "low-light vision; Perception +0Defense", speed: "30 ft., fly 30 ft. (poor)",
+                          attacks: "bite +1 (1d4)Statistics",
+                          specialAbilities: "",
+                          environment: "any",
+                          summary: "This housecat-sized beetle is a dull brown color brightened by two glowing green-yellow spots on its carapace.",
+                          desc: "Beetle, Fire Beetle This housecat-sized beetle is a dull brown color brightened by two glowing green-yellow spots on its carapace. Fire Beetle CR 1/3 Source Pathfinder RPG Bestiary pg. 33 XP 135 N Small vermin Init +0; Senses low-light vision; Perception +0 Defense AC 12, touch 11, flat-footed 12 (+1 natural, +1 size) hp 4 (1d8) Fort +2, Ref +0, Will +0 Immune mind-affecting effects Offense Speed 30 ft., fly 30 ft. (poor) Melee bite +1 (1d4) Statistics Str 10, Dex 11, Con 11, Int —, Wis 10, Cha 7 Base Atk +0; CMB –1; CMD 9 (17 vs. trip) Skills Fly –2 SQ luminescence Ecology Environment any Organization solitary, cluster (2–6) or colony (7–12) Treasure none Special Abilities Luminescence (Ex) A fire beetle’s glowing glands provide light in a 10-foot radius. A dead fire beetle’s luminescent glands continue to glow for 1d6 days after its death. Description Although nocturnal, the fire beetle lacks darkvision—it relies on its own glowing glands for illumination. Caged fire beetles are a popular source of long-lasting illumination among eccentrics and miners. Other variations on the common fire beetle exist. The two most common variants are detailed below. Mining Beetle (CR 1/2) : A mining beetle is an advanced fire beetle with the advanced simple template and a burrowing speed of 20 feet. Flash Beetle (CR 1/2) : A flash beetle is an advanced fire beetle that can create a bright flash of light once an hour. When a flash beetle does so, all creatures in a 10-foot burst must make a DC 12 Fortitude save or be dazzled for 1d3 rounds. The save DC is Constitution-based.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Dog", cr: "1/3", type: "animal", size: "Small", alignment: "N",
+                          hp: "6 (1d8+2)", ac: 13,
+                          fort: 4, ref: 3, will: 1, init_: 1,
+                          str: 13, dex: 13, con: 15, int_: 2, wis: 12, cha: 6,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "40 ft.",
+                          attacks: "bite +2 (1d4+1)Statistics",
+                          specialAbilities: "",
+                          environment: "any",
+                          summary: "This small dog has a rough coat and a hungry look in its dark brown eyes.",
+                          desc: "Dog This small dog has a rough coat and a hungry look in its dark brown eyes. Dog CR 1/3 Source Pathfinder RPG Bestiary pg. 87 XP 135 N Small animal Init +1; Senses low-light vision, scent; Perception +8 Defense AC 13, touch 12, flat-footed 12 (+1 Dex, +1 natural, +1 size) hp 6 (1d8+2) Fort +4, Ref +3, Will +1 Offense Speed 40 ft. Melee bite +2 (1d4+1) Statistics Str 13, Dex 13, Con 15, Int 2, Wis 12, Cha 6 Base Atk +0; CMB +0; CMD 11 (15 vs. trip) Feats Skill Focus (Perception) Skills Acrobatics +1 (+9 jumping), Perception +8, Survival +1 (+5 scent tracking); Racial Modifiers +4 Acrobatics when jumping, +4 Survival when tracking by scent Ecology Environment any Organization solitary, pair, or pack (3–12) Treasure none Description The normal dog statistics presented here describe any small dog of about 20–50 pounds in weight. They can also be used for small wild canines such as coyotes, jackals, and feral dogs. In the wild, dogs are vicious and territorial creatures. Yet even more harrowing than a pack of wild dogs is the rabid dog. Rabies often affects animals like bats, wolverines, and rats, but the transformation of a normally friendly family pet goes through when it becomes rabid makes the dog perhaps the most notorious of the disease’s classic carriers. A rabid creature can transmit rabies to a victim with a bite. Its CR increases by 1 (or up one step, in the case of a creature whose CR is less than 1). Rabies Type disease, injury; Save Fortitude DC 14 Onset 2d6 weeks; Frequency 1/day Effect 1 Con damage plus 1d3 Wis damage (minimum reduction to 1 Wis); Cure 2 consecutive saves",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Drow", cr: "1/3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "5 (1d10)", ac: 15,
+                          fort: 2, ref: 2, will: 1, init_: 2,
+                          str: 11, dex: 15, con: 10, int_: 10, wis: 9, cha: 10,
+                          senses: "darkvision 120 ft.; Perception +2Defense", speed: "30 ft.",
+                          attacks: "rapier +2 (1d6/18–20)",
+                          specialAbilities: "",
+                          environment: "underground",
+                          summary: "This dark-skinned elf stands in a battle-ready pose, her hair silver and eyes white and pupilless.",
+                          desc: "Drow This dark-skinned elf stands in a battle-ready pose, her hair silver and eyes white and pupilless. Drow CR 1/3 Source Pathfinder RPG Bestiary pg. 114 XP 135 Drow warrior 1 CE Medium humanoid (elf) Init +2; Senses darkvision 120 ft.; Perception +2 Defense AC 15, touch 12, flat-footed 13 (+2 armor, +2 Dex, +1 shield) hp 5 (1d10) Fort +2, Ref +2, Will –1; +2 vs. enchantment Immune sleep; SR 7 Weaknesses light blindness Offense Speed 30 ft. Melee rapier +2 (1d6/18–20) Ranged hand crossbow +3 (1d4/19–20 plus poison) Spell-Like Abilities (CL 1st) 1/day— dancing lights , darkness , faerie fire Statistics Str 11, Dex 15, Con 10, Int 10, Wis 9, Cha 10 Base Atk +1; CMB +1; CMD 13 Feats Weapon Finesse Skills Perception +2, Stealth +2; Racial Modifiers +2 Perception Languages Elven, Undercommon SQ poison use Ecology Environment underground Organization pair, squad (3–4), patrol (5–8), or war party (10–40) Treasure NPC Gear (leather armor, light steel shield, rapier, hand crossbow with 20 bolts, drow poison [2 doses], 3d6 gp, other treasure) Special Abilities Poison Use (Ex) Drow are skilled in the use of poison and never risk accidentally poisoning themselves. Drow favor an insidious toxin that causes its victims to lapse into unconsciousness—this poison allows drow to capture slaves with great ease. Drow Poison —injury; save Fort DC 13; frequency 1/minute for 2 minutes; initial effect unconsciousness for 1 minute; secondary effect unconsciousness for 2d4 hours; cure 1 save. Description Although related to the elves, the drow are a vile and evil cousin at best. Sometimes called dark elves, these cunning creatures prowl the caves and tunnels of the world below, ruling vast subterranean cities through fear and might. Worshiping demons and enslaving most races they encounter, the drow are among the underworld’s most feared and hated denizens. Drow are shorter and a bit more slender than their surface-dwelling kin, but they are otherwise physically similar. Drow have dark skin",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Duergar", cr: "1/3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "8 (1d10+3)", ac: 17,
+                          fort: 4, ref: 1, will: 1, init_: 1,
+                          str: 12, dex: 9, con: 15, int_: 10, wis: 13, cha: 4,
+                          senses: "darkvision 120 ft; Perception +1Defense", speed: "20 ft.",
+                          attacks: "warhammer +3 (1d8+1/×3)",
+                          specialAbilities: "",
+                          environment: "any underground",
+                          summary: "This bald, long-bearded dwarf has dull gray skin, low arching brows, and eyes that seem to absorb rather than reflect the light.",
+                          desc: "Duergar This bald, long-bearded dwarf has dull gray skin, low arching brows, and eyes that seem to absorb rather than reflect the light. Duergar CR 1/3 Source Pathfinder RPG Bestiary pg. 117 XP 135 Duergar warrior 1 LE Medium humanoid (dwarf) Init –1; Senses darkvision 120 ft; Perception +1 Defense AC 17, touch 9, flat-footed 17 (+6 armor, –1 Dex, +2 shield) hp 8 (1d10+3) Fort +4, Ref –1, Will +1; +2 vs. spells Immune paralysis, phantasms, poison Weaknesses light sensitivity Offense Speed 20 ft. Melee warhammer +3 (1d8+1/×3) Ranged light crossbow +0 (1d8/19–20) Spell-Like Abilities (CL 3rd) 1/day— enlarge person (self only), invisibility (self only) Statistics Str 12, Dex 9, Con 15, Int 10, Wis 13, Cha 4 Base Atk +1; CMB +2; CMD 11 Feats Weapon Focus (warhammer) Skills Intimidate +1, Stealth –3; Racial Modifiers +2 Perception relating to stonework, +4 Stealth Languages Common, Dwarven, Undercommon SQ slow and steady, stability Ecology Environment any underground Organization solitary, team (2–5), squad (6–12 plus 3 sergeants of 3rd level and 1 leader of 3rd–8th level), or clan (13–80 plus 25% noncombatant children plus 1 sergeant of 3rd level per 5 adults, 3–6 lieutenants of 3rd–6th level, and 1–4 captains of 9th level) Treasure NPC Gear (chainmail, heavy steel shield, warhammer, light crossbow [20 bolts], 3d6 gp, other treasure) Description Cousins to dwarves, duergar are foul-tempered creatures that loathe intruders to their underground realms—but not nearly as much as they do their kinfolk closer to the surface. Duergar dwell in communities deep underground, and appear as darker, more twisted versions of their kinder kin. Their skin is a dull gray, as though rubbed with dust or ash, but this is a natural coloration that better allows them to blend with their underground surroundings. They are a race of slavers, but while non-dwarven prisoners are usually put to backbreaking work, dwarven prisoners are generally slain on the spot. In combat, duergar fire crossbows",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Familiar, Hawk", cr: "1/3", type: "animal", size: "Tiny", alignment: "N",
+                          hp: "4 (1d8)", ac: 15,
+                          fort: 2, ref: 5, will: 2, init_: 3,
+                          str: 6, dex: 17, con: 11, int_: 2, wis: 14, cha: 7,
+                          senses: "low-light vision; Perception +14Defense", speed: "10 ft., fly 60 ft. (average)",
+                          attacks: "2 talons +5 (1d4–2)",
+                          specialAbilities: "",
+                          environment: "temperate forests",
+                          summary: "Familiar, Hawk Hawk CR 1/3 Source Pathfinder RPG Bestiary pg. 131 XP 135 N Tiny animal Init +3; Senses low-light vision;…",
+                          desc: "Familiar, Hawk Hawk CR 1/3 Source Pathfinder RPG Bestiary pg. 131 XP 135 N Tiny animal Init +3; Senses low-light vision; Perception +14 Defense AC 15, touch 15, flat-footed 12 (+3 Dex, +2 size) hp 4 (1d8) Fort +2, Ref +5, Will +2 Offense Speed 10 ft., fly 60 ft. (average) Melee 2 talons +5 (1d4–2) Space 2-1/2 ft., Reach 0 ft. Statistics Str 6, Dex 17, Con 11, Int 2, Wis 14, Cha 7 Base Atk +0; CMB +1; CMD 9 Feats Weapon Finesse Skills Fly +7, Perception +14; Racial Modifier +8 Perception Ecology Environment temperate forests Organization solitary or pair Treasure none Description Falconers prize these majestic birds as trained hunting companions if raised from chicks and properly instructed.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Familiar, Owl", cr: "1/3", type: "animal", size: "Tiny", alignment: "N",
+                          hp: "4 (1d8)", ac: 15,
+                          fort: 2, ref: 5, will: 2, init_: 3,
+                          str: 6, dex: 17, con: 11, int_: 2, wis: 15, cha: 6,
+                          senses: "low-light vision; Perception +10Defense", speed: "10 ft., fly 60 ft. (average)",
+                          attacks: "2 talons +5 (1d4–2)",
+                          specialAbilities: "",
+                          environment: "temperate forests",
+                          summary: "Familiar, Owl Owl CR 1/3 Source Pathfinder RPG Bestiary pg. 132 XP 135 N Tiny animal Init +3; Senses low-light vision; P…",
+                          desc: "Familiar, Owl Owl CR 1/3 Source Pathfinder RPG Bestiary pg. 132 XP 135 N Tiny animal Init +3; Senses low-light vision; Perception +10 Defense AC 15, touch 15, flat-footed 12 (+3 Dex, +2 size) hp 4 (1d8) Fort +2, Ref +5, Will +2 Offense Speed 10 ft., fly 60 ft. (average) Melee 2 talons +5 (1d4–2) Space 2-1/2 ft., Reach 0 ft. Statistics Str 6, Dex 17, Con 11, Int 2, Wis 15, Cha 6 Base Atk +0; CMB +1; CMD 9 Feats Weapon Finesse Skills Fly +7, Perception +10, Stealth +15; Racial Modifiers +4 Perception, +4 Stealth Ecology Environment temperate forests Organization solitary or pair Treasure none Description Owls are nocturnal, rodent-eating birds that make very little noise in flight.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Goblin", cr: "1/3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "6 (1d10+1)", ac: 16,
+                          fort: 3, ref: 2, will: 1, init_: 6,
+                          str: 11, dex: 15, con: 12, int_: 10, wis: 9, cha: 6,
+                          senses: "darkvision 60 ft.; Perception –1Defense", speed: "30 ft.",
+                          attacks: "short sword +2 (1d4/19–20)",
+                          specialAbilities: "",
+                          environment: "temperate forest and plains (usually coastal regions)",
+                          summary: "This creature stands barely three feet tall, its scrawny, humanoid body dwarfed by its wide, ungainly head.",
+                          desc: "Goblin This creature stands barely three feet tall, its scrawny, humanoid body dwarfed by its wide, ungainly head. Goblin CR 1/3 Source Pathfinder RPG Bestiary pg. 156 XP 135 Goblin warrior 1 NE Small humanoid (goblinoid) Init +6; Senses darkvision 60 ft.; Perception –1 Defense AC 16, touch 13, flat-footed 14 (+2 armor, +2 Dex, +1 shield, +1 size) hp 6 (1d10+1) Fort +3, Ref +2, Will –1 Offense Speed 30 ft. Melee short sword +2 (1d4/19–20) Ranged short bow +4 (1d4/×3) Statistics Str 11, Dex 15, Con 12, Int 10, Wis 9, Cha 6 Base Atk +1; CMB +0; CMD 12 Feats Improved Initiative Skills Ride +10, Stealth +10, Swim +4; Racial Modifiers +4 Ride, +4 Stealth Languages Goblin Ecology Environment temperate forest and plains (usually coastal regions) Organization gang (4–9), warband (10–16 with goblin dog mounts), or tribe (17+ plus 100% noncombatants; 1 sergeant of 3rd level per 20 adults; 1 or 2 lieutenants of 4th or 5th level; 1 leader of 6th–8th level; and 10–40 goblin dogs, wolves, or worgs) Treasure NPC gear (leather armor, light wooden shield, short sword, short bow with 20 arrows, other treasure) Description Goblins prefer to dwell in caves, amid large and dense thickets of thistles and brambles, or in structures built and then abandoned by others. Very few goblins have the drive to build structures of their own. Coastlines are favored, as goblins are quite fond of sifting through junk and flotsam in an unending quest to find treasures among the refuse of more civilized races. Goblin hatred runs deep, and few things inspire their wrath more than gnomes (who have long fought against goblins), horses (who frighten goblins tremendously), and regular dogs (whom goblins regard as pale imitations of goblin dogs). Goblins are also quite superstitious, and treat magic with a fawning mixture of awe and fear. They have the habit of ascribing magic to the mundane as well, with fire and writing both taking on mystical power in goblin society. Fire is much loved by goblins for its c",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Merfolk", cr: "1/3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "7 (1d10+2)", ac: 13,
+                          fort: 4, ref: 1, will: 1, init_: 1,
+                          str: 13, dex: 13, con: 14, int_: 10, wis: 9, cha: 10,
+                          senses: "low-light vision; Perception +3Defense", speed: "5 ft., swim 50 ft.",
+                          attacks: "trident +2 (1d8+1)",
+                          specialAbilities: "",
+                          environment: "temperate ocean",
+                          summary: "Slipping in and out of the crashing waves, this beautiful woman has the lower torso of a long, slender fish.",
+                          desc: "Merfolk Slipping in and out of the crashing waves, this beautiful woman has the lower torso of a long, slender fish. Merfolk CR 1/3 Source Pathfinder RPG Bestiary pg. 204 XP 135 Merfolk warrior 1 N Medium humanoid (aquatic) Init +1; Senses low-light vision; Perception +3 Defense AC 13, touch 11, flat-footed 12 (+1 Dex, +2 natural) hp 7 (1d10+2) Fort +4, Ref +1, Will –1 Offense Speed 5 ft., swim 50 ft. Melee trident +2 (1d8+1) Ranged heavy crossbow +2 (1d10/19–20) Statistics Str 13, Dex 13, Con 14, Int 10, Wis 9, Cha 10 Base Atk +1; CMB +2; CMD 13 (can’t be tripped) Feats Skill Focus (Perception) Skills Perception +3, Swim +13 Languages Aquan, Common SQ amphibious Ecology Environment temperate ocean Organization solitary, company (2–4), patrol (3–10 plus 2 lieutenants of 3rd level and 1 leader of 3rd–6th level), or shoal (11–60 plus 1 sergeant of 3rd level per 20 adults, 5 lieutenants of 5th level, 3 captains of 7th level, and8–12 dolphins) Treasure NPC gear (trident, heavy crossbow with 10 bolts, other treasure) Description From the waist up, merfolk bear the torsos of well-built humans and delicate features reminiscent of elves and other humanoids tied to the natural world. A merfolk’s lower body consists of the fins and tail of a great fish. Depending on the region, the scales of merfolk vary in hue, including gleaming silver, pale green, or even blue with stripes of yellow and crimson. Merfolk typically measure 6 to 8 feet in length and weigh over 200 pounds, with females being slightly smaller than males. Although amphibious, merfolk move only with difficulty on land and rarely wander more than a mile from sea. It is quite rare for a merfolk to make contact with a creature not of its kind. In fact, many go to great lengths to steer sailors away from their lands, even resorting to violence if necessary. Ancient accounts hint at merfolk protecting a terrible secret bound to the depths, and though no reports mention what this secret is, the lengths merfolk go to re",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Orc", cr: "1/3", type: "humanoid", size: "Medium", alignment: "CE",
+                          hp: "6 (1d10+1)", ac: 13,
+                          fort: 3, ref: 0, will: 1, init_: 0,
+                          str: 17, dex: 11, con: 12, int_: 7, wis: 8, cha: 6,
+                          senses: "darkvision 60 ft.; Perception –1Defense", speed: "30 ft.",
+                          attacks: "falchion +5 (2d4+4/18–20)",
+                          specialAbilities: "",
+                          environment: "temperate hills, mountains, or underground",
+                          summary: "This savage creature looks like a bestial version of a savage human, with green-gray skin and greasy black hair.",
+                          desc: "Orc This savage creature looks like a bestial version of a savage human, with green-gray skin and greasy black hair. Orc CR 1/3 Source Pathfinder RPG Bestiary pg. 222 XP 135 Orc warrior 1 CE Medium humanoid Init +0; Senses darkvision 60 ft.; Perception –1 Defense AC 13, touch 10, flat-footed 13 (+3 armor) hp 6 (1d10+1) Fort +3, Ref +0, Will –1 Defensive Abilities ferocity Weaknesses light sensitivity Offense Speed 30 ft. Melee falchion +5 (2d4+4/18–20) Ranged javelin +1 (1d6+3) Statistics Str 17, Dex 11, Con 12, Int 7, Wis 8, Cha 6 Base Atk +1; CMB +4; CMD 14 Feats Weapon Focus (falchion) Skills Intimidate +2 Languages Common, Orc SQ weapon familiarity Ecology Environment temperate hills, mountains, or underground Organization solitary, gang (2–4), squad (11–20 plus 2 sergeants of 3rd level and 1 leader of 3rd–6th level), or band (30–100 plus 150% noncombatants plus 1 sergeant of 3rd level per 10 adults, 1 lieutenant of 5th level per 20 adults, and 1 leader of 7th level per 30 adults) Treasure NPC gear (studded leather armor, falchion, 4 javelins, other treasure) Description Along with their brute strength and comparatively low intellect, the primary difference between orcs and the civilized humanoids is their attitude. As a culture, orcs are violent and aggressive, with the strongest ruling the rest through fear and brutality. They take what they want by force, and think nothing of slaughtering or enslaving entire villages when they can get away with it. They have little time for niceties or details, and their camps and villages tend to be filthy, ramshackle affairs filled with drunken brawls, pit fights, and other sadistic entertainment. Lacking the patience for farming and only able to shepherd the most robust and self-sufficient animals, orcs almost always find it easier to take what someone else has built than to create things themselves. They are arrogant and quick to anger when challenged, but only worry about honor so far as it directly benefits them to do s",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Rat, Dire Rat", cr: "1/3", type: "animal", size: "Small", alignment: "N",
+                          hp: "5 (1d8+1)", ac: 14,
+                          fort: 3, ref: 5, will: 1, init_: 3,
+                          str: 10, dex: 17, con: 13, int_: 2, wis: 13, cha: 4,
+                          senses: "low-light vision, scent; Perception +4Defense", speed: "40 ft., climb 20 ft., swim 20 ft.",
+                          attacks: "bite +1 (1d4 plus disease)",
+                          specialAbilities: "diseaseStatistics",
+                          environment: "any urban",
+                          summary: "This filthy rat is the size of a small dog. It has a coat of coarse fur, a long and scabby tail, and two glittering eyes.",
+                          desc: "Rat, Dire Rat This filthy rat is the size of a small dog. It has a coat of coarse fur, a long and scabby tail, and two glittering eyes. Dire Rat CR 1/3 Source Pathfinder RPG Bestiary pg. 232 XP 135 N Small animal Init +3; Senses low-light vision, scent; Perception +4 Defense AC 14, touch 14, flat-footed 11 (+3 Dex, +1 size) hp 5 (1d8+1) Fort +3, Ref +5, Will +1 Offense Speed 40 ft., climb 20 ft., swim 20 ft. Melee bite +1 (1d4 plus disease) Special Attacks disease Statistics Str 10, Dex 17, Con 13, Int 2, Wis 13, Cha 4 Base Atk +0; CMB –1; CMD 12 (16 vs. trip) Feats Skill Focus (Perception) Skills Climb +11, Perception +4, Stealth +11, Swim +11; Racial Modifiers uses Dex to modify Climb and Swim Ecology Environment any urban Organization solitary or pack (2–20) Treasure none Special Abilities Disease (Ex) Filth fever: Bite—injury; save Fort DC 11; onset 1d3 days; frequency 1/day; effect 1d3 Dex damage and 1d3 Con damage; cure 2 consecutive saves. The save DC is Constitution-based. Description Dire rats grow up to 2 feet long and weigh up to 25 pounds. They are common menaces in dungeons and city sewers alike.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Skeleton, Human Skeleton", cr: "1/3", type: "undead", size: "Medium", alignment: "NE",
+                          hp: "4 (1d8)", ac: 16,
+                          fort: 0, ref: 2, will: 2, init_: 6,
+                          str: 15, dex: 14, con: 10, int_: 10, wis: 10, cha: 10,
+                          senses: "darkvision 60 ft.; Perception +0Defense", speed: "30 ft.",
+                          attacks: "broken scimitar +0 (1d6), claw –3 (1d4+1) or 2 claws +2 (1d4+2)Statistics",
+                          specialAbilities: "A skeleton retains none of the base creature’s special attacks.",
+                          environment: "any",
+                          summary: "The pile of bones suddenly stirs, rising up to take on a human shape. Its long, bony fingers reach out to claw at the living.",
+                          desc: "Skeleton, Human Skeleton The pile of bones suddenly stirs, rising up to take on a human shape. Its long, bony fingers reach out to claw at the living. Human Skeleton CR 1/3 Source Pathfinder RPG Bestiary pg. 250 XP 135 NE Medium undead Init +6; Senses darkvision 60 ft.; Perception +0 Defense AC 16, touch 12, flat-footed 14 (+2 armor, +2 Dex, +2 natural) hp 4 (1d8) Fort +0, Ref +2, Will +2 DR 5/bludgeoning; Immune cold, undead traits Offense Speed 30 ft. Melee broken scimitar +0 (1d6), claw –3 (1d4+1) or 2 claws +2 (1d4+2) Statistics Str 15, Dex 14, Con —, Int —, Wis 10, Cha 10 Base Atk +0; CMB +2; CMD 14 Feats Improved Initiative B Gear broken chain shirt, broken scimitar Ecology Environment any Organization any Treasure none Description Skeletons are the animated bones of the dead, brought to unlife through foul magic. While most skeletons are mindless automatons, they still possess an evil cunning imparted to them by their animating force—a cunning that allows them to wield weapons and wear armor.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Aasimar", cr: "1/2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "11 (1d8+3)", ac: 15,
+                          fort: 4, ref: 0, will: 5, init_: 0,
+                          str: 8, dex: 10, con: 14, int_: 13, wis: 17, cha: 14,
+                          senses: "darkvision 60 ft.; Perception +5Defense", speed: "30 ft. (20 ft. in armor)",
+                          attacks: "heavy mace -1 (1d8-1)",
+                          specialAbilities: "channel positive energy (5/day, 1d6, DC 12); rebuke death (1d4+1, 6/day); touch of good (6/day)",
+                          environment: "any land",
+                          summary: "This supernaturally beautiful woman looks human, yet emanates a strange sense of calm and benevolence.",
+                          desc: "Aasimar This supernaturally beautiful woman looks human, yet emanates a strange sense of calm and benevolence. Aasimar CR 1/2 Source Pathfinder RPG Bestiary pg. 7 XP 200 Aasimar cleric 1 NG Medium outsider (native) Init +0; Senses darkvision 60 ft.; Perception +5 Defense AC 15, touch 10, flat-footed 15 (+5 armor) hp 11 (1d8+3) Fort +4, Ref +0, Will +5 Resist acid 5, cold 5, electricity 5 Offense Speed 30 ft. (20 ft. in armor) Melee heavy mace -1 (1d8-1) Ranged light crossbow +0 (1d8/19-20) Special Attacks channel positive energy (5/day, 1d6, DC 12); rebuke death (1d4+1, 6/day); touch of good (6/day) Spell-Like Abilities (CL 1st) 1/day - daylight Spells Prepared (CL 1st) 1st— bless , command (DC 14), protection from evil D 0 (at will)— detect magic , guidance , stabilize D domain spell; Domains Good, Healing Statistics Str 8, Dex 10, Con 14, Int 13, Wis 17, Cha 14 Base Atk +0; CMB -1; CMD 9 Feats Turn Undead Skills Diplomacy +8, Heal +7, Knowledge (religion) +5; Racial Modifiers +2 Diplomacy, +2 Perception Languages Celestial, Common, Draconic Ecology Environment any land Organization solitary, pair, or team (3-6) Treasure NPC gear (scale mail, heavy mace, light crossbow with 10 bolts, other treasure) Description Aasimars are humans with a significant amount of celestial or other good outsider blood in their ancestry. Aasimars are not always good, but it is a natural tendency for them, and they gravitate to good faiths or organizations associated with celestials. Aasimar heritage can hide for generations, only to appear suddenly in the child of two apparently human parents. Most societies interpret aasimar births as good omens. Aasimars look mostly human except for some minor physical trait that reveals their unusual heritage. Typical aasimar features are hair that shines like metal, unusual eye or skin color, or even glowing golden halos.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Centipede, Giant Centipede", cr: "1/2", type: "vermin", size: "Medium", alignment: "N",
+                          hp: "5 (1d8+1)", ac: 14,
+                          fort: 3, ref: 2, will: 0, init_: 2,
+                          str: 9, dex: 15, con: 12, int_: 10, wis: 10, cha: 2,
+                          senses: "darkvision 60 ft.; Perception +4Defense", speed: "40 ft., climb 40 ft.",
+                          attacks: "bite +2 (1d6–1 plus poison)",
+                          specialAbilities: "poisonStatistics",
+                          environment: "temperate or warm forest or underground",
+                          summary: "This lengthy, segmented horror writhes and twists, pulsing its venomous mandibles in search of prey.",
+                          desc: "Centipede, Giant Centipede This lengthy, segmented horror writhes and twists, pulsing its venomous mandibles in search of prey. Giant Centipede CR 1/2 Source Pathfinder RPG Bestiary pg. 43 XP 200 N Medium vermin Init +2; Senses darkvision 60 ft.; Perception +4 Defense AC 14, touch 12, flat-footed 12 (+2 Dex, +2 natural) hp 5 (1d8+1) Fort +3, Ref +2, Will +0 Immune mind-affecting effects Offense Speed 40 ft., climb 40 ft. Melee bite +2 (1d6–1 plus poison) Special Attacks poison Statistics Str 9, Dex 15, Con 12, Int —, Wis 10, Cha 2 Base Atk +0; CMB –1; CMD 11 (can’t be tripped) Feats Weapon Finesse B Skills Climb +10, Perception +4, Stealth +10; Racial Modifiers +4 Perception, +8 Stealth Ecology Environment temperate or warm forest or underground Organization solitary, pair, or colony (3–6) Treasure none Special Abilities Poison (EX) Bite—injury; save Fort DC 13; frequency 1/round for 6 rounds; effect 1d3 Dex damage; cure 1 save. The save DC is Constitution-based and includes a +2 racial bonus. Description Giant centipedes attack nearly any living creatures with their poisonous jaws. These creatures adapt to many environments and feed voraciously on the local fauna, including humanoids. The coloration of giant centipedes mirrors that of normal centipedes and spans the spectrum, ranging from dull hues to bright reds and fiery oranges. Other species of giant centipedes exist as well, some smaller but most quite a bit larger. You can adjust the stats given here by changing Hit Dice and size (changing Strength, Dexterity, and Constitution as appropriate) to represent a wide range of giant centipede species. The following table lists the most common variants. Species CR Size HD House centipede 1/8 Tiny 1d8 Sewer centipede 1/4 Small 1d8 Hissing centipede 1 Large 2d8 Giant whiptail centipede 2 Huge 4d8 Great forest centipede 6 Gargantuan 7d8 Titan centipede 9 Colossal 10d8",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Dolphin", cr: "1/2", type: "animal", size: "Medium", alignment: "N",
+                          hp: "11 (2d8+2)", ac: 13,
+                          fort: 4, ref: 5, will: 1, init_: 2,
+                          str: 12, dex: 15, con: 13, int_: 2, wis: 13, cha: 6,
+                          senses: "blindsight 120 ft., low-light vision; Perception +9Defense", speed: "swim 80 ft.",
+                          attacks: "slam +3 (1d4+1)Statistics",
+                          specialAbilities: "",
+                          environment: "any ocean",
+                          summary: "This streamlined, fish-like mammal has sparkling eyes over a smiling mouth filled with hundreds of teeth.",
+                          desc: "Dolphin This streamlined, fish-like mammal has sparkling eyes over a smiling mouth filled with hundreds of teeth. Dolphin CR 1/2 Source Pathfinder RPG Bestiary pg. 88 XP 200 N Medium animal Init +2; Senses blindsight 120 ft., low-light vision; Perception +9 Defense AC 13, touch 12, flat-footed 11 (+2 Dex, +1 natural) hp 11 (2d8+2) Fort +4, Ref +5, Will +1 Offense Speed swim 80 ft. Melee slam +3 (1d4+1) Statistics Str 12, Dex 15, Con 13, Int 2, Wis 13, Cha 6 Base Atk +1; CMB +2; CMD 14 Feats Weapon Finesse Skills Perception +9, Swim +13; Racial Modifiers +4 Perception SQ hold breath Ecology Environment any ocean Organization solitary, pair, or pod (3–18) Treasure none Special Abilities Hold Breath (Ex) A dolphin can hold its breath for a number of minutes equal to 6 times its Constitution score before it risks drowning. Description Dolphins are social predators that hunt shallow seas and rivers in large family groups called pods. Sailors are fond of dolphins and frequently tell tales of dolphins saving drowning fishermen or killing sharks with blows from their powerful snouts.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Eagle", cr: "1/2", type: "animal", size: "Small", alignment: "N",
+                          hp: "5 (1d8+1)", ac: 14,
+                          fort: 3, ref: 4, will: 2, init_: 2,
+                          str: 10, dex: 15, con: 12, int_: 2, wis: 15, cha: 7,
+                          senses: "low-light vision; Perception +10Defense", speed: "10 ft., fly 80 ft. (average)",
+                          attacks: "2 talons +3 (1d4), bite +3 (1d4)Statistics",
+                          specialAbilities: "",
+                          environment: "temperate mountains",
+                          summary: "This magnificent bird of prey has dark feathers save for those on its head, which are pure white.",
+                          desc: "Eagle This magnificent bird of prey has dark feathers save for those on its head, which are pure white. Eagle CR 1/2 Source Pathfinder RPG Bestiary pg. 118 XP 200 N Small animal Init +2; Senses low-light vision; Perception +10 Defense AC 14, touch 13, flat-footed 12 (+2 Dex, +1 natural, +1 size) hp 5 (1d8+1) Fort +3, Ref +4, Will +2 Offense Speed 10 ft., fly 80 ft. (average) Melee 2 talons +3 (1d4), bite +3 (1d4) Statistics Str 10, Dex 15, Con 12, Int 2, Wis 15, Cha 7 Base Atk +0; CMB –1; CMD 11 Feats Weapon Finesse Skills Fly +8, Perception +10; Racial Modifiers +8 Perception Ecology Environment temperate mountains Organization solitary or pair Treasure none Description Among the most majestic of raptors, these predatory birds pluck fish from streams and lakes, drop down on rodents and small mammals in alpine meadows, and have even been known to pull young mountain goats from the assumed safety of their cliffs. These creatures, like all birds of prey, have powerful clawed talons and sharp, hooked beaks perfect for tearing flesh. Their enhanced eyesight allows them to spot prey from great distances, and they typically hunt in wide circling patterns high above the ground. Eagles typically build their massive nests in the tops of tall trees or among the rocky crags of steep cliffs. During breeding season, an eagle lays two eggs, but only one chick normally survives, as the stronger of the two usually kills and eats the weaker. Eagles generally weigh between 8 and 15 pounds, with a wingspan of up to 7 feet, depending on the species.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Familiar, Viper", cr: "1/2", type: "animal", size: "Tiny", alignment: "N",
+                          hp: "3 (1d8–1)", ac: 16,
+                          fort: 1, ref: 5, will: 1, init_: 3,
+                          str: 4, dex: 17, con: 8, int_: 1, wis: 13, cha: 2,
+                          senses: "low-light vision, scent; Perception +9Defense", speed: "20 ft., climb 20 ft., swim 20 ft.",
+                          attacks: "bite +5 (1d2–2 plus poison)",
+                          specialAbilities: "",
+                          environment: "any temperate and warm",
+                          summary: "Familiar, Viper Viper CR 1/2 Source Pathfinder RPG Bestiary pg. 133 XP 200 N Tiny animal Init +3; Senses low-light visio…",
+                          desc: "Familiar, Viper Viper CR 1/2 Source Pathfinder RPG Bestiary pg. 133 XP 200 N Tiny animal Init +3; Senses low-light vision, scent; Perception +9 Defense AC 16, touch 15, flat-footed 13 (+3 Dex, +1 natural, +2 size) hp 3 (1d8–1) Fort +1, Ref +5, Will +1 Offense Speed 20 ft., climb 20 ft., swim 20 ft. Melee bite +5 (1d2–2 plus poison) Space 2-1/2 ft., Reach 0 ft. Statistics Str 4, Dex 17, Con 8, Int 1, Wis 13, Cha 2 Base Atk +0; CMB +1; CMD 8 (can’t be tripped) Feats Weapon Finesse Skills Climb +11, Perception +9, Stealth +15, Swim +11; Racial Modifiers +4 Perception, +4 Stealth Ecology Environment any temperate and warm Organization solitary Treasure none Special Abilities Poison (Ex) Bite—injury; save Fort DC 9; frequency 1/round for 6 rounds; effect 1d2 Con; cure 1 save. Description Vipers are not particularly aggressive snakes, but their poisonous bite can be deadly.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Familiar, Weasel", cr: "1/2", type: "animal", size: "Tiny", alignment: "N",
+                          hp: "4 (1d8)", ac: 15,
+                          fort: 2, ref: 4, will: 1, init_: 2,
+                          str: 3, dex: 15, con: 10, int_: 2, wis: 12, cha: 5,
+                          senses: "low-light vision, scent; Perception +1Defense", speed: "20 ft., climb 20 ft.",
+                          attacks: "bite +4 (1d3–4 plus attach)",
+                          specialAbilities: "",
+                          environment: "temperate hills",
+                          summary: "Familiar, Weasel Weasel CR 1/2 Source Pathfinder RPG Bestiary pg. 133 XP 200 N Tiny animal Init +2; Senses low-light vis…",
+                          desc: "Familiar, Weasel Weasel CR 1/2 Source Pathfinder RPG Bestiary pg. 133 XP 200 N Tiny animal Init +2; Senses low-light vision, scent; Perception +1 Defense AC 15, touch 14, flat-footed 13 (+2 Dex, +1 natural, +2 size) hp 4 (1d8) Fort +2, Ref +4, Will +1 Offense Speed 20 ft., climb 20 ft. Melee bite +4 (1d3–4 plus attach) Space 2-1/2 ft., Reach 0 ft. Statistics Str 3, Dex 15, Con 10, Int 2, Wis 12, Cha 5 Base Atk +0; CMB +0; CMD 6 (10 vs. trip) Feats Weapon Finesse Skills Acrobatics +10, Climb +10, Escape Artist +3, Stealth +14; Racial Modifiers +4 Stealth, +8 Acrobatics Ecology Environment temperate hills Organization solitary Treasure none Special Abilities Attach (Ex) When a weasel hits with a bite attack, it automatically grapples its foe, inflicting automatic bite damage each round. Description Weasels are predators content with raiding chicken coops or attacking pets when they encounter civilization.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Frog, Poison Frog", cr: "1/2", type: "animal", size: "Tiny", alignment: "N",
+                          hp: "4 (1d8)", ac: 13,
+                          fort: 2, ref: 3, will: 1, init_: 1,
+                          str: 2, dex: 12, con: 11, int_: 1, wis: 9, cha: 10,
+                          senses: "low-light vision; Perception +3Defense", speed: "10 ft., swim 20 ft.",
+                          attacks: "bite +3 (1 plus poison)",
+                          specialAbilities: "",
+                          environment: "warm marshes and aquatic",
+                          summary: "This small frog is bright green and red, with electric-blue stripes on its hind legs.",
+                          desc: "Frog, Poison Frog This small frog is bright green and red, with electric-blue stripes on its hind legs. Poison Frog CR 1/2 Source Pathfinder RPG Bestiary pg. 135 XP 200 N Tiny animal Init +1; Senses low-light vision; Perception +3 Defense AC 13, touch 13, flat-footed 12 (+1 Dex, +2 size) hp 4 (1d8) Fort +2, Ref +3, Will –1 Offense Speed 10 ft., swim 20 ft. Melee bite +3 (1 plus poison) Space 2-1/2 ft., Reach 0 ft. Statistics Str 2, Dex 12, Con 11, Int 1, Wis 9, Cha 10 Base Atk +0; CMB –1; CMD 5 (9 vs. trip) Feats Weapon Finesse Skills Acrobatics +5 (+1 jumping), Perception +3, Stealth +13, Swim +9; Racial Modifiers +4 Acrobatics (+8 jumping), +4 Stealth Ecology Environment warm marshes and aquatic Organization solitary, pair, or army (3–12) Treasure none Special Abilities Poison (Ex) Injury; save Fort DC 10; frequency 1/round for 6 rounds; effect 1d2 Con damage; cure 1 save Description Poisonous frogs are a bright green color, with additional bright yellow, red, or blue markings. They are just over a foot long and weigh 10 pounds. The poison of poisonous frogs is often gathered by primitive tribes and used to coat darts and arrows for hunting. You can make a larger poison frog either by applying the giant simple template or by giving a normal giant frog a poison frog’s venomous bite.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Hobgoblin", cr: "1/2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "17 (1d10+7)", ac: 16,
+                          fort: 5, ref: 2, will: 1, init_: 2,
+                          str: 15, dex: 15, con: 16, int_: 10, wis: 12, cha: 8,
+                          senses: "darkvision 60 ft.; Perception +2Defense", speed: "30 ft.",
+                          attacks: "longsword +4 (1d8+2/19–20)",
+                          specialAbilities: "",
+                          environment: "temperate hills",
+                          summary: "Standing as tall as a human, this muscular, gray-skinned creature peers about with tiny, observant eyes.",
+                          desc: "Hobgoblin Standing as tall as a human, this muscular, gray-skinned creature peers about with tiny, observant eyes. Hobgoblin CR 1/2 Source Pathfinder RPG Bestiary pg. 175 XP 200 Hobgoblin fighter 1 LE Medium humanoid (goblinoid) Init +2; Senses darkvision 60 ft.; Perception +2 Defense AC 16, touch 12, flat-footed 14 (+3 armor, +2 Dex, +1 shield) hp 17 (1d10+7) Fort +5, Ref +2, Will +1 Offense Speed 30 ft. Melee longsword +4 (1d8+2/19–20) Ranged longbow +3 (1d8/×3) Statistics Str 15, Dex 15, Con 16, Int 10, Wis 12, Cha 8 Base Atk +1; CMB +3; CMD 15 Feats Toughness , Weapon Focus (longsword) Skills Perception +2, Stealth +5; Racial Modifiers +4 Stealth Languages Common, Goblin Ecology Environment temperate hills Organization gang (4–9), warband (10–24), or tribe (25+ plus 50% noncombatants, 1 sergeant of 3rd level per 20 adults, 1 or 2 lieutenants of 4th or 5th level, 1 leader of 6th–8th level, 6–12 leopards, and 1–4 ogres or 1–2 trolls) Treasure NPC Gear (studded leather armor, light steel shield, longsword, longbow with 20 arrows, other treasure) Description Hobgoblins are militaristic and fecund, a combination that makes them quite dangerous in some regions. They breed quickly, replacing fallen members with new soldiers and keeping up their numbers despite the fortunes of war. They generally need little reason to declare war, but more often than not that reason is to capture new slaves—life as a slave in a hobgoblin lair is brutal and short, and new slaves are always needed to replace those who fall or are eaten. Of all the goblinoid races, the hobgoblin is by far the most civilized. They see the larger and more solitary bugbears as tools to be hired and used where appropriate, usually for specific missions involving assassination and stealth, and look upon their smaller goblin kin with a mix of shame and frustration. Hobgoblins admire goblin tenacity, yet their miniscule kindred’s unpredictable nature and fondness for fire make them unwelcome additions to hobgobli",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Horse, Pony", cr: "1/2", type: "animal", size: "Medium", alignment: "N",
+                          hp: "13 (2d8+4)", ac: 11,
+                          fort: 5, ref: 4, will: 0, init_: 1,
+                          str: 13, dex: 13, con: 14, int_: 2, wis: 11, cha: 4,
+                          senses: "low-light vision, scent; Perception +5Defense", speed: "40 ft.",
+                          attacks: "2 hooves –3 (1d3)Statistics",
+                          specialAbilities: "",
+                          environment: "temperate plains",
+                          summary: "This squat equine plods forward with large, curious eyes. As it nears, it extends its muzzle, clearly expecting a treat.",
+                          desc: "Horse, Pony This squat equine plods forward with large, curious eyes. As it nears, it extends its muzzle, clearly expecting a treat. Pony CR 1/2 Source Pathfinder RPG Bestiary pg. 177 XP 200 N Medium animal Init +1; Senses low-light vision, scent; Perception +5 Defense AC 11, touch 11, flat-footed 10 (+1 Dex) hp 13 (2d8+4) Fort +5, Ref +4, Will +0 Offense Speed 40 ft. Melee 2 hooves –3 (1d3) Statistics Str 13, Dex 13, Con 14, Int 2, Wis 11, Cha 4 Base Atk +1; CMB +2; CMD 13 (17 vs. trip) Feats Endurance , Run B Skills Perception +5 SQ docile (see horse) Ecology Environment temperate plains Organization solitary, pair, or herd (3–30) Treasure none Description Ponies are smaller breeds of horses better suited to halflings, gnomes, and dwarves, but they also make fond pets for humans as well. They stand 3 to 4 feet tall and weigh about 600 pounds. A light load for a pony is up to 100 pounds, a medium load is 101–200 pounds, and a heavy load is 201–300 pounds. A pony can drag 1,500 pounds. The statistics presented above are for a typical pony. Tougher ponies with the advanced simple template exist, but are relatively uncommon and, unlike horses, these creatures are not generally called “heavy ponies.” Like horses, ponies can be trained for combat with the Handle Animal skill, and such mounts often serve halflings, gnomes, and other small races as steeds in combat.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Stirge", cr: "1/2", type: "magical beast", size: "Tiny", alignment: "N",
+                          hp: "5 (1d10)", ac: 16,
+                          fort: 2, ref: 6, will: 1, init_: 4,
+                          str: 3, dex: 19, con: 10, int_: 1, wis: 12, cha: 6,
+                          senses: "darkvision 60 ft., low-light vision, scent; Perception +1Defense", speed: "10 ft., fly 40 ft. (average)",
+                          attacks: "touch +7 (attach)",
+                          specialAbilities: "blood drainStatistics",
+                          environment: "temperate and warm swamps",
+                          summary: "This insectoid creature has two pairs of bat wings, a tangle of thin legs, and a needle-sharp proboscis.",
+                          desc: "Stirge This insectoid creature has two pairs of bat wings, a tangle of thin legs, and a needle-sharp proboscis. Stirge CR 1/2 Source Pathfinder RPG Bestiary pg. 260 XP 200 N Tiny magical beast Init +4; Senses darkvision 60 ft., low-light vision, scent; Perception +1 Defense AC 16, touch 16, flat-footed 12 (+4 Dex, +2 size) hp 5 (1d10) Fort +2, Ref +6, Will +1 Offense Speed 10 ft., fly 40 ft. (average) Melee touch +7 (attach) Space 2-1/2 ft., Reach 0 ft. Special Attacks blood drain Statistics Str 3, Dex 19, Con 10, Int 1, Wis 12, Cha 6 Base Atk +1; CMB +3 (+11 grapple when attached); CMD 9 (17 vs. trip) Feats Weapon Finesse Skills Fly +8, Stealth +16 SQ diseased Ecology Environment temperate and warm swamps Organization solitary, colony (2–4), flock (5–8), storm (9–14), or swarm (15–40) Treasure none Special Abilities Attach (Ex) When a stirge hits with a touch attack, its barbed legs latch onto the target, anchoring it in place. An attached stirge is effectively grappling its prey. The stirge loses its Dexterity bonus to AC and has an AC of 12, but holds on with great tenacity and inserts its proboscis into the grappled target’s flesh. A stirge has a +8 racial bonus to maintain its grapple on a foe once it is attached. An attached stirge can be struck with a weapon or grappled itself—if its prey manages to win a grapple check or Escape Artist check against it, the stirge is removed. Blood Drain (Ex) A stirge drains blood at the end of its turn if it is attached to a foe, inflicting 1 point of Constitution damage. Once a stirge has dealt 4 points of Constitution damage, it detaches and flies off to digest the meal. If its victim dies before the stirge’s appetite has been sated, the stirge detaches and seeks a new target. Diseased (Ex) Due to the stagnant swamps in which they live and their contact with the blood of numerous creatures, stirges are harbingers of disease. Any creature subjected to a stirge’s blood drain attack has a 10% chance of being exposed to filth ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Tengu", cr: "1/2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "9 (1d8+1)", ac: 15,
+                          fort: 1, ref: 5, will: 2, init_: 3,
+                          str: 12, dex: 17, con: 12, int_: 10, wis: 15, cha: 8,
+                          senses: "low-light vision; Perception +8Defense", speed: "30 ft.",
+                          attacks: "dagger +3 (1d4+1/19–20), bite –2 (1d3)",
+                          specialAbilities: "sneak attack +1d6Statistics",
+                          environment: "temperate mountains or urban",
+                          summary: "Black feathers cover this crow-headed humanoid, and its hands and legs end in powerful talons.",
+                          desc: "Tengu Black feathers cover this crow-headed humanoid, and its hands and legs end in powerful talons. Tengu CR 1/2 Source Pathfinder RPG Bestiary pg. 263 XP 200 Male tengu rogue 1 N Medium humanoid (tengu) Init +3; Senses low-light vision; Perception +8 Defense AC 15, touch 13, flat-footed 12 (+2 armor, +3 Dex) hp 9 (1d8+1) Fort +1, Ref +5, Will +2 Offense Speed 30 ft. Melee dagger +3 (1d4+1/19–20), bite –2 (1d3) Ranged short bow +3 (1d6/×3) Special Attacks sneak attack +1d6 Statistics Str 12, Dex 17, Con 12, Int 10, Wis 15, Cha 8 Base Atk +0; CMB +1; CMD 14 Feats Weapon Finesse Skills Acrobatics +7, Appraise +4, Bluff +3, Climb +5, Knowledge (local) +4, Linguistics +8, Perception +8, Stealth +9; Racial Modifiers +2 Perception, +2 Stealth, +4 Linguistics Languages Common, Goblin, Halfling, Tengu SQ gifted linguist, swordtrained, trapfinding Ecology Environment temperate mountains or urban Organization solitary, pair, or conspiracy (3–12) Treasure NPC gear (leather armor, dagger, short bow and 20 arrows, other treasure) Special Abilities Gifted Linguist (Ex) Tengus gain a +4 racial bonus on Linguistics checks, and learn 2 languages each time they gain a rank in Linguistics rather than 1 language. Swordtrained (Ex) Tengus are trained from birth in swordplay, and as a result are automatically proficient with sword-like weapons (including bastard swords, daggers, elven curve blades, falchions, greatswords, kukris, longswords, punching daggers, rapiers, scimitars, short swords, and two-bladed swords). Description Tengus are a race of avian humanoids that resemble crows or ravens, and often bear much of the same stigma. Though they frequently choose to live among other races in densely populated cities, their society is tight and closed, and they rarely allow others to see its inner workings. Tengus often band together in small groups to create roosts in vacant warehouses or condemned buildings, and these raucous gathering places are generally assumed to be thieves’ guilds",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Tiefling", cr: "1/2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "10 (1d8+2)", ac: 16,
+                          fort: 2, ref: 5, will: 1, init_: 3,
+                          str: 13, dex: 17, con: 14, int_: 12, wis: 12, cha: 6,
+                          senses: "darkvision 60 ft.; Perception +5Defense", speed: "30 ft.",
+                          attacks: "short sword +3 (1d6+1/19–20)",
+                          specialAbilities: "sneak attack +1d6",
+                          environment: "any land",
+                          summary: "This lanky man sneers as he draws his sword. Tiny horns and a barbed tail reveal that he is something more than human.",
+                          desc: "Tiefling This lanky man sneers as he draws his sword. Tiny horns and a barbed tail reveal that he is something more than human. Tiefling CR 1/2 Source Pathfinder RPG Bestiary pg. 264 XP 200 Tiefling rogue 1 NE Medium outsider (native) Init +3; Senses darkvision 60 ft.; Perception +5 Defense AC 16, touch 13, flat-footed 13 (+3 armor, +3 Dex) hp 10 (1d8+2) Fort +2, Ref +5, Will +1 Resist cold 5, electricity 5, fire 5 Offense Speed 30 ft. Melee short sword +3 (1d6+1/19–20) Ranged light crossbow +3 (1d8/19–20) Special Attacks sneak attack +1d6 Spell-Like Abilities (CL 1st) 1/day— darkness Statistics Str 13, Dex 17, Con 14, Int 12, Wis 12, Cha 6 Base Atk +0; CMB +1; CMD 14 Feats Weapon Finesse Skills Acrobatics +6, Bluff +4, Disable Device +6, Escape Artist +6, Intimidate +2, Perception +5, Sense Motive +5, Sleight of Hand +6, Stealth +8; Racial Modifiers +2 Bluff, +2 Stealth Languages Abyssal, Common, Infernal SQ fiendish sorcery, trapfinding Ecology Environment any land Organization solitary, pair, or gang (3–5) Treasure NPC gear (studded leather armor, short sword, light crossbow with 20 bolts) Special Abilities Fiendish Sorcery (Ex) Tiefling sorcerers with the Abyssal or Infernal bloodline treat their Charisma score as 2 points higher for all sorcerer class abilities. Description Tieflings are humans with demonic, devilish, or other evil outsider blood in their ancestry. Often persecuted for their strange appearance and unnatural mannerisms, most tieflings disguise their nature or are forced to live on the fringes or underbelly of civilized society. Though they are not born evil, it is an easy path for them to find, especially as most suffer at the hands of “normal” folks while growing up. Tieflings look mostly human except for some physical traits that reveal their strange heritage.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Vegepygmy", cr: "1/2", type: "plant", size: "Small", alignment: "N",
+                          hp: "5 (1d8+1)", ac: 16,
+                          fort: 3, ref: 2, will: 0, init_: 2,
+                          str: 11, dex: 14, con: 12, int_: 8, wis: 11, cha: 11,
+                          senses: "darkvision 60 ft., low-light vision; Perception +7Defense", speed: "30 ft.",
+                          attacks: "2 claws +1 (1d4) or longspear +1 (1d6)Statistics",
+                          specialAbilities: "",
+                          environment: "any underground",
+                          summary: "Short, thin, and green, this small humanoid wields a spear. Tendrils of fungus dangle from its arms, midsection, and legs.",
+                          desc: "Vegepygmy Short, thin, and green, this small humanoid wields a spear. Tendrils of fungus dangle from its arms, midsection, and legs. Vegepygmy CR 1/2 Source Pathfinder RPG Bestiary pg. 273 XP 200 N Small plant Init +2; Senses darkvision 60 ft., low-light vision; Perception +7 Defense AC 16, touch 13, flat-footed 14 (+2 Dex, +3 natural, +1 size) hp 5 (1d8+1) Fort +3, Ref +2, Will +0 DR 5/slashing or bludgeoning; Immune electricity, plant traits Offense Speed 30 ft. Melee 2 claws +1 (1d4) or longspear +1 (1d6) Statistics Str 11, Dex 14, Con 12, Int 8, Wis 11, Cha 11 Base Atk +0; CMB –1; CMD 11 Feats Skill Focus (Perception) Skills Perception +7, Stealth +10 (+18 in vegetation); Racial Modifiers +4 Stealth (+12 in vegetation) Languages Undercommon, Vegepygmy (cannot speak) Ecology Environment any underground Organization solitary, gang (2–6), or tribe (7–30 plus 1 chieftain) Treasure standard (longspear, other treasure) Description Vegepygmys are created by a dangerous fungus known as russet mold—creatures slain by russet mold serve as incubators for the mold’s spores, and a day later, the dead body bursts to release 1d6 fully grown vegepygmys. A vegepygmy has no real relation to the body from which it emerges, but the creature may yet retain a strange sort of reverence for its “birth corpse” and carry with it a grisly memento from the body, typically a few bones or teeth. Often, a vegepygmy uses such bones to craft a crude spear or some other weapon. Vegepygmy tribes live in tightly knit communities and fiercely guard their patches of russet mold. Vegepygmies cannot speak—they communicate via a crude language of rhythmic taps, beats, and clicks. Hunting parties echo these exchanges through the caves they travel. Vegepygmies stand 2 to 4 feet tall and weigh between 15 to 45 pounds. Approximately 1 in 20 vegepymies are chieftains. A vegepygmy chieftain is an advanced vegepygmy (often one with class levels) that carries an infestation of russet mold spores in its flesh. ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Zombie, Human Zombie", cr: "1/2", type: "undead", size: "Medium", alignment: "NE",
+                          hp: "12 (2d8+3)", ac: 12,
+                          fort: 0, ref: 0, will: 3, init_: 0,
+                          str: 17, dex: 10, con: 10, int_: 10, wis: 10, cha: 10,
+                          senses: "darkvision 60 ft.; Perception +0Defense", speed: "30 ft.",
+                          attacks: "slam +4 (1d6+4)Statistics",
+                          specialAbilities: "A zombie retains none of the base creature's special attacks.",
+                          environment: "any",
+                          summary: "This walking corpse wears only a few soiled rags, its flesh rotting off its bones as it stumbles forward, arms outstretched.",
+                          desc: "Zombie, Human Zombie This walking corpse wears only a few soiled rags, its flesh rotting off its bones as it stumbles forward, arms outstretched. Human Zombie CR 1/2 Source Pathfinder RPG Bestiary pg. 288 XP 200 NE Medium undead Init +0; Senses darkvision 60 ft.; Perception +0 Defense AC 12, touch 10, flat-footed 12 (+2 natural) hp 12 (2d8+3) Fort +0, Ref +0, Will +3 DR 5/slashing; Immune undead traits Offense Speed 30 ft. Melee slam +4 (1d6+4) Statistics Str 17, Dex 10, Con —, Int —, Wis 10, Cha 10 Base Atk +1; CMB +4; CMD 14 Feats Toughness B SQ staggered Ecology Environment any Organization any Treasure none Description Zombies are the animated corpses of dead creatures, forced into foul unlife via necromantic magic like animate dead . While the most commonly encountered zombies are slow and tough, others possess a variety of traits, allowing them to spread disease or move with increased speed. Zombies are unthinking automatons, and can do little more than follow orders. When left unattended, zombies tend to mill about in search of living creatures to slaughter and devour. Zombies attack until destroyed, having no regard for their own safety. Although capable of following orders, zombies are more often unleashed into an area with no command other than to kill living creatures. As a result, zombies are often encountered in packs, wandering around places the living frequent, looking for victims. Most zombies are created using animate dead . Such zombies are always of the standard type, unless the creator also casts haste or remove paralysis to create fast zombies, or contagion to create plague zombies. Creating a Zombie “Zombie” is an acquired template that can be added to any corporeal creature (other than an undead), referred to hereafter as the base creature. Challenge Rating : This depends on the creature's new total number of Hit Dice, as follows: HD CR XP 1/2 1/8 50 1 1/4 100 2 1/2 200 3–4 1 400 5–6 2 600 7–8 3 800 9–10 4 1,200 11–12 5 1,600 13–16 6 2,400 17–",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Darkmantle", cr: "1", type: "magical beast", size: "Small", alignment: "N",
+                          hp: "15 (2d10+4)", ac: 15,
+                          fort: 5, ref: 3, will: 0, init_: 6,
+                          str: 11, dex: 15, con: 14, int_: 2, wis: 11, cha: 10,
+                          senses: "blindsight 90 ft., darkvision 60 ft., low-light vision; Perception +4Defense", speed: "20 ft., fly 30 ft. (poor)",
+                          attacks: "slam +3 (1d4 plus grab)",
+                          specialAbilities: "constrict (1d4+4), grab (any size)",
+                          environment: "any underground",
+                          summary: "As this creature falls from the cavern roof, it opens like a hideous octopus, its thin, hook-lined tentacles connected by a fleshy web.",
+                          desc: "Darkmantle As this creature falls from the cavern roof, it opens like a hideous octopus, its thin, hook-lined tentacles connected by a fleshy web. Darkmantle CR 1 Source Pathfinder RPG Bestiary pg. 55 XP 400 N Small magical beast Init +6; Senses blindsight 90 ft., darkvision 60 ft., low-light vision; Perception +4 Defense AC 15, touch 13, flat-footed 13 (+2 Dex, +2 natural, +1 size) hp 15 (2d10+4) Fort +5, Ref +3, Will +0 Offense Speed 20 ft., fly 30 ft. (poor) Melee slam +3 (1d4 plus grab) Special Attacks constrict (1d4+4), grab (any size) Spell-Like Abilities (CL 5th) 1/day— darkness Statistics Str 11, Dex 15, Con 14, Int 2, Wis 11, Cha 10 Base Atk +2; CMB +1 (+5 grapple); CMD 13 (can’t be tripped) Feats Improved Initiative Skills Fly +5, Perception +4, Stealth +10; Racial Modifiers +4 Perception, +4 Stealth Ecology Environment any underground Organization solitary, pair, or clutch (3–12) Treasure none Description A darkmantle’s tentacle-span measures just under 5 feet—when attached to a cave roof and disguised as a stalactite, its length varies from 2 to 3 feet. A typical darkmantle weighs 40 pounds. The creatures’ heads and bodies are usually the color of basalt or dark granite, but their webbed tentacles can change color to match their surroundings. The darkmantle isn’t a particularly good climber, but it can cling to a cave roof like a bat, hanging by the hooks at the ends of its tentacles so that its dangling body looks nearly indistinguishable from a stalactite. In this hidden position, the darkmantle waits for prey to pass beneath, at which point it drops and swoops down to attack its victim, slamming its body against the foe and attempting to wrap its webbed tentacles around the target. If the darkmantle misses its prey, it swoops back up and drops again until its prey is vanquished or the darkmantle is grievously injured (in which case the creature flutters back up to the roof to hide and hope its “prey” leaves it alone). The darkmantle’s inborn ability t",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Devil, Lemure", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "13 (2d10+2)", ac: 14,
+                          fort: 4, ref: 3, will: 0, init_: 0,
+                          str: 11, dex: 10, con: 12, int_: 10, wis: 11, cha: 5,
+                          senses: "darkvision 60 ft., see in darkness; Perception +0Defense", speed: "20 ft.",
+                          attacks: "2 claws +2 (1d4)Statistics",
+                          specialAbilities: "",
+                          environment: "any (Hell)",
+                          summary: "A roiling wave of flesh gushes forward. Amid the fatty surge wriggle half-formed limbs and a dripping tumorous face.",
+                          desc: "Devil, Lemure A roiling wave of flesh gushes forward. Amid the fatty surge wriggle half-formed limbs and a dripping tumorous face. Lemure CR 1 Source Pathfinder RPG Bestiary pg. 79 XP 400 LE Medium outsider (devil, evil, extraplanar, lawful) Init +0; Senses darkvision 60 ft., see in darkness; Perception +0 Defense AC 14, touch 10, flat-footed 14 (+4 natural) hp 13 (2d10+2) Fort +4, Ref +3, Will +0 DR 5/good or silver; Immune fire, mind-affecting effects, poison; Resist acid 10, cold 10 Offense Speed 20 ft. Melee 2 claws +2 (1d4) Statistics Str 11, Dex 10, Con 12, Int —, Wis 11, Cha 5 Base Atk +2; CMB +2; CMD 12 Ecology Environment any (Hell) Organization solitary, pair, gang (3–5), swarm (6–17), or mob (10–40 or more) Treasure none Description The least of devilkind, lemures roil forth from the ranks of souls damned to Hell, shapeless masses of quivering flesh. What spark of instinct or memory lingers on within a lemure’s semi-consciousness regularly shapes its features to mimic those of its tormentors or the tortured souls around it. Grotesque and useless, a lemure’s features speak nothing of what it once was. Many exhibit multiple terrible visages or are nothing more than churning pillars of cancerous flesh. Only their knobby, flailing limbs work as they should, and those they merely use to destroy any non-infernal life that draws too near. Moving lemures typically congeal in forms over 4 feet tall and weigh upward of 200 pounds, though when at rest these disgusting fiends often appear to be little more than lumps of melted flesh and malformed features. Although among the most loathsome creatures in existence, lemures serve a vital role in Hell’s perverse ecology. When at the end of a mortal life a creature’s soul is damned—whether because it revered diabolical forces or failed in the worship of another deity—it joins the masses of suffering souls filling the plains of Avernus, Hell’s first layer. Here a soul’s torments begin as lesser devils marshal it along with",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Dog, Riding Dog", cr: "1", type: "animal", size: "Medium", alignment: "N",
+                          hp: "13 (2d8+4)", ac: 13,
+                          fort: 5, ref: 5, will: 1, init_: 2,
+                          str: 15, dex: 15, con: 15, int_: 2, wis: 12, cha: 6,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "40 ft.",
+                          attacks: "bite +3 (1d6+3 plus trip)Statistics",
+                          specialAbilities: "",
+                          environment: "any",
+                          summary: "This burly dog is fitted with a small saddle. A low, menacing growl rumbles up from its chest.",
+                          desc: "Dog, Riding Dog This burly dog is fitted with a small saddle. A low, menacing growl rumbles up from its chest. Riding Dog CR 1 Source Pathfinder RPG Bestiary pg. 87 XP 400 N Medium animal Init +2; Senses low-light vision, scent; Perception +8 Defense AC 13, touch 12, flat-footed 11 (+2 Dex, +1 natural) hp 13 (2d8+4) Fort +5, Ref +5, Will +1 Offense Speed 40 ft. Melee bite +3 (1d6+3 plus trip) Statistics Str 15, Dex 15, Con 15, Int 2, Wis 12, Cha 6 Base Atk +1; CMB +3; CMD 15 (19 vs. trip) Feats Skill Focus (Perception) Skills Acrobatics +6 (+14 jumping), Perception +8, Survival +1 (+5 scent tracking); Racial Modifiers +4 Acrobatics when jumping, +4 Survival when tracking by scent Ecology Environment any Organization solitary, pair, or pack (3–12) Treasure none Description Larger dogs (known to Small races like halflings and gnomes as riding dogs) include hardier breeds such as huskies, mastiffs, and wolfhounds. A riding dog can fight while carrying a rider, but the rider cannot also attack unless he or she succeeds on a DC 10 Ride check.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Elemental (Air), Small Air Elemental", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "13 (2d10+2)", ac: 17,
+                          fort: 4, ref: 6, will: 0, init_: 7,
+                          str: 12, dex: 17, con: 12, int_: 4, wis: 11, cha: 11,
+                          senses: "darkvision 60 ft.; Perception +4Defense", speed: "fly 100 ft. (perfect)",
+                          attacks: "slam +6 (1d4+1)",
+                          specialAbilities: "whirlwind (DC 12)Statistics",
+                          environment: "Plane of AirDescriptionAir elementals are fast, flying creatures made of living air. Primitive and territorial, they resent being summoned or doing the bidding of mortals, and much prefer to spend their time on the Plane of Air, swooping and racing through the endless skies.",
+                          summary: "This cloud-like creature has dark hollows reminiscent of eyes and a mouth, and a howling wind whips it into ominous shapes.",
+                          desc: "Elemental (Air), Small Air Elemental This cloud-like creature has dark hollows reminiscent of eyes and a mouth, and a howling wind whips it into ominous shapes. Small Air Elemental CR 1 Source Pathfinder RPG Bestiary pg. 120 XP 400 N Small outsider (air, elemental, extraplanar) Init +7; Senses darkvision 60 ft.; Perception +4 Defense AC 17, touch 14, flat-footed 14 (+3 Dex, +3 natural, +1 size) hp 13 (2d10+2) Fort +4, Ref +6, Will +0 Defensive Abilities air mastery; Immune elemental traits Offense Speed fly 100 ft. (perfect) Melee slam +6 (1d4+1) Special Attacks whirlwind (DC 12) Statistics Str 12, Dex 17, Con 12, Int 4, Wis 11, Cha 11 Base Atk +2; CMB +2; CMD 15 Feats Flyby Attack , Improved Initiative B , Weapon Finesse B Skills Acrobatics +7, Escape Artist +7, Fly +17, Knowledge (planes) +1, Perception +4, Stealth +11 Ecology Environment Plane of Air Description Air elementals are fast, flying creatures made of living air. Primitive and territorial, they resent being summoned or doing the bidding of mortals, and much prefer to spend their time on the Plane of Air, swooping and racing through the endless skies. Although all air elementals of a similar size have identical statistics, the exact appearance of an air elemental can vary wildly between individuals. One might be an animated vortex of wind and smoke, while another might be a smoky bird-like creature with glowing eyes and wind for wings. An air elemental prefers to attack flying or otherwise airbone targets, not only because its mastery over flight gives it a slight advantage, but also because it detests the thought of having to touch the ground. An air elemental can move underwater, and although it is an elemental and thus runs no risk of drowning, it has no ranks in Swim and loses much of its speed and mobility when underwater. Elemental Height Weight Whirlwind/Vortex Save DC Whirlwind/Vortex Height Small 4 ft. 1 lb. 12 10–20 ft. Medium 8 ft. 2 lbs. 14 10–30 ft. Large 16 ft. 4 lbs. 18 10–40 ft. Huge 32 f",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Elemental (Earth), Small Earth Elemental", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "13 (2d10+2)", ac: 17,
+                          fort: 4, ref: 1, will: 3, init_: 1,
+                          str: 16, dex: 8, con: 13, int_: 4, wis: 11, cha: 11,
+                          senses: "darkvision 60 ft., tremorsense 60 ft.; Perception +4Defense", speed: "20 ft., burrow 20 ft., earth glide",
+                          attacks: "slam +6 (1d6+4)",
+                          specialAbilities: "earth masteryStatistics",
+                          environment: "any (Plane of Earth)DescriptionElemental Height Weight Small4 ft.80 lbs. Medium8 ft.750 lbs. Large16 ft.6,000 lbs. Huge32 ft.48,000 lbs. Greater36 ft.54,000 lbs. Elder40 ft.60,000 lbs.",
+                          summary: "This hulking, roughly humanoid creature of dirt and stone explodes up from the earth, faceless save for two glowing gemstone eyes.",
+                          desc: "Elemental (Earth), Small Earth Elemental This hulking, roughly humanoid creature of dirt and stone explodes up from the earth, faceless save for two glowing gemstone eyes. Small Earth Elemental CR 1 Source Pathfinder RPG Bestiary pg. 122 XP 400 N Small outsider (earth, elemental, extraplanar) Init –1; Senses darkvision 60 ft., tremorsense 60 ft.; Perception +4 Defense AC 17, touch 10, flat-footed 17 (–1 Dex, +7 natural, +1 size) hp 13 (2d10+2) Fort +4, Ref –1, Will +3 Immune elemental traits Offense Speed 20 ft., burrow 20 ft., earth glide Melee slam +6 (1d6+4) Special Attacks earth mastery Statistics Str 16, Dex 8, Con 13, Int 4, Wis 11, Cha 11 Base Atk +2; CMB +4; CMD 13 Feats Improved Bull Rush B , Power Attack Skills Appraise +1, Climb +7, Knowledge (dungeoneering) +1, Knowledge (planes) +1, Perception +4, Stealth +7 Ecology Environment any (Plane of Earth) Description Elemental Height Weight Small 4 ft. 80 lbs. Medium 8 ft. 750 lbs. Large 16 ft. 6,000 lbs. Huge 32 ft. 48,000 lbs. Greater 36 ft. 54,000 lbs. Elder 40 ft. 60,000 lbs. Earth elementals are plodding, stubborn creatures made of living stone or earth. When utterly still, they resemble a heap of stone or a small hill. When an earth elemental lumbers into action, its actual appearance can vary, although its statistics remain identical to other elementals of its size. Most earth elementals look like terrestrial animals made out of rock, earth, or even crystal, with glowing gemstones for eyes. Larger earth elementals often have a stony humanoid appearance. Bits of vegetation frequently grow in the soil that makes up parts of an earth elemental’s body.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Elemental (Fire), Small Fire Elemental", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "11 (2d10)", ac: 16,
+                          fort: 3, ref: 4, will: 0, init_: 5,
+                          str: 10, dex: 13, con: 10, int_: 4, wis: 11, cha: 11,
+                          senses: "darkvision 60 ft.; Perception +4Defense", speed: "50 ft.",
+                          attacks: "slam +4 (1d4 plus burn)",
+                          specialAbilities: "burn (1d4, DC 11)Statistics",
+                          environment: "any (Plane of Fire)DescriptionFire elementals are quick, cruel creatures of living flame. They enjoy frightening beings weaker than themselves, and terrorizing any creature they can set on fire.",
+                          summary: "This creature looks like a living, mobile bonfire, tongues of flame reaching out in search of things to burn.",
+                          desc: "Elemental (Fire), Small Fire Elemental This creature looks like a living, mobile bonfire, tongues of flame reaching out in search of things to burn. Small Fire Elemental CR 1 Source Pathfinder RPG Bestiary pg. 124 XP 400 N Small outsider (elemental, extraplanar, fire) Init +5; Senses darkvision 60 ft.; Perception +4 Defense AC 16, touch 13, flat-footed 14 (+1 Dex, +1 dodge, +3 natural, +1 size) hp 11 (2d10) Fort +3, Ref +4, Will +0 Immune elemental traits, fire Weaknesses vulnerability to cold Offense Speed 50 ft. Melee slam +4 (1d4 plus burn) Special Attacks burn (1d4, DC 11) Statistics Str 10, Dex 13, Con 10, Int 4, Wis 11, Cha 11 Base Atk +2; CMB +1; CMD 13 Feats Dodge , Improved Initiative B , Weapon Finesse B Skills Acrobatics +5, Climb +4, Escape Artist +5, Intimidate +4, Knowledge (planes) +1, Perception +4 Ecology Environment any (Plane of Fire) Description Fire elementals are quick, cruel creatures of living flame. They enjoy frightening beings weaker than themselves, and terrorizing any creature they can set on fire. A fire elemental cannot enter water or any other nonflammable liquid. A body of water is an impassible barrier unless the fire elemental can step or jump over it or the water is covered with a flammable material (such as a layer of oil). Fire elementals vary in appearance—they usually manifest as coiling serpentine forms made of smoke and flame, but some fire elementals take on shapes more akin to humans, demons, or other monsters in order to increase the terror of their sudden appearance. Features on a fire elemental’s body are made by darker bits of flame or patches of semi-stable smoke, ash, and cinders. Elemental Height Weight Small 4 ft. 1 lb. Medium 8 ft. 2 lbs. Large 16 ft. 4 lbs. Huge 32 ft. 8 lbs. Greater 36 ft. 10 lbs. Elder 40 ft. 12 lbs.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Elemental (Water), Small Water Elemental", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "13 (2d10+2)", ac: 17,
+                          fort: 4, ref: 3, will: 0, init_: 0,
+                          str: 14, dex: 10, con: 13, int_: 4, wis: 11, cha: 11,
+                          senses: "darkvision 60 ft.; Perception +4Defense", speed: "20 ft., swim 90 ft.",
+                          attacks: "slam +5 (1d6+3)",
+                          specialAbilities: "drench, vortex (DC 13), water masteryStatistics",
+                          environment: "any (Plane of Water)DescriptionWater elementals are patient, relentless creatures made of living fresh or salt water. They prefer to hide or drag their opponents into the water to gain an advantage.",
+                          summary: "This translucent creature’s shape shifts between a spinning column of water and a crashing wave.",
+                          desc: "Elemental (Water), Small Water Elemental This translucent creature’s shape shifts between a spinning column of water and a crashing wave. Small Water Elemental CR 1 Source Pathfinder RPG Bestiary pg. 126 XP 400 N Small outsider (elemental, extraplanar, water) Init +0; Senses darkvision 60 ft.; Perception +4 Defense AC 17, touch 11, flat-footed 17 (+6 natural, +1 size) hp 13 (2d10+2) Fort +4, Ref +3, Will +0 Immune elemental traits Offense Speed 20 ft., swim 90 ft. Melee slam +5 (1d6+3) Special Attacks drench, vortex (DC 13), water mastery Statistics Str 14, Dex 10, Con 13, Int 4, Wis 11, Cha 11 Base Atk +2; CMB +3; CMD 13 Feats Power Attack Skills Acrobatics +4, Escape Artist +4, Knowledge (planes) +1, Perception +4, Stealth +8, Swim +14 Ecology Environment any (Plane of Water) Description Water elementals are patient, relentless creatures made of living fresh or salt water. They prefer to hide or drag their opponents into the water to gain an advantage. As with other elementals, all water elementals have their own unique shapes and appearances. Most appear as wave-like creatures with vaguely humanoid faces and smaller wave “arms” to either side. Another common form is that of any aquatic creature, such as a shark or octopus, but made entirely out of water. Elemental Height Weight Vortex Save DC Vortex Height Small 4 ft. 34 lb. 13 10–20 ft. Medium 8 ft. 280 lbs. 15 10–30 ft. Large 16 ft. 2,250 lbs. 19 10–40 ft. Huge 32 ft. 18,000 lbs. 22 10–50 ft. Greater 36 ft. 21,000 lbs. 25 10–60 ft. Elder 40 ft. 24,000 lbs. 28 10–60 ft.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Frog, Giant Frog", cr: "1", type: "animal", size: "Medium", alignment: "N",
+                          hp: "15 (2d8+6)", ac: 12,
+                          fort: 6, ref: 6, will: 1, init_: 1,
+                          str: 15, dex: 13, con: 16, int_: 1, wis: 8, cha: 6,
+                          senses: "low-light vision, scent; Perception +3Defense", speed: "30 ft., swim 30 ft.",
+                          attacks: "bite +3 (1d6+2 plus grab) or tongue +3 touch (grab)",
+                          specialAbilities: "pull (tongue, 5 feet), swallow whole (1d4 bludgeoning damage, AC 10, 1 hp), tongueStatistics",
+                          environment: "temperate or warm marshes and aquatic",
+                          summary: "This creature looks like a normal frog, with moist, mottled, blackish-green skin, but grown to truly monstrous size.",
+                          desc: "Frog, Giant Frog This creature looks like a normal frog, with moist, mottled, blackish-green skin, but grown to truly monstrous size. Giant Frog CR 1 Source Pathfinder RPG Bestiary pg. 135 XP 400 N Medium animal Init +1; Senses low-light vision, scent; Perception +3 Defense AC 12, touch 11, flat-footed 11 (+1 Dex, +1 natural) hp 15 (2d8+6) Fort +6, Ref +6, Will –1 Offense Speed 30 ft., swim 30 ft. Melee bite +3 (1d6+2 plus grab) or tongue +3 touch (grab) Space 5 ft., Reach 5 ft. (15 ft. with tongue) Special Attacks pull (tongue, 5 feet), swallow whole (1d4 bludgeoning damage, AC 10, 1 hp), tongue Statistics Str 15, Dex 13, Con 16, Int 1, Wis 8, Cha 6 Base Atk +1; CMB +3 (+7 grapple); CMD 14 (18 vs. trip) Feats Lightning Reflexes Skills Acrobatics +9 (+13 jumping), Perception +3, Stealth +5, Swim +10; Racial Modifiers +4 Acrobatics (+8 jumping), +4 Stealth Ecology Environment temperate or warm marshes and aquatic Organization solitary, pair, or army (3–8) Treasure none Special Abilities Tongue (Ex) A giant frog’s tongue is a primary attack with reach equal to three times the frog’s normal reach (15 feet for a Medium giant frog). A giant frog’s tongue deals no damage on a hit, but can be used to grab. A giant frog does not gain the grappled condition while using its tongue in this manner. Description Giant frogs have razor-sharp teeth lining their mouths. They are 6 feet long and weigh 200 pounds.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Ghoul", cr: "1", type: "undead", size: "Medium", alignment: "CE",
+                          hp: "13 (2d8+4)", ac: 14,
+                          fort: 2, ref: 2, will: 5, init_: 2,
+                          str: 13, dex: 15, con: 10, int_: 13, wis: 14, cha: 14,
+                          senses: "darkvision 60 ft.; Perception +7Defense", speed: "30 ft.",
+                          attacks: "bite +3 (1d6+1 plus disease and paralysis) and 2 claws +3 (1d6+1 plus paralysis)",
+                          specialAbilities: "paralysis (1d4+1 rounds, DC 13, elves are immune to this effect)Statistics",
+                          environment: "any land",
+                          summary: "This humanoid creature has long, sharp teeth, and its pallid flesh is stretched tightly over its starved frame.",
+                          desc: "Ghoul This humanoid creature has long, sharp teeth, and its pallid flesh is stretched tightly over its starved frame. Ghoul CR 1 Source Pathfinder RPG Bestiary pg. 146 XP 400 CE Medium undead Init +2; Senses darkvision 60 ft.; Perception +7 Defense AC 14, touch 12, flat-footed 12 (+2 Dex, +2 natural) hp 13 (2d8+4) Fort +2, Ref +2, Will +5 Defensive Abilities channel resistance +2 Offense Speed 30 ft. Melee bite +3 (1d6+1 plus disease and paralysis) and 2 claws +3 (1d6+1 plus paralysis) Special Attacks paralysis (1d4+1 rounds, DC 13, elves are immune to this effect) Statistics Str 13, Dex 15, Con —, Int 13, Wis 14, Cha 14 Base Atk +1; CMB +2; CMD 14 Feats Weapon Finesse Skills Acrobatics +4, Climb +6, Perception +7, Stealth +7, Swim +3 Languages Common Ecology Environment any land Organization solitary, gang (2–4), or pack (7–12) Treasure standard Special Abilities Disease (Su) Ghoul Fever : Bite—injury; save Fort DC 13; onset 1 day; frequency 1/day; effect 1d3 Con and 1d3 Dex damage; cure 2 consecutive saves. The save DC is Charisma-based. A humanoid who dies of ghoul fever rises as a ghoul at the next midnight. A humanoid who becomes a ghoul in this way retains none of the abilities it possessed in life. It is not under the control of any other ghouls, but it hungers for the flesh of the living and behaves like a normal ghoul in all respects. A humanoid of 4 Hit Dice or more rises as a ghast. Description Ghouls are undead that haunt graveyards and eat corpses. Legends hold that the first ghouls were either cannibalistic humans whose unnatural hunger dragged them back from death or humans who in life fed on the rotting remains of their kin and died (and were reborn) from the foul disease—the true source of these undead scavengers is unclear. Ghouls lurk on the edges of civilization (in or near cemeteries or in city sewers) where they can find ample supplies of their favorite food. Though they prefer rotting bodies and often bury their victims for a while to improve ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Gnoll", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "11 (2d8+2)", ac: 15,
+                          fort: 4, ref: 0, will: 0, init_: 0,
+                          str: 15, dex: 10, con: 13, int_: 8, wis: 11, cha: 8,
+                          senses: "darkvision 60 ft.; Perception +2Defense", speed: "30 ft.",
+                          attacks: "spear +3 (1d8+3/×3)",
+                          specialAbilities: "",
+                          environment: "warm plains or desert",
+                          summary: "Hunched and feral, this furred, hyena-headed humanoid stands slightly taller than the average human.",
+                          desc: "Gnoll Hunched and feral, this furred, hyena-headed humanoid stands slightly taller than the average human. Gnoll CR 1 Source Pathfinder RPG Bestiary pg. 155 XP 400 CE Medium humanoid (gnoll) Init +0; Senses darkvision 60 ft.; Perception +2 Defense AC 15, touch 10, flat-footed 15 (+2 armor, +1 natural, +2 shield) hp 11 (2d8+2) Fort +4, Ref +0, Will +0 Offense Speed 30 ft. Melee spear +3 (1d8+3/×3) Ranged spear +1 (1d8+2/×3) Statistics Str 15, Dex 10, Con 13, Int 8, Wis 11, Cha 8 Base Atk +1; CMB +3; CMD 13 Feats Power Attack Skills Perception +2 Languages Gnoll Ecology Environment warm plains or desert Organization solitary, pair, hunting party (2–5 gnolls and 1–2 hyenas), band (10–100 adults plus 50% noncombatant children, 1 sergeant of 3rd level per 20 adults, 1 leader of 4th–6th level, and 5–8 hyenas), or tribe (20–200 plus 1 sergeant of 3rd level per 20 adults, 1 or 2 lieutenants of 4th or 5th level, 1 leader of 6th–8th level, 7–12 hyenas, and 4–7 hyaenodons) Treasure NPC Gear (leather armor, heavy wooden shield, battleaxe, longbow with 20 arrows, other treasure) Description Gnolls are a race of hulking, humanoids that resemble hyenas in more than mere appearance; they show a striking affinity with the scavenging animals, to the point of keeping them as pets, and reflect many of the lesser creatures’ behaviors. Gnolls are capable hunters, but are far happier to scavenge or steal a kill than to go out and track down prey. This laziness impels them to acquire slaves of whatever type is available, whom they force to dig warrens, gather supplies and water, and even hunt for their gnoll masters. Creatures other than hyenas and other gnolls are either meat or slaves, depending upon the temperament of the tribe. Even a dead or fallen comrade is a fresh meal for a gnoll, who might honor a distinguished tribe member with a brief prayer, or thoroughly cook one that has died of a wasting disease, but otherwise view a dead gnoll as little different from any other creature. T",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Goblin Dog", cr: "1", type: "animal", size: "Medium", alignment: "N",
+                          hp: "9 (1d8+5)", ac: 13,
+                          fort: 4, ref: 4, will: 1, init_: 2,
+                          str: 15, dex: 14, con: 15, int_: 2, wis: 12, cha: 8,
+                          senses: "low-light vision, scent; Perception +1Defense", speed: "50 ft.",
+                          attacks: "bite +2 (1d6+3 plus allergic reaction)Statistics",
+                          specialAbilities: "",
+                          environment: "temperate forest, swamp, or underground",
+                          summary: "This mangy canine’s face has the same flat nose, beady eyes, and protruding teeth as a rat grown grotesquely large.",
+                          desc: "Goblin Dog This mangy canine’s face has the same flat nose, beady eyes, and protruding teeth as a rat grown grotesquely large. Goblin Dog CR 1 Source Pathfinder RPG Bestiary pg. 157 , Pathfinder #1: Burnt Offerings pg. 87 XP 400 N Medium animal Init +2; Senses low-light vision, scent; Perception +1 Defense AC 13, touch 12, flat-footed 11 (+2 Dex, +1 natural) hp 9 (1d8+5) Fort +4, Ref +4, Will +1 Immune disease Offense Speed 50 ft. Melee bite +2 (1d6+3 plus allergic reaction) Statistics Str 15, Dex 14, Con 15, Int 2, Wis 12, Cha 8 Base Atk +0; CMB +2; CMD 14 Feats Toughness Skills Stealth +6 Ecology Environment temperate forest, swamp, or underground Organization solitary or pack (2–12) Treasure none Special Abilities Allergic Reaction (Ex) A goblin dog’s dander is highly irritating to all creatures save those with the goblinoid subtype. A non-goblinoid creature damaged by a goblin dog’s bite, who deals damage to a goblin dog with a natural weapon or unarmed attack, or who otherwise comes into contact with a goblin dog (including attempts to grapple or ride the creature) must make a DC 12 Fortitude save or break out in an itching rash. A creature affected by this rash takes a –2 penalty to Dexterity and Charisma for 1 day (multiple allergic reactions do not stack). Remove disease or any magical healing removes the rash instantly. This is a disease effect. The save DC is Constitution-based. Description Loathed by men and beasts alike, goblin dogs are ugly, stinking, craven, and foul-tempered. It’s no surprise that goblins find kindred spirits in these shunned, disgusting beasts. Constantly itching, afflicted with a species-wide mange exacerbated by prolific dander, even the healthiest goblin dog looks sickly and starved. Despite its name, the goblin dog is in fact a species of rodent grown monstrously large. Their long-legged shape and proclivity to hunt and run in packs earned them their popular name, a name that many goblins take issue with, as it galls the average ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Homunculus", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "11 (2d10)", ac: 14,
+                          fort: 0, ref: 4, will: 1, init_: 2,
+                          str: 8, dex: 15, con: 10, int_: 10, wis: 12, cha: 7,
+                          senses: "darkvision 60 ft., low-light vision; Perception +3Defense", speed: "20 ft., fly 50 ft. (good)",
+                          attacks: "1 bite +3 (1d4–1 plus poison)",
+                          specialAbilities: "",
+                          environment: "any",
+                          summary: "This vaguely humanoid creature is about the size of a cat but looks more like a toothy, winged devil.",
+                          desc: "Homunculus This vaguely humanoid creature is about the size of a cat but looks more like a toothy, winged devil. Homunculus CR 1 Source Pathfinder RPG Bestiary pg. 176 XP 400 Any alignment (same as creator) Tiny construct Init +2; Senses darkvision 60 ft., low-light vision; Perception +3 Defense AC 14, touch 14, flat-footed 12 (+2 Dex, +2 size) hp 11 (2d10) Fort +0, Ref +4, Will +1 Defensive Abilities construct traits Offense Speed 20 ft., fly 50 ft. (good) Melee 1 bite +3 (1d4–1 plus poison) Space 2-1/2 ft., Reach 0 ft. Statistics Str 8, Dex 15, Con —, Int 10, Wis 12, Cha 7 Base Atk +2; CMB +2; CMD 11 Feats Lightning Reflexes Skills Fly +10, Perception +3, Stealth +12 Languages Common (cannot speak); telepathic link Ecology Environment any Organization solitary Treasure none Special Abilities Poison (Ex) Bite—injury; save Fort DC 13; frequency 1/minute for 60 minutes; effect sleep for 1 minute; cure 1 save. The save DC is Constitution-based and includes a +2 racial bonus. Telepathic Link (Su) A homunculus cannot speak, but the process of creating one links it telepathically with its creator. A homunculus knows what its master knows and can convey to him or her everything it sees and hears, out to a distance of 1,500 feet. Description A homunculus is a miniature servant created by a spellcaster from his own blood. They are weak combatants but make effective spies, messengers, and scouts. A homunculus’s creator determines its precise features; some are more refined looking, but most creators don’t bother to improve the creature’s appearance beyond the minimum necessary for functioning. Homunculi are little more than tools designed to carry out assigned tasks. They are extensions of their creators, sharing the same alignment and basic nature. A homunculus never willingly travels more than a mile from its master, though it can be removed forcibly. If this occurs, the creature does everything in its power to return to this range, as it cannot communicate with its master",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Horse", cr: "1", type: "animal", size: "Large", alignment: "N",
+                          hp: "15 (2d8+6)", ac: 11,
+                          fort: 6, ref: 5, will: 1, init_: 2,
+                          str: 16, dex: 14, con: 17, int_: 2, wis: 13, cha: 7,
+                          senses: "low-light vision, scent; Perception +6Defense", speed: "50 ft.",
+                          attacks: "2 hooves –2 (1d4+1)",
+                          specialAbilities: "",
+                          environment: "temperate plains",
+                          summary: "This proud horse thunders across the grassy plain with fluid grace, wind tugging at its loose-fitting barding.",
+                          desc: "Horse This proud horse thunders across the grassy plain with fluid grace, wind tugging at its loose-fitting barding. Horse CR 1 Source Pathfinder RPG Bestiary pg. 177 XP 400 N Large animal Init +2; Senses low-light vision, scent; Perception +6 Defense AC 11, touch 11, flat-footed 9 (+2 Dex, –1 size) hp 15 (2d8+6) Fort +6, Ref +5, Will +1 Offense Speed 50 ft. Melee 2 hooves –2 (1d4+1) Space 10 ft., Reach 5 ft. Statistics Str 16, Dex 14, Con 17, Int 2, Wis 13, Cha 7 Base Atk +1; CMB +5; CMD 17 (21 vs. trip) Feats Endurance , Run B Skills Perception +6 SQ docile Ecology Environment temperate plains Organization solitary, pair, or herd (3–30) Treasure none Special Abilities Docile (Ex) Unless specifically trained for combat (see the Handle Animal skill, a horse’s hooves are treated as secondary attacks. Horses stand 5 to 6 feet tall at the shoulder and weigh between 1,000 and 1,500 pounds. The statistics above are for a typical riding horse, called by some a “light horse.” Some horses are larger and heartier, bred for labor such as pulling plows or carriages. These horses are called “heavy horses” and gain the following adjustments to the base statistics detailed above. Heavy Horse : A heavy horse gains the advanced simple template. In addition, it also gains a bite attack that inflicts 1d4 damage, and its hoof damage increases to 1d6. As with a light horse, a heavy horse can be specifically trained for combat with the Handle Animal skill. Ponies are smaller breeds of horses better suited to halflings, gnomes, and dwarves, but they also make fond pets for humans as well. They stand 3 to 4 feet tall and weigh about 600 pounds. A light load for a pony is up to 100 pounds, a medium load is 101–200 pounds, and a heavy load is 201–300 pounds. A pony can drag 1,500 pounds. The statistics presented above are for a typical pony. Tougher ponies with the advanced simple template exist, but are relatively uncommon and, unlike horses, these creatures are not generally called “heavy",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Hyena", cr: "1", type: "animal", size: "Medium", alignment: "N",
+                          hp: "13 (2d8+4)", ac: 14,
+                          fort: 5, ref: 5, will: 1, init_: 2,
+                          str: 14, dex: 15, con: 15, int_: 2, wis: 13, cha: 6,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "50 ft.",
+                          attacks: "bite +3 (1d6+3 plus trip)Statistics",
+                          specialAbilities: "",
+                          environment: "warm plains",
+                          summary: "This hyena is covered in shaggy, tan-colored fur with black and brown stripes.",
+                          desc: "Hyena This hyena is covered in shaggy, tan-colored fur with black and brown stripes. Hyena CR 1 Source Pathfinder RPG Bestiary pg. 179 XP 400 N Medium animal Init +2; Senses low-light vision, scent; Perception +8 Defense AC 14, touch 12, flat-footed 12 (+2 Dex, +2 natural) hp 13 (2d8+4) Fort +5, Ref +5, Will +1 Offense Speed 50 ft. Melee bite +3 (1d6+3 plus trip) Statistics Str 14, Dex 15, Con 15, Int 2, Wis 13, Cha 6 Base Atk +1; CMB +3; CMD 15 (19 vs. trip) Feats Skill Focus (Perception) Skills Perception +8, Stealth +6 (+10 in tall grass); Racial Modifiers +4 Stealth in tall grass Ecology Environment warm plains Organization solitary, pair, or pack (3–12) Treasure none Description Hyenas are pack hunters infamous for their cunning and their unnerving, laughter-like vocalizations. They are largely scavengers, but aren’t above supplementing their diet of carrion with fresh prey. Hyenas tend to hunt alone, but when hunting as a pack they typically send one or two members against a foe’s front while the rest of the pack circles and attacks from behind. Many of the savage humanoid races, particularly gnolls, use hyenas as guard dogs. Such hyenas typically wear leather barding and are trained from birth to be vicious and savage—many such creatures are advanced hyenas.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Lizardfolk", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "11 (2d8+2)", ac: 17,
+                          fort: 4, ref: 0, will: 0, init_: 0,
+                          str: 13, dex: 10, con: 13, int_: 9, wis: 10, cha: 10,
+                          senses: "Perception +1Defense", speed: "30 ft., swim 15 ft.",
+                          attacks: "morningstar +2 (1d8+1), bite +0 (1d4), or claw +2 (1d4+1), bite +2 (1d4+1)",
+                          specialAbilities: "",
+                          environment: "temperate swamps",
+                          summary: "This reptilian humanoid has green scales, a short and toothy snout, and a thick alligator-like tail.",
+                          desc: "Lizardfolk This reptilian humanoid has green scales, a short and toothy snout, and a thick alligator-like tail. Lizardfolk CR 1 Source Pathfinder RPG Bestiary pg. 195 XP 400 N Medium humanoid (reptilian) Init +0; Senses Perception +1 Defense AC 17, touch 10, flat-footed 17 (+5 natural, +2 shield) hp 11 (2d8+2) Fort +4, Ref +0, Will +0 Offense Speed 30 ft., swim 15 ft. Melee morningstar +2 (1d8+1), bite +0 (1d4), or claw +2 (1d4+1), bite +2 (1d4+1) Ranged javelin +1 (1d6+1) Statistics Str 13, Dex 10, Con 13, Int 9, Wis 10, Cha 10 Base Atk +1; CMB +2; CMD 12 Feats Multiattack Skills Acrobatics +2, Perception +1, Swim +8; Racial Modifiers +4 Acrobatics Languages Draconic SQ hold breath Ecology Environment temperate swamps Organization solitary, pair, band (3–12), or tribe (13–60) Treasure NPC gear (heavy wooden shield, morningstar, 3 javelins) Special Abilities Hold Breath (Ex) A lizardfolk can hold its breath for a number of rounds equal to 4 times its Constitution score before it risks drowning. Description Lizardfolk are proud and powerful reptilian predators that make their communal homes in scattered villages deep within swamps and marshes. Uninterested in colonization of the dry lands and content with the simple weapons and rituals that have served them well for millennia, lizardfolk are viewed by many other races as backwater savages, but within their isolated communities lizardfolk are actually a vibrant people filled with tradition and an oral history stretching back to before humans walked upright. Most lizardfolk stand 6 to 7 feet tall and weigh 200 to 250 pounds, their powerful muscles covered in scales of gray, green, or brown. Some breeds have short dorsal spikes or brightly colored frills, and all swim well by moving with flicks of their powerful 4-foot-long tails. While completely at home in the water, they breathe air and return to their clustered mound-dwellings to breed and sleep. As their reptilian blood makes them sluggish in the cold, most lizardf",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Octopus", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "13 (2d8+4)", ac: 15,
+                          fort: 5, ref: 6, will: 1, init_: 3,
+                          str: 12, dex: 17, con: 14, int_: 2, wis: 13, cha: 3,
+                          senses: "low-light vision; Perception +1Defense", speed: "20 ft., swim 30 ft., jet 200 ft.",
+                          attacks: "bite +5 (1d3+1 plus poison), tentacles +3 (grab)Statistics",
+                          specialAbilities: "",
+                          environment: "temperate or cold ocean",
+                          summary: "Eight tentacles, each adorned with rows of countless suckers, unfurl from the barrel-shaped body of this large-eyed creature.",
+                          desc: "Octopus Eight tentacles, each adorned with rows of countless suckers, unfurl from the barrel-shaped body of this large-eyed creature. Octopus CR 1 Source Pathfinder RPG Bestiary pg. 219 XP 400 N Small animal (aquatic) Init +3; Senses low-light vision; Perception +1 Defense AC 15, touch 14, flat-footed 12 (+3 Dex, +1 natural, +1 size) hp 13 (2d8+4) Fort +5, Ref +6, Will +1 Defensive Abilities ink cloud Offense Speed 20 ft., swim 30 ft., jet 200 ft. Melee bite +5 (1d3+1 plus poison), tentacles +3 (grab) Statistics Str 12, Dex 17, Con 14, Int 2, Wis 13, Cha 3 Base Atk +1; CMB +1 (+5 grapple); CMD 14 (can’t be tripped) Feats Multiattack B , Weapon Finesse Skills Escape Artist +13, Stealth +20, Swim +9; Racial Modifiers +8 Stealth, +10 Escape Artist Ecology Environment temperate or cold ocean Organization solitary Treasure none Special Abilities Ink Cloud (Ex) An octopus can emit a 10-foot-radius sphere of ink once per minute as a free action. The ink provides total concealment in water, and persists for 1 minute. Jet (Ex) An octopus can jet backward once per round as a full-round action, at a speed of 200 feet. It must move in a straight line while jetting, and does not provoke attacks of opportunity when it does so. Poison (Ex) Bite—injury; save Fort DC 13; frequency 1/round for 6 rounds; effect 1 Str; cure 1 save. Description The octopus is a cunning animal capable of using complex tactics to get food.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Pseudodragon", cr: "1", type: "dragon", size: "Tiny", alignment: "NG",
+                          hp: "15 (2d12+2)", ac: 16,
+                          fort: 4, ref: 5, will: 4, init_: 2,
+                          str: 7, dex: 15, con: 13, int_: 10, wis: 12, cha: 10,
+                          senses: "blindsense 60 ft., darkvision 60 ft., low-light vision; Perception +6Defense", speed: "15 ft., fly 60 ft. (good)",
+                          attacks: "sting +6 (1d3–2 plus poison), bite +6 (1d2–2)",
+                          specialAbilities: "",
+                          environment: "temperate forests",
+                          summary: "This housecat-sized miniature dragon has fine scales, sharp horns, wicked little teeth, and a tail tipped with a barbed stinger.",
+                          desc: "Pseudodragon This housecat-sized miniature dragon has fine scales, sharp horns, wicked little teeth, and a tail tipped with a barbed stinger. Pseudodragon CR 1 Source Pathfinder RPG Bestiary pg. 229 XP 400 NG Tiny dragon Init +2; Senses blindsense 60 ft., darkvision 60 ft., low-light vision; Perception +6 Defense AC 16, touch 14, flat-footed 14 (+2 Dex, +2 natural, +2 size) hp 15 (2d12+2) Fort +4, Ref +5, Will +4 Immune paralysis, sleep; SR 12 Offense Speed 15 ft., fly 60 ft. (good) Melee sting +6 (1d3–2 plus poison), bite +6 (1d2–2) Space 2-1/2 ft., Reach 0 ft. (5 ft. with tail) Statistics Str 7, Dex 15, Con 13, Int 10, Wis 12, Cha 10 Base Atk +2; CMB +2; CMD 10 (14 vs. trip) Feats Weapon Finesse Skills Diplomacy +5, Fly +15, Perception +6, Sense Motive +6, Stealth +19 (+23 in forests), Survival +6; Racial Modifiers +4 Stealth (improves to +8 in forests) Languages Draconic; telepathy (60 ft.) Ecology Environment temperate forests Organization solitary, pair, or clutch (3–5) Treasure standard Special Abilities Poison (Ex) Sting—injury; save Fort DC 14; frequency 1/minute for 10 minutes; effect sleep for 1 minute; cure 1 save. The save DC is Constitution-based and includes a +2 racial bonus. Description Pseudodragons are tiny cousins of true dragons, and are playful but shy. They often only vocalize in chirps, hisses, growls, and purrs, but can communicate telepathically with any intelligent creature. If approached peacefully and offered food, they are usually willing to share information about what they’ve seen in their territory, but threats or violence make them flee. Pseudodragons are carnivores, devouring insects, rodents, small birds, and snakes, though they sometimes eat eggs, and most also enjoy butter, cheese, and fish. They either hunt on the ground like lizards or look for prey on the wing like a raptor. As smart as a typical humanoid, they do not enjoy being treated as pets and prefer being treated as friends. They are wary of evil folk but can bond with ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Snake, Venomous Snake", cr: "1", type: "animal", size: "Medium", alignment: "N",
+                          hp: "13 (2d8+4)", ac: 14,
+                          fort: 5, ref: 4, will: 1, init_: 5,
+                          str: 8, dex: 13, con: 14, int_: 1, wis: 13, cha: 2,
+                          senses: "low-light vision, scent; Perception +9Defense", speed: "20 ft., climb 20 ft., swim 20 ft.",
+                          attacks: "bite +2 (1d4–1 plus poison)Statistics",
+                          specialAbilities: "",
+                          environment: "any temperate or warm",
+                          summary: "This brightly colored snake assumes an aggressive posture, its hissing mouth open to display its fangs.",
+                          desc: "Snake, Venomous Snake This brightly colored snake assumes an aggressive posture, its hissing mouth open to display its fangs. Venomous Snake CR 1 Source Pathfinder RPG Bestiary pg. 255 XP 400 N Medium animal Init +5; Senses low-light vision, scent; Perception +9 Defense AC 14, touch 11, flat-footed 13 (+1 Dex, +3 natural) hp 13 (2d8+4) Fort +5, Ref +4, Will +1 Offense Speed 20 ft., climb 20 ft., swim 20 ft. Melee bite +2 (1d4–1 plus poison) Statistics Str 8, Dex 13, Con 14, Int 1, Wis 13, Cha 2 Base Atk +1; CMB +0; CMD 11 (can’t be tripped) Feats Improved Initiative , Weapon Finesse B Skills Acrobatics +9, Climb +9, Perception +9, Stealth +9, Swim +9; Racial Modifiers +4 Perception, +4 Stealth, +8 Acrobatics Ecology Environment any temperate or warm Organization solitary, pair, or nest (3–8) Treasure none Special Abilities Poison (Ex) Bite—injury; save Fort DC 13; frequency 1/round for 6 rounds; effect 1d2 Con; cure 1 save. Description Countless species of poisonous snakes dwell in the wild, their bites capable of bringing down creatures much larger than themselves. Snakes of the size presented here are thankfully rarer than their smaller kin, but many species of rattlesnake, cobra, and similar reptiles can grow to this size. Venomous snakes are generally far more aggressive than constrictor snakes, and even larger variants do exist: you can create stats for a king cobra, for example, by applying the advanced and giant simple templates to the stats given above.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Spider, Giant Spider", cr: "1", type: "vermin", size: "Medium", alignment: "N",
+                          hp: "16 (3d8+3)", ac: 14,
+                          fort: 4, ref: 4, will: 1, init_: 3,
+                          str: 11, dex: 17, con: 12, int_: 10, wis: 10, cha: 2,
+                          senses: "darkvision 60 ft., tremorsense 60 ft.; Perception +4Defense", speed: "30 ft., climb 30 ft.",
+                          attacks: "bite +2 (1d6 plus poison)",
+                          specialAbilities: "web (+5 ranged, DC 12, hp 2)Statistics",
+                          environment: "any",
+                          summary: "A spider the size of a man crawls silently from the depths of its funnel-shaped web.",
+                          desc: "Spider, Giant Spider A spider the size of a man crawls silently from the depths of its funnel-shaped web. Giant Spider CR 1 Source Pathfinder RPG Bestiary pg. 258 XP 400 N Medium vermin Init +3; Senses darkvision 60 ft., tremorsense 60 ft.; Perception +4 Defense AC 14, touch 13, flat-footed 11 (+3 Dex, +1 natural) hp 16 (3d8+3) Fort +4, Ref +4, Will +1 Immune mind-affecting effects Offense Speed 30 ft., climb 30 ft. Melee bite +2 (1d6 plus poison) Special Attacks web (+5 ranged, DC 12, hp 2) Statistics Str 11, Dex 17, Con 12, Int —, Wis 10, Cha 2 Base Atk +2; CMB +2; CMD 15 (27 vs. trip) Skills Climb +16, Perception +4 (+8 in webs), Stealth +7 (+11 in webs); Racial Modifiers +4 Perception, +4 Stealth (+8 in webs), +16 Climb Ecology Environment any Organization solitary, pair, or colony (3–8) Treasure incidental Special Abilities Poison (Ex) Bite—injury; save Fort DC 14; frequency 1/round for 4 rounds; effect 1d2 Strength damage; cure 1 save. Description The statistics above are for a web-spinning spider. Hunting spiders lose the web ability but gain a +8 racial modifier on Acrobatics checks. All giant spiders have a +2 racial bonus on poison save DCs. Other species of giant spiders exist, as detailed below. Species CR Size HD Scarlet spider 1/4 Tiny 1d8 Giant crab spider 1/2 Small 2d8 Giant black widow 3 Large 5d8 Ogre spider 5 Huge 7d8 Giant tarantula 8 Gargantuan 10d8 Goliath spider 11 Colossal 14d8",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Spider, Spider Swarm", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "9 (2d8)", ac: 17,
+                          fort: 3, ref: 3, will: 0, init_: 3,
+                          str: 1, dex: 17, con: 10, int_: 10, wis: 10, cha: 2,
+                          senses: "darkvision 60 ft., tremorsense 30 ft.; Perception +4Defense", speed: "20 ft., climb 20 ft.",
+                          attacks: "swarm (1d6 plus poison and distraction)",
+                          specialAbilities: "distraction (DC 11)Statistics",
+                          environment: "any",
+                          summary: "An awful, scuttling mass of legs and mandibles scrambles forward out of the darkness.",
+                          desc: "Spider, Spider Swarm An awful, scuttling mass of legs and mandibles scrambles forward out of the darkness. Spider Swarm CR 1 Source Pathfinder RPG Bestiary pg. 258 XP 400 N Diminutive vermin (swarm) Init +3; Senses darkvision 60 ft., tremorsense 30 ft.; Perception +4 Defense AC 17, touch 17, flat-footed 14 (+3 Dex, +4 size) hp 9 (2d8) Fort +3, Ref +3, Will +0 Defensive Abilities swarm traits; Immune mind-affecting effects, weapon damage Offense Speed 20 ft., climb 20 ft. Melee swarm (1d6 plus poison and distraction) Space 10 ft., Reach 0 ft. Special Attacks distraction (DC 11) Statistics Str 1, Dex 17, Con 10, Int —, Wis 10, Cha 2 Base Atk +1; CMB —; CMD — Skills Climb +11, Perception +4; Racial Modifiers +4 Perception Ecology Environment any Organization solitary, pair, tangle (3–6 swarms) or colony (11–20 swarms) Treasure none Special Abilities Poison (Ex) Swarm—injury; save Fort DC 11; frequency 1/round for 2 rounds; effect 1d2 Str; cure 1 save. The save DC is Constitution-based. Description The sight of a carpet of swarming spiders is unsettling indeed—particularly when the swarm is made up of spiders each the size of a gold coin and possessing blade-like mandibles capable of lacerating flesh with sickening ease. A swarm of spiders is a colonial mass of arachnids that relies on overwhelming much larger prey with sheer numbers rather than catching smaller snacks. While spider swarms spin webs, these webs are incapable of catching larger prey and typically serve the swarm as a lair rather than a method of capturing dinner.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Squid", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "13 (3d8)", ac: 13,
+                          fort: 3, ref: 7, will: 2, init_: 6,
+                          str: 15, dex: 15, con: 11, int_: 2, wis: 12, cha: 2,
+                          senses: "low-light vision; Perception +7Defense", speed: "swim 60 ft., jet 240 ft.",
+                          attacks: "bite +4 (1d3+2), tentacles +2 (1d4+1 plus grab)Statistics",
+                          specialAbilities: "",
+                          environment: "any ocean",
+                          summary: "This slender red squid darts through the water with alacrity. Two large eyes stare from above the creature’s tentacles.",
+                          desc: "Squid This slender red squid darts through the water with alacrity. Two large eyes stare from above the creature’s tentacles. Squid CR 1 Source Pathfinder RPG Bestiary pg. 259 XP 400 N Medium animal (aquatic) Init +6; Senses low-light vision; Perception +7 Defense AC 13, touch 12, flat-footed 11 (+2 Dex, +1 natural) hp 13 (3d8) Fort +3, Ref +7, Will +2 Defensive Abilities ink cloud (5-ft. radius) Offense Speed swim 60 ft., jet 240 ft. Melee bite +4 (1d3+2), tentacles +2 (1d4+1 plus grab) Statistics Str 15, Dex 15, Con 11, Int 2, Wis 12, Cha 2 Base Atk +2; CMB +4 (+8 grapple); CMD 16 Feats Improved Initiative , Lightning Reflexes , Multiattack B Skills Perception +7, Swim +10 Ecology Environment any ocean Organization solitary, pair, or school (3–12) Treasure none Special Abilities Ink Cloud (Ex) A squid can emit a 5-foot-radius cloud of ink once per minute as a free action while underwater. This cloud provides total concealment. The ink persists for 1 minute. Jet (Ex) A squid can jet in a straight line as a full-round action. It does not provoke attacks of opportunity while jetting. Description Squids are aggressive predators that fear little and are more than willing to attack prey larger than themselves.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Svirfneblin", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "15 (1d10+5)", ac: 15,
+                          fort: 6, ref: 6, will: 2, init_: 2,
+                          str: 13, dex: 15, con: 14, int_: 10, wis: 10, cha: 8,
+                          senses: "darkvision 120 ft., low-light vision; Perception +6Defense", speed: "20 ft. (15 ft. in armor)",
+                          attacks: "heavy pick +3 (1d4+1/×4)",
+                          specialAbilities: "favored enemy (dwarf +2), +1 to attack vs. dwarven and reptilian humanoids",
+                          environment: "any underground",
+                          summary: "This bald gnome has rocky gray skin and a wiry physique. Its pale eyes are overly large and expressive.",
+                          desc: "Svirfneblin This bald gnome has rocky gray skin and a wiry physique. Its pale eyes are overly large and expressive. Svirfneblin CR 1 Source Pathfinder RPG Bestiary pg. 261 XP 400 Svirfneblin ranger 1 N Small humanoid (gnome) Init +2; Senses darkvision 120 ft., low-light vision; Perception +6 Defense AC 15, touch 15, flat-footed 11 (+2 Dex, +2 dodge, +1 size) hp 15 (1d10+5) Fort +6, Ref +6, Will +2 SR 12 Offense Speed 20 ft. (15 ft. in armor) Melee heavy pick +3 (1d4+1/×4) Ranged light crossbow +4 (1d6/19–20) Special Attacks favored enemy (dwarf +2), +1 to attack vs. dwarven and reptilian humanoids Spell-Like Abilities (CL 1st) Constant— nondetection 1/day— blindness/deafness (DC 12), blur , disguise self Statistics Str 13, Dex 15, Con 14, Int 10, Wis 10, Cha 8 Base Atk +1; CMB +1; CMD 15 Feats Toughness Skills Craft (alchemy) +6, Heal +4, Knowledge (dungeoneering) +4, Perception +6, Stealth +12 (+14 underground), Survival +4 (+5 tracking); Racial Modifiers +2 Craft (alchemy), +2 Perception, +2 Stealth (+4 Stealth underground) Languages Gnome, Undercommon SQ stonecunning, track, wild empathy +0 Ecology Environment any underground Organization solitary, company (2–4), squad (5–20 plus 1 leader of 3rd–6th level and 2 sergeants of 3rd level), or band (30–50 plus 1 sergeant of 3rd level per 20 adults, 5 lieutenants of 5th level, 3 captains of 7th level, and 2–5 Medium earth elementals) Treasure NPC Gear (heavy pick, light crossbow with 10 bolts, other treasure) Description Svirfneblin, or “deep gnomes,” are a reclusive offshoot of the gnome race. They dwell underground in hidden cities, safe from dark elves and other subterranean races. They have skin the color of gray or brown stone. Males are bald, and females have stringy gray hair. A svirfneblin’s ties to the eerie realm of the fey are much stronger than those of their surface-dwelling gnome kin, and this makes them either strangely detached from their emotions or violently random in their outbursts. Svirfneblin have",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Troglodyte", cr: "1", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "13 (2d8+4)", ac: 15,
+                          fort: 7, ref: 1, will: 0, init_: 1,
+                          str: 12, dex: 9, con: 14, int_: 8, wis: 11, cha: 11,
+                          senses: "darkvision 90 ft.; Perception +0", speed: "30 ft.",
+                          attacks: "club +2 (1d6+1), claw –3 (1d4), bite –3 (1d4) or 2 claws +2 (1d4+1), bite +2 (1d4+1)",
+                          specialAbilities: "",
+                          environment: "any underground",
+                          summary: "This humanoid’s scaly hide is dull gray. Its frame resembles that of a cave lizard, with a long tail and crests on its head and back.",
+                          desc: "Troglodyte This humanoid’s scaly hide is dull gray. Its frame resembles that of a cave lizard, with a long tail and crests on its head and back. Troglodyte CR 1 Source Pathfinder RPG Bestiary pg. 267 XP 400 CE Medium humanoid (reptilian) Init –1; Senses darkvision 90 ft.; Perception +0 Aura stench (30 ft., DC 13, 10 rounds) Defense AC 15, touch 9, flat-footed 15 (–1 Dex, +6 natural) hp 13 (2d8+4) Fort +7, Ref –1, Will +0 Offense Speed 30 ft. Melee club +2 (1d6+1), claw –3 (1d4), bite –3 (1d4) or 2 claws +2 (1d4+1), bite +2 (1d4+1) Ranged javelin +0 (1d6) Statistics Str 12, Dex 9, Con 14, Int 8, Wis 11, Cha 11 Base Atk +1; CMB +2; CMD 11 Feats Great Fortitude Skills Stealth +5 (+9 in rocky areas); Racial Modifiers +4 Stealth (+8 in rocky areas) Languages Draconic Ecology Environment any underground Organization solitary, pair, clutch (3–6), squad (7–12 plus 1 cleric or druid of 3rd level and 1–2 monitor lizards), or band (20–80 plus 20% noncombatants,1 chieftain of 3rd–6th level, 1–3 clerics or druids of 3rd–6th level, and 3–13 monitor lizards) Treasure NPC gear (club, 3 javelins, other treasure) Description The troglodyte is a feral, savage cave dweller. They are among the most populous denizens of the upper reaches of the endless caverns of the underworld, equally at home raiding the settlements of those who dwell above or below ground, yet for all their race’s fecundity and sprawl, as a whole they represent only a minor threat. At times, great leaders can draw legions of troglodytes to their command to create vast and deadly armies, but left to their own devices, troglodyte tribes are content to keep each other under control with numerous feuds, cannibalistic raids, and bitter civil wars. The troglodyte is one of the oldest of intelligent races, and ruins found in some remote caverns testify to the fact that their empire was once among the largest in the world. At the dawn of time, the troglodyte civilization was generations ahead of other humanoid races—while tho",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Wolf", cr: "1", type: "animal", size: "Medium", alignment: "N",
+                          hp: "13 (2d8+4)", ac: 14,
+                          fort: 5, ref: 5, will: 1, init_: 2,
+                          str: 13, dex: 15, con: 15, int_: 2, wis: 12, cha: 6,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "50 ft.",
+                          attacks: "bite +2 (1d6+1 plus trip)Statistics",
+                          specialAbilities: "",
+                          environment: "cold or temperate forests",
+                          summary: "This powerful canine watches its prey with piercing yellow eyes, darting its tongue across sharp white teeth.",
+                          desc: "Wolf This powerful canine watches its prey with piercing yellow eyes, darting its tongue across sharp white teeth. Wolf CR 1 Source Pathfinder RPG Bestiary pg. 278 XP 400 N Medium animal Init +2; Senses low-light vision, scent; Perception +8 Defense AC 14, touch 12, flat-footed 12 (+2 Dex, +2 natural) hp 13 (2d8+4) Fort +5, Ref +5, Will +1 Offense Speed 50 ft. Melee bite +2 (1d6+1 plus trip) Statistics Str 13, Dex 15, Con 15, Int 2, Wis 12, Cha 6 Base Atk +1; CMB +2; CMD 14 (18 vs. trip) Feats Skill Focus (Perception) Skills Perception +8, Stealth +6, Survival +1 (+5 scent tracking); Racial Modifiers +4 Survival when tracking by scent Ecology Environment cold or temperate forests Organization solitary, pair, or pack (3–12) Treasure none Description Wandering alone or in packs, wolves sit at the top of the food chain. Ferociously territorial and exceptionally wide-ranging in their hunting, wolf packs cover broad areas. A wolf’s wide paws contain slight webbing between the toes that assists in moving over snow, and its fur is a thick, water-resistant coat ranging in color from gray to brown and even black in some species. Its paws contain scent glands that mark the ground as it travels, assisting in navigation as well as broadcasting its whereabouts to fellow pack members. Generally, a wolf stands from 2-1/2 to 3 feet tall at the shoulder and weighs between 45 and 150 pounds, with females being slightly smaller.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Ant, Giant Ant", cr: "2", type: "vermin", size: "Medium", alignment: "N",
+                          hp: "18 (2d8+9)", ac: 15,
+                          fort: 6, ref: 0, will: 1, init_: 0,
+                          str: 14, dex: 10, con: 17, int_: 10, wis: 13, cha: 11,
+                          senses: "darkvision 60 ft., scent; Perception +5Defense", speed: "50 ft., climb 20 ft.",
+                          attacks: "bite +3 (1d6+2 plus grab), sting +3 (1d4+2 plus poison)Statistics",
+                          specialAbilities: "",
+                          environment: "any",
+                          summary: "A thin, six-legged ant the size of a pony stands at the ready, its mandibles chittering and its stinger dripping with venom.",
+                          desc: "Ant, Giant Ant A thin, six-legged ant the size of a pony stands at the ready, its mandibles chittering and its stinger dripping with venom. Giant Ant CR 2 Source Pathfinder RPG Bestiary pg. 16 XP 600 N Medium vermin Init +0; Senses darkvision 60 ft., scent; Perception +5 Defense AC 15, touch 10, flat-footed 15 (+5 natural) hp 18 (2d8+9) Fort +6, Ref +0, Will +1 Immune mind-affecting effects Offense Speed 50 ft., climb 20 ft. Melee bite +3 (1d6+2 plus grab), sting +3 (1d4+2 plus poison) Statistics Str 14, Dex 10, Con 17, Int —, Wis 13, Cha 11 Base Atk +1; CMB +3 (+7 grapple); CMD 13 (21 vs. trip) Feats Toughness B Skills Climb +10, Perception +5, Survival +5; Racial Modifiers +4 Perception, +4 Survival Ecology Environment any Organization solitary, pair, gang (3–6), or hive (7–18 plus 10–100 workers, 2–8 drones, and 1 queen) Treasure none Special Abilities Poison (Ex) Sting—injury; save Fort DC 14; frequency 1/round for 4 rounds; effect 1d2 Str; cure 1 save Description Giant ants are as industrious as their normal-sized kin. While their nests generally don’t consist of thousands, their greatly increased size more than compensates. The statistics given above are for soldier ants—the variety most commonly encountered. The following simple templates can be used to create variants of the standard soldier ant. Worker (–1 CR) Worker ants do not have a poison sting attack or a grab special attack. Drone (+1 CR) Drones have the advanced simple template and a fly speed of 30 feet (average). Queen (+2 CR) The queen of a nest is an immense, bloated creature. She gains the advanced and the giant simple templates, but drops her speed to 10 feet and loses her climb speed entirely.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Ape, Gorilla", cr: "2", type: "animal", size: "Large", alignment: "N",
+                          hp: "19 (3d8+6)", ac: 14,
+                          fort: 7, ref: 5, will: 2, init_: 2,
+                          str: 15, dex: 15, con: 14, int_: 2, wis: 12, cha: 7,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "30 ft., climb 30 ft.",
+                          attacks: "2 slams +3 (1d6+2)",
+                          specialAbilities: "",
+                          environment: "warm forests",
+                          summary: "Large, deep-set eyes peer from beneath this great ape’s thick brow as it lumbers forward on its legs and knuckles.",
+                          desc: "Ape, Gorilla Large, deep-set eyes peer from beneath this great ape’s thick brow as it lumbers forward on its legs and knuckles. Gorilla CR 2 Source Pathfinder RPG Bestiary pg. 17 XP 600 N Large animal Init +2; Senses low-light vision, scent; Perception +8 Defense AC 14, touch 11, flat-footed 12 (+2 Dex, +3 natural, –1 size) hp 19 (3d8+6) Fort +7, Ref +5, Will +2 Offense Speed 30 ft., climb 30 ft. Melee 2 slams +3 (1d6+2) Space 10 ft., Reach 10 ft. Statistics Str 15, Dex 15, Con 14, Int 2, Wis 12, Cha 7 Base Atk +2; CMB +5; CMD 17 Feats Great Fortitude , Skill Focus (Perception) Skills Acrobatics +6, Climb +14, Perception +8 Ecology Environment warm forests Organization solitary, pair, or troop (3–12) Treasure none Description An adult male ape is 8 feet tall and can weigh as much as 400 pounds. While generally shy and peaceful creatures when left to their own business, gorillas are territorial and become highly aggressive when provoked. This stat block can generally be used for any of the larger types of primates, such as gorillas—for smaller apes like orangutans and chimpanzees, apply the young simple template. Even smaller primates should use the stats for monkeys. Gorillas typically make a large show of force before actually attacking, thumping their chests with their palms, stamping their feet, and roaring loudly. Any opponents who refuse to flee after this display are attacked. Troops of apes fight together in a frenzy, tearing opponents to pieces with their hands and teeth.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Archon, Lantern Archon", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "13 (2d10+2)", ac: 15,
+                          fort: 4, ref: 3, will: 0, init_: 4,
+                          str: 1, dex: 11, con: 12, int_: 6, wis: 11, cha: 10,
+                          senses: "darkvision 60 ft., low-light vision; Perception +4", speed: "fly 60 ft. (perfect)",
+                          attacks: "2 light rays +3 ranged touch (1d6)",
+                          specialAbilities: "",
+                          environment: "any (Heaven)",
+                          summary: "Shedding a warm and calming radiance, this orb of light moves with a preternatural silence and otherworldly grace.",
+                          desc: "Archon, Lantern Archon Shedding a warm and calming radiance, this orb of light moves with a preternatural silence and otherworldly grace. Lantern Archon CR 2 Source Pathfinder RPG Bestiary pg. 20 XP 600 LG Small outsider (archon, extraplanar, good, lawful) Init +4; Senses darkvision 60 ft., low-light vision; Perception +4 Aura aura of menace (DC 13) Defense AC 15, touch 11, flat-footed 15 (+4 natural, +1 size; +2 deflect vs. evil) hp 13 (2d10+2) Fort +4, Ref +3, Will +0; +4 vs. poison, +2 resistance vs. evil DR 10/evil; Immune electricity, petrification Offense Speed fly 60 ft. (perfect) Ranged 2 light rays +3 ranged touch (1d6) Spell-Like Abilities (CL 3rd) At Will— aid , continual flame , detect evil , greater teleport (self plus 50 lbs. of objects only) Statistics Str 1, Dex 11, Con 12, Int 6, Wis 11, Cha 10 Base Atk +2; CMB –4; CMD 6 Feats Improved Initiative Skills Diplomacy +5, Fly +14, Knowledge (planes) +3, Perception +4, Sense Motive +5 Languages Celestial, Draconic, Infernal; truespeech SQ gestalt Ecology Environment any (Heaven) Organization solitary, pair, or squad (3–6) Treasure none Special Abilities Gestalt (Su) Nine lantern archons can fuse together as a full-round action, becoming a single Large entity that is more powerful than the individual archons that make up its parts. Looking like a whirlwind of dancing firefly lights, the gestalt has all the powers and abilities of a Large air elemental plus the following: archon, good, and lawful subtypes; archon traits (aura of menace DC 16); 2 light rays (2d6); DR 5/evil and magic. The archons can remain in this form for 2d4 rounds. When the gestalt separates back into individual lantern archons, its remaining hit points are divided evenly among them; if it had less than 9 hit points, some of the component archons die when the gestalt ends. Light Ray (Ex) A lantern archon can fire beams of light to damage foes. These light rays have a maximum range of 30 feet. This attack overcomes damage reduction of any",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Bat, Bat Swarm", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "13 (3d8)", ac: 16,
+                          fort: 3, ref: 7, will: 3, init_: 2,
+                          str: 3, dex: 15, con: 11, int_: 2, wis: 14, cha: 4,
+                          senses: "blindsense 20 ft., low-light vision; Perception +15Defense", speed: "5 ft., fly 40 ft. (good)",
+                          attacks: "swarm (1d6)",
+                          specialAbilities: "distraction (DC 11), woundingStatistics",
+                          environment: "any temperate or tropical",
+                          summary: "Hundreds of high-pitched squeaks fill the air as a mass of small, carnivorous bats surges forth, all of them hungry for blood.",
+                          desc: "Bat, Bat Swarm Hundreds of high-pitched squeaks fill the air as a mass of small, carnivorous bats surges forth, all of them hungry for blood. Bat Swarm CR 2 Source Pathfinder RPG Bestiary pg. 30 XP 600 N Diminutive animal (swarm) Init +2; Senses blindsense 20 ft., low-light vision; Perception +15 Defense AC 16, touch 16, flat-footed 14 (+2 Dex, +4 size) hp 13 (3d8) Fort +3, Ref +7, Will +3 Defensive Abilities swarm traits; Immune weapon damage Offense Speed 5 ft., fly 40 ft. (good) Melee swarm (1d6) Space 10 ft., Reach 0 ft. Special Attacks distraction (DC 11), wounding Statistics Str 3, Dex 15, Con 11, Int 2, Wis 14, Cha 4 Base Atk +2; CMB —; CMD — Feats Lightning Reflexes , Skill Focus (Perception) Skills Fly +12, Perception +15; Racial Modifiers +4 Perception when using blindsense SQ swarm traits Ecology Environment any temperate or tropical Organization solitary, pair, flight (3–6 swarms), or colony (11–20 swarms) Treasure none Special Abilities Wounding (Ex) Any living creature damaged by a bat swarm continues to bleed, losing 1 hit point per round thereafter. Multiple wounds do not result in cumulative bleeding loss. The bleeding can be stopped by a DC 10 Heal check or the application of a cure spell or some other healing magic. Description Bat swarms dwell in large caves, ruins, or even city sewers—anywhere they can find darkness to hide in during the day and a supply of food to feast upon at night. They are only encountered outside in a group at dawn or dusk, or when they have been startled and forced to flee their lairs.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Bat, Dire Bat", cr: "2", type: "animal", size: "Large", alignment: "N",
+                          hp: "22 (4d8+4)", ac: 14,
+                          fort: 5, ref: 6, will: 3, init_: 2,
+                          str: 17, dex: 15, con: 13, int_: 2, wis: 14, cha: 6,
+                          senses: "blindsense 40 ft.; Perception +12Defense", speed: "20 ft., fly 40 ft. (good)",
+                          attacks: "bite +5 (1d8+4)",
+                          specialAbilities: "",
+                          environment: "any temperate or tropical",
+                          summary: "This giant, furry bat is nearly the size of an ox, with dark leathery wings that open wider than two men with arms outstretched.",
+                          desc: "Bat, Dire Bat This giant, furry bat is nearly the size of an ox, with dark leathery wings that open wider than two men with arms outstretched. Dire Bat CR 2 Source Pathfinder RPG Bestiary pg. 30 XP 600 N Large animal Init +2; Senses blindsense 40 ft.; Perception +12 Defense AC 14, touch 11, flat-footed 12 (+2 Dex, +3 natural, –1 size) hp 22 (4d8+4) Fort +5, Ref +6, Will +3 Offense Speed 20 ft., fly 40 ft. (good) Melee bite +5 (1d8+4) Space 10 ft., Reach 5 ft. Statistics Str 17, Dex 15, Con 13, Int 2, Wis 14, Cha 6 Base Atk +3; CMB +7; CMD 19 Feats Alertness , Stealthy Skills Fly +9, Perception +12, Stealth +4; Racial Modifiers +4 Perception when using blindsense Ecology Environment any temperate or tropical Organization solitary, pair, or colony (3–8) Treasure incidental Description The dire bat is usually found lairing in desolate areas, resting in caves or other secluded areas during the day and taking to the skies in search of prey at night. This immense creature has an average wingspan of 15 feet and weighs roughly 200 pounds. The dire bat generally doesn’t shelter in groups larger than eight, often living a solitary life. A dire bat prefers feeding on livestock and herd animals.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Boar", cr: "2", type: "animal", size: "Medium", alignment: "N",
+                          hp: "18 (2d8+9)", ac: 14,
+                          fort: 6, ref: 3, will: 1, init_: 0,
+                          str: 17, dex: 10, con: 17, int_: 2, wis: 13, cha: 4,
+                          senses: "low-light vision, scent; Perception +6Defense", speed: "40 ft.",
+                          attacks: "gore +4 (1d8+4)Statistics",
+                          specialAbilities: "",
+                          environment: "temperate or tropical forests",
+                          summary: "This ill-tempered beast’s tiny, bloodshot eyes glare angrily above a mouth filled with sharp tusks.",
+                          desc: "Boar This ill-tempered beast’s tiny, bloodshot eyes glare angrily above a mouth filled with sharp tusks. Boar CR 2 Source Pathfinder RPG Bestiary pg. 36 XP 600 N Medium animal Init +0; Senses low-light vision, scent; Perception +6 Defense AC 14, touch 10, flat-footed 14 (+4 natural) hp 18 (2d8+9) Fort +6, Ref +3, Will +1 Defensive Abilities ferocity Offense Speed 40 ft. Melee gore +4 (1d8+4) Statistics Str 17, Dex 10, Con 17, Int 2, Wis 13, Cha 4 Base Atk +1; CMB +4; CMD 14 Feats Toughness Skills Perception +6 Ecology Environment temperate or tropical forests Organization solitary, pair, or group (3–8) Treasure none Description Much more ill-tempered and dangerous than their domesticated kin, boars are omnivorous creatures common to temperate forests, although they are not unknown in tropical climes. Other variants exist as well, such as the particularly ugly warthogs that dwell in tropical plains and savannahs. Boars are often hunted for their flesh, which is considered delicious by most humanoids. Those who hunt boars often do so with a special spear fitted with a cross beam to prevent an impaled boar from pushing forward along the spear shaft to gore its tormentor. The boar’s stubborn nature and habit of eating even bones makes it well suited as a pet for certain folk. Many thieves’ guilds keep boars for the disposal of bodies, while orc tribes let them run loose in their lairs, where they do a relatively good job at keeping these warrens clean of refuse. A boar is four feet long and weighs 200 pounds.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Boggard", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "22 (3d8+9)", ac: 14,
+                          fort: 5, ref: 0, will: 1, init_: -1,
+                          str: 15, dex: 9, con: 14, int_: 8, wis: 11, cha: 10,
+                          senses: "darkvision 60 ft., low-light vision; Perception +4Defense", speed: "20 ft., swim 30 ft.",
+                          attacks: "morningstar +5 (1d8+3), tongue –1 touch (sticky tongue)",
+                          specialAbilities: "terrifying croakStatistics",
+                          environment: "temperate marshes",
+                          summary: "Bulbous eyes glare atop this creature’s decidedly toad-like head. A multitude of warts and bumps decorate its greenish skin.",
+                          desc: "Boggard Bulbous eyes glare atop this creature’s decidedly toad-like head. A multitude of warts and bumps decorate its greenish skin. Boggard CR 2 Source Pathfinder RPG Bestiary pg. 37 , Pathfinder #2: The Skinsaw Murders pg. 84 XP 600 CE Medium humanoid (boggard) Init -1; Senses darkvision 60 ft., low-light vision; Perception +4 Defense AC 14, touch 9, flat-footed 14 (+2 armor, –1 Dex, +3 natural) hp 22 (3d8+9) Fort +5, Ref +0, Will +1 Offense Speed 20 ft., swim 30 ft. Melee morningstar +5 (1d8+3), tongue –1 touch (sticky tongue) Special Attacks terrifying croak Statistics Str 15, Dex 9, Con 14, Int 8, Wis 11, Cha 10 Base Atk +2; CMB +4; CMD 13 Feats Toughness , Weapon Focus (morningstar) Skills Acrobatics +2 (+14 jumping), Stealth –1 (+7 in swamps), Swim +10; Racial Modifiers +16 Acrobatics when jumping, +4 Perception, +8 Stealth in swamps Languages Boggard SQ hold breath, swamp stride Ecology Environment temperate marshes Organization solitary, pair, or army (3–12) Treasure NPC gear (leather armor, morningstar, other treasure) Special Abilities Hold Breath (Ex) A boggard can hold its breath for a number of rounds equal to four times its Constitution score before it risks drowning or suffocating. Sticky Tongue (Ex) A creature hit by a boggard’s tongue attack cannot move more than 10 feet away from the boggard and takes a –2 penalty to AC as long as the tongue is attached (this penalty does not stack if multiple tongues are attached). The tongue can be removed by making an opposed Strength check as a standard action or by dealing 2 points of slashing damage to the tongue (AC 11, damage does not deplete the boggard’s actual hit points). The boggard cannot move more than 10 feet away from the target, but the boggard can release its tongue as a free action. Unlike a giant frog, a boggard cannot pull targets toward it with its tongue. Swamp Stride (Ex) A boggard can move through any sort of natural difficult terrain at its normal speed while within a swamp. Magically al",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Bugbear", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "16 (3d8+3)", ac: 17,
+                          fort: 2, ref: 4, will: 1, init_: 1,
+                          str: 16, dex: 13, con: 13, int_: 10, wis: 10, cha: 9,
+                          senses: "darkvision 60 ft., scent; Perception +8Defense", speed: "30 ft.",
+                          attacks: "morningstar +5 (1d8+3)",
+                          specialAbilities: "",
+                          environment: "temperate mountains",
+                          summary: "This dark-furred creature raises a spiked morningstar, its tiny, milk-white eyes glittering with the thrill of the coming kill.",
+                          desc: "Bugbear This dark-furred creature raises a spiked morningstar, its tiny, milk-white eyes glittering with the thrill of the coming kill. Bugbear CR 2 Source Pathfinder RPG Bestiary pg. 38 XP 600 CE Medium humanoid (goblinoid) Init +1; Senses darkvision 60 ft., scent; Perception +8 Defense AC 17, touch 11, flat-footed 16 (+2 armor, +1 Dex, +3 natural, +1 shield) hp 16 (3d8+3) Fort +2, Ref +4, Will +1 Offense Speed 30 ft. Melee morningstar +5 (1d8+3) Ranged javelin +3 (1d6+3) Statistics Str 16, Dex 13, Con 13, Int 10, Wis 10, Cha 9 Base Atk +2; CMB +5; CMD 16 Feats Intimidating Prowess , Skill Focus (Perception) Skills Intimidate +7, Perception +8, Stealth +10; Racial Modifiers +4 Intimidate, +4 Stealth Languages Common, Goblin SQ stalker Ecology Environment temperate mountains Organization solitary, pair, gang (3–6), or warband (7–12 plus 2 warriors of 1st level and 1 chieftain of 3rd–5th level) Treasure NPC Gear (leather armor, light wooden shield, morningstar, 3 javelins, other treasure) Special Abilities Stalker (Ex) Perception and Stealth are always class skills for bugbears. Description The bugbear is the largest of the goblinoid races, a lumbering brute that stands at least a head taller than most humans. They are loners, preferring to live and kill on their own rather than form tribes of their own kind, yet it isn’t uncommon to find small bands of bugbears working together, or dwelling in goblin or hobgoblin tribes where they function as elite guards or executioners. Bugbears do not form large warrens like goblins or nations like hobgoblins; they prefer smaller-scale mayhem that lets them keep their favorite acts (murder and torture) on a more personal level. Humans are a bugbear’s favored prey, and most count the flesh of humanity as a dietary staple. Grisly trophies of ears or fingers are common bugbear decorations. Bugbears, when they turn to religion, favor gods of murder and violence, with various demon lords being favorites. A typical bugbear stands 7 fee",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Cat, Cheetah", cr: "2", type: "animal", size: "Medium", alignment: "N",
+                          hp: "19 (3d8+6)", ac: 15,
+                          fort: 5, ref: 7, will: 2, init_: 8,
+                          str: 17, dex: 19, con: 15, int_: 2, wis: 12, cha: 6,
+                          senses: "low-light vision, scent; Perception +5Defense", speed: "50 ft.; sprint",
+                          attacks: "bite +6 (1d6+3 plus trip), 2 claws +6 (1d3+3)Statistics",
+                          specialAbilities: "",
+                          environment: "warm plains",
+                          summary: "This large, sleek feline has a golden coat spotted with black. Its long and powerful legs are obviously capable of great speed.",
+                          desc: "Cat, Cheetah This large, sleek feline has a golden coat spotted with black. Its long and powerful legs are obviously capable of great speed. Cheetah CR 2 Source Pathfinder RPG Bestiary pg. 40 XP 600 N Medium animal Init +8; Senses low-light vision, scent; Perception +5 Defense AC 15, touch 14, flat-footed 11 (+4 Dex, +1 natural) hp 19 (3d8+6) Fort +5, Ref +7, Will +2 Offense Speed 50 ft.; sprint Melee bite +6 (1d6+3 plus trip), 2 claws +6 (1d3+3) Statistics Str 17, Dex 19, Con 15, Int 2, Wis 12, Cha 6 Base Atk +2; CMB +5; CMD 19 (23 vs. trip) Feats Improved Initiative , Weapon Finesse Skills Acrobatics +8, Perception +5, Stealth +8 (+12 in tall grass); Racial Modifiers +4 Stealth in tall grass Ecology Environment warm plains Organization solitary or pair Treasure none Special Abilities Sprint (Ex) Once per hour, a cheetah can move at 10 times its normal speed (500 feet) when it makes a charge. Description The cheetah is a swift and deadly predator capable of moving with incredible speed, allowing it to run down unsuspecting foes hundreds of feet away. The hunting cat avoids areas of dense and tangled undergrowth, but has great skill at lying in wait in tall grass. An adult cheetah is 4-1/2 feet long and weighs 140 pounds.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Cat, Leopard", cr: "2", type: "animal", size: "Medium", alignment: "N",
+                          hp: "19 (3d8+6)", ac: 15,
+                          fort: 5, ref: 7, will: 2, init_: 4,
+                          str: 16, dex: 19, con: 15, int_: 2, wis: 13, cha: 6,
+                          senses: "low-light vision, scent; Perception +5Defense", speed: "30 ft., climb 20 ft.",
+                          attacks: "bite +6 (1d6+3 plus grab), 2 claws +6 (1d3+3)",
+                          specialAbilities: "pounce, rake (2 claws +6, 1d3+3)Statistics",
+                          environment: "any forest",
+                          summary: "With each graceful step, this leopard’s steely muscles ripple beneath its spotted fur.",
+                          desc: "Cat, Leopard With each graceful step, this leopard’s steely muscles ripple beneath its spotted fur. Leopard CR 2 Source Pathfinder RPG Bestiary pg. 40 XP 600 N Medium animal Init +4; Senses low-light vision, scent; Perception +5 Defense AC 15, touch 14, flat-footed 11 (+4 Dex, +1 natural) hp 19 (3d8+6) Fort +5, Ref +7, Will +2 Offense Speed 30 ft., climb 20 ft. Melee bite +6 (1d6+3 plus grab), 2 claws +6 (1d3+3) Special Attacks pounce, rake (2 claws +6, 1d3+3) Statistics Str 16, Dex 19, Con 15, Int 2, Wis 13, Cha 6 Base Atk +2; CMB +5 (+9 grapple); CMD 19 (23 vs. trip) Feats Skill Focus (Stealth) , Weapon Finesse Skills Acrobatics +8, Climb +11, Perception +5, Stealth +11 (+15 in undergrowth); Racial Modifiers +4 on Stealth in undergrowth Ecology Environment any forest Organization solitary or pair Treasure none Description Leopards are 4 feet long and weigh 120 pounds. The statistics presented here can describe any feline of similar size, such as jaguars, panthers, and mountain lions—what differentiates these big cats from the similarly sized cheetah is primarily their habitats—leopards and their kin prefer to hunt at night and ambush their prey from above, pouncing down from trees or high rocks. Leopards eat almost any animal they can run down and catch, preferring Small prey but capable of downing Large herbivores or surviving on rodents, birds, and insects. Healthy leopards are generally not aggressive toward humanoids, and if they aren’t hungry and don’t feel threatened, it is possible to approach closely without a hostile reaction. Yet a leopard that settles in an area bordered by humanoid civilization can easily and swiftly become a dangerous predator.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Cave Fisher", cr: "2", type: "vermin", size: "Medium", alignment: "N",
+                          hp: "22 (3d8+9)", ac: 15,
+                          fort: 6, ref: 2, will: 1, init_: 1,
+                          str: 17, dex: 12, con: 17, int_: 10, wis: 10, cha: 4,
+                          senses: "darkvision 60 ft.; Perception +0Defense", speed: "20 ft., climb 20 ft.",
+                          attacks: "2 claws +5 (1d4+3)",
+                          specialAbilities: "pull (filament, 10 feet)Statistics",
+                          environment: "any underground",
+                          summary: "This man-sized, crab-like monstrosity clings tenaciously to the rough stone, its enormous pincers held out menacingly before it.",
+                          desc: "Cave Fisher This man-sized, crab-like monstrosity clings tenaciously to the rough stone, its enormous pincers held out menacingly before it. Cave Fisher CR 2 Source Pathfinder RPG Bestiary pg. 41 XP 600 N Medium vermin Init +1; Senses darkvision 60 ft.; Perception +0 Defense AC 15, touch 11, flat-footed 14 (+1 Dex, +4 natural) hp 22 (3d8+9) Fort +6, Ref +2, Will +1 Immune mind-affecting effects Offense Speed 20 ft., climb 20 ft. Melee 2 claws +5 (1d4+3) Ranged filament +3 (drag) Special Attacks pull (filament, 10 feet) Statistics Str 17, Dex 12, Con 17, Int —, Wis 10, Cha 4 Base Atk +2; CMB +5 (+9 with pull); CMD 16 (28 vs. trip) Skills Climb +11 Ecology Environment any underground Organization solitary, pair, or tangle (3–6) Treasure none Special Abilities Filament (Ex) A cave fisher can fire a thin filament of sticky silk as a standard action. This touch attack has a range of 60 feet and no range increment. A creature struck by a cave fisher’s filament becomes attached to the sticky thread. As a standard action, a creature can rip the filament free with a DC 20 Strength check. A caught creature can also attempt to escape a filament by making a DC 25 Escape Artist check. A filament is AC 14 (touch 12), has 5 hit points, and has DR 15/slashing. An application of liquid with high alcohol content (or a dose of universal solvent ) dissolves the adhesive and releases the creature caught by the filament. A cave fisher can have only one filament active at a time. Pull (Ex) A cave fisher has a +4 racial bonus on CMB checks made using its pull special attack. Description The cave fisher is a highly specialized predator that dwells in caves. The creature’s mode of hunting is unique—it clambers up a cave wall to settle on a ledge or in a crack, typically at a height of at least 30 feet. Ledges overlooking bridges and lower ledges overlooking chasms are favored hunting grounds for the cave fisher. The creature lies in wait until prey approaches within 60 feet, at which point i",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Choker", cr: "2", type: "aberration", size: "Small", alignment: "CE",
+                          hp: "16 (3d8+3)", ac: 17,
+                          fort: 2, ref: 3, will: 4, init_: 6,
+                          str: 16, dex: 14, con: 13, int_: 4, wis: 13, cha: 7,
+                          senses: "darkvision 60 ft.; Perception +1Defense", speed: "20 ft., climb 10 ft.",
+                          attacks: "2 tentacles +6 (1d4+3 plus grab)",
+                          specialAbilities: "constrict (1d4+3), strangle, grab (Large)Statistics",
+                          environment: "any underground",
+                          summary: "This hunched-over wretch has long, pliable arms like tentacles capped with five wide, spiny claws.",
+                          desc: "Choker This hunched-over wretch has long, pliable arms like tentacles capped with five wide, spiny claws. Choker CR 2 Source Pathfinder RPG Bestiary pg. 45 XP 600 CE Small aberration Init +6; Senses darkvision 60 ft.; Perception +1 Defense AC 17, touch 13, flat-footed 15 (+2 Dex, +4 natural, +1 size) hp 16 (3d8+3) Fort +2, Ref +3, Will +4 Offense Speed 20 ft., climb 10 ft. Melee 2 tentacles +6 (1d4+3 plus grab) Space 5 ft., Reach 10 ft. Special Attacks constrict (1d4+3), strangle, grab (Large) Statistics Str 16, Dex 14, Con 13, Int 4, Wis 13, Cha 7 Base Atk +2; CMB +4 (+8 grappling); CMD 16 Feats Improved Initiative , Skill Focus (Stealth) Skills Climb +16, Stealth +13 SQ quickness Ecology Environment any underground Organization solitary, pair, or clutch (3–8) Treasure standard Special Abilities Strangle (Ex) Chokers have an unerring talent for seizing their victims by the neck. A creature that is grappled by a choker cannot speak or cast spells with verbal components. Quickness (Su) A choker is supernaturally quick. It can take an extra move action during its turn each round. Description Underground predators that often dwell on the outskirts of subterranean ruins or in the deep shadows of nameless cavern outposts, chokers lurk in the darkness and lash out with their long, rubbery arms to grasp prey as it passes by. They seldom attack multiple enemies at once, stalking their quarry until they can isolate a weaker victim from its pack. Chokers walk with a disturbing, almost comical gait due to their extremely limber legs. Weighing only 35 pounds and standing no taller than a halfling, chokers have no problem skittering across walls and ceilings, often lodging themselves into shadowy corners, tunnel intersections, walls, or staircases. A choker will attempt to grasp creatures of almost any size, but prefers lone prey of its size or smaller. Chokers appear to have little culture of their own, gathering only briefly to mate before their wanderlust and hunger spurs the",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Crab, Giant Crab", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "19 (3d8+6)", ac: 16,
+                          fort: 5, ref: 2, will: 1, init_: 1,
+                          str: 15, dex: 13, con: 14, int_: 10, wis: 10, cha: 2,
+                          senses: "darkvision 60 ft.; Perception +4Defense", speed: "30 ft., swim 20 ft.",
+                          attacks: "2 claws +4 (1d4+2 plus grab)",
+                          specialAbilities: "constrict (1d4+2)Statistics",
+                          environment: "any aquatic",
+                          summary: "This lumbering hard-shelled crab stands as tall as a dwarf, its massive pincers waving menacingly.",
+                          desc: "Crab, Giant Crab This lumbering hard-shelled crab stands as tall as a dwarf, its massive pincers waving menacingly. Giant Crab CR 2 Source Pathfinder RPG Bestiary pg. 50 XP 600 N Medium vermin (aquatic) Init +1; Senses darkvision 60 ft.; Perception +4 Defense AC 16, touch 11, flat-footed 15 (+1 Dex, +5 natural) hp 19 (3d8+6) Fort +5, Ref +2, Will +1 Immune mind-affecting effects Offense Speed 30 ft., swim 20 ft. Melee 2 claws +4 (1d4+2 plus grab) Special Attacks constrict (1d4+2) Statistics Str 15, Dex 13, Con 14, Int —, Wis 10, Cha 2 Base Atk +2; CMB +4 (+8 grapple); CMD 15 (27 vs. trip) Skills Perception +4, Swim +10; Racial Modifiers +4 Perception SQ water dependency Ecology Environment any aquatic Organization solitary or cast (2–12) Treasure none Special Abilities Water Dependency (Ex) Giant crabs can survive out of the water for 1 hour per point of Constitution. Beyond this limit, a giant crab runs the risk of suffocation, as if it were drowning. Description Giant crabs behave much like their smaller cousins, feeding on both plant material like algae and fungus and animal matter such as fish, seabirds, and even unwary humanoids. The coloration of a giant crab’s hard exoskeleton varies widely depending on species, and over time even shifts in response to its diet. Other species of giant crab exist as well, some smaller but most quite a bit larger. You can adjust the stats given here by changing Hit Dice and size (changing Strength, Dexterity, and Constitution as appropriate) to represent a wide range of different species of giant crab. The following table lists the most common variants. Species CR Size HD King crab 1/4 Tiny 1d8 Coconut crab 1/2 Small 1d8 Rock crab 4 Large 5d8 Shark-eating crab 7 Huge 8d8 Great reef crab 10 Gargantuan 11d8 Shipwrecker crab 13 Colossal 14d8",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Crocodile", cr: "2", type: "animal", size: "Large", alignment: "N",
+                          hp: "22 (3d8+9)", ac: 14,
+                          fort: 6, ref: 4, will: 2, init_: 1,
+                          str: 19, dex: 12, con: 17, int_: 1, wis: 12, cha: 2,
+                          senses: "low-light vision; Perception +8Defense", speed: "20 ft., swim 30 ft.; sprint",
+                          attacks: "bite +5 (1d8+4 plus grab) and tail slap +0 (1d12+2)",
+                          specialAbilities: "death roll (1d8+6 plus trip)Statistics",
+                          environment: "warm rivers and marshes",
+                          summary: "This reptile lunges out of the placid water with shocking speed. Its jaw gapes open in a roar, its powerful tail lashing behind.",
+                          desc: "Crocodile This reptile lunges out of the placid water with shocking speed. Its jaw gapes open in a roar, its powerful tail lashing behind. Crocodile CR 2 Source Pathfinder RPG Bestiary pg. 51 XP 600 N Large animal Init +1; Senses low-light vision; Perception +8 Defense AC 14, touch 10, flat-footed 13 (+1 Dex, +4 natural, –1 size) hp 22 (3d8+9) Fort +6, Ref +4, Will +2 Offense Speed 20 ft., swim 30 ft.; sprint Melee bite +5 (1d8+4 plus grab) and tail slap +0 (1d12+2) Space 10 ft., Reach 5 ft. Special Attacks death roll (1d8+6 plus trip) Statistics Str 19, Dex 12, Con 17, Int 1, Wis 12, Cha 2 Base Atk +2; CMB +7 (+11 grapple); CMD 18 (22 vs. trip) Feats Skill Focus (Perception , Stealth) Skills Perception +8, Stealth +5 (+13 in water), Swim +12; Racial Modifiers +8 on Stealth in water SQ hold breath Ecology Environment warm rivers and marshes Organization solitary, pair, or colony (3–12) Treasure none Special Abilities Death Roll (Ex) When grappling a foe of its size or smaller, a crocodile can perform a death roll upon making a successful grapple check. As it clings to its foe, it tucks in its legs and rolls rapidly, twisting and wrenching its victim. The crocodile inflicts its bite damage and knocks the creature prone. If successful, the crocodile maintains its grapple. Hold Breath (Ex) A crocodile can hold its breath for a number of rounds equal to 4 times its Constitution score before it risks drowning. Sprint (Ex) Once per minute a crocodile may sprint, increasing its land speed to 40 feet for 1 round. Description A crocodile is a primeval reptile that dwells in swamps or along the banks of rivers, a habitat that often puts it in violent contact with unsuspecting prey that come to the water’s edge to drink. The typical crocodile is 14 feet long and weighs 1,400 pounds, but larger species exist. You can use these statistics for similar creatures, such as alligators.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Dark Folk, Dark Creeper", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "19 (3d8+6)", ac: 16,
+                          fort: 3, ref: 6, will: 1, init_: 3,
+                          str: 11, dex: 17, con: 14, int_: 9, wis: 10, cha: 8,
+                          senses: "see in darkness; Perception +4Defense", speed: "30 ft.",
+                          attacks: "dagger +6 (1d3/19–20 plus poison)",
+                          specialAbilities: "death throes, sneak attack (+1d6)",
+                          environment: "any underground",
+                          summary: "Filthy, reeking black rags wrap this small humanoid from head to toe, leaving only its hands and pale white nose visible.",
+                          desc: "Dark Folk, Dark Creeper Filthy, reeking black rags wrap this small humanoid from head to toe, leaving only its hands and pale white nose visible. Dark Creeper CR 2 Source Pathfinder RPG Bestiary pg. 53 XP 600 CN Small humanoid (dark folk) Init +3; Senses see in darkness; Perception +4 Defense AC 16, touch 14, flat-footed 13 (+2 armor, +3 Dex, +1 size) hp 19 (3d8+6) Fort +3, Ref +6, Will +1 Weaknesses light blindness Offense Speed 30 ft. Melee dagger +6 (1d3/19–20 plus poison) Special Attacks death throes, sneak attack (+1d6) Spell-Like Abilities (CL 3rd) At will— darkness , detect magic Statistics Str 11, Dex 17, Con 14, Int 9, Wis 10, Cha 8 Base Atk +2; CMB +1; CMD 14 Feats Skill Focus (Sleight of Hand) , Weapon Finesse Skills Climb +8, Perception +4, Sleight of Hand +7, Stealth +12; Racial Modifiers +4 Climb, +4 Perception, +4 Stealth Languages Dark Folk SQ poison use, rag armor Ecology Environment any underground Organization solitary, pair, gang (3–6), or clan (20–80 plus 1 dark stalker per 20 dark creepers) Treasure standard (dagger, black poison [3 doses], other gear) Special Abilities Death Throes (Su) When a dark creeper is slain, its body combusts in a flash of bright white light, leaving its gear in a heap on the ground. All creatures within a 10-foot burst must make a DC 13 Fortitude save or be blinded for 1d6 rounds. Other dark creepers within 10 feet are automatically blinded for at least 1 round, due to their light blindness. The save is Constitution-based. Poison Use (Ex) Dark creepers are skilled in the use of poison and never risk accidentally poisoning themselves. Dark creepers favor a foul-smelling black paste distilled from certain deep-underground fungi known as black smear—injury; save Fort DC 15; frequency 1/round for 6 rounds; effect 1d2 Str; cure 1 save. Rag Armor (Ex) A dark creeper’s multiple layers of filthy rags function as leather armor when worn by one of their kind. See in Darkness (Su) A dark creeper can see perfectly in darkness of ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Demon, Dretch", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "18 (2d10+7)", ac: 14,
+                          fort: 5, ref: 0, will: 3, init_: 0,
+                          str: 12, dex: 10, con: 14, int_: 5, wis: 11, cha: 11,
+                          senses: "darkvision 60 ft.; Perception +5Defense", speed: "20 ft.",
+                          attacks: "2 claws +4 (1d4+1), bite +4 (1d4+1)",
+                          specialAbilities: "",
+                          environment: "any (Abyss)",
+                          summary: "This creature’s bloated frame shudders with each heaving step, yet despite its shape, the thing moves with surprising quickness.",
+                          desc: "Demon, Dretch This creature’s bloated frame shudders with each heaving step, yet despite its shape, the thing moves with surprising quickness. Dretch CR 2 Source Pathfinder RPG Bestiary pg. 60 XP 600 CE Small outsider (chaotic, demon, evil, extraplanar) Init +0; Senses darkvision 60 ft.; Perception +5 Defense AC 14, touch 11, flat-footed 14 (+3 natural, +1 size) hp 18 (2d10+7) Fort +5, Ref +0, Will +3 DR 5/cold iron or good; Immune electricity, poison; Resist acid 10, cold 10, fire 10 Offense Speed 20 ft. Melee 2 claws +4 (1d4+1), bite +4 (1d4+1) Spell-Like Abilities (CL 2nd) 1/day— cause fear (DC 11), stinking cloud (DC 13), summon (level 1, 1 dretch 35%) Statistics Str 12, Dex 10, Con 14, Int 5, Wis 11, Cha 11 Base Atk +2; CMB +2; CMD 12 Feats Toughness Skills Escape Artist +5, Perception +5, Stealth +9 Languages Abyssal (cannot speak); telepathy 100 ft. (limited to Abyssal-speaking targets) Ecology Environment any (Abyss) Organization solitary, pair, gang (3–5), crowd (6–12), or mob (13+) Treasure none Description Even the lowest demons of the Abyss are dangerous and filled with a driving need to spread ruin and dismay. The lowly dretch is as hideous and foul as it is cruel, even if it lacks the strength and power to realize its need to brutalize others in its native realm. The lot of the dretch’s existence is to serve more powerful demons as victims, and only the lucky few survive long enough to evolve. The dretch is a favorite target for dabblers in Abyssal summonings to call forth. Relatively weak and easy to bully, dretches can often be pressured into long periods of servitude with only vague promises of the opportunity to vent their frustrations and anger on softer foes. Yet the prospective dretch-summoner would do well to remember that these demons are as craven and untrustworthy as they come. A dretch faced with a more powerful foe is only too eager to trade what it knows for its pitiful excuse for a life. Unlike most demons, a dretch’s slovenly personalit",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Demon, Quasit", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "16 (3d10); fast healing 2", ac: 16,
+                          fort: 1, ref: 5, will: 4, init_: 6,
+                          str: 8, dex: 14, con: 11, int_: 11, wis: 12, cha: 11,
+                          senses: "darkvision 60 ft.; Perception +7Defense", speed: "20 ft., fly 50 ft. (perfect)",
+                          attacks: "2 claws +7 (1d3–1 plus poison), bite +7 (1d4–1)",
+                          specialAbilities: "",
+                          environment: "any (Abyss)",
+                          summary: "Ram horns curl back from the twisted head of this tiny winged demon, and its body is thin and wiry.",
+                          desc: "Demon, Quasit Ram horns curl back from the twisted head of this tiny winged demon, and its body is thin and wiry. Quasit CR 2 Source Pathfinder RPG Bestiary pg. 66 XP 600 CE Tiny outsider (chaotic, demon, evil, extraplanar) Init +6; Senses darkvision 60 ft.; Perception +7 Defense AC 16, touch 14, flat-footed 14 (+2 Dex, +2 natural, +2 size) hp 16 (3d10); fast healing 2 Fort +1, Ref +5, Will +4 DR 5/cold iron or good; Immune electricity, poison; Resist acid 10, cold 10, fire 10 Offense Speed 20 ft., fly 50 ft. (perfect) Melee 2 claws +7 (1d3–1 plus poison), bite +7 (1d4–1) Space 2-1/2 ft., Reach 0 ft. Spell-Like Abilities (CL 6th) At will— detect good , detect magic , invisibility (self only) 1/day— cause fear (30-foot radius, DC 11) 1/week— commune (six questions) Statistics Str 8, Dex 14, Con 11, Int 11, Wis 12, Cha 11 Base Atk +3; CMB +0; CMD 12 Feats Improved Initiative , Weapon Finesse Skills Bluff +6, Fly +20, Intimidate +6, Knowledge (planes) +6, Perception +7, Stealth +16 Languages Abyssal, Common; telepathy (touch) SQ change shape (2 of the following forms: bat, Small centipede, toad, or wolf; polymorph ) Ecology Environment any (Abyss) Organization solitary or flock (2–12) Treasure standard Special Abilities Poison (Ex) Claw—injury; save Fortitude DC 13; frequency 1/round for 6 rounds; effect 1d2 Dexterity; cure 2 consecutive saves. The DC includes a +2 racial bonus. Description The quasit is perhaps the least powerful demon, yet it is not the least respected—even quasits hold themselves above the dretch horde, and true to their natures, dretches lack the courage or drive to prove the quaits wrong. A quasit’s first role in life is that of a familiar to a spellcasting master, but those quasits who escape from this humiliating servitude become free-willed and much more dangerous. A typical quasit stands a foot and a half tall, and weighs only 8 pounds. Alone among the demonic horde, quasits do not form from the dead souls of evil mortals. Instead, they form f",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Devil, Imp", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "16 (3d10); fast healing 2", ac: 17,
+                          fort: 1, ref: 6, will: 4, init_: 3,
+                          str: 10, dex: 17, con: 10, int_: 13, wis: 12, cha: 14,
+                          senses: "darkvision 60 ft., detect good, detect magic, see in darkness; Perception +7Defense", speed: "20 ft., fly 50 ft. (perfect)",
+                          attacks: "sting +8 (1d4 plus poison)",
+                          specialAbilities: "",
+                          environment: "any (Hell)",
+                          summary: "Fiendish wings and a whipping scorpion-like tail lash behind this diminutive, red-skinned nuisance.",
+                          desc: "Devil, Imp Fiendish wings and a whipping scorpion-like tail lash behind this diminutive, red-skinned nuisance. Imp CR 2 Source Pathfinder RPG Bestiary pg. 78 XP 600 LE Tiny outsider (devil, evil, extraplanar, lawful) Init +3; Senses darkvision 60 ft., detect good , detect magic , see in darkness; Perception +7 Defense AC 17, touch 16, flat-footed 13 (+3 Dex, +1 dodge, +1 natural, +2 size) hp 16 (3d10); fast healing 2 Fort +1, Ref +6, Will +4 DR 5/good or silver; Immune fire, poison; Resist acid 10, cold 10 Offense Speed 20 ft., fly 50 ft. (perfect) Melee sting +8 (1d4 plus poison) Space 2-1/2 ft., Reach 0 ft. Spell-Like Abilities (CL 6th) Constant— detect good , detect magic At will— invisibility (self only) 1/day— augury , suggestion (DC 15) 1/week— commune (6 questions, CL 12th) Statistics Str 10, Dex 17, Con 10, Int 13, Wis 12, Cha 14 Base Atk +3; CMB +1; CMD 15 Feats Dodge , Weapon Finesse Skills Acrobatics +9, Bluff +8, Fly +21, Knowledge (arcana) +7, Knowledge (planes) +7, Perception +7, Spellcraft +7 Languages Common, Infernal SQ change shape (boar, giant spider, rat, or raven, beast shape I ) Ecology Environment any (Hell) Organization solitary, pair, or flock (3–10) Treasure standard Special Abilities Poison (Ex) Sting—injury; save Fort DC 13; frequency 1/round for 6 rounds; effect 1d2 Dex; cure 1 save. The save DC is Constitution-based, and includes a +2 racial bonus. Description Born directly from the pits of Hell, imps are among the least of the true devils; these vicious, manipulative fiends, however, hold an important role in the corruption of mortal souls. Unfettered from the ranks and duties of diabolical armies, imps delight in any opportunity to travel to the Material Plane and subtly tempt mortals toward acts of ever-greater depravity. Willingly serving spellcasters as familiars, imps play the role of dutiful servants, often granting their masters cunning advice and infernal insights. In truth, though, an imp works to deliver souls to Hell, assuri",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Eel, Electric Eel", cr: "2", type: "animal", size: "Small", alignment: "N",
+                          hp: "17 (2d8+8)", ac: 15,
+                          fort: 7, ref: 5, will: 0, init_: 6,
+                          str: 13, dex: 14, con: 19, int_: 1, wis: 10, cha: 6,
+                          senses: "low-light vision; Perception +4Defense", speed: "5 ft., swim 30 ft.",
+                          attacks: "bite +3 (1d6+1) and tail –2 touch (1d6 electricity)Statistics",
+                          specialAbilities: "",
+                          environment: "warm fresh water",
+                          summary: "This six-foot-long, snake-like fish moves slowly. A strange popping and snapping sound occasionally emits from the creature’s body.",
+                          desc: "Eel, Electric Eel This six-foot-long, snake-like fish moves slowly. A strange popping and snapping sound occasionally emits from the creature’s body. Electric Eel CR 2 Source Pathfinder RPG Bestiary pg. 119 XP 600 N Small animal Init +6; Senses low-light vision; Perception +4 Defense AC 15, touch 13, flat-footed 13 (+2 Dex, +2 natural, +1 size) hp 17 (2d8+8) Fort +7, Ref +5, Will +0 Resist electricity 10 Offense Speed 5 ft., swim 30 ft. Melee bite +3 (1d6+1) and tail –2 touch (1d6 electricity) Statistics Str 13, Dex 14, Con 19, Int 1, Wis 10, Cha 6 Base Atk +1; CMB +1; CMD 13 (can’t be tripped) Feats Improved Initiative Skills Escape Artist +10, Perception +4, Stealth +10, Swim +9; Racial Modifiers +8 Escape Artist Ecology Environment warm fresh water Organization solitary Treasure none Special Abilities Electricity (Ex) An electric eel can produce a powerful jolt of electricity from its tail, delivering the jolt with a successful touch attack. On a critical hit, the creature struck must make a DC 15 Fortitude save or be stunned for 1d4 rounds. The save DC is Constitution-based. Description The electric eel is a curious fish that breathes air instead of water, yet certainly its most unusual characteristic is its ability to generate powerful jolts of electricity. An electric eel is 6 feet long and weighs 45 pounds.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Herd Animal, Aurochs", cr: "2", type: "animal", size: "Large", alignment: "N",
+                          hp: "22 (3d8+9)", ac: 13,
+                          fort: 6, ref: 3, will: 1, init_: 0,
+                          str: 23, dex: 10, con: 17, int_: 2, wis: 11, cha: 4,
+                          senses: "low-light vision, scent; Perception +9Defense", speed: "40 ft.",
+                          attacks: "gore +7 (1d8+9)",
+                          specialAbilities: "stampede, trample (2d6+9, DC 17)Statistics",
+                          environment: "temperate plains",
+                          summary: "This large, horned bull has a dirty black hide and an aggressive temper. Its horns are wide and sharp.",
+                          desc: "Herd Animal, Aurochs This large, horned bull has a dirty black hide and an aggressive temper. Its horns are wide and sharp. Aurochs CR 2 Source Pathfinder RPG Bestiary pg. 174 XP 600 N Large animal Init +0; Senses low-light vision, scent; Perception +9 Defense AC 13, touch 9, flat-footed 13 (+4 natural, –1 size) hp 22 (3d8+9) Fort +6, Ref +3, Will +1 Offense Speed 40 ft. Melee gore +7 (1d8+9) Space 10 ft., Reach 5 ft. Special Attacks stampede, trample (2d6+9, DC 17) Statistics Str 23, Dex 10, Con 17, Int 2, Wis 11, Cha 4 Base Atk +2; CMB +9; CMD 19 (23 vs. trip) Feats Endurance , Skill Focus (Perception) Skills Perception +9 Ecology Environment temperate plains Organization solitary, pair, or herd (3–30) Treasure none Special Abilities Stampede (Ex) A stampede occurs if three or more creatures with stampede make a trample attack while remaining adjacent to each other. While stampeding, the creatures can trample foes of their size or smaller, and the trample’s save DC increases by +2. Description Aurochs (both singular and plural) are large herd animals similar to domesticated cattle.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Iron Cobra", cr: "2", type: "construct", size: "Small", alignment: "N",
+                          hp: "15 (1d10+10)", ac: 20,
+                          fort: 0, ref: 2, will: 0, init_: 2,
+                          str: 12, dex: 15, con: 10, int_: 10, wis: 11, cha: 1,
+                          senses: "darkvision 60 ft., low-light vision; Perception +0Defense", speed: "40 ft.",
+                          attacks: "bite +3 (1d6+1 plus poison)Statistics",
+                          specialAbilities: "",
+                          environment: "any",
+                          summary: "This creature resembles a small, metallic cobra. Its body is made of overlapping iron plates, and its eyes are pinpoints of red light.",
+                          desc: "Iron Cobra This creature resembles a small, metallic cobra. Its body is made of overlapping iron plates, and its eyes are pinpoints of red light. Iron Cobra CR 2 Source Pathfinder RPG Bestiary pg. 182 XP 600 N Small construct Init +2; Senses darkvision 60 ft., low-light vision; Perception +0 Defense AC 20, touch 13, flat-footed 18 (+2 Dex, +7 natural, +1 size) hp 15 (1d10+10) Fort +0, Ref +2, Will +0 DR 5/—; Immune construct traits; SR 13 Offense Speed 40 ft. Melee bite +3 (1d6+1 plus poison) Statistics Str 12, Dex 15, Con —, Int —, Wis 11, Cha 1 Base Atk +1; CMB +1; CMD 13 (can’t be tripped) Skills Stealth +12; Racial Modifiers +6 Stealth SQ find target Ecology Environment any Organization solitary, pair, or nest (3–10) Treasure none Special Abilities Find Target (Su) Once per day, an iron cobra’s creator can order it to find and kill a specific creature within 1 mile, which it does as if guided by discern location . The creator must have seen or be holding an item from the specified creature for this order to function. Poison (Ex) An iron cobra’s bite injects poison from a hidden reservoir within its body. Because it is a construct, the cobra does not naturally produce this poison, and its creator must refill this reservoir manually. The reservoir holds enough poison for 3 successful bite attacks, after which the creature merely deals bite damage. Refilling the reservoir takes 5 rounds and provokes attacks of opportunity. The creator can fill the reservoir with any injury poison (typically black adder venom), though acid, alchemical substances, and even stranger liquids have been used. Black Adder Venom : Bite—injury; save Fort DC 11; frequency 1/round for 6 rounds; effect 1d2 Con damage; cure 1 save. Description The iron cobra is a simple construct that resembles a hooded cobra made out of metal. The iron cobra is typically used as a bodyguard or guardian of treasure, though its magical ability to unerringly locate creatures means it is also used as an assassin. ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Leech, Giant Leech", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "19 (3d8+6)", ac: 11,
+                          fort: 5, ref: 2, will: 1, init_: 1,
+                          str: 11, dex: 12, con: 14, int_: 10, wis: 10, cha: 1,
+                          senses: "blindsight 30 ft., scent; Perception +0Defense", speed: "5 ft., swim 20 ft.",
+                          attacks: "bite +2 (1d6 plus attach)",
+                          specialAbilities: "blood drainStatistics",
+                          environment: "temperate or warm marshes",
+                          summary: "A parasite ballooned to monstrous proportions undulates in the muck, its circular maw a spiral of teeth.",
+                          desc: "Leech, Giant Leech A parasite ballooned to monstrous proportions undulates in the muck, its circular maw a spiral of teeth. Giant Leech CR 2 Source Pathfinder RPG Bestiary pg. 187 XP 600 N Medium vermin (aquatic) Init +1; Senses blindsight 30 ft., scent; Perception +0 Defense AC 11, touch 11, flat-footed 10 (+1 Dex) hp 19 (3d8+6) Fort +5, Ref +2, Will +1 Immune mind-affecting effects Weaknesses susceptible to salt Offense Speed 5 ft., swim 20 ft. Melee bite +2 (1d6 plus attach) Special Attacks blood drain Statistics Str 11, Dex 12, Con 14, Int —, Wis 10, Cha 1 Base Atk +2; CMB +2 (+10 when attached); CMD 13 (can’t be tripped) Skills Stealth +1 (+9 in swamps), Swim +8; Racial Modifiers +8 Stealth in swamps SQ amphibious Ecology Environment temperate or warm marshes Organization cluster, pair, or brood (3–6) Treasure none Special Abilities Attach (Ex) When a giant leech hits with a bite attack, it latches onto its target and automatically grapples. The giant leech loses its Dexterity bonus to AC and has an AC of 10, but holds on with great tenacity and automatically inflicts bite damage each round. A giant leech has a +8 racial bonus to maintain its grapple on a foe once it is attached. An attached giant leech can be struck with a weapon or grappled itself—if its prey manages to win a grapple check or Escape Artist check against it, the giant leech is removed. Blood Drain (Ex) A giant leech drains blood at the end of each turn it is attached, inflicting 1 point of Strength and Constitution damage. Susceptible to Salt (Ex) A handful of salt burns a giant leech as if it were a flask of acid, causing 1d6 points of damage per use. Description These invertebrate parasitic relatives of the worm lurk in stagnant or slow-moving water, waiting for a suitable host.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Lizard, Monitor Lizard", cr: "2", type: "animal", size: "Medium", alignment: "N",
+                          hp: "22 (3d8+9)", ac: 15,
+                          fort: 8, ref: 5, will: 2, init_: 2,
+                          str: 17, dex: 15, con: 17, int_: 2, wis: 12, cha: 6,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "30 ft., swim 30 ft.",
+                          attacks: "bite +5 (1d8+4 plus grab and poison)Statistics",
+                          specialAbilities: "",
+                          environment: "warm forests or plains",
+                          summary: "This immense lizard moves with a slow but relentless gait. Its feet end in large talons, and ropes of drool hang from its toothy maw.",
+                          desc: "Lizard, Monitor Lizard This immense lizard moves with a slow but relentless gait. Its feet end in large talons, and ropes of drool hang from its toothy maw. Monitor Lizard CR 2 Source Pathfinder RPG Bestiary pg. 194 XP 600 N Medium animal Init +2; Senses low-light vision, scent; Perception +8 Defense AC 15, touch 12, flat-footed 13 (+2 Dex, +3 natural) hp 22 (3d8+9) Fort +8, Ref +5, Will +2 Offense Speed 30 ft., swim 30 ft. Melee bite +5 (1d8+4 plus grab and poison) Statistics Str 17, Dex 15, Con 17, Int 2, Wis 12, Cha 6 Base Atk +2; CMB +5 (+9 grapple); CMD 17 (21 vs. trip) Feats Great Fortitude , Skill Focus (Perception) Skills Climb +7, Perception +8, Stealth +10 (+14 in undergrowth), Swim +11; Racial Modifiers +4 Stealth (+8 in undergrowth) Ecology Environment warm forests or plains Organization solitary, pair, or pack (3–8) Treasure none Special Abilities Poison (Ex) Bite—injury; save Fort DC 14; onset 1 minute; frequency 1/hour for 6 hours; effect 1d2 Dexterity damage; cure 1 save. The save DC is Constitution-based. Description Monitor lizards are large enough to pose a threat to humans, and in some societies are often mistaken for dragons. Some can reach lengths of 10 feet or more and weights of 350 pounds.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Lycanthrope, Wererat (Human Form)", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "18 (2d8+6)", ac: 16,
+                          fort: 2, ref: 5, will: 3, init_: 2,
+                          str: 13, dex: 15, con: 14, int_: 10, wis: 16, cha: 6,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "30 ft.",
+                          attacks: "short sword +3 (1d6+1/19–20)",
+                          specialAbilities: "sneak attack +1d6Statistics",
+                          environment: "any urban",
+                          summary: "This hunched creature looks like a human in studded leather, but fur covers its body. Its face is rat-like, and it has a long, naked tail.",
+                          desc: "Lycanthrope, Wererat (Human Form) This hunched creature looks like a human in studded leather, but fur covers its body. Its face is rat-like, and it has a long, naked tail. Wererat (Human Form) CR 2 Source Pathfinder RPG Bestiary pg. 197 XP 600 Human natural wererat rogue 2 (augmented humanoid) LE Medium humanoid (human, shapechanger) Init +2; Senses low-light vision, scent; Perception +8 Defense AC 16, touch 13, flat-footed 13 (+3 armor, +2 Dex, +1 dodge) hp 18 (2d8+6) Fort +2, Ref +5, Will +3 Defensive Abilities evasion Offense Speed 30 ft. Melee short sword +3 (1d6+1/19–20) Ranged light crossbow +3 (1d8/19–20) Special Attacks sneak attack +1d6 Statistics Str 13, Dex 15, Con 14, Int 10, Wis 16, Cha 6 Base Atk +1; CMB +2; CMD 15 Feats Dodge , Weapon Finesse Skills Acrobatics +7, Bluff +3, Climb +6, Intimidate +3, Knowledge (local) +5, Perception +8, Sense Motive +8, Stealth +7, Swim +6 Languages Common SQ change shape (human, hybrid, and dire rat; polymorph ), rogue talents (fast stealth), lycanthropic empathy (rats and dire rats), trapfinding Ecology Environment any urban Organization solitary, pair, pack (5–10), or guild (11–30 plus 5–12 dire rats) Treasure NPC gear (masterwork studded leather, short sword, light crossbow with 20 bolts, other treasure) Description Natural wererats tend to be short and wiry, with constantly darting eyes and frequent nervous twitches. Males often have thin, ragged moustaches. Wererats prefer cities where they can blend in with the humanoid and rat population. Their abilities make them especially good at thieving and spying, and in many cities the thieves’ guild employs numerous wererat members.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Lycanthrope, Wererat (Hybrid Form)", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "20 (2d8+8)", ac: 19,
+                          fort: 3, ref: 6, will: 3, init_: 3,
+                          str: 15, dex: 17, con: 16, int_: 10, wis: 16, cha: 6,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "30 ft.",
+                          attacks: "short sword +4 (1d6+2/19–20), bite –1 (1d4+1 plus disease and curse of lycanthropy; DC 15)",
+                          specialAbilities: "sneak attack +1d6Statistics",
+                          environment: "any urban",
+                          summary: "This hunched creature looks like a human in studded leather, but fur covers its body. Its face is rat-like, and it has a long, naked tail.",
+                          desc: "Lycanthrope, Wererat (Hybrid Form) This hunched creature looks like a human in studded leather, but fur covers its body. Its face is rat-like, and it has a long, naked tail. Wererat (Hybrid Form) CR 2 Source Pathfinder RPG Bestiary pg. 197 XP 600 Human natural wererat rogue 2 (augmented humanoid) LE Medium humanoid (human, shapechanger) Init +3; Senses low-light vision, scent; Perception +8 Defense AC 19, touch 14, flat-footed 15 (+3 armor, +3 Dex, +1 dodge, +2 natural) hp 20 (2d8+8) Fort +3, Ref +6, Will +3 Defensive Abilities evasion; DR 10/silver Offense Speed 30 ft. Melee short sword +4 (1d6+2/19–20), bite –1 (1d4+1 plus disease and curse of lycanthropy; DC 15) Ranged light crossbow +4 (1d8/19–20) Special Attacks sneak attack +1d6 Statistics Str 15, Dex 17, Con 16, Int 10, Wis 16, Cha 6 Base Atk +1; CMB +3; CMD 17 Feats Dodge , Weapon Finesse Skills Acrobatics +8, Bluff +3, Climb +7, Intimidate +3, Knowledge (local) +5, Perception +8, Sense Motive +8, Stealth +8, Swim +7 Languages Common SQ change shape (human, hybrid, and dire rat; polymorph ), rogue talents (fast stealth), lycanthropic empathy (rats and dire rats), trapfinding Ecology Environment any urban Organization solitary, pair, pack (5–10), or guild (11–30 plus 5–12 dire rats) Treasure NPC gear (masterwork studded leather, short sword, light crossbow with 20 bolts, other treasure) Special Abilities Disease (Ex) Filth fever : Bite—injury; save Fort DC 14; onset 1d3 days; frequency 1/day; effect 1d3 Dex damage and 1d3 Con damage; cure 2 consecutive saves. The save DC is Constitution-based. Description Natural wererats tend to be short and wiry, with constantly darting eyes and frequent nervous twitches. Males often have thin, ragged moustaches. Wererats prefer cities where they can blend in with the humanoid and rat population. Their abilities make them especially good at thieving and spying, and in many cities the thieves’ guild employs numerous wererat members.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Lycanthrope, Werewolf (Human Form)", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "19 (2d10+4)", ac: 17,
+                          fort: 5, ref: 1, will: 2, init_: 5,
+                          str: 17, dex: 13, con: 14, int_: 8, wis: 14, cha: 8,
+                          senses: "low-light vision, scent; Perception +4Defense", speed: "30 ft. (20 ft. in armor)",
+                          attacks: "longsword +5 (1d8+4/19–20)",
+                          specialAbilities: "A lycanthrope retains all the special attacks, qualities, and abilities of the base creature. In hybrid or animal form it gains the special attacks, qualities, and abilities of the base animal. A lycanthrope also gains low-light vision, scent, and the following:",
+                          environment: "any land",
+                          summary: "This muscular creature has a man’s body but the snarling head and fur coat of a wolf.",
+                          desc: "Lycanthrope, Werewolf (Human Form) This muscular creature has a man’s body but the snarling head and fur coat of a wolf. Werewolf (Human Form) CR 2 Source Pathfinder RPG Bestiary pg. 198 XP 600 Human natural werewolf fighter 2 CE Medium humanoid (human, shapechanger) Init +5; Senses low-light vision, scent; Perception +4 Defense AC 17, touch 11, flat-footed 16 (+6 armor, +1 Dex) hp 19 (2d10+4) Fort +5, Ref +1, Will +2 (+3 vs. fear) Defensive Abilities bravery +1 Offense Speed 30 ft. (20 ft. in armor) Melee longsword +5 (1d8+4/19–20) Ranged light crossbow +3 (1d8/19–20) Statistics Str 17, Dex 13, Con 14, Int 8, Wis 14, Cha 8 Base Atk +2; CMB +5; CMD 16 Feats Cleave , Combat Reflexes , Improved Initiative , Power Attack Skills Climb +3, Intimidate +4, Perception +4 Languages Common SQ change shape (human, hybrid, and wolf; polymorph ), lycanthropic empathy (wolves and dire wolves) Ecology Environment any land Organization solitary, pair, or pack (3–6) Treasure NPC gear (chainmail, longsword, light crossbow with 20 bolts, other treasure) Description In their humanoid form, werewolves look like normal people, though some tend to look a bit feral and have wild hair. Eyebrows that grow together, index fingers longer than the middle fingers, and strange birthmarks on the palm of the hand are all commonly accepted indications that a person is in fact a werewolf. Of course, such telltale signs are not always accurate, for such physical traits exist in normal people as well, but in areas where werewolves are a common problem, the traits can be damning regardless. Of all the various types of lycanthropes, it is the werewolf that is the most widespread and the most feared. Stories of werewolves haunting lonely forest roads, prowling misty moors on the outskirts of rural societies, or dwelling in the shadows of the largest cities are widespread as well. In most societies, werewolves are feared and despised—and with good reason, as the typical werewolf personifies all that is sav",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Lycanthrope, Werewolf (Hybrid Form)", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "21 (2d10+6)", ac: 22,
+                          fort: 6, ref: 2, will: 2, init_: 5,
+                          str: 19, dex: 15, con: 17, int_: 8, wis: 14, cha: 8,
+                          senses: "low-light vision, scent; Perception +4Defense", speed: "30 ft. (20 ft. in armor)",
+                          attacks: "longsword +6 (1d8+6/19–20), bite +1 (1d6+1 plus trip and curse of lycanthropy)",
+                          specialAbilities: "A lycanthrope retains all the special attacks, qualities, and abilities of the base creature. In hybrid or animal form it gains the special attacks, qualities, and abilities of the base animal. A lycanthrope also gains low-light vision, scent, and the following:",
+                          environment: "any land",
+                          summary: "This muscular creature has a man’s body but the snarling head and fur coat of a wolf.",
+                          desc: "Lycanthrope, Werewolf (Hybrid Form) This muscular creature has a man’s body but the snarling head and fur coat of a wolf. Werewolf (Hybrid Form) CR 2 Source Pathfinder RPG Bestiary pg. 198 XP 600 Human natural werewolf fighter 2 CE Medium humanoid (human, shapechanger) Init +5; Senses low-light vision, scent; Perception +4 Defense AC 22, touch 12, flat-footed 20 (+6 armor, +2 Dex, +4 natural) hp 21 (2d10+6) Fort +6, Ref +2, Will +2 (+3 vs. fear) Defensive Abilities bravery +1; DR 10/silver Offense Speed 30 ft. (20 ft. in armor) Melee longsword +6 (1d8+6/19–20), bite +1 (1d6+1 plus trip and curse of lycanthropy) Ranged light crossbow +4 (1d8/19–20) Statistics Str 19, Dex 15, Con 17, Int 8, Wis 14, Cha 8 Base Atk +2; CMB +6; CMD 18 Feats Cleave , Combat Reflexes , Improved Initiative , Power Attack Skills Climb +4, Intimidate +4, Perception +4 Languages Common SQ change shape (human, hybrid, and wolf; polymorph ), lycanthropic empathy (wolves and dire wolves) Ecology Environment any land Organization solitary, pair, or pack (3–6) Treasure NPC gear (chainmail, longsword, light crossbow with 20 bolts, other treasure) Description In their humanoid form, werewolves look like normal people, though some tend to look a bit feral and have wild hair. Eyebrows that grow together, index fingers longer than the middle fingers, and strange birthmarks on the palm of the hand are all commonly accepted indications that a person is in fact a werewolf. Of course, such telltale signs are not always accurate, for such physical traits exist in normal people as well, but in areas where werewolves are a common problem, the traits can be damning regardless. Of all the various types of lycanthropes, it is the werewolf that is the most widespread and the most feared. Stories of werewolves haunting lonely forest roads, prowling misty moors on the outskirts of rural societies, or dwelling in the shadows of the largest cities are widespread as well. In most societies, werewolves are feared and de",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Morlock", cr: "2", type: "monstrous humanoid", size: "Medium", alignment: "CE",
+                          hp: "22 (3d10+6)", ac: 15,
+                          fort: 3, ref: 9, will: 5, init_: 8,
+                          str: 14, dex: 19, con: 15, int_: 5, wis: 14, cha: 6,
+                          senses: "darkvision 120 ft., scent; Perception +2Defense", speed: "40 ft., climb 30 ft.",
+                          attacks: "club +5 (1d6+2), bite +0 (1d4+1)",
+                          specialAbilities: "leap attack, sneak attack +1d6, swarmingStatistics",
+                          environment: "any underground",
+                          summary: "Skin pale as a slug’s belly, eyes huge and bulging, this thing crawls down the wall like a spider, but its shape is hideously humanoid.",
+                          desc: "Morlock Skin pale as a slug’s belly, eyes huge and bulging, this thing crawls down the wall like a spider, but its shape is hideously humanoid. Morlock CR 2 Source Pathfinder RPG Bestiary pg. 209 , Into the Darklands pg. 54 XP 600 CE Medium monstrous humanoid Init +8; Senses darkvision 120 ft., scent; Perception +2 Defense AC 15, touch 14, flat-footed 11 (+4 Dex, +1 natural) hp 22 (3d10+6) Fort +3, Ref +9, Will +5 Immune disease, poison Weaknesses light blindness Offense Speed 40 ft., climb 30 ft. Melee club +5 (1d6+2), bite +0 (1d4+1) Special Attacks leap attack, sneak attack +1d6, swarming Statistics Str 14, Dex 19, Con 15, Int 5, Wis 14, Cha 6 Base Atk +3; CMB +5; CMD 19 Feats Improved Initiative , Lightning Reflexes Skills Acrobatics +13, Climb +22, Stealth +8 (+12 in caverns); Racial Modifiers +4 Stealth in caverns, +8 Acrobatics, +16 Climb Languages Undercommon SQ expert climber Ecology Environment any underground Organization solitary, pair, band (3–6), or tribe (7–18) Treasure standard Special Abilities Expert Climber (Ex) A morlock can cling to cave walls and even ceilings as long as the surface has hand- and footholds. In effect, a morlock is treated as constantly being under a nonmagical version of the spell spider climb , save that it cannot cling to smooth surfaces. This ability doubles the normal +8 racial bonus to Climb checks normally afforded creatures with a climb speed to a +16 racial bonus. Leap Attack (Ex) As a standard action, a morlock may make a single attack during a jump. It can make this attack at any point along the course of the leap—the start, the end, or while in mid-air. While jumping, a morlock does not provoke attacks of opportunity for leaving a threatened square. Swarming (Ex) Morlocks dwell and fight in cramped quarters every day of their lives, and as such are quite adept at swarming foes. Up to two morlocks can share the same square at the same time. If two morlocks in the same square attack the same foe, they are considered to",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Rat, Rat Swarm", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "16 (3d8+3)", ac: 14,
+                          fort: 4, ref: 5, will: 2, init_: 6,
+                          str: 2, dex: 15, con: 13, int_: 2, wis: 13, cha: 2,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "15 ft., climb 15 ft., swim 15 ft.",
+                          attacks: "swarm (1d6 plus disease)",
+                          specialAbilities: "disease, distraction (DC 12)Statistics",
+                          environment: "any",
+                          summary: "A squirming, roiling mass of squeaking rats draws closer, teeth flashing and claws scratching everything in its path.",
+                          desc: "Rat, Rat Swarm A squirming, roiling mass of squeaking rats draws closer, teeth flashing and claws scratching everything in its path. Rat Swarm CR 2 Source Pathfinder RPG Bestiary pg. 232 XP 600 N Tiny animal (swarm) Init +6; Senses low-light vision, scent; Perception +8 Defense AC 14, touch 14, flat-footed 12 (+2 Dex, +2 size) hp 16 (3d8+3) Fort +4, Ref +5, Will +2 Defensive Abilities swarm traits Offense Speed 15 ft., climb 15 ft., swim 15 ft. Melee swarm (1d6 plus disease) Space 10 ft., Reach 0 ft. Special Attacks disease, distraction (DC 12) Statistics Str 2, Dex 15, Con 13, Int 2, Wis 13, Cha 2 Base Atk +2; CMB —; CMD — Feats Improved Initiative , Skill Focus (Perception) Skills Acrobatics +6, Climb +10, Perception +8, Stealth +14, Swim +10; Racial Modifiers uses Dex to modify Climb and Swim Ecology Environment any Organization solitary, pack (2–5 swarms), or infestation (6–12 swarms) Treasure none Special Abilities Disease (Ex) Filth fever: Swarm—injury; save Fort DC 12; onset 1d3 days; frequency 1/day; effect 1d3 Dex damage and 1d3 Con damage; cure 2 consecutive saves. The save DC is Constitution-based. Description A rat swarm typically consists of a biting, roiling mass of hundreds of disease-ridden rats driven to uncharacteristic heights of aggression by fantastic and overwhelming hunger. In such numbers, they become voracious hunters, capable of killing a full-grown human with hundreds of bites. Rat swarms are often found in the sewers of large human settlements. Rat swarms surround and attack any warm-blooded prey in their path.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Sahuagin", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "15 (2d10+4)", ac: 16,
+                          fort: 4, ref: 4, will: 4, init_: 1,
+                          str: 14, dex: 13, con: 14, int_: 14, wis: 13, cha: 9,
+                          senses: "blindsense 30 ft., darkvision 60 ft.; Perception +6Defense", speed: "30 ft., swim 60 ft.",
+                          attacks: "trident +4 (1d8+3), bite –1 (1d4+1) or 2 claws +4 (1d4+2), bite +4 (1d4+2)",
+                          specialAbilities: "blood frenzyStatistics",
+                          environment: "temperate or warm ocean",
+                          summary: "This scaly humanoid has a long, fish-like tail. Its arms and legs end in webbed claws, and its piscine head features a toothy maw.",
+                          desc: "Sahuagin This scaly humanoid has a long, fish-like tail. Its arms and legs end in webbed claws, and its piscine head features a toothy maw. Sahuagin CR 2 Source Pathfinder RPG Bestiary pg. 239 XP 600 LE Medium monstrous humanoid (aquatic) Init +1; Senses blindsense 30 ft., darkvision 60 ft.; Perception +6 Defense AC 16, touch 11, flat-footed 15 (+1 Dex, +5 natural) hp 15 (2d10+4) Fort +4, Ref +4, Will +4 Weaknesses light blindness Offense Speed 30 ft., swim 60 ft. Melee trident +4 (1d8+3), bite –1 (1d4+1) or 2 claws +4 (1d4+2), bite +4 (1d4+2) Ranged heavy crossbow +3 (1d10/19–20) Special Attacks blood frenzy Statistics Str 14, Dex 13, Con 14, Int 14, Wis 13, Cha 9 Base Atk +2; CMB +4; CMD 15 Feats Great Fortitude Skills Handle Animal +1, Perception +6, Ride +6, Stealth +6, Survival +6, Swim +15 Languages Aquan, Common; speak with sharks Ecology Environment temperate or warm ocean Organization Solitary, pair, team (5–8), patrol (11–20 plus 1 lieutenant of 3rd level and 1–2 sharks), band (20–80 plus 100% noncombatants, 1 lieutenant of 3rd level and 1 chieftain of 4th level per 20 adults, and 1–2 sharks), or tribe (70–160 plus 100% noncombatants, 1 lieutenant of 3rd level per 20 adults, 1 chieftain of 4th level per 40 adults, 9 guards of 4th level, 1–4 underpriestesses of 3rd–6th level, 1 priestess of 7th level, 1 baron of 6th–8th level, and 5–8 sharks) Treasure NPC gear (trident, heavy crossbow with 10 bolts, other treasure) Special Abilities Blood Frenzy (Ex) Once per day, a sahuagin that takes damage in combat can fly into a frenzy in the following round. It gains +2 Constitution and +2 Strength, but takes a –2 penalty to its AC. The frenzy lasts as long as the battle or 1 minute, whichever is shorter. Speak with Sharks (Su) A sahuagin can communicate telepathically with sharks to a distance of 150 feet. This communication is limited to simple concepts, such as “come here,” “defend me,” or “attack this target.” Description Ravenous and cruel, the sahuagin are, unfo",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Shark", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "22 (4d8+4)", ac: 14,
+                          fort: 7, ref: 5, will: 2, init_: 5,
+                          str: 17, dex: 12, con: 13, int_: 1, wis: 12, cha: 2,
+                          senses: "blindsense 30 ft., keen scent; Perception +8Defense", speed: "swim 60 ft.",
+                          attacks: "bite +5 (1d8+4)",
+                          specialAbilities: "",
+                          environment: "any ocean",
+                          summary: "This blue shark’s fins slice through the water, its black eyes rolling and its gaping jaws showing countless teeth.",
+                          desc: "Shark This blue shark’s fins slice through the water, its black eyes rolling and its gaping jaws showing countless teeth. Shark CR 2 Source Pathfinder RPG Bestiary pg. 247 XP 600 N Large animal (aquatic) Init +5; Senses blindsense 30 ft., keen scent; Perception +8 Defense AC 14, touch 10, flat-footed 13 (+1 Dex, +4 natural, –1 size) hp 22 (4d8+4) Fort +7, Ref +5, Will +2 Offense Speed swim 60 ft. Melee bite +5 (1d8+4) Space 10 ft., Reach 5 ft. Statistics Str 17, Dex 12, Con 13, Int 1, Wis 12, Cha 2 Base Atk +3; CMB +7; CMD 18 Feats Great Fortitude , Improved Initiative Skills Perception +8, Swim +11 Ecology Environment any ocean Organization solitary, pair, school (3–6), or pack (7–13) Treasure none Special Abilities Keen Scent (Ex) A shark can notice creatures by scent in a 180-foot radius underwater and can detect blood in the water at ranges of up to a mile. Description The shark is a relentless eating machine, a creature evolved over the course of eons to do one job perfectly—hunting. Sharks have achieved a special place in the lore of most seafaring races, who view them as devils, monsters, and the wrath of the gods. The shark presented here is a 10-foot-long, 300-pound blue shark. Smaller sharks exist, although these are not dangerous. The same cannot be said of larger sharks, such as the following (you can create stats for these sharks by applying the indicated simple templates). Hammerhead Shark (CR 3) : This shark has a distinctive hammer-shaped head. It is an advanced shark. Tiger Shark (CR 3) : Larger than the average shark, the ravenous tiger shark is a giant shark. Great White Shark (CR 4) : One of the most notorious maneaters of the sea, the truly immense great white shark is an advanced giant shark.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Shocker Lizard", cr: "2", type: "magical beast", size: "Small", alignment: "N",
+                          hp: "19 (3d10+3)", ac: 16,
+                          fort: 4, ref: 5, will: 2, init_: 6,
+                          str: 10, dex: 15, con: 13, int_: 2, wis: 13, cha: 6,
+                          senses: "darkvision 60 ft., electricity sense, low-light vision; Perception +8Defense", speed: "40 ft., climb 20 ft., swim 20 ft.",
+                          attacks: "bite +4 (1d4)",
+                          specialAbilities: "shockStatistics",
+                          environment: "warm marshes",
+                          summary: "This dog-sized lizard has two horns, one on either side of its head, and green scales that crackle with sparks of lightning.",
+                          desc: "Shocker Lizard This dog-sized lizard has two horns, one on either side of its head, and green scales that crackle with sparks of lightning. Shocker Lizard CR 2 Source Pathfinder RPG Bestiary pg. 248 XP 600 N Small magical beast Init +6; Senses darkvision 60 ft., electricity sense, low-light vision; Perception +8 Defense AC 16, touch 13, flat-footed 14 (+2 Dex, +3 natural, +1 size) hp 19 (3d10+3) Fort +4, Ref +5, Will +2 Immune electricity Offense Speed 40 ft., climb 20 ft., swim 20 ft. Melee bite +4 (1d4) Special Attacks shock Statistics Str 10, Dex 15, Con 13, Int 2, Wis 13, Cha 6 Base Atk +3; CMB +2; CMD 14 (18 vs. trip) Feats Improved Initiative , Skill Focus (Stealth) Skills Climb +8, Perception +8, Stealth +17, Swim +8; Racial Modifiers +2 Perception, +4 Stealth Ecology Environment warm marshes Organization solitary, pair, clutch (3–6), or colony (7–12) Treasure incidental Special Abilities Electricity Sense (Ex) Shocker lizards automatically detect any electrical discharges within 100 feet. Shock (Su) Shocker lizards can deliver an electrical shock to a single opponent within 5 feet. This attack deals 1d8 points of nonlethal electricity damage to living opponents (Reflex DC 12 half). This save DC is Constitution-based. Additionally, if two or more shocker lizards are within 20 feet of each other, they can work together to create a lethal shock once every 1d4 rounds. This effect has a radius of 20 feet, centered on any one contributing lizard. All creatures within that radius take 2d8 points of lethal electricity damage for each lizard contributing to the shock, to a maximum of 12d8. A Reflex save (DC 10 + the number of lizards contributing) halves the damage. Description A shocker lizard has a pale yellow underside, with bright green scales elsewhere on its 3-foot-long body, and weighs about 25 pounds. Shocker lizards tend toward group living, as their electrical abilities grow in power when they are close to another lizard. A shocker lizard colony is usually ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Skeleton, Skeletal Champion", cr: "2", type: "undead", size: "Medium", alignment: "NE",
+                          hp: "17 (3 HD; 2d8+1d10+3)", ac: 21,
+                          fort: 3, ref: 1, will: 3, init_: 5,
+                          str: 17, dex: 13, con: 10, int_: 9, wis: 10, cha: 12,
+                          senses: "darkvision 60 ft.; Perception +6Defense", speed: "30 ft.",
+                          attacks: "mwk longsword +7 (1d8+3/19–20)Statistics",
+                          specialAbilities: "A skeleton retains none of the base creature’s special attacks.",
+                          environment: "any",
+                          summary: "This armored skeleton stands in a battle-ready pose, its weapon held high as cold blue light shines in its eye sockets.",
+                          desc: "Skeleton, Skeletal Champion This armored skeleton stands in a battle-ready pose, its weapon held high as cold blue light shines in its eye sockets. Skeletal Champion CR 2 Source Pathfinder RPG Bestiary pg. 252 XP 600 Human skeletal champion warrior 1 NE Medium undead Init +5; Senses darkvision 60 ft.; Perception +6 Defense AC 21, touch 12, flat-footed 19 (+6 armor, +1 Dex, +2 natural, +2 shield) hp 17 (3 HD; 2d8+1d10+3) Fort +3, Ref +1, Will +3; channel resistance +4 DR 5/bludgeoning; Immune cold, undead traits Offense Speed 30 ft. Melee mwk longsword +7 (1d8+3/19–20) Statistics Str 17, Dex 13, Con —, Int 9, Wis 10, Cha 12 Base Atk +2; CMB +5; CMD 16 Feats Cleave , Improved Initiative B , Power Attack , Weapon Focus (longsword) Skills Intimidate +7, Perception +6, Stealth –1 Ecology Environment any Organization solitary, pair, or platoon (3–12) Treasure standard (breastplate, heavy steel shield, masterwork longsword, other treasure) Description Some skeletons retain their intelligence and cunning, making them formidable warriors. These undead are far more powerful than their mindless kin, and many gain class levels. Creating a Skeletal Champion “Skeletal Champion” is an acquired template that can be added to any corporeal creature (other than an undead) that has a skeletal system (referred to hereafter as the base creature) and a minimum Intelligence of 3. CR : A skeletal champion’s CR is +1 higher than a normal skeleton with the same HD. Type : The creature’s type becomes undead. It keeps subtypes save for alignment subtypes and subtypes that indicate kind. Alignment : Any evil. Armor Class : Natural armor as per skeleton. Hit Dice : Change all of the creature’s racial HD to d8s, then add 2 racial Hit Dice to this total (creatures without racial HD gain 2). HD from class levels are unchanged. Defensive Abilities : A skeletal champion gains DR 5/bludgeoning, channel resistance +4, and immunity to cold. It also gains all of the standard undead traits. Speed : As stan",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Skum", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "20 (2d10+9)", ac: 13,
+                          fort: 3, ref: 4, will: 3, init_: 1,
+                          str: 15, dex: 13, con: 17, int_: 10, wis: 10, cha: 6,
+                          senses: "darkvision 60 ft.; Perception +5Defense", speed: "20 ft., swim 40 ft.",
+                          attacks: "trident +4 (1d8+2), claw +2 (1d4+1), bite +2 (1d6+1)",
+                          specialAbilities: "",
+                          environment: "temperate or cold aquatic or underground",
+                          summary: "This hunchbacked, green-skinned humanoid has a wide, frog-like head but a mouth more akin to that of a toothy fish.",
+                          desc: "Skum This hunchbacked, green-skinned humanoid has a wide, frog-like head but a mouth more akin to that of a toothy fish. Skum CR 2 Source Pathfinder RPG Bestiary pg. 253 XP 600 LE Medium monstrous humanoid (aquatic) Init +1; Senses darkvision 60 ft.; Perception +5 Defense AC 13, touch 11, flat-footed 12 (+1 Dex, +2 natural) hp 20 (2d10+9) Fort +3, Ref +4, Will +3 Resist cold 10 Offense Speed 20 ft., swim 40 ft. Melee trident +4 (1d8+2), claw +2 (1d4+1), bite +2 (1d6+1) Ranged trident +3 (1d8+2) Statistics Str 15, Dex 13, Con 17, Int 10, Wis 10, Cha 6 Base Atk +2; CMB +4; CMD 15 Feats Multiattack B , Toughness Skills Intimidate +3, Perception +5 (+9 underwater), Stealth +6 (+10 underwater), Swim +15; Racial Modifiers +4 Perception and Stealth underwater Languages Aboleth, Undercommon SQ amphibious Ecology Environment temperate or cold aquatic or underground Organization solitary, brood (2–5), pack (6–12), or cabal (13–95 plus 50% noncombatants, 1 subchief of 3rd level per 20 adults, 1 sorcerer of 4th–6th level per 40 adults, 1 chieftain of 7th–9th level, and 2–6 oozes) Treasure NPC gear (trident, other treasure) Description Skum are the most prolific and successful of the countless races created by the aboleths to serve as slaves. At the height of the aboleth empire, skum were legion and their armies waged many wars upon the land, yet now that the aboleths are in decline, skum have been set loose to manage on their own. For the most part, the skum have been less than successful at this endeavor, and today they exist in a shadow of their previous multitude, most of them dwelling deep underground in slowly crumbling ruins left standing only because their enemies have lost interest in pursuing the now-won war against these fish-like humanoids. Skum have even lost their own name—only the most erudite and wise of their kind remember that they were once known as the ulat-kini. Today, most identify themselves with the racial epithet applied to them by surface-dwellers—“skum",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Snake, Constrictor Snake", cr: "2", type: "animal", size: "Medium", alignment: "N",
+                          hp: "19 (3d8+6)", ac: 15,
+                          fort: 4, ref: 6, will: 2, init_: 3,
+                          str: 17, dex: 17, con: 12, int_: 1, wis: 12, cha: 2,
+                          senses: "scent; Perception +12Defense", speed: "20 ft., climb 20 ft., swim 20 ft.",
+                          attacks: "bite +5 (1d4+4 plus grab)",
+                          specialAbilities: "constrict (1d4+4)Statistics",
+                          environment: "warm forests, swamps, and fresh water",
+                          summary: "This large snake has a thick, muscular body and dull green scales decorated with dirty brown stripes.",
+                          desc: "Snake, Constrictor Snake This large snake has a thick, muscular body and dull green scales decorated with dirty brown stripes. Constrictor Snake CR 2 Source Pathfinder RPG Bestiary pg. 255 XP 600 N Medium animal Init +3; Senses scent; Perception +12 Defense AC 15, touch 13, flat-footed 12 (+3 Dex, +2 natural) hp 19 (3d8+6) Fort +4, Ref +6, Will +2 Offense Speed 20 ft., climb 20 ft., swim 20 ft. Melee bite +5 (1d4+4 plus grab) Special Attacks constrict (1d4+4) Statistics Str 17, Dex 17, Con 12, Int 1, Wis 12, Cha 2 Base Atk +2; CMB +5 (+9 grapple); CMD 18 (can’t be tripped) Feats Skill Focus (Perception) , Toughness Skills Acrobatics +15, Climb +11, Perception +12, Stealth +11, Swim +11; Racial Modifiers +4 Perception, +4 Stealth, +8 Acrobatics Ecology Environment warm forests, swamps, and fresh water Organization solitary or nest (2–6) Treasure none Description Be they jungle-dwelling pythons or swamp-dwelling boas like the anaconda, constrictor snakes are among the most deadly predatory animals of the tropical wilds. Fortunately, these large snakes are relatively passive, save for when they are preparing to shed their skins or are particularly hungry. Nevertheless, the sinuous creatures are held in fear by many societies who often ascribe fiendish qualities to them. The constrictor snake presented here is a relatively small one. You can create stats for a larger maneater like an anaconda by applying the advanced and giant simple templates, or by advancing the stats above to a 7 HD Large snake (CR 5), or even a 14 HD Huge snake (CR 10).",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Vargouille", cr: "2", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "19 (3d10+3)", ac: 15,
+                          fort: 4, ref: 4, will: 2, init_: 1,
+                          str: 10, dex: 13, con: 13, int_: 5, wis: 12, cha: 8,
+                          senses: "darkvision 60 ft.; Perception +7Defense", speed: "fly 30 ft. (good)",
+                          attacks: "bite +5 (1d4 plus poison)",
+                          specialAbilities: "kiss, poison, shriekStatistics",
+                          environment: "any",
+                          summary: "This creature is a blackened, bat-winged fiend’s head. Tentacles dangle from chin and scalp, and its fanged mouth hangs agape.",
+                          desc: "Vargouille This creature is a blackened, bat-winged fiend’s head. Tentacles dangle from chin and scalp, and its fanged mouth hangs agape. Vargouille CR 2 Source Pathfinder RPG Bestiary pg. 272 XP 600 NE Small outsider (evil, extraplanar) Init +1; Senses darkvision 60 ft.; Perception +7 Defense AC 15, touch 12, flat-footed 14 (+1 Dex, +3 natural, +1 size) hp 19 (3d10+3) Fort +4, Ref +4, Will +2 Offense Speed fly 30 ft. (good) Melee bite +5 (1d4 plus poison) Special Attacks kiss, poison, shriek Statistics Str 10, Dex 13, Con 13, Int 5, Wis 12, Cha 8 Base Atk +3; CMB +2; CMD 13 Feats Skill Focus (Stealth) , Weapon Finesse Skills Fly +13, Intimidate +5, Perception +7, Stealth +8 Languages Infernal Ecology Environment any Organization pair, cluster (3–6), or mob (7–12) Treasure none Special Abilities Kiss (Su) A vargouille can kiss a helpless target by making a successful melee touch attack (this provokes attacks of opportunity). A kissed opponent must succeed on a DC 16 Fortitude save or begin a terrible transformation that changes the creature into a vargouille within 24 hours (and often much sooner; roll 1d6 separately for each phase of the transformation). First, over a period of 1d6 hours, all the victim’s hair falls out. Within another 1d6 hours thereafter, the ears grow into leathery wings, tentacles sprout on the chin and scalp, and the teeth become long, pointed fangs. During the next 1d6 hours, the victim takes Intelligence drain and Charisma drain equal to 1 point per hour (to a minimum of 3). The transformation is complete 1d6 hours thereafter, when the victim’s head breaks free of the body (which promptly dies) and becomes a vargouille. This transformation’s progress is paused by sunlight or any light spell of 3rd level or higher, but stopping the transformation requires remove disease or a similar effect. The transformation is a disease effect. The save DC is Constitution-based and includes a +4 racial bonus. Poison (Su) Bite—injury; save Fort DC 12; freque",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Wolverine", cr: "2", type: "animal", size: "Medium", alignment: "N",
+                          hp: "22 (3d8+9)", ac: 14,
+                          fort: 5, ref: 5, will: 2, init_: 2,
+                          str: 15, dex: 15, con: 15, int_: 2, wis: 12, cha: 10,
+                          senses: "low-light vision, scent; Perception +10Defense", speed: "30 ft., burrow 10 ft., climb 10 ft.",
+                          attacks: "2 claws +4 (1d6+2), bite +4 (1d4+2)",
+                          specialAbilities: "rageStatistics",
+                          environment: "cold forests",
+                          summary: "This stocky, muscular mammal is the size of a badger, its snarling lips revealing a mouth full of yellow teeth.",
+                          desc: "Wolverine This stocky, muscular mammal is the size of a badger, its snarling lips revealing a mouth full of yellow teeth. Wolverine CR 2 Source Pathfinder RPG Bestiary pg. 279 XP 600 N Medium animal Init +2; Senses low-light vision, scent; Perception +10 Defense AC 14, touch 12, flat-footed 12 (+2 Dex, +2 natural) hp 22 (3d8+9) Fort +5, Ref +5, Will +2 Offense Speed 30 ft., burrow 10 ft., climb 10 ft. Melee 2 claws +4 (1d6+2), bite +4 (1d4+2) Special Attacks rage Statistics Str 15, Dex 15, Con 15, Int 2, Wis 12, Cha 10 Base Atk +2; CMB +4; CMD 16 (20 vs. trip) Feats Skill Focus (Perception) , Toughness Skills Climb +10, Perception +10 Ecology Environment cold forests Organization solitary Treasure none Special Abilities Rage (Ex) A wolverine that takes damage in combat flies into a rage on its next turn, clawing and biting madly until either it or its opponent is dead. It gains +4 to Strength, +4 to Constitution, and –2 to AC. The creature cannot end its rage voluntarily. Description Wolverines are territorial, especially when it comes to food, and have been known to defend their kills against much larger predators, such as black bears. They are fearsome opponents, launching into a frenzy when wounded. They tend to give off a very strong, unpleasant musk smell when angry. Armed with powerful jaws, strong legs, and a thick hide, wolverines are remarkably strong for their size. They are reckless in battle and throw themselves at their foes, clawing and biting furiously.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Worg", cr: "2", type: "magical beast", size: "Medium", alignment: "NE",
+                          hp: "26 (4d10+4)", ac: 14,
+                          fort: 5, ref: 6, will: 3, init_: 2,
+                          str: 17, dex: 15, con: 13, int_: 6, wis: 14, cha: 10,
+                          senses: "darkvision 60 ft., low-light vision, scent; Perception +11Defense", speed: "50 ft.",
+                          attacks: "bite +7 (1d6+4 plus trip)Statistics",
+                          specialAbilities: "",
+                          environment: "temperate forests and plains",
+                          summary: "This unusually large wolf has an evil, almost intelligent light shining in its deep red eyes.",
+                          desc: "Worg This unusually large wolf has an evil, almost intelligent light shining in its deep red eyes. Worg CR 2 Source Pathfinder RPG Bestiary pg. 280 XP 600 NE Medium magical beast Init +2; Senses darkvision 60 ft., low-light vision, scent; Perception +11 Defense AC 14, touch 12, flat-footed 12 (+2 Dex, +2 natural) hp 26 (4d10+4) Fort +5, Ref +6, Will +3 Offense Speed 50 ft. Melee bite +7 (1d6+4 plus trip) Statistics Str 17, Dex 15, Con 13, Int 6, Wis 14, Cha 10 Base Atk +4; CMB +7; CMD 19 (23 vs. trip) Feats Run , Skill Focus (Perception) Skills Perception +11, Stealth +9, Survival +5; Racial Modifiers +2 Perception, +2 Stealth, +2 Survival Languages Common, Goblin Ecology Environment temperate forests and plains Organization solitary, pair, or pack (3–11) Treasure incidental Description Worgs are oversized, evil, intelligent wolves often found dwelling amid goblins or other savage races. A typical worg has gray or black fur, stands 3 feet tall at the shoulder, and weighs 300 pounds. Worgs hunt in packs, running down and surrounding their prey like common wolves, but their intelligence and ability to speak make them better at coordinating their attacks. They sometimes use one packmate as a decoy, pretending to be a humanoid calling for help in order to lure intelligent prey into an ambush. Worgs that travel with goblins often allow them to ride on their backs, but in such situations it is usually the worg that is the master, not the rider.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Yellow Musk Creeper", cr: "2", type: "plant", size: "Medium", alignment: "N",
+                          hp: "22 (3d8+9)", ac: 14,
+                          fort: 6, ref: 3, will: 1, init_: 2,
+                          str: 17, dex: 15, con: 16, int_: 10, wis: 11, cha: 8,
+                          senses: "tremorsense 30 ft.; Perception +0Defense", speed: "5 ft.",
+                          attacks: "tendril +5 (1d4+4)",
+                          specialAbilities: "create yellow musk zombie, pollen sprayStatistics",
+                          environment: "temperate or warm forests and underground",
+                          summary: "Coiling around several human skeletons, this wet green plant’s sickly flowers smoke with a nasty yellow vapor.",
+                          desc: "Yellow Musk Creeper Coiling around several human skeletons, this wet green plant’s sickly flowers smoke with a nasty yellow vapor. Yellow Musk Creeper CR 2 Source Pathfinder RPG Bestiary pg. 285 XP 600 N Medium plant Init +2; Senses tremorsense 30 ft.; Perception +0 Defense AC 14, touch 12, flat-footed 12 (+2 Dex, +2 natural) hp 22 (3d8+9) Fort +6, Ref +3, Will +1 Immune plant traits Offense Speed 5 ft. Melee tendril +5 (1d4+4) Space 5 ft., Reach 10 ft. Special Attacks create yellow musk zombie, pollen spray Statistics Str 17, Dex 15, Con 16, Int —, Wis 11, Cha 8 Base Atk +2; CMB +5; CMD 17 (can’t be tripped) Ecology Environment temperate or warm forests and underground Organization patch (creeper plus 1–6 yellow musk zombies) Treasure incidental Special Abilities Create Yellow Musk Zombie (Su) As a full-round action, a yellow musk creeper can bore dozens of tendrils into the brain of a helpless creature within reach, such as a creature entranced by its pollen. This attack inflicts 1d4 points of Intelligence damage per round. When a creature is reduced to 0 Intelligence, it dies, and the tendrils break off inside its brain. One hour later, the creature animates as a yellow musk zombie (see below). Pollen Spray (Ex) As a standard action, a yellow musk creeper can spray a cloud of pollen at a single creature within 30 feet. It must make a +4 ranged touch attack to strike the target, who must then succeed on a DC 14 Will save or be entranced for 1d6 rounds. An entranced creature can take no action other than to move at its normal speed into a space within the yellow musk creeper’s reach, at which point an entranced creature remains motionless and allows the creeper to insert tendrils into its brain. The save DC is Constitution-based. Description The yellow musk creeper is a hideous plant that grows in haunted graveyards, grisly battlefields, and other places where death hangs heavy in the air and thick in the soil. The yellow musk creeper’s method of procreation is sin",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Animated Object", cr: "3", type: "construct", size: "Medium", alignment: "N",
+                          hp: "36 (3d10+20)", ac: 14,
+                          fort: 1, ref: 1, will: 4, init_: 0,
+                          str: 14, dex: 10, con: 10, int_: 10, wis: 1, cha: 1,
+                          senses: "darkvision 60 ft., low-light vision; Perception –5Defense", speed: "30 ft.",
+                          attacks: "slam +5 (1d6+3)Statistics",
+                          specialAbilities: "",
+                          environment: "any",
+                          summary: "The skeleton locked within rattles as this animated cage lurches forward on chain legs in search of new prisoners.",
+                          desc: "Animated Object The skeleton locked within rattles as this animated cage lurches forward on chain legs in search of new prisoners. Animated Object CR 3 Source Pathfinder RPG Bestiary pg. 14 XP 800 N Medium construct Init +0; Senses darkvision 60 ft., low-light vision; Perception –5 Defense AC 14, touch 10, flat-footed 12 (+4 natural) hp 36 (3d10+20) Fort +1, Ref +1, Will –4 Defensive Abilities hardness 5 (or more); Immune construct traits Offense Speed 30 ft. Melee slam +5 (1d6+3) Statistics Str 14, Dex 10, Con —, Int —, Wis 1, Cha 1 Base Atk +3; CMB +5; CMD 15 SQ construction points Ecology Environment any Organization solitary, pair, or group (3–12) Treasure none Special Abilities Construction Points Animated objects have a number of Construction Points (CP) used to purchase abilities and defenses in addition to those presented above. A medium animated object has 2 CP; differently sized objects have CP totals as detailed on the size chart on this page. If an animated object spends more CP than its size category would allow, its CR increases by 1 (minimum of +1) for every 2 additional CP spent. Additional Attack (Ex, 1 CP): Gains an additional slam attack. Additional Movement (Ex, 1 CP): Gains a new mode of movement (burrow, climb, fly [clumsy], or swim) at a speed equal to its base speed. Constrict (Ex, 1 CP): Gains constrict with its slam attacks (the object must have grab before it can take this ability). Faster (Ex, 1 CP): One of the object’s movement modes increases by +10 ft. Grab (Ex, 1 CP): Gains grab special attack with slam attacks. Metal (Ex, 2 CP): The object is made of common metal. Its hardness increases to 10, and it gains a +2 increase to its natural armor bonus. Mithral objects cost 4 CP, and gain hardness 15 plus a +4 increase to natural armor. Adamantine objects cost 6 CP, gain hardness 20, and receive a +6 increase to natural armor. Stone (Ex, 1 CP): The object is made of stone or crystal. Its hardness increases to 8 and it gains a +1 increase t",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Ankheg", cr: "3", type: "magical beast", size: "Large", alignment: "N",
+                          hp: "28 (3d10+12)", ac: 16,
+                          fort: 6, ref: 3, will: 2, init_: 0,
+                          str: 16, dex: 10, con: 17, int_: 1, wis: 13, cha: 6,
+                          senses: "darkvision 60 ft., low-light vision, tremorsense 60 ft.; Perception +8Defense", speed: "30 ft., burrow 20 ft.",
+                          attacks: "bite +5 (2d6+4 plus 1d4 acid and grab)",
+                          specialAbilities: "spit acidStatistics",
+                          environment: "temperate or warm plains",
+                          summary: "This burrowing, bug-like monster scuttles about on six legs, drooling noxious green ichor from its clacking mandibles.",
+                          desc: "Ankheg This burrowing, bug-like monster scuttles about on six legs, drooling noxious green ichor from its clacking mandibles. Ankheg CR 3 Source Pathfinder RPG Bestiary pg. 15 XP 800 N Large magical beast Init +0; Senses darkvision 60 ft., low-light vision, tremorsense 60 ft.; Perception +8 Defense AC 16, touch 9, flat-footed 16 (+7 natural, –1 size) hp 28 (3d10+12) Fort +6, Ref +3, Will +2 Offense Speed 30 ft., burrow 20 ft. Melee bite +5 (2d6+4 plus 1d4 acid and grab) Space 10 ft., Reach 5 ft. Special Attacks spit acid Statistics Str 16, Dex 10, Con 17, Int 1, Wis 13, Cha 6 Base Atk +3; CMB +7 (+11 grapple); CMD 17 (25 vs. trip) Feats Skill Focus (Perception) , Toughness Skills Climb +8, Perception +8 Ecology Environment temperate or warm plains Organization solitary, pair, or nest (3–6) Treasure incidental Special Abilities Spit Acid (Ex) Once every 6 hours, an ankheg can spit a 30-foot line of acid. Creatures struck by this acid take 4d4 points of acid damage (Reflex DC 14 halves). Once an ankheg uses this attack, it must wait 6 hours before using it again. Additionally, during this time period, its bite attack does not inflict any additional acid damage. As a result, an ankheg does not use this ability unless it is desperate or frustrated, most often spitting acid when reduced to fewer than half its full normal hit points or when it cannot not successfully grab an opponent. The save DC is Constitution-based. Description Ankhegs are an all-too-common plague upon the rural areas of the world. These horse-sized burrowing monsters generally avoid heavily settled areas like cities, but their predilection for livestock and humanoid flesh ensures that they do not keep to the deep wilderness either. Their preferred habitat is rural farmlands, as the loose soil of such regions makes it easy for the creatures to burrow. Tales speak of larger ankhegs that dwell in remote deserts—such creatures likely feed primarily on giant scorpions and camels, and rarely come in contact",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Ape, Dire Ape (Gigantopithecus)", cr: "3", type: "animal", size: "Large", alignment: "N",
+                          hp: "30 (4d8+12)", ac: 15,
+                          fort: 7, ref: 6, will: 4, init_: 2,
+                          str: 19, dex: 15, con: 16, int_: 2, wis: 12, cha: 7,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "30 ft., climb 30 ft.",
+                          attacks: "bite +6 (1d6+4), 2 claws +6 (1d4+4)",
+                          specialAbilities: "rend (2 claws, 1d4+6)Statistics",
+                          environment: "warm forests",
+                          summary: "Sharp teeth fill this large, feral ape’s mouth, and its long, muscular arms stretch to the ground, ending in wickedly curved claws.",
+                          desc: "Ape, Dire Ape (Gigantopithecus) Sharp teeth fill this large, feral ape’s mouth, and its long, muscular arms stretch to the ground, ending in wickedly curved claws. Dire Ape (Gigantopithecus) CR 3 Source Pathfinder RPG Bestiary pg. 17 XP 800 N Large animal Init +2; Senses low-light vision, scent; Perception +8 Defense AC 15, touch 11, flat-footed 13 (+2 Dex, +4 natural, –1 size) hp 30 (4d8+12) Fort +7, Ref +6, Will +4 Offense Speed 30 ft., climb 30 ft. Melee bite +6 (1d6+4), 2 claws +6 (1d4+4) Space 10 ft., Reach 10 ft. Special Attacks rend (2 claws, 1d4+6) Statistics Str 19, Dex 15, Con 16, Int 2, Wis 12, Cha 7 Base Atk +3; CMB +8; CMD 20 Feats Iron Will , Skill Focus (Perception) Skills Acrobatics +6, Climb +16, Perception +8, Stealth +2 Ecology Environment warm forests Organization solitary, pair, or troop (3–6) Treasure incidental Description Known to many scholars as the gigantopithecus, the dire ape is a much more dangerous and bestial creature than the relatively peaceful gorilla. An adult male dire ape stands 9 feet tall and weighs 1,200 pounds. The dire ape attacks anything that intrudes on its territory, including other dire apes not of its troop, and does not break off the attack until the trespasser is dead or runs off. A dire ape makes no displays of toughness or warnings before it attacks—it simply leaps into action with little or no provocation, tearing at its opponents with claws and teeth. If a dire ape is stymied by a heavily armored foe, it attempts to grapple its foe, pin it to the ground, and rend it.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Assassin Vine", cr: "3", type: "plant", size: "Large", alignment: "N",
+                          hp: "30 (4d8+12)", ac: 15,
+                          fort: 7, ref: 1, will: 2, init_: 0,
+                          str: 20, dex: 10, con: 16, int_: 10, wis: 13, cha: 9,
+                          senses: "blindsight 30 ft., low-light vision; Perception +1Defense", speed: "5 ft.",
+                          attacks: "slam +7 (1d8+7 plus grab)",
+                          specialAbilities: "constrict (1d8+7), entangleStatistics",
+                          environment: "temperate forests",
+                          summary: "This gnarled vine, as thick as a man’s arm and bearing hand-shaped leaves, convulses across the ground in an unnatural slither.",
+                          desc: "Assassin Vine This gnarled vine, as thick as a man’s arm and bearing hand-shaped leaves, convulses across the ground in an unnatural slither. Assassin Vine CR 3 Source Pathfinder RPG Bestiary pg. 22 XP 800 N Large plant Init +0; Senses blindsight 30 ft., low-light vision; Perception +1 Defense AC 15, touch 9, flat-footed 15 (+6 natural, –1 size) hp 30 (4d8+12) Fort +7, Ref +1, Will +2 Immune electricity, plant traits; Resist cold 10 and fire 10 Offense Speed 5 ft. Melee slam +7 (1d8+7 plus grab) Space 10 ft., Reach 10 ft. Special Attacks constrict (1d8+7), entangle Statistics Str 20, Dex 10, Con 16, Int —, Wis 13, Cha 9 Base Atk +3; CMB +9 (+13 grapple); CMD 19 (can’t be tripped) SQ camouflage Ecology Environment temperate forests Organization solitary, pair, or patch (3–6) Treasure incidental Special Abilities Camouflage (Ex) Since an assassin vine looks like a normal plant when at rest, a DC 20 Perception check is required to notice it before it attacks for the first time. Anyone with ranks in Survival or Knowledge (nature) can use either of those skills instead of Perception to notice the plant. Entangle (Su) An assassin vine can, as a free action, cause plants within 30 feet of it to animate and grasp at foes. This ability is otherwise similar to entangle (CL 4th, DC 13). The save DC is Wisdom-based. Description The assassin vine is a carnivorous plant that collects its own grisly fertilizer by grabbing and crushing animals and depositing the carcasses near its roots. These remarkable plants can see minute movements in the earth and air and detect changes in light and heat through their broad leaves, giving them exceptional awareness of the area around them. Possessing no intelligence or agenda, they lash out at whatever living things pass nearby, regardless of the target’s size, sentience, or potential deadliness. A mature plant consists of a main vine, about 20 feet long; smaller vines up to 5 feet long branch off from the main vine about every 6 inches. These",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Centaur", cr: "3", type: "monstrous humanoid", size: "Large", alignment: "N",
+                          hp: "30 (4d10+8)", ac: 20,
+                          fort: 3, ref: 6, will: 6, init_: 6,
+                          str: 15, dex: 14, con: 15, int_: 11, wis: 14, cha: 12,
+                          senses: "darkvision 60 ft.; Perception +7Defense", speed: "50 ft. (35 ft. in armor)",
+                          attacks: "longsword +5 (1d8+2/19–20), 2 hooves +0 (1d6+1)",
+                          specialAbilities: "",
+                          environment: "temperate forests and plains",
+                          summary: "This creature has the sun-bronzed upper body of a seasoned warrior and the lower body of a sleek warhorse.",
+                          desc: "Centaur This creature has the sun-bronzed upper body of a seasoned warrior and the lower body of a sleek warhorse. Centaur CR 3 Source Pathfinder RPG Bestiary pg. 42 XP 800 N Large monstrous humanoid Init +6; Senses darkvision 60 ft.; Perception +7 Defense AC 20, touch 11, flat-footed 18 (+6 armor, +2 Dex, +1 natural, +2 shield, –1 size) hp 30 (4d10+8) Fort +3, Ref +6, Will +6 Offense Speed 50 ft. (35 ft. in armor) Melee longsword +5 (1d8+2/19–20), 2 hooves +0 (1d6+1) Ranged spear +5 (1d8+2/×3) Space 10 ft., Reach 5 ft. Statistics Str 15, Dex 14, Con 15, Int 11, Wis 14, Cha 12 Base Atk +4; CMB +7; CMD 19 (23 vs. trip) Feats Improved Initiative , Run Skills Diplomacy +5, Intimidate +6, Knowledge (nature) +4, Perception +7, Survival +9 Languages Common, Elven, Sylvan SQ undersized weapons Ecology Environment temperate forests and plains Organization solitary, pair, band (3–10), tribe (11–30 plus 3 hunters of 3rd level and 1 leader of 6th level) Treasure standard (breastplate, heavy steel shield, longsword, spear, other treasure) Special Abilities Undersized Weapons (Ex) Although a centaur is Large, its upper torso is the same size as that of a Medium humanoid. As a result, they wield weapons as if they were one size category smaller than their actual size (Medium for most centaurs). Description Legendary hunters and skilled warriors, centaurs are part man and part horse. Typically found on the fringes of civilization, these stoic people vary widely in appearance, their skin tones typically appearing deeply tanned but similar to the humans who occupy nearby regions, while their lower bodies borrow the colorations of local equines. Centaur hair and eyes trend toward darker colors and their features tend to be broad, while the overall bulk of their bodies is influenced by the size of the horses their lower quarters resemble. Thus, while an average centaur stands over 7 feet tall and weights upward of 2,000 pounds, there are vast regional variations—from lean plains-runne",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Cockatrice", cr: "3", type: "magical beast", size: "Small", alignment: "N",
+                          hp: "27 (5d10)", ac: 15,
+                          fort: 4, ref: 7, will: 2, init_: 3,
+                          str: 6, dex: 17, con: 11, int_: 2, wis: 13, cha: 8,
+                          senses: "darkvision 60 ft., low-light vision; Perception +10Defense", speed: "20 ft., fly 60 ft. (poor)",
+                          attacks: "bite +9 (1d4–2 plus petrification)Statistics",
+                          specialAbilities: "",
+                          environment: "temperate plains",
+                          summary: "This hideous avian creature has the body of an emaciated rooster, the wings of a bat, and a long, scaly tail.",
+                          desc: "Cockatrice This hideous avian creature has the body of an emaciated rooster, the wings of a bat, and a long, scaly tail. Cockatrice CR 3 Source Pathfinder RPG Bestiary pg. 48 XP 800 N Small magical beast Init +3; Senses darkvision 60 ft., low-light vision; Perception +10 Defense AC 15, touch 15, flat-footed 11 (+3 Dex, +1 dodge, +1 size) hp 27 (5d10) Fort +4, Ref +7, Will +2 Offense Speed 20 ft., fly 60 ft. (poor) Melee bite +9 (1d4–2 plus petrification) Statistics Str 6, Dex 17, Con 11, Int 2, Wis 13, Cha 8 Base Atk +5; CMB +2; CMD 16 Feats Dodge , Skill Focus (Perception) , Weapon Finesse Skills Fly +6, Perception +10 Ecology Environment temperate plains Organization solitary, pair, flight (3–5), or flock (6–12) Treasure none Special Abilities Petrification (Su) A cockatrice’s bite causes flesh to calcify and harden—multiple bites can cause a living creature to fossilize into stone. Each time a creature is damaged by a cockatrice’s bite attack, it must succeed on a DC 12 Fortitude save or take 1d4 points of Dexterity damage as its flesh and bones stiffen and harden. (This slow petrification does not alter a bitten creature’s natural armor.) A creature that is reduced to 0 Dexterity by a cockatrice’s bites immediately turns completely to stone, as if petrified by a flesh to stone spell. Every day, a creature petrified by a cockatrice in this manner can attempt a new DC 12 Fortitude save to recover from the petrification, at which point the victim returns to flesh with 1 Dexterity (and thereafter can be restored to full Dexterity by natural healing or magic as normal)—but after a petrified creature fails three of these Fortitude saves in a row, the petrified state becomes permanent. A creature restored to flesh via magic has its Dexterity damage caused by cockatrice bites removed, but not any existing Dexterity damage from other sources. A cockatrice is immune to the petrification ability of itself and of other cockatrices, but other petrification attacks affect the",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Derro", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "25 (3d8+12)", ac: 17,
+                          fort: 5, ref: 3, will: 6, init_: 6,
+                          str: 11, dex: 15, con: 18, int_: 10, wis: 5, cha: 16,
+                          senses: "darkvision 60 ft.; Perception +0Defense", speed: "20 ft.",
+                          attacks: "short sword +5 (1d4) or aklys +5 (1d6)",
+                          specialAbilities: "sneak attack +1d6",
+                          environment: "any underground",
+                          summary: "This pale blue humanoid has bulging white eyes, wild hair, four-fingered hands, and a large hooked club.",
+                          desc: "Derro This pale blue humanoid has bulging white eyes, wild hair, four-fingered hands, and a large hooked club. Derro CR 3 Source Pathfinder RPG Bestiary pg. 70 XP 800 CE Small humanoid (derro) Init +6; Senses darkvision 60 ft.; Perception +0 Defense AC 17, touch 13, flat-footed 15 (+2 armor, +2 Dex, +2 natural, +1 size) hp 25 (3d8+12) Fort +5, Ref +3, Will +6 SR 14 Weaknesses vulnerability to sunlight Offense Speed 20 ft. Melee short sword +5 (1d4) or aklys +5 (1d6) Ranged repeating light crossbow +5 (1d6/19–20 plus poison) or aklys +5 (1d6) Special Attacks sneak attack +1d6 Spell-Like Abilities (CL 3rd) At will— darkness , ghost sound (DC 13) 1/day— daze (DC 13), sound burst (DC 15) Statistics Str 11, Dex 15, Con 18, Int 10, Wis 5, Cha 16 Base Atk +2; CMB +1; CMD 13 Feats Improved Initiative , Weapon Finesse Skills Perception +0, Stealth +9 Languages Aklo, Undercommon SQ madness, poison use Ecology Environment any underground Organization solitary, team (2–4), squad (5–8 plus 1 sorcerer of 3rd–5th level), or band (11–20 plus 30% noncombatants plus 3 sorcerers of 3rd–8th level) Treasure NPC Gear (leather armor, short sword or aklys, repeating light crossbow with 10 poisoned bolts, other treasure) Special Abilities Madness (Ex) Derros use their Charisma modifier on Will saves instead of their Wisdom modifier, and are immune to insanity and confusion effects. Only a miracle or wish can remove a derro’s madness. If this occurs, the derro gains 6 points of Wisdom and loses 6 points of Charisma. Poison Use (Ex) Derros are not at risk of poisoning themselves when handling poison. They use Medium spider venom to poison their crossbow bolts, and generally carry 10 pre-poisoned bolts at all times. Vulnerability to Sunlight (Ex) A derro takes 1 point of Con damage after every hour it is exposed to sunlight. Description Though derros dwell deep under most of the surface world’s cities, very few know of the sadistic creatures’ existence. Descended from mysterious fey that once ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Dinosaur, Deinonychus", cr: "3", type: "animal", size: "Medium", alignment: "N",
+                          hp: "34 (4d8+16)", ac: 15,
+                          fort: 8, ref: 6, will: 2, init_: 6,
+                          str: 15, dex: 15, con: 19, int_: 2, wis: 12, cha: 14,
+                          senses: "low-light vision, scent; Perception +14Defense", speed: "60 ft.",
+                          attacks: "2 talons +5 (1d8+2), bite +5 (1d6+2), foreclaws +0 (1d4+1)",
+                          specialAbilities: "pounceStatistics",
+                          environment: "warm forests",
+                          summary: "This brightly colored dinosaur exudes a dangerous ferocity. Each foot is armed with a large, sickle-shaped claw.",
+                          desc: "Dinosaur, Deinonychus This brightly colored dinosaur exudes a dangerous ferocity. Each foot is armed with a large, sickle-shaped claw. Deinonychus CR 3 Source Pathfinder RPG Bestiary pg. 84 XP 800 N Medium animal Init +6; Senses low-light vision, scent; Perception +14 Defense AC 15, touch 12, flat-footed 13 (+2 Dex, +3 natural) hp 34 (4d8+16) Fort +8, Ref +6, Will +2 Offense Speed 60 ft. Melee 2 talons +5 (1d8+2), bite +5 (1d6+2), foreclaws +0 (1d4+1) Special Attacks pounce Statistics Str 15, Dex 15, Con 19, Int 2, Wis 12, Cha 14 Base Atk +3; CMB +5; CMD 17 Feats Improved Initiative , Run Skills Acrobatics +10 (+22 jump), Perception +14, Stealth +15; Racial Modifiers +8 Acrobatics, +8 Perception, +8 Stealth Ecology Environment warm forests Organization solitary, pair, or pack (3–12) Treasure none Description As swift and agile as it is deadly, the deinonychus is a pack hunter, running with several of its kind to take down prey and rip it apart with their gutting talons. You can apply the young simple template to create statistics for smaller, more agile velociraptors. Conversely, you can either increase the deinonychus to Large size and its Hit Dice to 8 or simply apply the giant and advanced simple templates to create a formidable megaraptor.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Dinosaur, Pteranodon", cr: "3", type: "animal", size: "Large", alignment: "N",
+                          hp: "32 (5d8+10)", ac: 16,
+                          fort: 6, ref: 8, will: 3, init_: 8,
+                          str: 16, dex: 19, con: 15, int_: 2, wis: 15, cha: 12,
+                          senses: "low-light vision, scent; Perception +11Defense", speed: "10 ft., fly 50 ft. (clumsy)",
+                          attacks: "bite +5 (2d6+4)",
+                          specialAbilities: "",
+                          environment: "warm coastline",
+                          summary: "This flying reptile has two huge wings and a distinctive backward-sweeping crest decorating its head.",
+                          desc: "Dinosaur, Pteranodon This flying reptile has two huge wings and a distinctive backward-sweeping crest decorating its head. Pteranodon CR 3 Source Pathfinder RPG Bestiary pg. 85 XP 800 N Large animal Init +8; Senses low-light vision, scent; Perception +11 Defense AC 16, touch 14, flat-footed 11 (+4 Dex, +1 dodge, +2 natural, –1 size) hp 32 (5d8+10) Fort +6, Ref +8, Will +3 Offense Speed 10 ft., fly 50 ft. (clumsy) Melee bite +5 (2d6+4) Space 10 ft., Reach 10 ft. Statistics Str 16, Dex 19, Con 15, Int 2, Wis 15, Cha 12 Base Atk +3; CMB +7; CMD 21 Feats Dodge , Improved Initiative , Skill Focus (Perception) Skills Fly –1, Perception +11 Ecology Environment warm coastline Organization solitary, pair, or flock (3–12) Treasure none Description The pteranodon is not itself a dinosaur but rather a large flying reptile that is often found in areas dinosaurs are common. Its flight lacks grace, so it lands on the ground to fight foes it can’t carry away. A pteranodon has a wingspan of 30 feet but only weighs 40 pounds.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Doppelganger", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "26 (4d10+4)", ac: 16,
+                          fort: 4, ref: 5, will: 6, init_: 1,
+                          str: 18, dex: 13, con: 12, int_: 13, wis: 14, cha: 13,
+                          senses: "darkvision 60 ft.; Perception +9Defense", speed: "30 ft.",
+                          attacks: "2 claws +8 (1d8+4)",
+                          specialAbilities: "",
+                          environment: "any",
+                          summary: "This grayish humanoid creature seems almost unfinished, with a narrow head, gaunt limbs, and a sinister, noseless face.",
+                          desc: "Doppelganger This grayish humanoid creature seems almost unfinished, with a narrow head, gaunt limbs, and a sinister, noseless face. Doppelganger CR 3 Source Pathfinder RPG Bestiary pg. 89 XP 800 N Medium monstrous humanoid (shapechanger) Init +1; Senses darkvision 60 ft.; Perception +9 Defense AC 16, touch 12, flat-footed 14 (+1 Dex, +1 dodge, +4 natural) hp 26 (4d10+4) Fort +4, Ref +5, Will +6 Immune charm, sleep Offense Speed 30 ft. Melee 2 claws +8 (1d8+4) Spell-Like Abilities (CL 18th) At will— detect thoughts (DC 13) Statistics Str 18, Dex 13, Con 12, Int 13, Wis 14, Cha 13 Base Atk +4; CMB +8; CMD 20 Feats Dodge , Great Fortitude Skills Bluff +9 (+13 while using change shape ability), Diplomacy +4, Disguise +9 (+29 while using change shape ability), Perception +9, Sense Motive +6, Stealth +5; Racial Modifiers +4 Bluff, +4 Disguise Languages Common SQ change shape ( alter self ), mimicry, perfect copy Ecology Environment any Organization solitary, pair, or gang (3–6) Treasure NPC Gear Special Abilities Mimicry (Ex) A doppelganger is proficient in all weapons, armor, and shields. In addition, a doppelganger can use any spell trigger or spell completion item as if the spells were on its spell list. Its caster level is equal to its racial Hit Dice. Perfect Copy (Su) When a doppelganger uses change shape, it can assume the appearance of specific individuals. Description Doppelgangers are strange beings that can take on the shapes of those they encounter. In its natural form, the creature looks more or less humanoid, but slender and frail, with gangly limbs and half-formed facial features. Its flesh is pale and hairless, and its eyes are vacant and white. Doppelgangers prefer infiltrating societies where they can gather wealth and influence, and see little point in forming cities of their own kind. Younger doppelgangers practice their skills by taking over small orc or goblin tribes, then move to more complicated societies like dwarven, elven, and human communities",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Drow, Drow Noble", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "20 (3d8+3)", ac: 21,
+                          fort: 4, ref: 4, will: 6, init_: 3,
+                          str: 12, dex: 17, con: 12, int_: 10, wis: 17, cha: 12,
+                          senses: "darkvision 120 ft.; Perception +5Defense", speed: "20 ft.",
+                          attacks: "mwk rapier +4 (1d6+1/18–20)",
+                          specialAbilities: "bleeding touch (6/day), channel negative energy (4/day, 2d6, DC 12), touch of chaos (6/day)",
+                          environment: "underground",
+                          summary: "Drow, Drow Noble Drow Noble CR 3 Source Pathfinder RPG Bestiary pg. 115 XP 800 Female drow noble cleric 3 CE Medium huma…",
+                          desc: "Drow, Drow Noble Drow Noble CR 3 Source Pathfinder RPG Bestiary pg. 115 XP 800 Female drow noble cleric 3 CE Medium humanoid (elf) Init +3; Senses darkvision 120 ft.; Perception +5 Defense AC 21, touch 13, flat-footed 18 (+6 armor, +3 Dex, +2 shield) hp 20 (3d8+3) Fort +4, Ref +4, Will +6; +2 vs. enchantment Immune sleep; SR 14 Weaknesses light blindness Offense Speed 20 ft. Melee mwk rapier +4 (1d6+1/18–20) Ranged hand crossbow +5 (1d4/19–20 plus poison) Special Attacks bleeding touch (6/day), channel negative energy (4/day, 2d6, DC 12), touch of chaos (6/day) Spell-Like Abilities (CL 3rd) Constant— detect magic At will— dancing lights , deeper darkness , faerie fire , feather fall , levitate 1/day— divine favor , dispel magic , suggestion (DC 14) Spells Prepared (CL 3rd) 2nd— death knell D (DC 15), hold person (DC 15), silence (DC 15) 1st— bless , cause fear (DC 14), cure light wounds , protection from law D 0— bleed (DC 13), detect poison , read magic , resistance D domain spell; Domains Chaos, Death Statistics Str 12, Dex 17, Con 12, Int 10, Wis 17, Cha 12 Base Atk +2; CMB +3; CMD 16 Feats Channel Smite , Weapon Finesse Skills Knowledge (religion) +6, Sense Motive +9, Spellcraft +6; Racial Modifiers +2 Perception Languages Elven, Undercommon SQ poison use Gear masterwork breastplate, heavy steel shield, masterwork rapier, drow poison (4), potion of invisibility , scroll of dispel magic , wand of cure light wounds (CL 1st, 20 charges), 400 gp Ecology Environment underground Although related to the elves, the drow are a vile and evil cousin at best. Sometimes called dark elves, these cunning creatures prowl the caves and tunnels of the world below, ruling vast subterranean cities through fear and might. Worshiping demons and enslaving most races they encounter, the drow are among the underworld’s most feared and hated denizens. Drow are shorter and a bit more slender than their surface-dwelling kin, but they are otherwise physically similar. Drow have dark skin, r",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Dryad", cr: "3", type: "fey", size: "Medium", alignment: "CG",
+                          hp: "27 (6d6+6)", ac: 17,
+                          fort: 5, ref: 9, will: 7, init_: 4,
+                          str: 10, dex: 19, con: 13, int_: 14, wis: 15, cha: 18,
+                          senses: "low-light vision; Perception +11Defense", speed: "30 ft.",
+                          attacks: "dagger +7 (1d4)",
+                          specialAbilities: "",
+                          environment: "temperate forests",
+                          summary: "This strange, beautiful woman has flesh that seems made of wood and vibrant hair that resembles leaves and blossoms.",
+                          desc: "Dryad This strange, beautiful woman has flesh that seems made of wood and vibrant hair that resembles leaves and blossoms. Dryad CR 3 Source Pathfinder RPG Bestiary pg. 116 XP 800 CG Medium fey Init +4; Senses low-light vision; Perception +11 Defense AC 17, touch 14, flat-footed 13 (+4 Dex, +3 natural) hp 27 (6d6+6) Fort +5, Ref +9, Will +7 DR 5/cold iron Weaknesses tree dependent Offense Speed 30 ft. Melee dagger +7 (1d4) Ranged masterwork longbow +8 (1d8) Spell-Like Abilities (CL 6th) Constant— speak with plants At will— entangle (DC 15), tree shape , wood shape (1 lb. only) 3/day— charm person (DC 15), deep slumber (DC 17), tree stride 1/day— suggestion (DC 17) Statistics Str 10, Dex 19, Con 13, Int 14, Wis 15, Cha 18 Base Atk +3; CMB +3; CMD 17 Feats Great Fortitude , Stealthy , Weapon Finesse Skills Climb +9, Craft (sculpture) +11, Escape Artist +15, Handle Animal +10, Knowledge (nature) +11, Perception +11, Stealth +15, Survival +8; Racial Modifiers +6 Craft (wood) Languages Common, Elven, Sylvan; speak with plants SQ tree meld, wild empathy, woodcraft Ecology Environment temperate forests Organization solitary, pair, or grove (3–8) Treasure standard (dagger, masterwork longbow with 20 arrows, other treasure) Special Abilities Tree Meld (Su) A dryad can meld with any tree, similar to how the spell meld into stone functions. She can remain melded with a tree as long as she wishes. Tree Dependent (Su) A dryad is mystically bonded to a single, enormous tree and must never stray more than 300 yards from it. Most dryad trees are oak trees, but other trees function as well (often having subtle influences on a specific dryad’s personality and appearance). A dryad who moves 300 yards beyond her bonded tree immediately becomes sickened. Every hour thereafter, she must make a DC 15 Fortitude save to resist becoming nauseated for an hour. A dryad that is out of range of her bonded tree for 24 hours takes 1d6 points of Constitution damage, and another 1d6 points of Consti",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Eagle, Giant Eagle", cr: "3", type: "magical beast", size: "Large", alignment: "NG",
+                          hp: "26 (4d10+4)", ac: 15,
+                          fort: 5, ref: 7, will: 3, init_: 3,
+                          str: 18, dex: 17, con: 12, int_: 10, wis: 15, cha: 11,
+                          senses: "low-light vision; Perception +15Defense", speed: "10 ft., fly 80 ft. (average)",
+                          attacks: "2 claws +7 (1d8+4), bite +7 (1d6+4)",
+                          specialAbilities: "",
+                          environment: "temperate mountains",
+                          summary: "This immense eagle’s feathers are golden brown and shimmer in the light. Its sharp beak and curved talons are dark yellow.",
+                          desc: "Eagle, Giant Eagle This immense eagle’s feathers are golden brown and shimmer in the light. Its sharp beak and curved talons are dark yellow. Giant Eagle CR 3 Source Pathfinder RPG Bestiary pg. 118 XP 800 NG Large magical beast Init +3; Senses low-light vision; Perception +15 Defense AC 15, touch 12, flat-footed 12 (+3 Dex, +3 natural, –1 size) hp 26 (4d10+4) Fort +5, Ref +7, Will +3 Defensive Abilities evasion Offense Speed 10 ft., fly 80 ft. (average) Melee 2 claws +7 (1d8+4), bite +7 (1d6+4) Space 10 ft., Reach 5 ft. Statistics Str 18, Dex 17, Con 12, Int 10, Wis 15, Cha 11 Base Atk +4; CMB +9; CMD 22 Feats Alertness , Flyby Attack Skills Fly +8, Perception +15, Sense Motive +4; Racial Modifiers +4 Perception Languages Auran (cannot speak) Ecology Environment temperate mountains Organization solitary, pair, or eyrie (3–12) Treasure none Description A typical giant eagle stands about 15 feet tall, has a wingspan of up to 30 feet, and resembles its smaller cousins in nearly every way except size. It weighs 500 pounds. Giant eagles are far more than animals—they possess a supernatural intellect and view themselves as guardians and protectors of their mountain territories. They form lasting friendships with those who respect them and their mountaintop domains.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Elemental (Air), Medium Air Elemental", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "30 (4d10+8)", ac: 19,
+                          fort: 6, ref: 9, will: 1, init_: 9,
+                          str: 14, dex: 21, con: 14, int_: 4, wis: 11, cha: 11,
+                          senses: "darkvision 60 ft.; Perception +7Defense", speed: "fly 100 ft. (perfect)",
+                          attacks: "slam +9 (1d6+3)",
+                          specialAbilities: "whirlwind (DC 14)Statistics",
+                          environment: "Plane of Air",
+                          summary: "Elemental (Air), Medium Air Elemental Medium Air Elemental CR 3 Source Pathfinder RPG Bestiary pg. 120 XP 800 N Medium o…",
+                          desc: "Elemental (Air), Medium Air Elemental Medium Air Elemental CR 3 Source Pathfinder RPG Bestiary pg. 120 XP 800 N Medium outsider (air, elemental, extraplanar) Init +9; Senses darkvision 60 ft.; Perception +7 Defense AC 19, touch 16, flat-footed 13 (+5 Dex, +1 dodge, +3 natural) hp 30 (4d10+8) Fort +6, Ref +9, Will +1 Defensive Abilities air mastery; Immune elemental traits Offense Speed fly 100 ft. (perfect) Melee slam +9 (1d6+3) Special Attacks whirlwind (DC 14) Statistics Str 14, Dex 21, Con 14, Int 4, Wis 11, Cha 11 Base Atk +4; CMB +6; CMD 22 Feats Dodge , Flyby Attack , Improved Initiative B , Weapon Finesse B Skills Acrobatics +11, Escape Artist +9, Fly +17, Knowledge (planes) +1, Perception +7, Stealth +10 Ecology Environment Plane of Air Air elementals are fast, flying creatures made of living air. Primitive and territorial, they resent being summoned or doing the bidding of mortals, and much prefer to spend their time on the Plane of Air, swooping and racing through the endless skies. Although all air elementals of a similar size have identical statistics, the exact appearance of an air elemental can vary wildly between individuals. One might be an animated vortex of wind and smoke, while another might be a smoky bird-like creature with glowing eyes and wind for wings. An air elemental prefers to attack flying or otherwise airbone targets, not only because its mastery over flight gives it a slight advantage, but also because it detests the thought of having to touch the ground. An air elemental can move underwater, and although it is an elemental and thus runs no risk of drowning, it has no ranks in Swim and loses much of its speed and mobility when underwater. Elemental Height Weight Whirlwind/Vortex Save DC Whirlwind/Vortex Height Small 4 ft. 1 lb. 12 10–20 ft. Medium 8 ft. 2 lbs. 14 10–30 ft. Large 16 ft. 4 lbs. 18 10–40 ft. Huge 32 ft. 8 lbs. 22 10–50 ft. Greater 36 ft. 10 lbs. 23 10–60 ft. Elder 40 ft. 12 lbs. 27 10–60 ft.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Elemental (Earth), Medium Earth Elemental", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "34 (4d10+12)", ac: 18,
+                          fort: 7, ref: 0, will: 4, init_: 1,
+                          str: 20, dex: 8, con: 17, int_: 4, wis: 11, cha: 11,
+                          senses: "darkvision 60 ft., tremorsense 60 ft.; Perception +7Defense", speed: "20 ft., burrow 20 ft., earth glide",
+                          attacks: "slam +9 (1d8+7)",
+                          specialAbilities: "earth masteryStatistics",
+                          environment: "any (Plane of Earth)",
+                          summary: "Elemental (Earth), Medium Earth Elemental Medium Earth Elemental CR 3 Source Pathfinder RPG Bestiary pg. 122 XP 800 N Me…",
+                          desc: "Elemental (Earth), Medium Earth Elemental Medium Earth Elemental CR 3 Source Pathfinder RPG Bestiary pg. 122 XP 800 N Medium outsider (earth, elemental, extraplanar) Init –1; Senses darkvision 60 ft., tremorsense 60 ft.; Perception +7 Defense AC 18, touch 9, flat-footed 18 (–1 Dex, +9 natural) hp 34 (4d10+12) Fort +7, Ref +0, Will +4 Immune elemental traits Offense Speed 20 ft., burrow 20 ft., earth glide Melee slam +9 (1d8+7) Special Attacks earth mastery Statistics Str 20, Dex 8, Con 17, Int 4, Wis 11, Cha 11 Base Atk +4; CMB +9; CMD 18 Feats Cleave , Improved Bull Rush B , Power Attack Skills Appraise +1, Climb +10, Knowledge (dungeoneering) +2, Knowledge (planes) +2, Perception +7, Stealth +3 Ecology Environment any (Plane of Earth) Elemental Height Weight Small 4 ft. 80 lbs. Medium 8 ft. 750 lbs. Large 16 ft. 6,000 lbs. Huge 32 ft. 48,000 lbs. Greater 36 ft. 54,000 lbs. Elder 40 ft. 60,000 lbs. Earth elementals are plodding, stubborn creatures made of living stone or earth. When utterly still, they resemble a heap of stone or a small hill. When an earth elemental lumbers into action, its actual appearance can vary, although its statistics remain identical to other elementals of its size. Most earth elementals look like terrestrial animals made out of rock, earth, or even crystal, with glowing gemstones for eyes. Larger earth elementals often have a stony humanoid appearance. Bits of vegetation frequently grow in the soil that makes up parts of an earth elemental’s body.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Elemental (Fire), Medium Fire Elemental", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "30 (4d10+8)", ac: 17,
+                          fort: 6, ref: 7, will: 1, init_: 7,
+                          str: 12, dex: 17, con: 14, int_: 4, wis: 11, cha: 11,
+                          senses: "darkvision 60 ft.; Perception +7Defense", speed: "50 ft.",
+                          attacks: "slam +7 (1d6+1 plus burn)",
+                          specialAbilities: "burn (1d6, DC 14)Statistics",
+                          environment: "any (Plane of Fire)",
+                          summary: "Elemental (Fire), Medium Fire Elemental Medium Fire Elemental CR 3 Source Pathfinder RPG Bestiary pg. 124 XP 800 N Mediu…",
+                          desc: "Elemental (Fire), Medium Fire Elemental Medium Fire Elemental CR 3 Source Pathfinder RPG Bestiary pg. 124 XP 800 N Medium outsider (elemental, extraplanar, fire) Init +7; Senses darkvision 60 ft.; Perception +7 Defense AC 17, touch 14, flat-footed 13 (+3 Dex, +1 dodge, +3 natural) hp 30 (4d10+8) Fort +6, Ref +7, Will +1 Immune elemental traits, fire Weaknesses vulnerability to cold Offense Speed 50 ft. Melee slam +7 (1d6+1 plus burn) Special Attacks burn (1d6, DC 14) Statistics Str 12, Dex 17, Con 14, Int 4, Wis 11, Cha 11 Base Atk +4; CMB +5; CMD 19 Feats Dodge , Improved Initiative B , Mobility , Weapon Finesse B Skills Acrobatics +8, Climb +5, Escape Artist +8, Intimidate +5, Knowledge (planes) +1, Perception +7 Ecology Environment any (Plane of Fire) Fire elementals are quick, cruel creatures of living flame. They enjoy frightening beings weaker than themselves, and terrorizing any creature they can set on fire. A fire elemental cannot enter water or any other nonflammable liquid. A body of water is an impassible barrier unless the fire elemental can step or jump over it or the water is covered with a flammable material (such as a layer of oil). Fire elementals vary in appearance—they usually manifest as coiling serpentine forms made of smoke and flame, but some fire elementals take on shapes more akin to humans, demons, or other monsters in order to increase the terror of their sudden appearance. Features on a fire elemental’s body are made by darker bits of flame or patches of semi-stable smoke, ash, and cinders. Elemental Height Weight Small 4 ft. 1 lb. Medium 8 ft. 2 lbs. Large 16 ft. 4 lbs. Huge 32 ft. 8 lbs. Greater 36 ft. 10 lbs. Elder 40 ft. 12 lbs.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Elemental (Water), Medium Water Elemental", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "30 (4d10+8)", ac: 17,
+                          fort: 6, ref: 5, will: 1, init_: 1,
+                          str: 16, dex: 12, con: 15, int_: 4, wis: 11, cha: 11,
+                          senses: "darkvision 60 ft.; Perception +5Defense", speed: "20 ft., swim 90 ft.",
+                          attacks: "slam +7 (1d8+4)",
+                          specialAbilities: "drench, vortex (DC 15), water masteryStatistics",
+                          environment: "any (Plane of Water)",
+                          summary: "Elemental (Water), Medium Water Elemental Medium Water Elemental CR 3 Source Pathfinder RPG Bestiary pg. 126 XP 800 N Me…",
+                          desc: "Elemental (Water), Medium Water Elemental Medium Water Elemental CR 3 Source Pathfinder RPG Bestiary pg. 126 XP 800 N Medium outsider (elemental, extraplanar, water) Init +1; Senses darkvision 60 ft.; Perception +5 Defense AC 17, touch 11, flat-footed 16 (+1 Dex, +6 natural) hp 30 (4d10+8) Fort +6, Ref +5, Will +1 Immune elemental traits Offense Speed 20 ft., swim 90 ft. Melee slam +7 (1d8+4) Special Attacks drench, vortex (DC 15), water mastery Statistics Str 16, Dex 12, Con 15, Int 4, Wis 11, Cha 11 Base Atk +4; CMB +7; CMD 18 Feats Cleave , Power Attack Skills Acrobatics +6, Escape Artist +6, Knowledge (planes) +2, Perception +5, Stealth +6, Swim +16 Ecology Environment any (Plane of Water) Water elementals are patient, relentless creatures made of living fresh or salt water. They prefer to hide or drag their opponents into the water to gain an advantage. As with other elementals, all water elementals have their own unique shapes and appearances. Most appear as wave-like creatures with vaguely humanoid faces and smaller wave “arms” to either side. Another common form is that of any aquatic creature, such as a shark or octopus, but made entirely out of water. Elemental Height Weight Vortex Save DC Vortex Height Small 4 ft. 34 lb. 13 10–20 ft. Medium 8 ft. 280 lbs. 15 10–30 ft. Large 16 ft. 2,250 lbs. 19 10–40 ft. Huge 32 ft. 18,000 lbs. 22 10–50 ft. Greater 36 ft. 21,000 lbs. 25 10–60 ft. Elder 40 ft. 24,000 lbs. 28 10–60 ft.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Ettercap", cr: "3", type: "aberration", size: "Medium", alignment: "NE",
+                          hp: "30 (4d8+12)", ac: 15,
+                          fort: 6, ref: 4, will: 6, init_: 7,
+                          str: 14, dex: 17, con: 17, int_: 6, wis: 15, cha: 8,
+                          senses: "darkvision 60 ft., low-light vision; Perception +9Defense", speed: "30 ft., climb 30 ft.",
+                          attacks: "bite +5 (1d6+2 plus poison) and 2 claws +5 (1d4+2)",
+                          specialAbilities: "traps, web (+6 ranged, DC 15, hp 4)Statistics",
+                          environment: "temperate forests",
+                          summary: "This hideous purple creature walks upright like a man, but its face is that of a spider, and its hands are sickle-shaped claws.",
+                          desc: "Ettercap This hideous purple creature walks upright like a man, but its face is that of a spider, and its hands are sickle-shaped claws. Ettercap CR 3 Source Pathfinder RPG Bestiary pg. 129 XP 800 NE Medium aberration Init +7; Senses darkvision 60 ft., low-light vision; Perception +9 Defense AC 15, touch 13, flat-footed 12 (+3 Dex, +2 natural) hp 30 (4d8+12) Fort +6, Ref +4, Will +6 Offense Speed 30 ft., climb 30 ft. Melee bite +5 (1d6+2 plus poison) and 2 claws +5 (1d4+2) Special Attacks traps, web (+6 ranged, DC 15, hp 4) Statistics Str 14, Dex 17, Con 17, Int 6, Wis 15, Cha 8 Base Atk +3; CMB +5; CMD 18 Feats Great Fortitude , Improved Initiative Skills Climb +14, Craft (trapmaking) +8, Perception +9, Stealth +7; Racial Modifiers +8 on Craft (trapmaking) Languages Common SQ spider empathy +7 Ecology Environment temperate forests Organization solitary, pair, or nest (3–6 plus 2–8 giant spiders) Treasure standard Special Abilities Poison (Ex) Bite—injury; save Fort DC 15; frequency 1/round for 10 rounds; effect 1d2 Dex; cure 2 consecutive saves. The save DC is Constitution based. Spider Empathy (Ex) This ability functions as the druid’s wild empathy, save that an ettercap can only use this ability on spiders. An ettercap gains a +4 racial bonus on this check. Spiders are mindless, but this empathic communication imparts on them a modicum of implanted intelligence, allowing ettercaps to train giant spiders and use them as guardians. Traps (Ex) The ettercap is particularly skilled at crafting cunning traps with its webs. Deadfalls, nooses, and spear traps are the most common traps ettercaps build with their webs. An ettercap doesn’t require gold to build its traps, merely time. Description Ettercap Deadfall : CR 3; Type mechanical; Perception DC 20; Disable Device DC 20; Trigger location; Reset repair; Effect +10 melee (4d6), multiple targets (all targets in a 10-ft. square). Ettercap Noose : CR 1; Type mechanical; Perception DC 20; Disable Device DC 20; Trigger loca",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Gelatinous Cube", cr: "3", type: "ooze", size: "Large", alignment: "N",
+                          hp: "50 (4d8+32)", ac: 4,
+                          fort: 9, ref: 4, will: 4, init_: 5,
+                          str: 10, dex: 1, con: 26, int_: 10, wis: 1, cha: 1,
+                          senses: "blindsight 60 ft.; Perception –5Defense", speed: "15 ft.",
+                          attacks: "slam +2 (1d6 plus 1d6 acid)",
+                          specialAbilities: "engulf, paralysisStatistics",
+                          environment: "any underground",
+                          summary: "Bits of broken weapons, coins, and a partially digested skeleton are visible inside this quivering cube of slime.",
+                          desc: "Gelatinous Cube Bits of broken weapons, coins, and a partially digested skeleton are visible inside this quivering cube of slime. Gelatinous Cube CR 3 Source Pathfinder RPG Bestiary pg. 138 XP 800 N Large ooze Init –5; Senses blindsight 60 ft.; Perception –5 Defense AC 4, touch 4, flat-footed 4 (–5 Dex, –1 size) hp 50 (4d8+32) Fort +9, Ref –4, Will –4 Immune electricity, ooze traits Offense Speed 15 ft. Melee slam +2 (1d6 plus 1d6 acid) Space 10 ft., Reach 5 ft. Special Attacks engulf, paralysis Statistics Str 10, Dex 1, Con 26, Int —, Wis 1, Cha 1 Base Atk +3; CMB +4; CMD 9 (can’t be tripped) SQ transparent Ecology Environment any underground Organization solitary Treasure incidental Special Abilities Acid (Ex) A gelatinous cube’s acid does not harm metal or stone. Engulf (Ex) Although it moves slowly, a gelatinous cube can simply engulf Large or smaller creatures in its path as a standard action. It cannot make a slam attack during a round in which it engulfs. The gelatinous cube merely has to move over the opponents, affecting as many as it can cover. Opponents can make attacks of opportunity against the cube, but if they do so they are not entitled to a saving throw. Those who do not attempt attacks of opportunity can attempt a DC 12 Reflex save to avoid being engulfed—on a success, they are pushed back or aside (opponent’s choice) as the cube moves forward. Engulfed creatures are subject to the cube’s paralysis and acid, gain the pinned condition, are in danger of suffocating, and are trapped within its body until they are no longer pinned. The save DC is Strength-based. Paralysis (Ex) A gelatinous cube secretes an anesthetizing slime. A target hit by a cube’s melee or engulf attack must succeed on a DC 20 Fortitude save or be paralyzed for 3d6 rounds. The cube can automatically engulf a paralyzed opponent. The save DC is Constitution-based. Transparent (Ex) Due to its lack of coloration, a gelatinous cube is difficult to discern. A DC 15 Perception check is re",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Hell Hound", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "30 (4d10+8)", ac: 16,
+                          fort: 6, ref: 5, will: 1, init_: 5,
+                          str: 13, dex: 13, con: 15, int_: 6, wis: 10, cha: 6,
+                          senses: "darkvision 60 ft., scent; Perception +7Defense", speed: "40 ft.",
+                          attacks: "bite +5 (1d8+1 plus 1d6 fire)",
+                          specialAbilities: "breath weapon (10-ft. cone, once every 2d4 rounds, 2d6 fire damage, Reflex DC 14 for half)Statistics",
+                          environment: "any (Hell)",
+                          summary: "This creature resembles a thin, lanky wolf with reddish-brown fur, white claws, and burning, fiery red eyes.",
+                          desc: "Hell Hound This creature resembles a thin, lanky wolf with reddish-brown fur, white claws, and burning, fiery red eyes. Hell Hound CR 3 Source Pathfinder RPG Bestiary pg. 173 XP 800 LE Medium outsider (evil, extraplanar, fire, lawful) Init +5; Senses darkvision 60 ft., scent; Perception +7 Defense AC 16, touch 11, flat-footed 15 (+1 Dex, +5 natural) hp 30 (4d10+8) Fort +6, Ref +5, Will +1 Immune fire Weaknesses vulnerability to cold Offense Speed 40 ft. Melee bite +5 (1d8+1 plus 1d6 fire) Special Attacks breath weapon (10-ft. cone, once every 2d4 rounds, 2d6 fire damage, Reflex DC 14 for half) Statistics Str 13, Dex 13, Con 15, Int 6, Wis 10, Cha 6 Base Atk +4; CMB +5; CMD 16 (20 vs. trip) Feats Improved Initiative , Run Skills Acrobatics +8, Perception +7, Stealth +13, Survival +7; Racial Modifiers +5 Stealth Languages Infernal (cannot speak) Ecology Environment any (Hell) Organization solitary, pair, or pack (3–12) Treasure incidental Description A typical hell hound stands 4–5 feet tall at the shoulder and weighs 120 pounds. Efficient hunters, a favorite pack tactic is to surround prey quietly, then attack with one or two hounds, driving prey toward the rest of the pack with their fiery breath. If the prey doesn’t run, the pack closes in. Hell hounds track fleeing creatures relentlessly. Hell hounds are particularly favored by fire giants, as the creatures are immune to fire and share the fire giant’s sense of cruelty when it comes to handling intruders. Only when a fire giant goes too far toward treating a relatively intelligent hell hound like a pet do such alliances begin to falter.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Hyena, Dire Hyena (Hyaenodon)", cr: "3", type: "animal", size: "Large", alignment: "N",
+                          hp: "26 (4d8+8)", ac: 15,
+                          fort: 6, ref: 6, will: 2, init_: 2,
+                          str: 18, dex: 15, con: 15, int_: 2, wis: 13, cha: 6,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "50 ft.",
+                          attacks: "bite +6 (2d6+6 plus trip)",
+                          specialAbilities: "",
+                          environment: "warm plains",
+                          summary: "This large hyena has a thick head, rheumy red eyes, and a mouth filled with sharp, powerful teeth.",
+                          desc: "Hyena, Dire Hyena (Hyaenodon) This large hyena has a thick head, rheumy red eyes, and a mouth filled with sharp, powerful teeth. Dire Hyena (Hyaenodon) CR 3 Source Pathfinder RPG Bestiary pg. 179 XP 800 N Large animal Init +2; Senses low-light vision, scent; Perception +8 Defense AC 15, touch 11, flat-footed 13 (+2 Dex, +4 natural, –1 size) hp 26 (4d8+8) Fort +6, Ref +6, Will +2 Offense Speed 50 ft. Melee bite +6 (2d6+6 plus trip) Space 10 ft., Reach 10 ft. Statistics Str 18, Dex 15, Con 15, Int 2, Wis 13, Cha 6 Base Atk +3; CMB +8; CMD 20 (24 vs. trip) Feats Skill Focus (Perception , Stealth) Skills Perception +8, Stealth +7 (+11 in tall grass or heavy undergrowth); Racial Modifiers +4 Stealth in tall grass Ecology Environment warm plains Organization solitary, pair, or pack (3–8) Treasure incidental Description Dire hyenas (known to many as hyaenodons) are more fearsome than their smaller cousins. While hyaenodons won’t turn down carrion as a handy meal, they much prefer to hunt for prey. A pack of dire hyenas rarely stops moving and hunting for anything other than sleep, mating, or food. Hyaenodons are 6 feet tall at the shoulder and often over 12 feet long. They weigh 900 pounds. Gnolls have been known to train hyaenodons to serve in their lairs as guardians, or more commonly as fearsome mounts.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Lion", cr: "3", type: "animal", size: "Large", alignment: "N",
+                          hp: "32 (5d8+10)", ac: 15,
+                          fort: 6, ref: 7, will: 2, init_: 7,
+                          str: 21, dex: 17, con: 15, int_: 2, wis: 12, cha: 6,
+                          senses: "low-light vision, scent; Perception +9Defense", speed: "40 ft.",
+                          attacks: "bite +7 (1d8+5 plus grab), 2 claws +7 (1d4+5)",
+                          specialAbilities: "pounce, rake (2 claws +7, 1d4+5)Statistics",
+                          environment: "warm plains",
+                          summary: "This great cat’s muscles flex visibly under its skin as it bares its fangs and shakes its thick mane of hair.",
+                          desc: "Lion This great cat’s muscles flex visibly under its skin as it bares its fangs and shakes its thick mane of hair. Lion CR 3 Source Pathfinder RPG Bestiary pg. 193 XP 800 N Large animal Init +7; Senses low-light vision, scent; Perception +9 Defense AC 15, touch 12, flat-footed 12 (+3 Dex, +3 natural, –1 size) hp 32 (5d8+10) Fort +6, Ref +7, Will +2 Offense Speed 40 ft. Melee bite +7 (1d8+5 plus grab), 2 claws +7 (1d4+5) Space 10 ft., Reach 5 ft. Special Attacks pounce, rake (2 claws +7, 1d4+5) Statistics Str 21, Dex 17, Con 15, Int 2, Wis 12, Cha 6 Base Atk +3; CMB +9 (+13 grapple); CMD 22 (26 vs. trip) Feats Improved Initiative , Run , Skill Focus (Perception) Skills Acrobatics +11, Perception +9, Stealth +8 (+12 in undergrowth); Racial Modifiers +4 Acrobatics, +4 Stealth (+8 in undergrowth) Ecology Environment warm plains Organization solitary, pair, or pride (3–10) Treasure none Description Male lions are 5 to 8 feet long and weigh 330 to 550 pounds. Females are slightly smaller but use the same statistics. Lions are usually the top animal predators in their territories, though they resort to scavenging if convenient or necessary. They may kill other predators (such as leopards and hyenas) that encroach upon their haunts, but rarely eat these kills unless game is scarce. Most lions do not selectively hunt humanoids, but occasionally one learns what easy kills they are and becomes a man-eater. Lions prefer plains but can adapt to living in shallow caves as long as there’s a large and stable supply of prey to keep them fed.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Mantis, Giant Mantis", cr: "3", type: "vermin", size: "Large", alignment: "N",
+                          hp: "30 (4d8+12)", ac: 15,
+                          fort: 7, ref: 2, will: 3, init_: 1,
+                          str: 16, dex: 13, con: 16, int_: 10, wis: 14, cha: 11,
+                          senses: "darkvision 60 ft.; Perception +6Defense", speed: "30 ft., climb 30 ft., fly 40 ft. (poor)",
+                          attacks: "2 claws +5 (1d6+3 plus grab)",
+                          specialAbilities: "lunge, mandibles, sudden strikeStatistics",
+                          environment: "temperate forests",
+                          summary: "This towering insect walks on its back four legs. Its head is triangular and its front legs sport razor-sharp edges and claws.",
+                          desc: "Mantis, Giant Mantis This towering insect walks on its back four legs. Its head is triangular and its front legs sport razor-sharp edges and claws. Giant Mantis CR 3 Source Pathfinder RPG Bestiary pg. 200 XP 800 N Large vermin Init +1; Senses darkvision 60 ft.; Perception +6 Defense AC 15, touch 10, flat-footed 14 (+1 Dex, +5 natural, –1 size) hp 30 (4d8+12) Fort +7, Ref +2, Will +3 Immune mind-affecting effects Offense Speed 30 ft., climb 30 ft., fly 40 ft. (poor) Melee 2 claws +5 (1d6+3 plus grab) Space 10 ft., Reach 10 ft. Special Attacks lunge, mandibles, sudden strike Statistics Str 16, Dex 13, Con 16, Int —, Wis 14, Cha 11 Base Atk +3; CMB +7 (+11 grapple); CMD 18 (22 vs. trip) Skills Climb +11, Fly –5, Perception +6, Stealth +1 (+13 in forests); Racial Modifiers +4 Perception, +4 Stealth (+12 in forests) Ecology Environment temperate forests Organization solitary Treasure none Special Abilities Lunge (Ex) A giant mantis’s limbs are capable of reaching much farther than normal for a creature of its size. As a full-attack action, it can make a single attack with its claws at double its normal reach. When a giant mantis attacks with a claw in this manner, it gains a +4 bonus on its attack roll. A giant mantis cannot make attacks of opportunity with its lunge. Mandibles (Ex) A giant mantis that grabs a foe can make a bite attack against that foe as a secondary attack. The mantis’s bite is a +0 attack that inflicts 1d6+1 points of damage on a hit. Sudden Strike (Ex) A giant mantis is particularly adept at moving quickly when its foes are surprised. During a surprise round, a giant mantis may act as if it had a full round to act, rather than just one standard action. Description Known to many as the giant praying mantis for the way the creature’s deadly front limbs fold under its head as it lies in wait for food, this creature is well feared along caravan tracks that pass through dense woodlands. The giant mantis, a master of hiding in dense undergrowth, is almost ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Mephit", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "19 (3d10+3); fast healing 2", ac: 17,
+                          fort: 2, ref: 5, will: 3, init_: 6,
+                          str: 13, dex: 15, con: 12, int_: 6, wis: 11, cha: 14,
+                          senses: "darkvision 60 ft.; Perception +6Defense", speed: "30 ft., fly 40 ft. (average)",
+                          attacks: "2 claws +5 (1d3+1)",
+                          specialAbilities: "breath weapon (15-foot cone, effect based on type, Reflex DC 13 for half)",
+                          environment: "any (elemental planes)",
+                          summary: "This small humanoid creature has thin, leathery wings, small horns, and a mischievous smile.",
+                          desc: "Mephit This small humanoid creature has thin, leathery wings, small horns, and a mischievous smile. Mephit CR 3 Source Pathfinder RPG Bestiary pg. 202 XP 800 N Small outsider (varies) Init +6; Senses darkvision 60 ft.; Perception +6 Defense AC 17, touch 14, flat-footed 14 (+2 Dex, +1 dodge, +3 natural, +1 size) hp 19 (3d10+3); fast healing 2 Fort +2, Ref +5, Will +3 DR 5/magic Offense Speed 30 ft., fly 40 ft. (average) Melee 2 claws +5 (1d3+1) Special Attacks breath weapon (15-foot cone, effect based on type, Reflex DC 13 for half) Spell-Like Abilities (CL 6th) 1/day—summon (level 2, 1 mephit of the same type 25%), additional abilities based on mephit type Statistics Str 13, Dex 15, Con 12, Int 6, Wis 11, Cha 14 Base Atk +3; CMB +3; CMD 15 Feats Dodge , Improved Initiative Skills Bluff +8, Fly +10, Perception +6, Stealth +12 Languages Common, one appropriate elemental language (Aquan, Auran, Ignan, or Terran) Ecology Environment any (elemental planes) Organization solitary, pair, gang (3–6), mob (7–12) Treasure standard Special Abilities Breath Weapon (Su) Each type of mephit can unleash a particular breath weapon every 4 rounds as a standard action. The DC is Constitution-based and includes a +1 racial bonus. Description Mephits are the servants of powerful elemental creatures. Key sites and locations on the elemental planes are full of mephits scurrying about on important errands or duties. Each mephit is associated with one element that defines its spells and abilities. The mephit types are listed below. Mephit Varieties Air Mephit (Air) Air mephits are commonly found on the Plane of Air. These mephits are whimsical and prone to distraction. Fast Healing : Works only in gusty and windy areas. Speed : Fly 60 ft. (perfect) Breath Weapon : A cone of sand and grit that deals 1d8 slashing damage. Spell-Like Abilities : blur 1/hour, gust of wind 1/day. Dust Mephit (Air) Dust mephits are commonly found on the Plane of Air. These mephits are irritating and persistent. Fa",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Ogre", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "30 (4d8+12)", ac: 17,
+                          fort: 6, ref: 0, will: 3, init_: 1,
+                          str: 21, dex: 8, con: 15, int_: 6, wis: 10, cha: 7,
+                          senses: "darkvision 60 ft., low-light vision; Perception +5Defense", speed: "30 ft. (40 ft. base)",
+                          attacks: "greatclub +7 (2d8+7)",
+                          specialAbilities: "rock throwing (1d6, 90 ft.),",
+                          environment: "temperate or cold hills",
+                          summary: "This lumbering giant’s beady eyes are devoid of wit or kindness, and its puffy face features a wide mouth with ill-fitting teeth.",
+                          desc: "Ogre This lumbering giant’s beady eyes are devoid of wit or kindness, and its puffy face features a wide mouth with ill-fitting teeth. Ogre CR 3 Source Pathfinder RPG Bestiary pg. 220 XP 800 CE Large humanoid (giant) Init –1; Senses darkvision 60 ft., low-light vision; Perception +5 Defense AC 17, touch 8, flat-footed 17 (+4 armor, –1 Dex, +5 natural, –1 size) hp 30 (4d8+12) Fort +6, Ref +0, Will +3 Offense Speed 30 ft. (40 ft. base) Melee greatclub +7 (2d8+7) Ranged javelin +1 (1d8+5) Space 10 ft., Reach 10 ft. Statistics Str 21, Dex 8, Con 15, Int 6, Wis 10, Cha 7 Base Atk +3; CMB +9; CMD 18 Feats Iron Will , Toughness Skills Climb +7, Perception +5 Languages Giant Ecology Environment temperate or cold hills Organization solitary, pair, gang (3–4), or family (5–16) Treasure standard (hide armor, greatclub, 4 javelins, other treasure) Description Stories are told of ogres—horrendous stories of brutality and savagery, cannibalism and torture. Of rape and dismemberment, necrophilia, incest, mutilation, and all manners of hideous murder. Those who have not encountered ogres know the stories as warnings. Those who have survived such encounters know these tales to be tame compared to the truth. An ogre revels in the misery of others. When smaller races aren’t available to crush between meaty fists or defile in blood-red lusts of violence, they turn to each other for entertainment. Nothing is taboo in ogre society. One would think that, left to themselves, an ogre tribe would quickly tear itself apart, with only the strongest surviving in the end—yet if there is one thing ogres respect, it is family. Ogre tribes are known as families, and many of their deformities and hideous features arise from the common practice of incest. The leader of a tribe is most often the father of the tribe, although in some cases a particularly violent or domineering ogress claims the title of mother. Ogre tribes bicker among themselves, a trait that thankfully keeps them busy and turned agai",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Pegasus", cr: "3", type: "magical beast", size: "Large", alignment: "CG",
+                          hp: "34 (4d10+12)", ac: 14,
+                          fort: 7, ref: 6, will: 4, init_: 2,
+                          str: 18, dex: 15, con: 16, int_: 10, wis: 13, cha: 13,
+                          senses: "darkvision 60 ft., detect evil, detect good, low-light vision, scent; Perception +11Defense", speed: "60 ft., fly 120 ft. (average)",
+                          attacks: "bite +7 (1d3+4), 2 hooves +2 (1d6+2)",
+                          specialAbilities: "",
+                          environment: "temperate and warm plains",
+                          summary: "This magnificient horse has great bird-like wings upon its back and moves with a quiet and proud grace.",
+                          desc: "Pegasus This magnificient horse has great bird-like wings upon its back and moves with a quiet and proud grace. Pegasus CR 3 Source Pathfinder RPG Bestiary pg. 225 XP 800 CG Large magical beast Init +2; Senses darkvision 60 ft., detect evil, detect good, low-light vision, scent; Perception +11 Defense AC 14, touch 11, flat-footed 12 (+2 Dex, +3 natural, –1 size) hp 34 (4d10+12) Fort +7, Ref +6, Will +4 Offense Speed 60 ft., fly 120 ft. (average) Melee bite +7 (1d3+4), 2 hooves +2 (1d6+2) Space 10 ft., Reach 5 ft. Spell-Like Abilities (CL 4th) Constant— detect evil (60-ft. radius), detect good (60-ft. radius) Statistics Str 18, Dex 15, Con 16, Int 10, Wis 13, Cha 13 Base Atk +4; CMB +9; CMD 21 (25 vs. trip) Feats Flyby Attack , Iron Will Skills Fly +5, Perception +11, Sense Motive +7; Racial Modifiers +4 Perception Languages Common (cannot speak) Ecology Environment temperate and warm plains Organization solitary, pair, or herd (6–10) Treasure none Description The pegasus is a magnificent winged horse that sometimes serves the cause of good. Though highly prized as aerial steeds, pegasi are wild and shy creatures not easily befriended. A typical pegasus stands 6 feet high at the shoulder, weighs 1,500 pounds, and has a wingspan of 20 feet. Most pegasi are white, though occasionally one is hatched with conventional horse colors and markings. The pegasus is, despite its appearance, as intelligent as a human. As such, those who try to train a pegasus to serve as a mount find the pegasus to be recalcitrant and even violent. A pegasus cannot speak, but it understands Common and greatly prefers the company of a good companion. The proper method to convince a pegasus to serve as a mount is to befriend it with diplomacy, favors, and good deeds. A pegasus is generally indifferent to a good-aligned creature, unfriendly to a neutral one, and hostile to an evil one—before a pegasus will serve as a mount, a pegasus must be made helpful via Diplomacy checks or other means. Riding ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Rust Monster", cr: "3", type: "aberration", size: "Medium", alignment: "N",
+                          hp: "27 (5d8+5)", ac: 18,
+                          fort: 2, ref: 4, will: 5, init_: 3,
+                          str: 10, dex: 17, con: 13, int_: 2, wis: 13, cha: 8,
+                          senses: "darkvision 60 ft., scent metals 90 ft.; Perception +12Defense", speed: "40 ft., climb 10 ft.",
+                          attacks: "bite +6 (1d3), antennae +6 touch (rust)Statistics",
+                          specialAbilities: "",
+                          environment: "any underground",
+                          summary: "This insectile monster has four legs, a strange propeller-shaped protrusion at the end of its tail, and two long, feathery antennae.",
+                          desc: "Rust Monster This insectile monster has four legs, a strange propeller-shaped protrusion at the end of its tail, and two long, feathery antennae. Rust Monster CR 3 Source Pathfinder RPG Bestiary pg. 238 XP 800 N Medium aberration Init +3; Senses darkvision 60 ft., scent metals 90 ft.; Perception +12 Defense AC 18, touch 13, flat-footed 15 (+3 Dex, +5 natural) hp 27 (5d8+5) Fort +2, Ref +4, Will +5 Offense Speed 40 ft., climb 10 ft. Melee bite +6 (1d3), antennae +6 touch (rust) Statistics Str 10, Dex 17, Con 13, Int 2, Wis 13, Cha 8 Base Atk +3; CMB +3; CMD 16 (20 vs. trip) Feats Ability Focus (rust) , Skill Focus (Perception) , Weapon Finesse Skills Climb +8, Perception +12 Ecology Environment any underground Organization solitary, pair, or nest (3–10) Treasure incidental (no metal treasure) Special Abilities Rust (Su) A rust monster’s antennae are a primary touch attack that causes any metal object they touch to swiftly rust and corrode. The object touched takes half its maximum hp in damage and gains the broken condition—a second hit destroys the item. A rust monster never provokes attacks of opportunity by attempting to strike a weapon with its antennae. Against creatures made of metal, a rust monster’s antennae deal 3d6+5 points of damage. An attended object, any magic object, or a metal creature can attempt a DC 15 Reflex save to negate this effect. The save DC is Constitution-based. Scent Metals (Ex) This ability functions much the same as the scent ability, except that the range is 90 feet and the rust monster can only use it to sense metal objects (including creatures wearing or carrying metal objects). Description Of all the terrifying beasts an explorer might encounter underground, only the rust monster targets that which the average adventurer values most: his treasure. Typically 5 feet long and weighing almost 200 pounds, the lobster-like rust monster would be frightening enough even without the alien feeding process that gives it its name. Rust monsters",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Scorpion, Giant Scorpion", cr: "3", type: "vermin", size: "Large", alignment: "N",
+                          hp: "37 (5d8+15)", ac: 16,
+                          fort: 7, ref: 1, will: 1, init_: 0,
+                          str: 19, dex: 10, con: 16, int_: 10, wis: 10, cha: 2,
+                          senses: "darkvision 60 ft., tremorsense 60 ft.; Perception +4Defense", speed: "50 ft.",
+                          attacks: "2 claws +6 (1d6+4 plus grab), sting +6 (1d6+4 plus poison)",
+                          specialAbilities: "constrict (1d6+4)Statistics",
+                          environment: "warm or temperate deserts, forests, plains, or underground",
+                          summary: "The sixteen-foot-long scorpion scrabbles forward, ferocious claws raised in challenge, stingered tail arched over its back.",
+                          desc: "Scorpion, Giant Scorpion The sixteen-foot-long scorpion scrabbles forward, ferocious claws raised in challenge, stingered tail arched over its back. Giant Scorpion CR 3 Source Pathfinder RPG Bestiary pg. 242 XP 800 N Large vermin Init +0; Senses darkvision 60 ft., tremorsense 60 ft.; Perception +4 Defense AC 16, touch 9, flat-footed 16 (+7 armor, –1 size) hp 37 (5d8+15) Fort +7, Ref +1, Will +1 Immune mind-affecting effects Offense Speed 50 ft. Melee 2 claws +6 (1d6+4 plus grab), sting +6 (1d6+4 plus poison) Space 10 ft., Reach 10 ft. Special Attacks constrict (1d6+4) Statistics Str 19, Dex 10, Con 16, Int —, Wis 10, Cha 2 Base Atk +3; CMB +8 (+12 grapple); CMD 18 (30 vs. trip) Skills Climb +8, Perception +4, Stealth +0; Racial Modifiers +4 Climb, +4 Perception, +4 Stealth Ecology Environment warm or temperate deserts, forests, plains, or underground Organization solitary Treasure none Special Abilities Poison (Ex) Sting—injury; save Fort DC 17; frequency 1/round for 6 rounds; effect 1d2 Strength damage; cure 1 save. The save DC is Constitution-based and includes a +2 racial bonus. Description Giant scorpions are monstrous versions of the more common desert scorpion. They are likely to attack any creature that approaches. Giant scorpions usually charge when attacking, grabbing prey in their pincers, then lashing their segmented tails forward to kill their victim with injected venom. Giant scorpions are just over 8 feet long from head to the base of the tail; the tail adds an additional 8 feet or so, although it is usually curled up over the scorpion’s back. Giant scorpions weigh between 2,000 and 6,000 pounds. Giant scorpions normally feed on other giant vermin, as well as large mammals that they paralyze with their venom, but they will attack and eat any living creature that ventures too close. In turn, giant scorpions are preyed upon by purple worms and other large predators. Giant scorpions engage in complex courtship rituals when they mate, grasping each other’s",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Shadow", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "19 (3d8+6)", ac: 15,
+                          fort: 3, ref: 3, will: 4, init_: 2,
+                          str: 10, dex: 14, con: 10, int_: 6, wis: 12, cha: 15,
+                          senses: "darkvision 60 ft.; Perception +8Defense", speed: "fly 40 ft. (good)",
+                          attacks: "incorporeal touch +4 (1d6 Strength damage)",
+                          specialAbilities: "create spawnStatistics",
+                          environment: "any",
+                          summary: "Barely seen out of the corner of the eye, this wisp of shadow is vaguely humanoid in outline and writhes with unholy life.",
+                          desc: "Shadow Barely seen out of the corner of the eye, this wisp of shadow is vaguely humanoid in outline and writhes with unholy life. Shadow CR 3 Source Pathfinder RPG Bestiary pg. 245 XP 800 CE Medium undead (incorporeal) Init +2; Senses darkvision 60 ft.; Perception +8 Defense AC 15, touch 15, flat-footed 12 (+2 deflection, +2 Dex, +1 dodge) hp 19 (3d8+6) Fort +3, Ref +3, Will +4 Defensive Abilities incorporeal, channel resistance +2; Immune undead traits Offense Speed fly 40 ft. (good) Melee incorporeal touch +4 (1d6 Strength damage) Special Attacks create spawn Statistics Str —, Dex 14, Con —, Int 6, Wis 12, Cha 15 Base Atk +2; CMB +4; CMD 17 Feats Dodge , Skill Focus (Perception) Skills Fly +11, Perception +8, Stealth +8 (+12 in dim light, +4 in bright light); Racial Modifiers +4 Stealth in dim light (–4 in bright light) Ecology Environment any Organization solitary, pair, gang (3–6), or swarm (7–12) Treasure standard Special Abilities Create Spawn (Su) A humanoid creature killed by a shadow’s Strength damage becomes a shadow under the control of its killer in 1d4 rounds. Strength Damage (Su) A shadow’s touch deals 1d6 points of Strength damage to a living creature. This is a negative energy effect. A creature dies if this Strength damage equals or exceeds its actual Strength score. Description The sinister shadow skirts the border between the gloom of darkness and the harsh truth of light. The shadow prefers to haunt ruins where civilization has moved on, where it hunts living creatures foolish enough to stumble into its territory. The shadow is an undead horror, and as such has no goals or outwardly visible motivations other than to sap life and vitality from living beings. Variants Source Undead Revisited pg. 37 While most shadows steal strength from their victims, rare variants may drain different aspects of a target's vitality. A variant shadow's chilling touch may induce paralysis and numbness (Dexterity damage) or a kind of slow decay of the flesh (Constitut",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Unicorn", cr: "3", type: "magical beast", size: "Large", alignment: "CG",
+                          hp: "34 (4d10+12)", ac: 15,
+                          fort: 7, ref: 7, will: 6, init_: 3,
+                          str: 18, dex: 17, con: 16, int_: 11, wis: 21, cha: 24,
+                          senses: "darkvision 60 ft., low-light vision, scent; Perception +10", speed: "60 ft.",
+                          attacks: "gore +8 (1d8+4), 2 hooves +5 (1d3+2)",
+                          specialAbilities: "powerful charge (gore, 2d8+8)",
+                          environment: "temperate forests",
+                          summary: "This magnificent beast looks like a white horse, but with a goat’s beard and a single long ivory horn on its brow.",
+                          desc: "Unicorn This magnificent beast looks like a white horse, but with a goat’s beard and a single long ivory horn on its brow. Unicorn CR 3 Source Pathfinder RPG Bestiary pg. 269 XP 800 CG Large magical beast Init +3; Senses darkvision 60 ft., low-light vision, scent; Perception +10 Aura magic circle against evil Defense AC 15, touch 12, flat-footed 12 (+3 Dex, +3 natural, –1 size; +2 deflection vs. evil) hp 34 (4d10+12) Fort +7, Ref +7, Will +6; +2 resistance vs. evil Immune charm, compulsion, poison Offense Speed 60 ft. Melee gore +8 (1d8+4), 2 hooves +5 (1d3+2) Space 10 ft., Reach 5 ft. Special Attacks powerful charge (gore, 2d8+8) Spell-Like Abilities (CL 9th) At will— detect evil (as free action), light 3/day— cure light wounds 1/day— cure moderate wounds , greater teleport (within its forest territory), neutralize poison (DC 21) Statistics Str 18, Dex 17, Con 16, Int 11, Wis 21, Cha 24 Base Atk +4; CMB +9; CMD 22 (26 vs. trip) Feats Multiattack , Weapon Focus (horn) Skills Acrobatics +8, Perception +10, Stealth +8, Survival +7 (+10 in forests); Racial Modifiers +3 Survival in forests, +4 Stealth Languages Common, Sylvan SQ magical strike, wild empathy +17 Ecology Environment temperate forests Organization solitary, mated pair, or blessing (3–6) Treasure none Special Abilities Magic Circle against Evil (Su) This ability continually duplicates the effect of the spell. The unicorn cannot suppress this ability. Magical Strike (Ex) A unicorn’s gore attack is treated as a magic good weapon for the purposes of damage reduction. Wild Empathy (Su) This works like the druid’s wild empathy class feature, except the unicorn has a +6 racial bonus on the check. Unicorns with druid levels add this racial modifier to their wild empathy checks. Description Unicorns are fierce, intelligent creatures of the forest, noble beasts who keep their own counsel and typically appear only to defend their homes against evil. They universally shun all creatures except for good-aligned fey, goo",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Violet Fungus", cr: "3", type: "plant", size: "Medium", alignment: "N",
+                          hp: "30 (4d8+12)", ac: 15,
+                          fort: 7, ref: 0, will: 1, init_: 1,
+                          str: 12, dex: 8, con: 16, int_: 10, wis: 11, cha: 9,
+                          senses: "low-light vision; Perception +0Defense", speed: "10 ft.",
+                          attacks: "4 tentacles +4 (1d4+1 plus rot)",
+                          specialAbilities: "",
+                          environment: "any underground",
+                          summary: "This mushroom grows from a bed of tentacular roots. Deep violet tendrils slither out of the dozens of fissures in its pointed cap.",
+                          desc: "Violet Fungus This mushroom grows from a bed of tentacular roots. Deep violet tendrils slither out of the dozens of fissures in its pointed cap. Violet Fungus CR 3 Source Pathfinder RPG Bestiary pg. 274 XP 800 N Medium plant Init –1; Senses low-light vision; Perception +0 Defense AC 15, touch 9, flat-footed 15 (–1 Dex, +6 natural) hp 30 (4d8+12) Fort +7, Ref +0, Will +1 Immune plant traits Offense Speed 10 ft. Melee 4 tentacles +4 (1d4+1 plus rot) Space 5 ft., Reach 10 ft. Statistics Str 12, Dex 8, Con 16, Int —, Wis 11, Cha 9 Base Atk +3; CMB +4; CMD 13 Ecology Environment any underground Organization solitary, pair, or grove (3–12) Treasure incidental Special Abilities Rot (Ex) A creature struck by a violet fungus’s tentacle must succeed on a DC 15 Fortitude save or the flesh around the point of contact swiftly begins to rot away, exposing raw bone with shocking swiftness. This hideous affliction causes 1d4 points of Strength damage and 1d4 points of Constitution damage. This is a poison effect. The save DC is Constitution-based. Description The violet fungus is one of the most notorious and feared dangers of the world’s caves. A traveler can often see signs of the violet fungus in those who dwell or hunt in places where these carnivorous fungi lurk. In these folk, deep and hideous scars mar bodies where entire furrows of flesh seem scooped away—the marks of a close encounter with a violet fungus. A violet fungus feeds on the rot and decay of organic matter, but unlike most fungi, they are not passive consumers of corruption. A violet fungi’s tendrils can strike with unexpected swiftness, and are coated with a virulent venom that causes flesh to rot and decay with nauseating speed. This potent poison, if left untreated, can cause the flesh of an entire arm or leg to drop away in no time at all, leaving behind only warm bones that soon rot into corruption as well. Although violet fungi are mobile, they only move to attack or to hunt for prey. A violet fungus that h",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Wasp, Giant Wasp", cr: "3", type: "vermin", size: "Large", alignment: "N",
+                          hp: "34 (4d8+16)", ac: 14,
+                          fort: 8, ref: 2, will: 2, init_: 1,
+                          str: 18, dex: 12, con: 18, int_: 10, wis: 13, cha: 11,
+                          senses: "darkvision 60 ft.; Perception +9Defense", speed: "20 ft., fly 60 ft. (good)",
+                          attacks: "sting +6 (1d8+6 plus poison)",
+                          specialAbilities: "",
+                          environment: "temperate forests",
+                          summary: "This horse-sized wasp is covered in yellow and black vertical stripes—its stinger is the size of a sword and drips with venom.",
+                          desc: "Wasp, Giant Wasp This horse-sized wasp is covered in yellow and black vertical stripes—its stinger is the size of a sword and drips with venom. Giant Wasp CR 3 Source Pathfinder RPG Bestiary pg. 275 XP 800 N Large vermin Init +1; Senses darkvision 60 ft.; Perception +9 Defense AC 14, touch 10, flat-footed 13 (+1 Dex, +4 natural, –1 size) hp 34 (4d8+16) Fort +8, Ref +2, Will +2 Immune mind-affecting effects Offense Speed 20 ft., fly 60 ft. (good) Melee sting +6 (1d8+6 plus poison) Space 10 ft., Reach 5 ft. Statistics Str 18, Dex 12, Con 18, Int —, Wis 13, Cha 11 Base Atk +3; CMB +8; CMD 19 Skills Fly +3, Perception +9; Racial Modifiers +8 Perception Ecology Environment temperate forests Organization solitary, pair, group (3–6), or nest (7–19) Treasure none Special Abilities Poison (Ex) Sting—injury; save Fort DC 18; frequency 1/round for 6 rounds; effect 1d2 Dexterity damage; cure 1 save. The save DC is Constitution-based, and includes a +2 racial bonus. Description Giant wasps nearly always form nests, though not like their much smaller cousins. Each nest functions with one leader (the queen), a few workers, and several soldiers. The workers and the queen produce offspring while the soldiers protect the nest and hunt for food. Giant wasp nests are typically found in caves, abandoned houses, or any complex large enough to fit a dozen 10-foot-tall insects. Giant wasps attack when hungry or threatened, stinging their prey to death. They take dead or incapacitated opponents back to their lairs as food for their unhatched young—the experience of lying in a wasp nest, paralyzed while its grubs feed, is one of nature’s cruelest inventions. Even when part of a nest, giant wasps tend toward solitary hunting, and it’s rare to see more than one at a time.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Wasp, Wasp Swarm", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "31 (7d8)", ac: 15,
+                          fort: 5, ref: 3, will: 3, init_: 1,
+                          str: 1, dex: 13, con: 10, int_: 10, wis: 12, cha: 9,
+                          senses: "darkvision 60 ft.; Perception +9Defense", speed: "5 ft., fly 40 ft. (good)",
+                          attacks: "swarm (2d6 plus poison)",
+                          specialAbilities: "distraction (DC 13), poisonStatistics",
+                          environment: "temperate forests",
+                          summary: "A low, ominous buzz announces the arrival of a mass of many thousands of angry, stinging wasps.",
+                          desc: "Wasp, Wasp Swarm A low, ominous buzz announces the arrival of a mass of many thousands of angry, stinging wasps. Wasp Swarm CR 3 Source Pathfinder RPG Bestiary pg. 275 XP 800 N Diminutive vermin (swarm) Init +1; Senses darkvision 60 ft.; Perception +9 Defense AC 15, touch 15, flat-footed 14 (+1 Dex, +4 size) hp 31 (7d8) Fort +5, Ref +3, Will +3 Defensive Abilities swarm traits; Immune weapon damage Offense Speed 5 ft., fly 40 ft. (good) Melee swarm (2d6 plus poison) Space 10 ft., Reach 0 ft. Special Attacks distraction (DC 13), poison Statistics Str 1, Dex 13, Con 10, Int —, Wis 12, Cha 9 Base Atk +5; CMB —; CMD — Skills Fly +11, Perception +9; Racial Modifiers +8 Perception SQ swarm traits, vermin traits Ecology Environment temperate forests Organization solitary, pair, fury (3–6 swarms), maelstrom (7–12 swarms) Treasure none Special Abilities Poison (Ex) Swarm—injury; save Fort DC 13; frequency 1/round for 4 rounds; effect 1 Dexterity damage; cure 1 save. The save DC is Constitution-based. Description A wasp swarm is a flying mass of thousands of carnivorous wasps. In such large numbers, they become voracious hunters, capable of taking down large creatures with their venom-filled stings. While a wasp swarm is capable of inflicting hundreds of stings, its true danger arises from its insatiable appetite for meat. Wasp swarms surround and attack any living prey in their paths, and are swift to seek out new prey once their anger is aroused. An enraged wasp swarm often loses track of its hive or the original source of its anger, and presented with a constant series of new targets to swarm and sting, a swarm can continue its rampage nonstop until it is destroyed or dispersed.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Wight", cr: "3", type: "undead", size: "Medium", alignment: "LE",
+                          hp: "26 (4d8+8)", ac: 15,
+                          fort: 3, ref: 2, will: 5, init_: 1,
+                          str: 12, dex: 12, con: 10, int_: 11, wis: 13, cha: 15,
+                          senses: "darkvision 60 ft.; Perception +11Defense", speed: "30 ft.",
+                          attacks: "slam +4 (1d4+1 plus energy drain)",
+                          specialAbilities: "create spawn, energy drain (1 level, DC 14)Statistics",
+                          environment: "any",
+                          summary: "The flesh of this walking corpse is rotting and putrid, its body skeletal in places and its eye sockets glowing with red light.",
+                          desc: "Wight The flesh of this walking corpse is rotting and putrid, its body skeletal in places and its eye sockets glowing with red light. Wight CR 3 Source Pathfinder RPG Bestiary pg. 276 XP 800 LE Medium undead Init +1; Senses darkvision 60 ft.; Perception +11 Defense AC 15, touch 11, flat-footed 14 (+1 Dex, +4 natural) hp 26 (4d8+8) Fort +3, Ref +2, Will +5 Defensive Abilities undead traits Weaknesses resurrection vulnerability Offense Speed 30 ft. Melee slam +4 (1d4+1 plus energy drain) Special Attacks create spawn, energy drain (1 level, DC 14) Statistics Str 12, Dex 12, Con —, Int 11, Wis 13, Cha 15 Base Atk +3; CMB +4; CMD 15 Feats Blind-Fight , Skill Focus (Perception) Skills Intimidate +9, Knowledge (religion) +7, Perception +11, Stealth +16; Racial Modifier +8 Stealth Languages Common SQ create spawn Ecology Environment any Organization solitary, pair, gang (3–6), or pack (7–12) Treasure standard Special Abilities Create Spawn (Su) Any humanoid creature that is slain by a wight becomes a wight itself in only 1d4 rounds. Spawn so created are less powerful than typical wights, and suffer a –2 penalty on all d20 rolls and checks, as well as –2 hp per HD. Spawn are under the command of the wight that created them and remain enslaved until its death, at which point they lose their spawn penalties and become full-fledged and free-willed wights. They do not possess any of the abilities they had in life. Resurrection Vulnerability (Su) A raise dead or similar spell cast on a wight destroys it (Will negates). Using the spell in this way does not require a material component. Description Wights are humanoids who rise as undead due to necromancy, a violent death, or an extremely malevolent personality. In some cases, a wight arises when an evil undead spirit permanently bonds with a corpse, often the corpse of a slain warrior. They are barely recognizable to those who knew them in life; their flesh is twisted by evil and undeath, the eyes burn with hatred, and the teeth b",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Wolf, Dire Wolf", cr: "3", type: "animal", size: "Large", alignment: "N",
+                          hp: "37 (5d8+15)", ac: 14,
+                          fort: 7, ref: 6, will: 2, init_: 2,
+                          str: 19, dex: 15, con: 17, int_: 2, wis: 12, cha: 10,
+                          senses: "low-light vision, scent; Perception +10Defense", speed: "50 ft.",
+                          attacks: "bite +7 (1d8+6 plus trip)",
+                          specialAbilities: "",
+                          environment: "cold or temperate forests",
+                          summary: "This immense black wolf is the size of a horse, its fangs as large and sharp as knives.",
+                          desc: "Wolf, Dire Wolf This immense black wolf is the size of a horse, its fangs as large and sharp as knives. Dire Wolf CR 3 Source Pathfinder RPG Bestiary pg. 278 XP 800 N Large animal Init +2; Senses low-light vision, scent; Perception +10 Defense AC 14, touch 11, flat-footed 12 (+2 Dex, +3 natural, –1 size) hp 37 (5d8+15) Fort +7, Ref +6, Will +2 Offense Speed 50 ft. Melee bite +7 (1d8+6 plus trip) Space 10 ft., Reach 5 ft. Statistics Str 19, Dex 15, Con 17, Int 2, Wis 12, Cha 10 Base Atk +3; CMB +8; CMD 20 (24 vs. trip) Feats Run , Skill Focus (Perception) , Weapon Focus (bite) Skills Perception +10, Stealth +3, Survival +1 (+5 scent tracking); Racial Modifiers +4 Survival when tracking by scent Ecology Environment cold or temperate forests Organization solitary, pair, or pack (3–8) Treasure none Description An enormous version of a normal wolf, dire wolves represent the wolf in its most primal form. These creatures follow the same basic behaviors of regular wolves, but are much more aggressive. Dire wolves often serve giants as hunting companions and vicious guard animals. Some ferocious humanoids and woodsmen use trained dire wolves as mounts. Darker than normal wolves, dire wolves’ coats tend toward blacks and deep mottled grays. An adult dire wolf is typically about 9 feet long and weighs roughly 800 pounds.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Yeth Hound", cr: "3", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "30 (4d10+8)", ac: 15,
+                          fort: 3, ref: 6, will: 6, init_: 6,
+                          str: 17, dex: 15, con: 15, int_: 6, wis: 14, cha: 10,
+                          senses: "darkvision 60 ft., scent; Perception +9Defense", speed: "40 ft., fly 60 ft. (good)",
+                          attacks: "bite +7 (2d6+4 plus sinister bite and trip)",
+                          specialAbilities: "bayStatistics",
+                          environment: "any",
+                          summary: "This emaciated, hairless canine has a strange air of menace and cruelty about it.",
+                          desc: "Yeth Hound This emaciated, hairless canine has a strange air of menace and cruelty about it. Yeth Hound CR 3 Source Pathfinder RPG Bestiary pg. 286 XP 800 NE Medium outsider (evil, extraplanar) Init +6; Senses darkvision 60 ft., scent; Perception +9 Defense AC 15, touch 12, flat-footed 13 (+2 Dex, +3 natural) hp 30 (4d10+8) Fort +3, Ref +6, Will +6 DR 5/silver Offense Speed 40 ft., fly 60 ft. (good) Melee bite +7 (2d6+4 plus sinister bite and trip) Special Attacks bay Statistics Str 17, Dex 15, Con 15, Int 6, Wis 14, Cha 10 Base Atk +4; CMB +7; CMD 19 (23 vs. trip) Feats Improved Initiative , Skill Focus (Fly) Skills Fly +16, Perception +9, Stealth +9, Survival +9 Languages Abyssal or Infernal (cannot speak) Ecology Environment any Organization solitary, pair, or pack (6–11) Treasure incidental Special Abilities Bay (Su) When a yeth hound howls or barks, all creatures except other evil outsiders within a 300-foot spread must succeed on a DC 12 Will save or become panicked for 2d4 rounds. This is a sonic mind-affecting fear effect. Whether or not the save is successful, an affected creature is immune to the same hound’s bay for 24 hours. The save DC is Charisma-based. Flight (Su) A yeth hound can cease or resume its flight as a free action. Sinister Bite (Su) A yeth hound’s bite is treated as evil-aligned for the purpose of overcoming damage reduction. In addition, a good-aligned creature bitten by a yeth hound must make a DC 14 Will save or be shaken for 1 round. If the victim is already suffering from a fear effect (such as the hound’s bay attack), the victim is instead completely overcome with fear and can do nothing but cower for 1 round. This is a mind-affecting fear effect. The save DC is Constitution-based. Description Yeth hounds are evil outsiders that delight in hunting intelligent prey. They lope through the night skies, relentlessly pursuing their chosen quarry for miles, and harrying them with their frightful baying. Yeth hounds hunt only at night. They ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Archon, Hound Archon", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "39 (6d10+6)", ac: 19,
+                          fort: 6, ref: 5, will: 5, init_: 4,
+                          str: 15, dex: 10, con: 13, int_: 10, wis: 13, cha: 12,
+                          senses: "darkvision 60 ft., detect evil, low-light vision, scent; Perception +10", speed: "40 ft.",
+                          attacks: "bite +8 (1d8+3), slam +8 (1d4+1) or mwk greatsword +9/+4 (2d6+3), bite +3 (1d8+2)",
+                          specialAbilities: "",
+                          environment: "any (Heaven)",
+                          summary: "This canine-headed humanoid’s well-groomed appearance and polished greatsword show it to be more than a common beast.",
+                          desc: "Archon, Hound Archon This canine-headed humanoid’s well-groomed appearance and polished greatsword show it to be more than a common beast. Hound Archon CR 4 Source Pathfinder RPG Bestiary pg. 19 XP 1,200 LG Medium outsider (archon, extraplanar, good, lawful) Init +4; Senses darkvision 60 ft., detect evil , low-light vision, scent; Perception +10 Aura aura of menace (DC 16), magic circle against evil Defense AC 19, touch 10, flat-footed 19 (+9 natural; +2 deflection vs. evil) hp 39 (6d10+6) Fort +6, Ref +5, Will +5; +4 vs. poison, +2 resistance vs. evil DR 10/evil; Immune electricity, petrification; SR 15 Offense Speed 40 ft. Melee bite +8 (1d8+3), slam +8 (1d4+1) or mwk greatsword +9/+4 (2d6+3), bite +3 (1d8+2) Spell-Like Abilities (CL 6th) Constant— detect evil , magic circle against evil At Will— aid , continual flame , greater teleport (self plus 50 lbs. of objects only), message Statistics Str 15, Dex 10, Con 13, Int 10, Wis 13, Cha 12 Base Atk +6; CMB +8; CMD 18 Feats Improved Initiative , Iron Will , Power Attack Skills Acrobatics +9, Intimidate +10, Perception +10, Sense Motive +10, Stealth +13, Survival +14; Racial Modifiers +4 Stealth, +4 Survival Languages Celestial, Draconic, Infernal; truespeech SQ change shape ( beast shape II ) Ecology Environment any (Heaven) Organization solitary, pair, or squad (3–5) Treasure standard (masterwork greatsword, other treasure) Special Abilities Change Shape (Su) A hound archon can assume any canine form of Small to Large size, as if using beast shape II. While in canine form, the hound archon loses its bite, slam, and greatsword attacks, but gains the bite attack of the form it chooses. For the purposes of this ability, canines include any dog-like or wolf-like creature of the animal type. Description Hound archons look like well-muscled humans with canine heads typically resembling those of noble-looking wolves or dogs. Well trained, they prefer to make use of their greatswords in battle, though they are equally adept",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Barghest", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "45 (6d10+12)", ac: 17,
+                          fort: 6, ref: 7, will: 7, init_: 6,
+                          str: 19, dex: 15, con: 15, int_: 14, wis: 14, cha: 14,
+                          senses: "darkvision 60 ft., scent; Perception +11Defense", speed: "30 ft.",
+                          attacks: "bite +10 (1d6+4), 2 claws +10 (1d4+4)",
+                          specialAbilities: "feed",
+                          environment: "any",
+                          summary: "This snarling, canine beast pads forward on all fours, its slender front limbs looking more like hands than a wolf’s paws.",
+                          desc: "Barghest This snarling, canine beast pads forward on all fours, its slender front limbs looking more like hands than a wolf’s paws. Barghest CR 4 Source Pathfinder RPG Bestiary pg. 27 XP 1,200 LE Medium outsider (evil, extraplanar, lawful, shapechanger) Init +6; Senses darkvision 60 ft., scent; Perception +11 Defense AC 17, touch 12, flat-footed 15 (+2 Dex, +5 natural) hp 45 (6d10+12) Fort +6, Ref +7, Will +7 DR 5/magic Offense Speed 30 ft. Melee bite +10 (1d6+4), 2 claws +10 (1d4+4) Special Attacks feed Spell-Like Abilities (CL 6th) At will— blink , levitate , misdirection 1/day— charm monster (DC 16), crushing despair (DC 16), dimension door Statistics Str 19, Dex 15, Con 15, Int 14, Wis 14, Cha 14 Base Atk +6; CMB +10; CMD 22 (24 vs. trip) Feats Combat Reflexes , Improved Initiative , Great Fortitude Skills Acrobatics +11, Bluff +11, Diplomacy +11, Intimidate +11, Perception +11, Sense Motive +11, Stealth +11, Survival +11 Languages Common, Goblin, Infernal SQ change shape (goblin or wolf, polymorph ) Ecology Environment any Organization solitary or cult (1 plus goblin tribe) Treasure standard Special Abilities Feed (Su) Once per month, a barghest can devour a nonevil humanoid’s corpse as a full-round action to gain a growth point. It gains a bonus equal to its growth point total on attack rolls, CMB rolls, saving throws, and skill checks. Its maximum hit points increase by 5 for each growth point it gains. For every 2 growth points, a barghest’s caster level for its spell-like abilities and its CR increase by +1. When a barghest reaches 4 growth points, it sheds its skin and becomes a greater barghest, losing all of its growth points (and bonuses) but gaining the stats presented on this page for a greater barghest. Description Said to be fiendish relations of all goblinoid races, the hateful barghests come to the Material Plane to feed. As they consume the bodies of innocents, they grow increasingly powerful. A barghest eventually sheds its skin to transform int",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Bear, Grizzly Bear", cr: "4", type: "animal", size: "Large", alignment: "N",
+                          hp: "42 (5d8+20)", ac: 16,
+                          fort: 8, ref: 5, will: 2, init_: 1,
+                          str: 21, dex: 13, con: 19, int_: 2, wis: 12, cha: 6,
+                          senses: "low-light vision, scent ; Perception +6Defense", speed: "40 ft.",
+                          attacks: "2 claws +7 (1d6+5 plus grab), bite +7 (1d6+5)",
+                          specialAbilities: "",
+                          environment: "cold forests",
+                          summary: "Broad, powerful muscles move beneath this massive bear’s brown fur, promising both speed and lethal force.",
+                          desc: "Bear, Grizzly Bear Broad, powerful muscles move beneath this massive bear’s brown fur, promising both speed and lethal force. Grizzly Bear CR 4 Source Pathfinder RPG Bestiary pg. 31 XP 1,200 N Large animal Init +1; Senses low-light vision, scent ; Perception +6 Defense AC 16, touch 10, flat-footed 15 (+1 Dex, +6 natural, –1 size) hp 42 (5d8+20) Fort +8, Ref +5, Will +2 Offense Speed 40 ft. Melee 2 claws +7 (1d6+5 plus grab), bite +7 (1d6+5) Space 10 ft., Reach 5 ft. Statistics Str 21, Dex 13, Con 19, Int 2, Wis 12, Cha 6 Base Atk +3; CMB +9 (+13 grapple); CMD 20 (24 vs. trip) Feats Endurance , Run , Skill Focus (Survival) Skills Perception +6, Survival +5, Swim +14; Racial Modifiers +4 Swim Ecology Environment cold forests Organization solitary or pair Treasure none Description A large, powerful omnivore, the grizzly bear inhabits many of the world’s forested hills. Equally happy consuming nuts, berries, fish, or small mammals, the grizzly is nonetheless fiercely territorial, and will chase off—or, failing that, kill and eat—any intruders it views as competition. When faced with a foe or small group of threats, the grizzly attempts to subdue or kill with its claws. When it can, the bear tries to grab a single target to deal continual damage until that target is dead, unconscious, or escapes. To generate stats for a smaller bear (like a black bear), you can apply the young simple template to the grizzly bear’s stat block. To generate stats for a larger grizzly or a polar bear, apply the advanced simple template to the grizzly’s stats.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Beetle, Giant Stag Beetle", cr: "4", type: "vermin", size: "Large", alignment: "N",
+                          hp: "45 (7d8+14)", ac: 17,
+                          fort: 7, ref: 2, will: 2, init_: 0,
+                          str: 19, dex: 10, con: 15, int_: 10, wis: 10, cha: 9,
+                          senses: "darkvision 60 ft.; Perception +0Defense", speed: "20 ft., fly 20 ft. (poor)",
+                          attacks: "bite +8 (2d8+6)",
+                          specialAbilities: "trample (1d6+6, DC 17)Statistics",
+                          environment: "temperate forests",
+                          summary: "With a sleek body and huge mandibles raised in a threatening pose, this large beetle stands firm in defense of its territory.",
+                          desc: "Beetle, Giant Stag Beetle With a sleek body and huge mandibles raised in a threatening pose, this large beetle stands firm in defense of its territory. Giant Stag Beetle CR 4 Source Pathfinder RPG Bestiary pg. 33 XP 1,200 N Large vermin Init +0; Senses darkvision 60 ft.; Perception +0 Defense AC 17, touch 9, flat-footed 17 (+8 natural, –1 size) hp 45 (7d8+14) Fort +7, Ref +2, Will +2 Immune mind-affecting effects Offense Speed 20 ft., fly 20 ft. (poor) Melee bite +8 (2d8+6) Space 10 ft., Reach 5 ft. Special Attacks trample (1d6+6, DC 17) Statistics Str 19, Dex 10, Con 15, Int —, Wis 10, Cha 9 Base Atk +5; CMB +10; CMD 20 (28 vs. trip) Skills Fly –6 Ecology Environment temperate forests Organization solitary, pair, or cluster (3–6) Treasure none Description Nearly 10 feet long, giant stag beetles become serious dangers when they wander into logging camps due to their appetite for decaying wood. Called stag beetles because of their large, antler-like mandibles, they use these appendages to wrestle competing suitors and quickly put down enemy threats. Variant species of these giant beetles exist as well. The two detailed below are the ones most commonly encountered. Bombardier Beetle (CR 2) : This giant stag beetle has only 2 Hit Dice and is Medium sized, but can spray acid once per round in a 10-foot cone. Those in the cone must make a DC 11 Fortitude save or take 1d4+2 points of acid damage. The save DC is Constitution-based. Goliath Beetle (CR 8) : The immense goliath beetle is a Huge stag beetle with 12 HD and the trample special ability.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Boar, Dire Boar (Daeodon)", cr: "4", type: "animal", size: "Large", alignment: "N",
+                          hp: "42 (5d8+20)", ac: 15,
+                          fort: 7, ref: 4, will: 2, init_: 4,
+                          str: 23, dex: 10, con: 17, int_: 2, wis: 13, cha: 8,
+                          senses: "low-light vision, scent; Perception +12Defense", speed: "40 ft.",
+                          attacks: "gore +8 (2d6+9)Statistics",
+                          specialAbilities: "",
+                          environment: "temperate or tropical forests",
+                          summary: "The back of this horse-sized boar rises in a steep slope. Its tiny red eyes are crusted with filth and its bristly flank crawls with flies.",
+                          desc: "Boar, Dire Boar (Daeodon) The back of this horse-sized boar rises in a steep slope. Its tiny red eyes are crusted with filth and its bristly flank crawls with flies. Dire Boar (Daeodon) CR 4 Source Pathfinder RPG Bestiary pg. 36 XP 1,200 N Large animal Init +4; Senses low-light vision, scent; Perception +12 Defense AC 15, touch 9, flat-footed 15 (+6 natural, –1 size) hp 42 (5d8+20) Fort +7, Ref +4, Will +2 Defensive Abilities ferocity Offense Speed 40 ft. Melee gore +8 (2d6+9) Statistics Str 23, Dex 10, Con 17, Int 2, Wis 13, Cha 8 Base Atk +3; CMB +10; CMD 20 Feats Improved Initiative , Skill Focus (Perception) , Toughness Skills Perception +12 Ecology Environment temperate or tropical forests Organization solitary, pair, or herd (3–8) Treasure none Description Whereas the boar is ill-tempered and generally unfriendly, the towering daeodon (known as the dire boar to most commoners and hunters) is legitimately hateful and violent. Although omnivorous like its smaller kin, the daeodon prefers to feed on flesh, and its razor-sharp tusks and keen eyesight make it particularly well suited as a predator. While the daeodon is primarily a scavenger, it isn’t averse to attacking smaller creatures it encounters while searching for easier meals, or those who stumble unwittingly into its territory. Particularly brave or skilled orcs are fond of using daeodons as mounts, and orc cavalry mounted on dire boars make for a fearsome force indeed. A typical adult daeodon is 10 feet long and 7 feet tall at the shoulder. It weighs approximately 2,000 pounds.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Centipede, Centipede Swarm", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "31 (9d8–9)", ac: 18,
+                          fort: 5, ref: 7, will: 3, init_: 4,
+                          str: 1, dex: 19, con: 8, int_: 10, wis: 10, cha: 2,
+                          senses: "darkvision 60 ft., tremorsense 30 ft.; Perception +4Defense", speed: "30 ft., climb 30 ft.",
+                          attacks: "swarm (2d6 plus poison)",
+                          specialAbilities: "distraction (DC 13), poisonStatistics",
+                          environment: "temperate or warm forest or underground",
+                          summary: "A writhing mass of legs and poisonous pincers swarms across the ground in a deadly, undulating wave.",
+                          desc: "Centipede, Centipede Swarm A writhing mass of legs and poisonous pincers swarms across the ground in a deadly, undulating wave. Centipede Swarm CR 4 Source Pathfinder RPG Bestiary pg. 43 XP 1,200 N Diminutive vermin (swarm) Init +4; Senses darkvision 60 ft., tremorsense 30 ft.; Perception +4 Defense AC 18, touch 18, flat-footed 14 (+4 Dex, +4 size) hp 31 (9d8–9) Fort +5, Ref +7, Will +3 Defensive Abilities swarm traits; Immune weapon damage Offense Speed 30 ft., climb 30 ft. Melee swarm (2d6 plus poison) Space 10 ft., Reach 0 ft. Special Attacks distraction (DC 13), poison Statistics Str 1, Dex 19, Con 8, Int —, Wis 10, Cha 2 Base Atk +6; CMB —; CMD — Feats Weapon Finesse B Skills Climb +12, Perception +4; Racial Modifiers +4 Perception Ecology Environment temperate or warm forest or underground Organization solitary, pair, or tangle (3–6 swarms) Treasure none Special Abilities Poison (Ex) Bite—injury; save Fort DC 13; frequency 1/round for 6 rounds; effect 1d4 Dex damage; cure 1 save. The save DC is Constitution-based and includes a +2 racial bonus. Giant centipedes attack nearly any living creatures with their poisonous jaws. These creatures adapt to many environments and feed voraciously on the local fauna, including humanoids. The coloration of giant centipedes mirrors that of normal centipedes and spans the spectrum, ranging from dull hues to bright reds and fiery oranges. Other species of giant centipedes exist as well, some smaller but most quite a bit larger. You can adjust the stats given here by changing Hit Dice and size (changing Strength, Dexterity, and Constitution as appropriate) to represent a wide range of giant centipede species. The following table lists the most common variants. Species CR Size HD House centipede 1/8 Tiny 1d8 Sewer centipede 1/4 Small 1d8 Hissing centipede 1 Large 2d8 Giant whiptail centipede 2 Huge 4d8 Great forest centipede 6 Gargantuan 7d8 Titan centipede 9 Colossal 10d8",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Crab, Crab Swarm", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "38 (7d8+7)", ac: 18,
+                          fort: 6, ref: 4, will: 2, init_: 2,
+                          str: 1, dex: 14, con: 13, int_: 10, wis: 10, cha: 2,
+                          senses: "darkvision 60 ft.; Perception +0Defense", speed: "30 ft., swim 20 ft.",
+                          attacks: "swarm (2d6)",
+                          specialAbilities: "distraction (DC 14)Statistics",
+                          environment: "any aquatic",
+                          summary: "A writhing mass of clacking shells and snapping pincers rushes from the surf, their spider-like legs twitching across the sand.",
+                          desc: "Crab, Crab Swarm A writhing mass of clacking shells and snapping pincers rushes from the surf, their spider-like legs twitching across the sand. Crab Swarm CR 4 Source Pathfinder RPG Bestiary pg. 50 XP 1,200 N Diminutive vermin (aquatic, swarm) Init +2; Senses darkvision 60 ft.; Perception +0 Defense AC 18, touch 16, flat-footed 16 (+2 Dex, +2 natural, +4 size) hp 38 (7d8+7) Fort +6, Ref +4, Will +2 Immune mind-affecting effects, swarm traits, weapon damage Offense Speed 30 ft., swim 20 ft. Melee swarm (2d6) Space 10 ft., Reach 0 ft. Special Attacks distraction (DC 14) Statistics Str 1, Dex 14, Con 13, Int —, Wis 10, Cha 2 Base Atk +5; CMB —; CMD — Skills Swim +10; Racial Modifiers uses Dex to modify Swim Ecology Environment any aquatic Organization solitary, pair, or wave (3–8 swarms) Treasure none Description Crab swarms contain over a thousand normal-sized crabs that rush over their victims, plucking flesh with thousands of pinching claws. Some fishermen claim tides and phases of the moon cause these creatures to swarm as they do.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Dark Folk, Dark Stalker", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "39 (6d8+12)", ac: 18,
+                          fort: 4, ref: 9, will: 2, init_: 4,
+                          str: 14, dex: 18, con: 14, int_: 9, wis: 11, cha: 13,
+                          senses: "see in darkness; Perception +8Defense", speed: "30 ft.",
+                          attacks: "2 short swords +6/+6 (1d6+2 plus poison/19–20)",
+                          specialAbilities: "death throes, sneak attack (+3d6)",
+                          environment: "any underground",
+                          summary: "This tall humanoid’s pale brow and black, soulless eyes are all that can be seen above a black scarf wrapped around its face.",
+                          desc: "Dark Folk, Dark Stalker This tall humanoid’s pale brow and black, soulless eyes are all that can be seen above a black scarf wrapped around its face. Dark Stalker CR 4 Source Pathfinder RPG Bestiary pg. 54 XP 1,200 CN Medium humanoid (dark folk) Init +4; Senses see in darkness; Perception +8 Defense AC 18, touch 14, flat-footed 14 (+2 armor, +4 Dex, +2 natural) hp 39 (6d8+12) Fort +4, Ref +9, Will +2 Weaknesses light blindness Offense Speed 30 ft. Melee 2 short swords +6/+6 (1d6+2 plus poison/19–20) Special Attacks death throes, sneak attack (+3d6) Spell-Like Abilities (CL 6th) At will— deeper darkness , detect magic , fog cloud Statistics Str 14, Dex 18, Con 14, Int 9, Wis 11, Cha 13 Base Atk +4; CMB +6; CMD 20 Feats Double Slice , Two-Weapon Fighting , Weapon Finesse Skills Climb +10, Perception +8, Sleight of Hand +5, Stealth +8; Racial Modifiers +4 Climb, +4 Perception, +4 Stealth Languages Dark Folk, Undercommon SQ poison use Ecology Environment any underground Organization solitary, gang (1 dark stalker and 2–5 dark creepers), or clan (20–80 dark creepers plus 1 dark stalker per 20 dark creepers) Treasure NPC gear (leather armor, short swords [2], black smear [6], other treasure) Special Abilities Death Throes (Su) When a dark stalker is slain, its body combusts in a flash of white-hot flame. This acts like a fireball that deals 3d6 points of fire damage to all creatures within a 20-foot-radius burst. A DC 15 Reflex save halves this damage. A dark stalker’s gear and treasure are unaffected by this explosion. This save is Constitution-based. Poison Use (Ex) Dark stalkers are skilled in the use of poison and never risk accidentally poisoning themselves. Like their diminutive kin, the dark creepers, dark stalkers use black poison on their weapons and generally carry six doses on them. Black Smear —injury; save Fort DC 15; frequency 1/round for 6 rounds; effect 1d2 Str; cure 1 save. The poison DC is Constitution-based. See in Darkness (Su) A dark stalker can see p",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Gargoyle", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "42 (5d10+15)", ac: 16,
+                          fort: 4, ref: 6, will: 4, init_: 6,
+                          str: 15, dex: 14, con: 16, int_: 6, wis: 11, cha: 7,
+                          senses: "darkvision 60 ft.; Perception +5Defense", speed: "40 ft., fly 60 ft. (average)",
+                          attacks: "2 claws +7 (1d6+2), bite +7 (1d4+2), gore +7 (1d4+2)Statistics",
+                          specialAbilities: "",
+                          environment: "any",
+                          summary: "Seemingly carved from a dark gray stone, this sinister crouching humanoid resembles a horned, winged demon.",
+                          desc: "Gargoyle Seemingly carved from a dark gray stone, this sinister crouching humanoid resembles a horned, winged demon. Gargoyle CR 4 Source Pathfinder RPG Bestiary pg. 137 XP 1,200 CE Medium monstrous humanoid (earth) Init +6; Senses darkvision 60 ft.; Perception +5 Defense AC 16, touch 12, flat-footed 14 (+2 Dex, +4 natural) hp 42 (5d10+15) Fort +4, Ref +6, Will +4 DR 10/magic Offense Speed 40 ft., fly 60 ft. (average) Melee 2 claws +7 (1d6+2), bite +7 (1d4+2), gore +7 (1d4+2) Statistics Str 15, Dex 14, Con 16, Int 6, Wis 11, Cha 7 Base Atk +5; CMB +7; CMD 19 Feats Hover , Improved Initiative , Skill Focus (Fly) Skills Fly +12, Perception +5, Stealth +11 (+17 in stony areas); Racial Modifiers +2 Stealth (+6 in stony environs) Languages Common, Terran SQ freeze Ecology Environment any Organization solitary, pair, or wing (3–12) Treasure standard Special Abilities Freeze (Ex) A gargoyle can hold itself so still it appears to be a statue. A gargoyle that uses freeze can take 20 on its Stealth check to hide in plain sight as a stone statue. Description Gargoyles often appear to be winged stone statues, for they can perch indefinitely without moving, allowing them to surprise their foes. Gargoyles tend toward obsessive-compulsive behaviors that are as varied as their kind is plentiful. Books, stolen trinkets, weapons, and grisly trophies harvested from fallen foes are just a few examples of the types of things a gargoyle might collect to decorate its lair and territory. Gargoyles tend toward a solitary lifestyle, though they sometimes form fearsome groups called “wings” for protection and sport. In certain conditions, a tribe of gargoyles might even ally with other creatures, but even the most stable alliances with a gargoyle tribe can collapse for the smallest of reasons—gargoyles are nothing if not treacherous, petty, and vindictive. Gargoyles have been known to dwell in the heart of the largest of cities, crouching amid the decorations of stone cathedrals and buildings",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Genie, Janni", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "39 (6d10+6)", ac: 20,
+                          fort: 6, ref: 7, will: 4, init_: 6,
+                          str: 16, dex: 15, con: 12, int_: 14, wis: 15, cha: 13,
+                          senses: "darkvision 60 ft.; Perception +11Defense", speed: "30 ft., fly 20 ft. (perfect); 20 ft., fly 15 ft. (perfect) in chainmail",
+                          attacks: "scimitar +9/+4 (1d6+4/18–20)",
+                          specialAbilities: "change size",
+                          environment: "warm deserts",
+                          summary: "This regal figure looks like a tall, well-proportioned human, save that its eyes sparkle with strange light.",
+                          desc: "Genie, Janni This regal figure looks like a tall, well-proportioned human, save that its eyes sparkle with strange light. Janni CR 4 Source Pathfinder RPG Bestiary pg. 141 XP 1,200 N Medium outsider (native) Init +6; Senses darkvision 60 ft.; Perception +11 Defense AC 20, touch 13, flat-footed 17 (+6 armor, +2 Dex, +1 dodge, +1 natural) hp 39 (6d10+6) Fort +6, Ref +7, Will +4 Resist fire 10 Offense Speed 30 ft., fly 20 ft. (perfect); 20 ft., fly 15 ft. (perfect) in chainmail Melee scimitar +9/+4 (1d6+4/18–20) Ranged composite longbow +8/+3 (1d8+3/×3) Special Attacks change size Spell-Like Abilities (CL 8th) 3/day— invisibility (self only), plane shift (willing targets to elemental planes, Astral Plane, or Material Plane only), speak with animals 1/day— create food and water , ethereal jaunt (for 1 hour) Statistics Str 16, Dex 15, Con 12, Int 14, Wis 15, Cha 13 Base Atk +6; CMB +9; CMD 22 Feats Combat Reflexes , Dodge , Improved Initiative B , Mobility Skills Appraise +11, Craft (any one—usually weaponsmith) +11, Fly +14, Perception +11, Ride +6, Sense Motive +11, Spellcraft +11, Stealth +6 Languages Common, one elemental language (Aquan, Auran, Ignan, or Terran), one planar language (Abyssal, Celestial, or Infernal); telepathy 100 ft. SQ elemental endurance Ecology Environment warm deserts Organization solitary, pair, company (3–6), or band (7–12) Treasure standard (chainmail, composite longbow [+3 Str], scimitar, other gear) Special Abilities Change Size (Sp) Twice per day, a janni can magically change a creature’s size. This works just like an enlarge person or reduce person spell (the janni chooses when using the ability), except that the ability can work on the janni. A DC 13 Fortitude save negates the effect. The save DC is Charisma-based. This is the equivalent of a 2nd-level spell. Elemental Endurance (Ex) Jann can remain on the Planes of Air, Earth, Fire, or Water for up to 48 hours at a time. Failure to return to the Material Plane before that time expires ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Gray Ooze", cr: "4", type: "ooze", size: "Medium", alignment: "N",
+                          hp: "50 (4d8+32)", ac: 5,
+                          fort: 9, ref: 4, will: 4, init_: 5,
+                          str: 16, dex: 1, con: 26, int_: 10, wis: 1, cha: 1,
+                          senses: "blindsight 60 ft.; Perception –5Defense", speed: "10 ft.",
+                          attacks: "slam +6 (1d6+4 plus 1d6 acid and grab)",
+                          specialAbilities: "acid, constrict (1d6+1 plus 1d6 acid)Statistics",
+                          environment: "cold marshes and underground",
+                          summary: "A seemingly mundane puddle, patch of moist stone, or glistening rock is suddenly revealed to be more as a terrible pseudopod lashes out.",
+                          desc: "Gray Ooze A seemingly mundane puddle, patch of moist stone, or glistening rock is suddenly revealed to be more as a terrible pseudopod lashes out. Gray Ooze CR 4 Source Pathfinder RPG Bestiary pg. 166 XP 1,200 N Medium ooze Init –5; Senses blindsight 60 ft.; Perception –5 Defense AC 5, touch 5, flat-footed 5 (–5 Dex) hp 50 (4d8+32) Fort +9, Ref –4, Will –4 Defensive Abilities ooze traits; Immune cold, fire Offense Speed 10 ft. Melee slam +6 (1d6+4 plus 1d6 acid and grab) Special Attacks acid, constrict (1d6+1 plus 1d6 acid) Statistics Str 16, Dex 1, Con 26, Int —, Wis 1, Cha 1 Base Atk +3; CMB +6 (+10 grapple); CMD 11 (can’t be tripped) SQ transparent Ecology Environment cold marshes and underground Organization solitary Treasure none Special Abilities Acid (Ex) The digestive acid that covers a gray ooze dissolves metals and organic material, but not stone. Each slam and constrict attack deals 1d6 additional acid damage. Armor or clothing worn by a creature grappled by a gray ooze takes the same amount of acid damage unless the wearer succeeds on a DC 20 Reflex saving throw. A wooden or metal weapon that strikes a gray ooze takes 1d6 acid damage unless the weapon’s wielder succeeds on a DC 20 Reflex save. The ooze’s touch deals 12 points of acid damage per round to wooden or metal objects, but the ooze must remain in contact with the material for 1 full round in order to deal this damage. The save DCs are Constitution-based. Transparent (Ex) Due to its lack of vivid coloration, a gray ooze is difficult to discern from its surroundings in most environments. A DC 15 Perception check is required to notice the gray ooze. Any creature that fails to notice a gray ooze and walks into it automatically suffers damage as if struck by the ooze’s slam attack and is immediately subject to a grab attempt by the ooze. Description Slinking their way through cold swamps and bleary marshlands, or sometimes even dungeons and caverns, gray oozes consume any organic materials they encou",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Griffon", cr: "4", type: "magical beast", size: "Large", alignment: "N",
+                          hp: "42 (5d10+15)", ac: 17,
+                          fort: 7, ref: 6, will: 4, init_: 2,
+                          str: 16, dex: 15, con: 16, int_: 5, wis: 13, cha: 8,
+                          senses: "darkvision 60 ft., low-light vision, scent; Perception +12Defense", speed: "30 ft., fly 80 ft. (average)",
+                          attacks: "bite +8 (1d6+3), 2 talons +7 (1d6+3)",
+                          specialAbilities: "pounce, rake (2 claws +7, 1d4+3)Statistics",
+                          environment: "temperate hills",
+                          summary: "This majestic beast has the body of a lion, the head and forelegs of a great eagle, and a massive pair of feathered wings.",
+                          desc: "Griffon This majestic beast has the body of a lion, the head and forelegs of a great eagle, and a massive pair of feathered wings. Griffon CR 4 Source Pathfinder RPG Bestiary pg. 168 XP 1,200 N Large magical beast Init +2; Senses darkvision 60 ft., low-light vision, scent; Perception +12 Defense AC 17, touch 11, flat-footed 15 (+2 Dex, +6 natural, –1 size) hp 42 (5d10+15) Fort +7, Ref +6, Will +4 Offense Speed 30 ft., fly 80 ft. (average) Melee bite +8 (1d6+3), 2 talons +7 (1d6+3) Space 10 ft., Reach 5 ft. Special Attacks pounce, rake (2 claws +7, 1d4+3) Statistics Str 16, Dex 15, Con 16, Int 5, Wis 13, Cha 8 Base Atk +5; CMB +9; CMD 21 (25 vs. trip) Feats Iron Will , Skill Focus (Perception) , Weapon Focus (bite) Skills Acrobatics +10, Fly +6, Perception +12; Racial Modifiers +4 Acrobatics, +4 Perception Languages Common (cannot speak) Ecology Environment temperate hills Organization solitary, pair, or pride (6–10) Treasure incidental Description Griffons are powerful aerial predators, swooping down from their high aeries to take their prey with beak and talon. Aggressive and territorial, they are no mere beasts, but rather calculating combatants and loyal companions to those who earn their respect, fighting to the death to protect their friends and kin. Weighing in at over 500 pounds and measuring 8 feet long from hooked beak to tufted tail, the griffon strikes an imposing silhouette that has long been used in heraldry and other iconography as a symbol of power, authority, and justice. In reality, the griffon is less concerned with abstract concepts than with hunting food and protecting its own. While they can sometimes be trained or befriended to serve as mounts, griffons have no inherent affinity for humanoids, and frequently come into bloody conflict with civilized races over their attempts to secure their favorite food—horse flesh. City folk may marvel at the trained griffon’s stately manner and 25-foot wingspan, but those farmers forced to share territory wit",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Hag, Sea Hag", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "38 (4d10+16)", ac: 16,
+                          fort: 5, ref: 7, will: 5, init_: 3,
+                          str: 19, dex: 16, con: 18, int_: 12, wis: 13, cha: 15,
+                          senses: "darkvision 60 ft.; Perception +11", speed: "30 ft., swim 40 ft.",
+                          attacks: "2 claws +8 (1d6+4)",
+                          specialAbilities: "evil eyeStatistics",
+                          environment: "any aquatic",
+                          summary: "Hair like rotting seaweed drapes this ancient witch. Loose, algae-colored skin sags off her starved frame.",
+                          desc: "Hag, Sea Hag Hair like rotting seaweed drapes this ancient witch. Loose, algae-colored skin sags off her starved frame. Sea Hag CR 4 Source Pathfinder RPG Bestiary pg. 243 XP 1,200 CE Medium monstrous humanoid (aquatic) Init +3; Senses darkvision 60 ft.; Perception +11 Aura horrific appearance (60 ft.) Defense AC 16, touch 13, flat-footed 13 (+3 Dex, +3 natural) hp 38 (4d10+16) Fort +5, Ref +7, Will +5 SR 15 Offense Speed 30 ft., swim 40 ft. Melee 2 claws +8 (1d6+4) Special Attacks evil eye Statistics Str 19, Dex 16, Con 18, Int 12, Wis 13, Cha 15 Base Atk +4; CMB +8; CMD 21 Feats Skill Focus (Bluff , Perception) Skills Bluff +9, Knowledge (any one) +5, Perception +11, Stealth +10, Swim +19 Languages Common, Giant SQ amphibious Ecology Environment any aquatic Organization solitary or coven (3 hags of any kind) Treasure standard Special Abilities Evil Eye (Su) Three times per day, a sea hag can cast her dire gaze upon any single creature within 30 feet. The target must succeed on a DC 14 Will save or be staggered as strange nebulous distress and a gnawing sense of impending doom plagues the victim. If a sea hag uses her evil eye on someone already afflicted by this curse, the victim must make a DC 14 Fortitude save or be overwhelmed with fright and collapse into a comatose state for 3 days. Each day that passes, the comatose victim must make a DC 14 Fortitude save or perish. The evil eye is a mind-affecting fear effect. The save DCs are Charisma-based. Evil Eye Curse : Gaze—failed save; save Will DC 14; frequency1 /day; effect staggered (or fall comatose if already under the effects of the evil eye). Horrific Appearance (Su) The sight of a sea hag is so revolting that anyone within 60 feet (other than another hag) who sets eyes upon one must succeed on a DC 14 Fortitude save or instantly be weakened, taking 1d6 points of Strength damage. Creatures that are affected by this power or that successfully save against it cannot be affected again by the same hag’s horrific ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Half-Celestial (Unicorn)", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "42 (4d10+20)", ac: 17,
+                          fort: 9, ref: 8, will: 8, init_: 4,
+                          str: 22, dex: 19, con: 20, int_: 13, wis: 25, cha: 26,
+                          senses: "darkvision 60 ft., low-light vision, scent; Perception +14", speed: "60 ft., fly 120 ft. (good)",
+                          attacks: "gore +10 (1d8+6), 2 hooves +7 (1d3+3)",
+                          specialAbilities: "smite evil 1/day (+7 attack, +4 damage), powerful charge (gore, 2d8+12)",
+                          environment: "temperate forests",
+                          summary: "A winged unicorn rises into the air on ivory pinions, a paragon of grace and beauty.",
+                          desc: "Half-Celestial (Unicorn) A winged unicorn rises into the air on ivory pinions, a paragon of grace and beauty. Half-Celestial (Unicorn) CR 4 Source Pathfinder RPG Bestiary pg. 169 XP 1,200 CG Large outsider (native) Init +4; Senses darkvision 60 ft., low-light vision, scent; Perception +14 Aura magic circle against evil * Defense AC 17, touch 13, flat-footed 13 (+4 Dex, +4 natural, –1 size; +2 deflection vs. evil) hp 42 (4d10+20) Fort +9, Ref +8, Will +8; +4 vs. poison DR 5/magic; Immune charm, compulsion, disease, poison; Resist acid 10, cold 10, electricity 10; SR 15 Offense Speed 60 ft., fly 120 ft. (good) Melee gore +10 (1d8+6), 2 hooves +7 (1d3+3) Space 10 ft., Reach 5 ft. Special Attacks smite evil 1/day (+7 attack, +4 damage), powerful charge (gore, 2d8+12) Spell-Like Abilities (CL 9th) At will— detect evil , light 3/day— cure light wounds , protection from evil 1/day— aid , bless , cure moderate wounds , greater teleport (within its territory*), neutralize poison Statistics Str 22, Dex 19, Con 20, Int 13, Wis 25, Cha 26 Base Atk +4; CMB +11; CMD 25 (29 vs. trip) Feats Multiattack , Weapon Focus (horn) Skills Acrobatics +11, Fly +13, Knowledge (planes) +5, Perception +14, Sense Motive +14, Stealth +11, Survival +14 (+17 forests); Racial Modifiers +3 Survival in forests, +4 Stealth Languages Common, Sylvan SQ magical strike*, wild empathy +18* Ecology Environment temperate forests Organization solitary, mated pair, or blessing (3–6) Treasure none * Unicorn ability Description Most half-celestials are born of a mortal who loved a good outsider, but powerful holy magic can also create one. Creating a Half-Celestial “Half-celestial” is an inherited or acquired template that can be added to any living, corporeal creature with an Intelligence score of 4 or more. A half-celestial creature retains the base creature's statistics and special abilities except as noted here. CR : HD 5 or less, as base creature + 1; HD 6–10, as base creature + 2; HD 11 or more, as base cre",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Harpy", cr: "4", type: "monstrous humanoid", size: "Medium", alignment: "CE",
+                          hp: "38 (7d10)", ac: 16,
+                          fort: 4, ref: 7, will: 6, init_: 2,
+                          str: 12, dex: 15, con: 10, int_: 7, wis: 12, cha: 17,
+                          senses: "darkvision 60 ft.; Perception +7Defense", speed: "20 ft., fly 80 ft. (average)",
+                          attacks: "morningstar +8/+3 (1d8+1), 2 talons +3 (1d6)",
+                          specialAbilities: "captivating songStatistics",
+                          environment: "temperate marshes",
+                          summary: "Save for the tattered wings and taloned feet, this creature resembles a feral woman with a wild look about her.",
+                          desc: "Harpy Save for the tattered wings and taloned feet, this creature resembles a feral woman with a wild look about her. Harpy CR 4 Source Pathfinder RPG Bestiary pg. 172 XP 1,200 CE Medium monstrous humanoid Init +2; Senses darkvision 60 ft.; Perception +7 Defense AC 16, touch 13, flat-footed 13 (+2 armor, +2 Dex, +1 dodge, +1 natural) hp 38 (7d10) Fort +4, Ref +7, Will +6 Offense Speed 20 ft., fly 80 ft. (average) Melee morningstar +8/+3 (1d8+1), 2 talons +3 (1d6) Special Attacks captivating song Statistics Str 12, Dex 15, Con 10, Int 7, Wis 12, Cha 17 Base Atk +7; CMB +8; CMD 21 Feats Dodge , Flyby Attack , Great Fortitude , Skill Focus (Bluff) Skills Bluff +7, Fly +12, Intimidate +7, Perception +7, Perform (song) +5 Languages Common Ecology Environment temperate marshes Organization solitary, pair, or flight (3–12) Treasure standard (leather armor, morningstar, and other treasure) Special Abilities Captivating Song (Su) A harpy’s song has the power to infect the minds of those that hear it, calling them to the harpy’s side. When a harpy sings, all creatures aside from other harpies within a 300-foot spread must succeed on a DC 16 Will saving throw or become captivated. A creature that successfully saves is not subject to the same harpy’s song for 24 hours. A victim under the effects of the captivating song moves toward the harpy using the most direct means available. If the path leads them into a dangerous area such as through fire or off a cliff, that creature receives a second saving throw to end the effect before moving into peril. Captivated creatures can take no actions other than to defend themselves. A victim within 5 feet of the harpy simply stands and offers no resistance to the harpy’s attacks. This effect continues for as long as the harpy sings and for 1 round thereafter. This is a sonic mind-affecting charm effect. The save DC is Charisma-based. Description Often viewed as vicious and corrupted creatures, harpies know how creatures think and act. This ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Herd Animal, Bison", cr: "4", type: "animal", size: "Large", alignment: "N",
+                          hp: "42 (5d8+20)", ac: 17,
+                          fort: 8, ref: 4, will: 1, init_: 0,
+                          str: 27, dex: 10, con: 19, int_: 2, wis: 11, cha: 4,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "40 ft.",
+                          attacks: "gore +10 (2d6+12)",
+                          specialAbilities: "stampede (see aurochs), trample (2d6+12, DC 20)Statistics",
+                          environment: "cold or temperate plains",
+                          summary: "This creature has small, upward-pointing horns, a shaggy coat of fur, and a large hump on its shoulders.",
+                          desc: "Herd Animal, Bison This creature has small, upward-pointing horns, a shaggy coat of fur, and a large hump on its shoulders. Bison CR 4 Source Pathfinder RPG Bestiary pg. 174 XP 1,200 N Large animal Init +0; Senses low-light vision, scent; Perception +8 Defense AC 17, touch 9, flat-footed 17 (+8 natural, –1 size) hp 42 (5d8+20) Fort +8, Ref +4, Will +1 Offense Speed 40 ft. Melee gore +10 (2d6+12) Space 10 ft., Reach 5 ft. Special Attacks stampede (see aurochs), trample (2d6+12, DC 20) Statistics Str 27, Dex 10, Con 19, Int 2, Wis 11, Cha 4 Base Atk +3; CMB +12; CMD 22 (26 vs. trip) Feats Endurance , Improved Bull Rush , Power Attack Skills Perception +8 Ecology Environment cold or temperate plains Organization solitary, pair, or herd (3–30) Treasure none Description Bison are large herd animals. They can grow as long as 12 feet and as tall as 7 feet at the shoulder. Average bison weigh 2,200 pounds. The bison’s statistics can be used for almost any larger herd animal, such as the buffalo. Bison frighten far less easily than their domesticated cousins and are much more aggressive when protecting the herd or their young. Adult bulls are extremely confontational in mating season, and even kill one another in pursuit of particular females. After mating season, herds of bison tend to separate into smaller herds in preparation for the arrival of new calves. Bison companions are identical to aurochs animal companions.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Hydra", cr: "4", type: "magical beast", size: "Huge", alignment: "N",
+                          hp: "47 (5d10+20); fast healing 5", ac: 15,
+                          fort: 8, ref: 7, will: 3, init_: 1,
+                          str: 17, dex: 12, con: 18, int_: 2, wis: 11, cha: 9,
+                          senses: "darkvision 60 ft., low-light vision, scent; Perception +10Defense", speed: "20 ft., swim 20 ft.",
+                          attacks: "5 bites +6 (1d8+3)",
+                          specialAbilities: "pounceStatistics",
+                          environment: "temperate marshes",
+                          summary: "Multiple angry snake-like heads rise from the sleek, serpentine body of this terrifying monster.",
+                          desc: "Hydra Multiple angry snake-like heads rise from the sleek, serpentine body of this terrifying monster. Hydra CR 4 Source Pathfinder RPG Bestiary pg. 178 XP 1,200 N Huge magical beast Init +1; Senses darkvision 60 ft., low-light vision, scent; Perception +10 Defense AC 15, touch 9, flat-footed 14 (+1 Dex, +6 natural, –2 size) hp 47 (5d10+20); fast healing 5 Fort +8, Ref +7, Will +3 Offense Speed 20 ft., swim 20 ft. Melee 5 bites +6 (1d8+3) Space 15 ft., Reach 10 ft. Special Attacks pounce Statistics Str 17, Dex 12, Con 18, Int 2, Wis 11, Cha 9 Base Atk +5; CMB +10; CMD 21 (can’t be tripped) Feats Combat Reflexes , Iron Will , Lightning Reflexes Skills Perception +10, Swim +11; Racial Modifiers +2 Perception SQ hydra traits, regenerate head Ecology Environment temperate marshes Organization solitary Treasure standard Special Abilities Fast Healing (Ex) A hydra’s fast healing ability is equal to its current number of heads (minimum fast healing 5). This fast healing applies only to damage inflicted on the hydra’s body. Hydra Traits (Ex) A hydra can be killed by severing all of its heads or slaying its body. Any attack that is not an attempt to sever a head affects the body, including area attacks or attacks that cause piercing or bludgeoning damage. To sever a head, an opponent must make a sunder attempt with a slashing weapon targeting a head. A head is considered a separate weapon with hardness 0 and hit points equal to the hydra’s HD. To sever a head, an opponent must inflict enough damage to reduce the head’s hit points to 0 or less. Severing a head deals damage to the hydra’s body equal to the hydra’s current HD. A hydra can’t attack with a severed head, but takes no other penalties. Regenerate Head (Ex) When a hydra’s head is destroyed, two heads regrow in 1d4 rounds. A hydra cannot have more than twice its original number of heads at any one time. To prevent new heads from growing, at least 5 points of acid or fire damage must be dealt to the stump (a touch atta",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Leech, Leech Swarm", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "39 (6d8+12)", ac: 18,
+                          fort: 7, ref: 6, will: 2, init_: 4,
+                          str: 1, dex: 18, con: 15, int_: 10, wis: 10, cha: 2,
+                          senses: "blindsight 30 ft.; Perception +0Defense", speed: "5 ft., swim 30 ft.",
+                          attacks: "swarm (2d6 plus poison)",
+                          specialAbilities: "blood drain, distraction (DC 15)Statistics",
+                          environment: "temperate or warm marshes",
+                          summary: "A mass of wriggling black creatures each the size of a man’s finger stirs the stagnant water before enveloping its victim.",
+                          desc: "Leech, Leech Swarm A mass of wriggling black creatures each the size of a man’s finger stirs the stagnant water before enveloping its victim. Leech Swarm CR 4 Source Pathfinder RPG Bestiary pg. 187 XP 1,200 N Diminutive vermin (aquatic, swarm) Init +4; Senses blindsight 30 ft.; Perception +0 Defense AC 18, touch 18, flat-footed 14 (+4 Dex, +4 size) hp 39 (6d8+12) Fort +7, Ref +6, Will +2 Immune mind-affecting effects, swarm traits, weapon damage Weaknesses susceptible to salt (see giant leech) Offense Speed 5 ft., swim 30 ft. Melee swarm (2d6 plus poison) Space 10 ft., Reach 0 ft. Special Attacks blood drain, distraction (DC 15) Statistics Str 1, Dex 18, Con 15, Int —, Wis 10, Cha 2 Base Atk +4; CMB —; CMD — Skills Stealth +16 (+24 in swamps), Swim +12; Racial Modifiers +8 Stealth in swamps, uses Dexterity to modify Swim checks Ecology Environment temperate or warm marshes Organization solitary, pair, or infestation (3–6 swarms) Treasure none Special Abilities Blood Drain (Ex) Any living creature that begins its turn with a leech swarm in its space is drained of its blood and takes 1d3 points of Str and Con damage. Poison (Ex) Swarm—injury; save Fort DC 15; frequency 1/round for 2 rounds; effect 1d4 Dexterity drain; cure 1 save. Description This horrifying cloud of ravenous, blood-draining parasites eschews the stealth of a lone leech’s methods in favor of swift and merciless feeding.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Mimic", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "52 (7d8+21)", ac: 16,
+                          fort: 5, ref: 5, will: 6, init_: 5,
+                          str: 19, dex: 12, con: 17, int_: 10, wis: 13, cha: 10,
+                          senses: "darkvision 60 ft.; Perception +14Defense", speed: "10 ft.",
+                          attacks: "slam +10 (1d8+6 plus adhesive)",
+                          specialAbilities: "constrict (slam, 1d8+6)Statistics",
+                          environment: "any",
+                          summary: "What appeared to be a chest filled with treasure comes to life as it grows long, glistening tentacles and a number of sharp teeth.",
+                          desc: "Mimic What appeared to be a chest filled with treasure comes to life as it grows long, glistening tentacles and a number of sharp teeth. Mimic CR 4 Source Pathfinder RPG Bestiary pg. 205 XP 1,200 N Medium aberration (shapechanger) Init +5; Senses darkvision 60 ft.; Perception +14 Defense AC 16, touch 11, flat-footed 15 (+1 Dex, +5 natural) hp 52 (7d8+21) Fort +5, Ref +5, Will +6 Immune acid Offense Speed 10 ft. Melee slam +10 (1d8+6 plus adhesive) Special Attacks constrict (slam, 1d8+6) Statistics Str 19, Dex 12, Con 17, Int 10, Wis 13, Cha 10 Base Atk +5; CMB +9; CMD 20 (can’t be tripped) Feats Improved Initiative , Lightning Reflexes , Skill Focus (Perception) , Weapon Focus (slam) Skills Climb +14, Disguise +10 (+30 when mimicking objects), Knowledge (dungeoneering) +10, Perception +14; Racial Modifiers +20 Disguise when mimicking objects Languages Common SQ mimic object Ecology Environment any Organization solitary Treasure incidental Special Abilities Adhesive (Ex) A mimic exudes a thick slime that acts as a powerful adhesive, holding fast any creatures or items that touch it. An adhesive-covered mimic automatically grapples any creature it hits with its slam attack. Opponents so grappled cannot get free while the mimic is alive without removing the adhesive first. A weapon that strikes an adhesive-coated mimic is stuck fast unless the wielder succeeds on a DC 17 Reflex save. A successful DC 17 Strength check is needed to pry off a stuck weapon. Strong alcohol or universal solvent dissolves the adhesive, but the mimic can still grapple normally. A mimic can dissolve its adhesive at will, and the substance breaks down 5 rounds after the creature dies. The save DC is Strength-based. Mimic Object (Ex) A mimic can assume the general shape of any Medium object, such as a massive chest, a stout bed, or a door. The creature cannot substantially alter its size, though. A mimic’s body is hard and has a rough texture, no matter what appearance it might present. A mimic g",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Minotaur", cr: "4", type: "monstrous humanoid", size: "Large", alignment: "CE",
+                          hp: "45 (6d10+12)", ac: 14,
+                          fort: 6, ref: 5, will: 5, init_: 0,
+                          str: 19, dex: 10, con: 15, int_: 7, wis: 10, cha: 8,
+                          senses: "darkvision 60 ft.; Perception +10Defense", speed: "30 ft.",
+                          attacks: "greataxe +9/+4 (3d6+6/×3) and gore +4 (1d6+2)",
+                          specialAbilities: "powerful charge (gore +11, 2d6+6)Statistics",
+                          environment: "temperate ruins or underground",
+                          summary: "With the body of a powerfully built man and the head of a snarling bull, this creature stomps its hooves as if preparing to charge.",
+                          desc: "Minotaur With the body of a powerfully built man and the head of a snarling bull, this creature stomps its hooves as if preparing to charge. Minotaur CR 4 Source Pathfinder RPG Bestiary pg. 206 XP 1,200 CE Large monstrous humanoid Init +0; Senses darkvision 60 ft.; Perception +10 Defense AC 14, touch 9, flat-footed 14 (+5 natural, –1 size) hp 45 (6d10+12) Fort +6, Ref +5, Will +5 Defensive Abilities natural cunning Offense Speed 30 ft. Melee greataxe +9/+4 (3d6+6/×3) and gore +4 (1d6+2) Space 10 ft., Reach 10 ft. Special Attacks powerful charge (gore +11, 2d6+6) Statistics Str 19, Dex 10, Con 15, Int 7, Wis 10, Cha 8 Base Atk +6; CMB +11; CMD 21 Feats Great Fortitude , Improved Bull Rush , Power Attack Skills Intimidate +5, Perception +10, Stealth +2, Survival +10; Racial Modifiers +4 Perception, +4 Survival Languages Giant Ecology Environment temperate ruins or underground Organization solitary, pair, or gang (3–4) Treasure standard (greataxe, other treasure) Special Abilities Natural Cunning (Ex) Although minotaurs are not especially intelligent, they possess innate cunning and logical ability. This gives them immunity to maze spells and prevents them from ever becoming lost. Further, they are never caught flat-footed. Description Nothing holds a grudge like a minotaur. Scorned by the civilized races centuries ago and born from a deific curse, minotaurs have hunted, slain, and devoured lesser humanoids in retribution for real or imagined slights for as long as anyone can remember. Many cultures have legends of how the first minotaurs were created by vengeful or slighted gods who punished humans by twisting their forms, robbing them of their intellects and beauty, and giving them the heads of bulls. Yet most modern minotaurs hold these legends in contempt and believe that they are not divine mockeries but divine paragons created by a potent and cruel demon lord named Baphomet. The traditional minotaur’s lair is a maze, be it a legitimate labyrinth constructed to ba",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Otyugh", cr: "4", type: "aberration", size: "Large", alignment: "N",
+                          hp: "39 (6d8+12)", ac: 17,
+                          fort: 3, ref: 2, will: 6, init_: 0,
+                          str: 18, dex: 10, con: 13, int_: 5, wis: 13, cha: 6,
+                          senses: "darkvision 60 ft., scent; Perception +9Defense", speed: "20 ft.",
+                          attacks: "bite +7 (1d8+4 plus disease), 2 tentacles +3 (1d6+2 plus grab)",
+                          specialAbilities: "constrict (tentacle, 1d6+2)Statistics",
+                          environment: "any underground",
+                          summary: "This three-legged freak is mostly mouth. Three tentacles, two tipped with barbs and one with eyes, extend from its sides.",
+                          desc: "Otyugh This three-legged freak is mostly mouth. Three tentacles, two tipped with barbs and one with eyes, extend from its sides. Otyugh CR 4 Source Pathfinder RPG Bestiary pg. 223 XP 1,200 N Large aberration Init +0; Senses darkvision 60 ft., scent; Perception +9 Defense AC 17, touch 9, flat-footed 17 (+8 natural, –1 size) hp 39 (6d8+12) Fort +3, Ref +2, Will +6 Immune disease Offense Speed 20 ft. Melee bite +7 (1d8+4 plus disease), 2 tentacles +3 (1d6+2 plus grab) Space 10 ft., Reach 10 ft. (15 ft. with tentacle) Special Attacks constrict (tentacle, 1d6+2) Statistics Str 18, Dex 10, Con 13, Int 5, Wis 13, Cha 6 Base Atk +4; CMB +9 (+13 grapple); CMD 19 (21 vs. trip) Feats Alertness , Toughness , Weapon Focus (tentacle) Skills Perception +9, Stealth +2 (+10 in lair); Racial Modifiers +8 Stealth in lair Languages Common Ecology Environment any underground Organization solitary, pair, or cluster (3–4) Treasure standard Special Abilities Disease (Ex) Filth fever: Bite—injury; save Fortitude DC 14; onset 1d3 days; frequency 1/day; effect 1d3 Dex damage and 1d3 Con damage; cure 2 consecutive saves. The save DC is Constitution-based. ECOLOGY Environment any underground Organization solitary, pair, or cluster (3–4) Treasure standard Description Otyughs are particularly vile and horrid creatures that lurk in places most sane creatures avoid. Their lairs are middens, cesspools, offal pits, toxic swamps, and sewers—the greater a lair’s filth, the greater the draw to the refuse-eating otyugh. They glory in the role of scavenger, wandering through vast underground caverns in search of the choicest cuts of garbage and waste. Upon finding such refuse, they gorge upon it, gathering what cannot be consumed in one debauch to bring back to their foul-smelling lairs. Otyughs spend most of their time in these filthy dens, which they keep constantly filled with carrion, dung, and worse sorts of stinking effluvia. Intelligent creatures dwelling in subterranean areas near an otyugh often ",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Owlbear", cr: "4", type: "magical beast", size: "Large", alignment: "N",
+                          hp: "47 (5d10+20)", ac: 15,
+                          fort: 10, ref: 5, will: 2, init_: 5,
+                          str: 19, dex: 12, con: 18, int_: 2, wis: 12, cha: 10,
+                          senses: "darkvision 60 ft., low-light vision, scent; Perception +12Defense", speed: "30 ft.",
+                          attacks: "2 claws +8 (1d6+4 plus grab), bite +8 (1d6+4)",
+                          specialAbilities: "",
+                          environment: "temperate forests",
+                          summary: "An amalgam of fur and feathers, this bizarre half-bear, half-owl monstrosity raises its huge, ursine claws in anger.",
+                          desc: "Owlbear An amalgam of fur and feathers, this bizarre half-bear, half-owl monstrosity raises its huge, ursine claws in anger. Owlbear CR 4 Source Pathfinder RPG Bestiary pg. 224 XP 1,200 N Large magical beast Init +5; Senses darkvision 60 ft., low-light vision, scent; Perception +12 Defense AC 15, touch 10, flat-footed 14 (+1 Dex, +5 natural, –1 size) hp 47 (5d10+20) Fort +10, Ref +5, Will +2 Offense Speed 30 ft. Melee 2 claws +8 (1d6+4 plus grab), bite +8 (1d6+4) Space 10 ft., Reach 5 ft. Statistics Str 19, Dex 12, Con 18, Int 2, Wis 12, Cha 10 Base Atk +5; CMB +10 (+14 grapple); CMD 21 (25 vs. trip) Feats Improved Initiative , Great Fortitude , Skill Focus (Perception) Skills Perception +12 Ecology Environment temperate forests Organization solitary, pair, or pack (3–8) Treasure incidental Description The origin of the owlbear is a subject of great debate among scholars of the monstrous creatures of the world. However, most concur that at some point in the distant past, a deranged wizard created the original specimens by crossing an owl with a bear—perhaps as proof of some insane concept about the nature of life, but possibly out of sheer lunacy. Whatever the original purpose of such a freakish creation as the owlbear, the creature bred true and has become quite well-established in woodlands across the world, where it plays a key role in a region’s ecosystem as an apex predator. Owlbears are notoriously bloodthirsty killers, well known for their short tempers, aggression, and savage nature. They tend to attack without provocation, slaughtering any living creatures that cross their paths. Many scholars that have encountered these creatures in the wild have noted that they all have red-rimmed eyes that roll about wildly when they close in for an attack. This is sometimes presented as a sign of madness, suggesting that all owlbears are born with a pathological need to fight and kill, but more level-headed researchers believe that it’s simply part of the way the massiv",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Pixie", cr: "4", type: "fey", size: "Small", alignment: "NG",
+                          hp: "18 (4d6+4)", ac: 18,
+                          fort: 2, ref: 9, will: 6, init_: 5,
+                          str: 7, dex: 21, con: 12, int_: 16, wis: 15, cha: 16,
+                          senses: "low-light vision; Perception +9Defense", speed: "20 ft., fly 60 ft. (good)",
+                          attacks: "short sword +8 (1d4–2/19–20)",
+                          specialAbilities: "special arrows",
+                          environment: "temperate forests",
+                          summary: "This tiny, whimsical-looking humanoid darts about swiftly on wildly colored gossamer wings.",
+                          desc: "Pixie This tiny, whimsical-looking humanoid darts about swiftly on wildly colored gossamer wings. Pixie CR 4 Source Pathfinder RPG Bestiary pg. 228 XP 1,200 NG Small fey Init +5; Senses low-light vision; Perception +9 Defense AC 18, touch 17, flat-footed 12 (+5 Dex, +1 dodge, +1 natural, +1 size) hp 18 (4d6+4) Fort +2, Ref +9, Will +6 Defensive Abilities invisibility; DR 10/cold iron; SR 15 Offense Speed 20 ft., fly 60 ft. (good) Melee short sword +8 (1d4–2/19–20) Ranged longbow +8 (1d6–2/×3) Special Attacks special arrows Spell-Like Abilities (CL 8th) Constant— detect chaos , detect evil , detect good , detect law 1/day— dancing lights , detect thoughts (DC 15), dispel magic , entangle (DC 14), lesser confusion (DC 14), permanent image (DC 19; visual and auditory elements only), shield Statistics Str 7, Dex 21, Con 12, Int 16, Wis 15, Cha 16 Base Atk +2; CMB –1; CMD 15 Feats Dodge , Weapon Finesse Skills Acrobatics +12, Bluff +10, Escape Artist +12, Fly +18, Knowledge (nature) +10, Perception +9, Sense Motive +9, Stealth +16, Use Magic Device +10 Languages Common, Sylvan Ecology Environment temperate forests Organization solitary, gang (2–4), band (6–11), or tribe (20–80) Treasure standard Special Abilities Invisibility (Su) A pixie remains invisible even when it attacks. This ability is constant, but the pixie can suppress or resume it as a free action. Special Arrows (Su) When a pixie fires an arrow from any bow, it can decide to change the arrow’s properties by sprinkling it with magical pixie dust. Doing so is a free action as long as the pixie is the one who fires the arrow. A pixie can generate a number of uses of dust equal to its Charisma score each day (16 uses per day for most pixies)—the dust is useless to another creature unless the pixie gives the dust freely. In this case, the pixie chooses what effect the dust will have on an arrow when it is applied, and it takes a standard action to apply the dust to the arrow. Once pixie dust is applied to an arro",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Rhinoceros", cr: "4", type: "animal", size: "Large", alignment: "N",
+                          hp: "42 (5d8+20)", ac: 16,
+                          fort: 10, ref: 4, will: 2, init_: 0,
+                          str: 22, dex: 10, con: 19, int_: 2, wis: 13, cha: 5,
+                          senses: "scent; Perception +12Defense", speed: "40 ft.",
+                          attacks: "gore +8 (2d6+9)",
+                          specialAbilities: "powerful charge (gore, 4d6+12)Statistics",
+                          environment: "warm plains",
+                          summary: "This rhinoceros has a low-slung head with twisted ears that lie back along its neck.",
+                          desc: "Rhinoceros This rhinoceros has a low-slung head with twisted ears that lie back along its neck. Rhinoceros CR 4 Source Pathfinder RPG Bestiary pg. 235 XP 1,200 N Large animal Init +0; Senses scent; Perception +12 Defense AC 16, touch 9, flat-footed 16 (+7 natural, –1 size) hp 42 (5d8+20) Fort +10, Ref +4, Will +2 Offense Speed 40 ft. Melee gore +8 (2d6+9) Space 10 ft., Reach 5 ft. Special Attacks powerful charge (gore, 4d6+12) Statistics Str 22, Dex 10, Con 19, Int 2, Wis 13, Cha 5 Base Atk +3; CMB +10; CMD 20 (24 vs. trip) Feats Endurance , Great Fortitude , Skill Focus (Perception) Skills Perception +12 Ecology Environment warm plains Organization solitary, pair, or herd (3–12) Treasure none Description The rhinoceros feeds on leafy plants, branches, and even thorny shrubs. Its thick hide is a mottled gray color, and it can run surprisingly fast for a beast of its size. The rhinoceros is notoriously short-tempered and prone to attacking anything it perceives as approaching too closely (generally within a distance of 80 feet—the distance of a single charge—for most rhinos).",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Satyr", cr: "4", type: "fey", size: "Medium", alignment: "CN",
+                          hp: "44 (8d6+16)", ac: 18,
+                          fort: 4, ref: 8, will: 8, init_: 2,
+                          str: 14, dex: 15, con: 15, int_: 12, wis: 14, cha: 19,
+                          senses: "low-light vision; Perception +18Defense", speed: "40 ft.",
+                          attacks: "dagger +6 (1d4+2/19–20), horns +1 (1d6+1)",
+                          specialAbilities: "pipes",
+                          environment: "temperate forests",
+                          summary: "This handsome, grinning man has the furry legs of a goat and a set of curling ram horns extending from his temples.",
+                          desc: "Satyr This handsome, grinning man has the furry legs of a goat and a set of curling ram horns extending from his temples. Satyr CR 4 Source Pathfinder RPG Bestiary pg. 241 XP 1,200 CN Medium fey Init +2; Senses low-light vision; Perception +18 Defense AC 18, touch 13, flat-footed 15 (+2 Dex, +1 dodge, +5 natural) hp 44 (8d6+16) Fort +4, Ref +8, Will +8 DR 5/cold iron Offense Speed 40 ft. Melee dagger +6 (1d4+2/19–20), horns +1 (1d6+1) Ranged short bow +6 (1d6/×3) Special Attacks pipes Spell-Like Abilities (CL 8th) At will— charm person (DC 15), dancing lights , ghost sound (DC 14), sleep (DC 15), suggestion (DC 17) 1/day— fear (DC 18), summon nature’s ally III Statistics Str 14, Dex 15, Con 15, Int 12, Wis 14, Cha 19 Base Atk +4; CMB +6; CMD 18 Feats Dodge , Mobility , Skill Focus (Perception) , Weapon Finesse Skills Bluff +15, Diplomacy +15, Disguise +9, Intimidate +9, Knowledge (nature) +10, Perception +18, Perform (wind instruments) +19, Stealth +17, Survival +7; Racial Modifiers +4 Perception, +4 Perform, +4 Stealth Languages Common, Sylvan Ecology Environment temperate forests Organization solitary, pair, band (3–6), or orgy (7–11) Treasure standard (dagger, short bow plus 20 arrows, masterwork panpipes, other treasure) Special Abilities Pipes (Su) A satyr can focus and empower his magic by playing haunting melodies on his panpipes. When he plays, all creatures within a 60-foot radius must make a DC 18 Will save or be affected by charm person , fear , sleep , or suggestion , depending on what tune the satyr chooses. A creature that successfully saves against any of the pipes’ effects cannot be affected by the same set of pipes for 24 hours, but can still be affected by the satyr’s other spell-like abilities as normal. The satyr’s use of his pipes does not count toward his uses per day of his spell-like abilities, and if separated from them he may continue to use his standard abilities. The pipes themselves are masterwork, and a satyr can craft a replacement wit",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Tiger", cr: "4", type: "animal", size: "Large", alignment: "N",
+                          hp: "45 (6d8+18)", ac: 14,
+                          fort: 8, ref: 7, will: 3, init_: 6,
+                          str: 23, dex: 15, con: 17, int_: 2, wis: 12, cha: 6,
+                          senses: "low-light vision, scent; Perception +8Defense", speed: "40 ft.",
+                          attacks: "2 claws +10 (1d8+6 plus grab), bite +9 (2d6+6 plus grab)",
+                          specialAbilities: "pounce, rake (2 claws +10, 1d8+6)Statistics",
+                          environment: "any forests",
+                          summary: "This powerful feline predator moves with a deadly grace, its reddish-orange fur slashed with black stripes.",
+                          desc: "Tiger This powerful feline predator moves with a deadly grace, its reddish-orange fur slashed with black stripes. Tiger CR 4 Source Pathfinder RPG Bestiary pg. 265 XP 1,200 N Large animal Init +6; Senses low-light vision, scent; Perception +8 Defense AC 14, touch 11, flat-footed 12 (+2 Dex, +3 natural, –1 size) hp 45 (6d8+18) Fort +8, Ref +7, Will +3 Offense Speed 40 ft. Melee 2 claws +10 (1d8+6 plus grab), bite +9 (2d6+6 plus grab) Space 10 ft., Reach 5 ft. Special Attacks pounce, rake (2 claws +10, 1d8+6) Statistics Str 23, Dex 15, Con 17, Int 2, Wis 12, Cha 6 Base Atk +4; CMB +11 (+15 grapple); CMD 23 (27 vs. trip) Feats Improved Initiative , Skill Focus (Perception) , Weapon Focus (claw) Skills Acrobatics +10, Perception +8, Stealth +7 (+11 in areas of tall grass), Swim +11; Racial Modifiers +4 Acrobatics, +4 Stealth (+8 in tall grass) Ecology Environment any forests Organization solitary or pair Treasure none Description Tigers stand more than 3 feet tall at the shoulder and are about 9 feet long. They weigh from 400 to 600 pounds. Tigers are usually the top animal predators in their territories, and have been known to kill bears, crocodiles, giant snakes, wolves, and even other great cats. Even humanoids are far from safe, especially in cases where a tiger has developed a taste for humanoid flesh. Tigers prefer terrain with plenty of cover and proximity to water as their hunting grounds. While the tiger itself is a fearsome predator, its strength and ferocity pales in comparison to that of the larger dire tiger. Known to many scholars as the smilodon and to tribal societies as the saber-toothed tiger, the dire tiger is invariably one of the region’s top predators. Its defining feature is a pair of huge incisors that hang down like fearsome knives from the upper jaw, protruding menacingly even when the creature’s mouth is shut. These immense hunting cats grow to be over 12 feet long and can weigh up to 6,000 pounds.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Wolverine, Dire Wolverine", cr: "4", type: "animal", size: "Large", alignment: "N",
+                          hp: "42 (5d8+20)", ac: 16,
+                          fort: 7, ref: 7, will: 2, init_: 7,
+                          str: 19, dex: 17, con: 17, int_: 2, wis: 12, cha: 10,
+                          senses: "low-light vision, scent; Perception +12Defense", speed: "30 ft., climb 10 ft.",
+                          attacks: "2 claws +6 (1d8+4), bite +6 (1d6+4)",
+                          specialAbilities: "rageStatistics",
+                          environment: "cold forests",
+                          summary: "This terrible wolverine is as large as a bear, its jaws and claws oversized and brutal, its eyes dark and filled with rage.",
+                          desc: "Wolverine, Dire Wolverine This terrible wolverine is as large as a bear, its jaws and claws oversized and brutal, its eyes dark and filled with rage. Dire Wolverine CR 4 Source Pathfinder RPG Bestiary pg. 279 XP 1,200 N Large animal Init +7; Senses low-light vision, scent; Perception +12 Defense AC 16, touch 12, flat-footed 13 (+3 Dex, +4 natural, –1 size) hp 42 (5d8+20) Fort +7, Ref +7, Will +2 Offense Speed 30 ft., climb 10 ft. Melee 2 claws +6 (1d8+4), bite +6 (1d6+4) Space 10 ft., Reach 5 ft. Special Attacks rage Statistics Str 19, Dex 17, Con 17, Int 2, Wis 12, Cha 10 Base Atk +3; CMB +8; CMD 21 (25 vs. trip) Feats Improved Initiative , Skill Focus (Perception) , Toughness Skills Climb +12, Perception +12 Ecology Environment cold forests Organization solitary or pair Treasure none Special Abilities Rage (Ex) A dire wolverine that takes damage in combat flies into a rage on its next turn, madly clawing and biting until either it or its opponent is dead. It gains +4 to Strength, +4 to Constitution, and –2 to AC. The creature cannot end its rage voluntarily. Description Dire wolverines tend to be even more territorial than their smaller wolverine cousins, and they defend to the death the areas where they choose to live, often selecting humanoid-settled regions as their own and then fearlessly tearing the settlements apart. Dire wolverines grow to about 12 feet in length and can weigh as much as 2,000 pounds.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Yeti", cr: "4", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "45 (6d10+12)", ac: 17,
+                          fort: 6, ref: 6, will: 6, init_: 1,
+                          str: 19, dex: 12, con: 15, int_: 9, wis: 12, cha: 10,
+                          senses: "darkvision 60 ft., scent; Perception +10Defense", speed: "40 ft., climb 30 ft.",
+                          attacks: "2 claws +9 (1d6+4 plus 1d6 cold)",
+                          specialAbilities: "frightful gaze, rend (2 claws, 1d6+6 plus 1d6 cold)Statistics",
+                          environment: "cold mountains",
+                          summary: "This creature stands like a man, yet is half again the height of most men and covered with a coat of thick white fur.",
+                          desc: "Yeti This creature stands like a man, yet is half again the height of most men and covered with a coat of thick white fur. Yeti CR 4 Source Pathfinder RPG Bestiary pg. 287 XP 1,200 N Large monstrous humanoid (cold) Init +1; Senses darkvision 60 ft., scent; Perception +10 Defense AC 17, touch 10, flat-footed 16 (+1 Dex, +7 natural, –1 size) hp 45 (6d10+12) Fort +6, Ref +6, Will +6 Immune cold Weaknesses vulnerability to fire Offense Speed 40 ft., climb 30 ft. Melee 2 claws +9 (1d6+4 plus 1d6 cold) Space 10 ft., Reach 10 ft. Special Attacks frightful gaze, rend (2 claws, 1d6+6 plus 1d6 cold) Statistics Str 19, Dex 12, Con 15, Int 9, Wis 12, Cha 10 Base Atk +6; CMB +11; CMD 22 Feats Cleave , Great Fortitude , Power Attack Skills Climb +21, Intimidate +9, Perception +10, Stealth +1 (+9 in snow); Racial Modifiers +4 Stealth (+12 in snow) Languages Aklo Ecology Environment cold mountains Organization solitary, pair, or tribe (3–8) Treasure standard Special Abilities Cold (Su) A yeti’s body generates intense cold, dealing 1d6 points of cold damage to any creature that contacts it with a natural attack or unarmed strike, or whenever it hits a foe with its claws or rend attack. Frightful Gaze (Su) Creatures within 30 feet that meet a yeti’s gaze must succeed on a DC 13 Will save or stand paralyzed in fear for 1 round. This is a mind-affecting fear paralysis effect. A creature that successfully saves cannot be affected again by the frightful gaze of that yeti for 1 day. The save DC is Charisma-based. Description Mysterious and rarely seen (save by victims), the yeti is a towering denizen of the loneliest and tallest mountain peaks. Those who dwell upon the lower reaches of such storied slopes whisper tales of “abominable snowmen” who come down from the heights to raid, taking livestock or even humans as prey and leaving behind only monstrous barefoot tracks in the bloodstained snow. Although yeti stories are accurate in their portrayals of fierce, stealthy, and immensely stro",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Ant, Army Ant Swarm", cr: "5", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "49 (11d8)", ac: 20,
+                          fort: 7, ref: 5, will: 3, init_: 2,
+                          str: 1, dex: 15, con: 10, int_: 10, wis: 10, cha: 2,
+                          senses: "darkvision 60 ft., scent; Perception +4Defense", speed: "30 ft., climb 30 ft.",
+                          attacks: "swarm (3d6)",
+                          specialAbilities: "cling, consume, distraction (DC 15)Statistics",
+                          environment: "any tropical",
+                          summary: "A writhing carpet of ants seethes over the ground, consuming everything in its path.",
+                          desc: "Ant, Army Ant Swarm A writhing carpet of ants seethes over the ground, consuming everything in its path. Army Ant Swarm CR 5 Source Pathfinder RPG Bestiary pg. 16 XP 1,600 N Fine vermin (swarm) Init +2; Senses darkvision 60 ft., scent; Perception +4 Defense AC 20, touch 20, flat-footed 18 (+8 size, +2 Dex) hp 49 (11d8) Fort +7, Ref +5, Will +3 Defensive Abilities swarm traits; Immune weapon damage Offense Speed 30 ft., climb 30 ft. Melee swarm (3d6) Space 10 ft., Reach 0 ft. Special Attacks cling, consume, distraction (DC 15) Statistics Str 1, Dex 15, Con 10, Int —, Wis 10, Cha 2 Base Atk +8; CMB —; CMD — Skills Climb +10, Perception +4; Racial Modifiers +4 Perception Ecology Environment any tropical Organization solitary, pair, patrol (3–6 swarms), or legion (7–16 swarms) Treasure none Special Abilities Cling (Ex) If a creature leaves an army ant swarm’s square, the swarm suffers 1d6 points of damage to reflect the loss of its numbers as several of the crawling pests continue to cling tenaciously to the victim. A creature with army ants clinging to him takes 3d6 points of damage at the end of his turn each round. As a full-round action, he can remove the ants with a DC 17 Reflex save. High wind or any amount of damage from an area effect destroys all clinging ants. The save DC is Dexterity-based. Consume (Ex) An army ant swarm can rapidly consume any creature it swarms over. Against helpless or nauseated targets, an army ant swarm attack deals 6d6 points of damage. Description The notoriety of the army ant swarm is well earned. Constantly on the march, a hive of army ants is capable of eating anything that gets in the way of its unabating swath of destruction and ruin.",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Basidirond", cr: "5", type: "plant", size: "Medium", alignment: "N",
+                          hp: "52 (7d8+21)", ac: 18,
+                          fort: 8, ref: 3, will: 2, init_: 1,
+                          str: 20, dex: 13, con: 16, int_: 10, wis: 11, cha: 1,
+                          senses: "low-light vision, tremorsense; Perception +0Defense", speed: "20 ft.",
+                          attacks: "slam +10 (1d8+7 plus spores)",
+                          specialAbilities: "hallucination cloud, sporesStatistics",
+                          environment: "any non-cold underground",
+                          summary: "This strange plant consists of four spidery stalks, long green tendrils, and an inverted bell-shaped cap filled with spores.",
+                          desc: "Basidirond This strange plant consists of four spidery stalks, long green tendrils, and an inverted bell-shaped cap filled with spores. Basidirond CR 5 Source Pathfinder RPG Bestiary pg. 28 XP 1,600 N Medium plant Init +1; Senses low-light vision, tremorsense; Perception +0 Defense AC 18, touch 11, flat-footed 17 (+1 Dex, +7 natural) hp 52 (7d8+21) Fort +8, Ref +3, Will +2 Immune cold, plant traits Weaknesses cold lethargy Offense Speed 20 ft. Melee slam +10 (1d8+7 plus spores) Special Attacks hallucination cloud, spores Statistics Str 20, Dex 13, Con 16, Int —, Wis 11, Cha 1 Base Atk +5; CMB +10; CMD 21 (25 vs. trip) Ecology Environment any non-cold underground Organization solitary, pair, or grove (3–8) Treasure incidental Special Abilities Hallucination Cloud (Ex) As a standard action once per minute, a basidirond can release a cloud of invisible spores in a 20-foot radius. All creatures within the area must succeed on a DC 16 Fortitude save or be affected by powerful hallucinations as long as they remain in the cloud plus 1d4 rounds after leaving the area. A new save must be made each round a creature remains within the affected area. A hallucination cloud persists for 5 rounds before dispersing—a strong wind causes it to disperse immediately. The save DC is Constitution-based. To determine what hallucination is suffered each round, roll 1d6 and consult the following table. d6 Hallucination 1 You’re sinking in quicksand! Fall prone and spend 1 round flailing your arms and legs as if trying to swim. 2 Attacked by a swarm of spiders! Spend a full round action to attack the floor near you with your weapon. 3 An item you hold has turned into a viper! Drop it and flee from the item at top speed for 1 round. 4 You’re suffocating! Stand in place, hold your breath, and clutch at your throat for 1 round. 5 You’ve shrunk to 1/10th your normal size! Take no actions for 1 round and monsters won’t see you. 6 You’re melting! Grasp hold of yourself in an attempt to hold yourse",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Basilisk", cr: "5", type: "magical beast", size: "Medium", alignment: "N",
+                          hp: "52 (7d10+14)", ac: 17,
+                          fort: 9, ref: 4, will: 5, init_: 1,
+                          str: 16, dex: 8, con: 15, int_: 2, wis: 13, cha: 11,
+                          senses: "darkvision 60 ft., low-light vision; Perception +10Defense", speed: "20 ft.",
+                          attacks: "bite +10 (1d8+4)",
+                          specialAbilities: "gazeStatistics",
+                          environment: "any",
+                          summary: "This squat, reptilian monster has eight legs, bony spurs jutting from its back, and eyes that glow with pale green fire.",
+                          desc: "Basilisk This squat, reptilian monster has eight legs, bony spurs jutting from its back, and eyes that glow with pale green fire. Basilisk CR 5 Source Pathfinder RPG Bestiary pg. 29 XP 1,600 N Medium magical beast Init –1; Senses darkvision 60 ft., low-light vision; Perception +10 Defense AC 17, touch 9, flat-footed 17 (–1 Dex, +8 natural) hp 52 (7d10+14) Fort +9, Ref +4, Will +5 Offense Speed 20 ft. Melee bite +10 (1d8+4) Special Attacks gaze Statistics Str 16, Dex 8, Con 15, Int 2, Wis 13, Cha 11 Base Atk +7; CMB +10; CMD 19 (31 vs. trip) Feats Blind-Fight , Great Fortitude , Iron Will , Skill Focus (Perception) Skills Perception +10, Stealth +10; Racial Modifiers +4 Stealth Ecology Environment any Organization solitary, pair, or colony (3–6) Treasure incidental Special Abilities Gaze (Ex) Turn to stone permanently (as flesh to stone ), range 30 feet, Fortitude DC 15 negates. A creature petrified in this matter that is then coated (not just splashed) with fresh basilisk blood (taken from a basilisk no more than 1 hour dead) is instantly restored to flesh. A single basilisk contains enough blood to coat 1d3 Medium creatures in this manner. The save DC is Constitution-based. Description The basilisk, often called the “King of Serpents,” is in fact not a serpent at all, but rather an eight-legged reptile with a nasty disposition and the ability to turn creatures to stone with its gaze. Folklore holds that, much like the cockatrice, the first basilisks hatched from eggs laid by snakes and incubated by roosters, but little in the basilisk’s physiology lends any credence to this claim. Basilisks live in nearly any terrestrial environment, from forest to desert, and their hides tend to match and reflect their surroundings—a desert-dwelling basilisk might be tan or brown, while one that lives in a forest could be bright green. They tend to make their lairs in caves, burrows, or other sheltered areas, and these dens are often marked by statues of people and animals in life",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Cloaker", cr: "5", type: "aberration", size: "Large", alignment: "CN",
+                          hp: "51 (6d8+24)", ac: 19,
+                          fort: 6, ref: 5, will: 7, init_: 7,
+                          str: 21, dex: 16, con: 19, int_: 14, wis: 15, cha: 14,
+                          senses: "darkvision 60 ft.; Perception +14Defense", speed: "10 ft., fly 40 ft. (average)",
+                          attacks: "bite +8 (1d6+5), tail slap +3 (1d8+2)",
+                          specialAbilities: "engulf, moanStatistics",
+                          environment: "underground",
+                          summary: "This ray-like creature opens a toothy maw and leers with glaring red eyes. Behind it whips a menacing tail of segmented bone.",
+                          desc: "Cloaker This ray-like creature opens a toothy maw and leers with glaring red eyes. Behind it whips a menacing tail of segmented bone. Cloaker CR 5 Source Pathfinder RPG Bestiary pg. 47 XP 1,600 CN Large aberration Init +7; Senses darkvision 60 ft.; Perception +14 Defense AC 19, touch 12, flat-footed 16 (+3 Dex, +7 natural, –1 size) hp 51 (6d8+24) Fort +6, Ref +5, Will +7 Defensive Abilities shadow shift Offense Speed 10 ft., fly 40 ft. (average) Melee bite +8 (1d6+5), tail slap +3 (1d8+2) Space 10 ft., Reach 10 ft. (5 ft. with bite) Special Attacks engulf, moan Statistics Str 21, Dex 16, Con 19, Int 14, Wis 15, Cha 14 Base Atk +4; CMB +10; CMD 23 (can’t be tripped) Feats Combat Reflexes , Improved Initiative , Skill Focus (Perception) Skills Disguise +8 (+16 as cloak), Fly +10, Knowledge (religion) +11, Perception +14, Sense Motive +8, Stealth +8; Racial Modifiers +8 Disguise to appear as a cloak, sheet, manta ray, or similarly shaped object or creature Languages Undercommon Ecology Environment underground Organization solitary, pair, mob (3–6), or flock (7–12) Treasure standard Special Abilities Engulf (Ex) A cloaker can try to wrap a Medium or smaller creature in its body as a standard action. The cloaker attempts a grapple that does not provoke an attack of opportunity. If it wins the grapple check, it establishes a hold and bites the engulfed victim with a +4 bonus on its attack roll. It can still use its whip-like tail to strike at other targets. Attacks that hit an engulfing cloaker deal half their damage to the monster and half to the trapped victim. Moan (Ex) A cloaker can emit an infrasonic moan as a standard action, with one of four effects. Fear : All creatures in a 30-foot spread must save (Will negates) or become panicked for 2 rounds. Nausea : All creatures in a 30-foot cone must save (Fortitude negates) or fall prone and be nauseated for 1d4+1 rounds. Stupor : A single creature within 30 feet is affected by hold monster for 5 rounds (Will negates). Un",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Cyclops", cr: "5", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "65 (10d8+20)", ac: 19,
+                          fort: 9, ref: 2, will: 4, init_: 1,
+                          str: 21, dex: 8, con: 15, int_: 10, wis: 13, cha: 8,
+                          senses: "low-light vision; Perception +11Defense", speed: "30 ft.",
+                          attacks: "greataxe +11/+6 (3d6+7/×3)",
+                          specialAbilities: "",
+                          environment: "any temperate or tropical",
+                          summary: "A single huge eye stares from the forehead of this nine-foot-tall giant. Below this sole orb, an even larger mouth gapes like a cave.",
+                          desc: "Cyclops A single huge eye stares from the forehead of this nine-foot-tall giant. Below this sole orb, an even larger mouth gapes like a cave. Cyclops CR 5 Source Pathfinder RPG Bestiary pg. 52 XP 1,600 NE Large humanoid (giant) Init –1; Senses low-light vision; Perception +11 Defense AC 19, touch 8, flat-footed 19 (+4 armor, –1 Dex, +7 natural, –1 size) hp 65 (10d8+20) Fort +9, Ref +2, Will +4 Defensive Abilities ferocity Offense Speed 30 ft. Melee greataxe +11/+6 (3d6+7/×3) Ranged heavy crossbow +5 (2d8/19–20) Space 10 ft., Reach 10 ft. Statistics Str 21, Dex 8, Con 15, Int 10, Wis 13, Cha 8 Base Atk +7; CMB +13; CMD 22 Feats Alertness , Cleave , Great Cleave , Improved Bull Rush , Power Attack Skills Intimidate +9, Perception +11, Profession (soothsayer) +10, Sense Motive +5, Survival +6; Racial Modifiers +8 Perception Languages Common, Cyclops, Giant SQ flash of insight Ecology Environment any temperate or tropical Organization solitary or conclave (2–6) or tribe (7–18) Treasure standard (hide armor, Large greataxe, Large heavy crossbow, other treasure) Special Abilities Flash of Insight (Su) Once per day as an immediate action, a cyclops can peer into an occluded visual spectrum of possible futures, gaining insight that allows it to select the exact result of one die roll before the roll is made. This effect can alter an action taken by the cyclops only, and cannot be applied to the rolls of others. Description Many thousands of years ago, the solemn cyclopes ruled vast kingdoms, yet today their glories are long forgotten. What few cyclopes survive seldom aspire higher than protecting their lairs and seeking out their next meals. This latter task occupies a great deal of their focus, for the monstrous appetites and vacuous hunger of the cyclopes control the race’s destiny and may have led to their original downfall so long ago. The average cyclops stands 9 feet tall and weighs 600 pounds. Both males and females are almost completely bald, with stringy patches of",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await db.insertMonster(
+        .make("Devil, Bearded Devil (Barbazu)", cr: "5", type: "Creature", size: "Medium", alignment: "N",
+                          hp: "57 (6d10+24)", ac: 19,
+                          fort: 9, ref: 7, will: 3, init_: 6,
+                          str: 19, dex: 15, con: 19, int_: 6, wis: 12, cha: 10,
+                          senses: "darkvision 60 ft., see in darkness; Perception +10Defense", speed: "40 ft.",
+                          attacks: "glaive +11/+6 melee (1d10+6 plus infernal wound) or 2 claws +10 melee (1d6+4)",
+                          specialAbilities: "beard",
+                          environment: "any (Hell)",
+                          summary: "This seething devil deftly wields a vicious, saw-toothed glaive, while below its toothy maw writhes a hideous, twitching beard.",
+                          desc: "Devil, Bearded Devil (Barbazu) This seething devil deftly wields a vicious, saw-toothed glaive, while below its toothy maw writhes a hideous, twitching beard. Bearded Devil (Barbazu) CR 5 Source Pathfinder RPG Bestiary pg. 73 XP 1,600 LE Medium outsider (devil, evil, extraplanar, lawful) Init +6; Senses darkvision 60 ft., see in darkness; Perception +10 Defense AC 19, touch 12, flat-footed 17 (+2 Dex, +7 natural) hp 57 (6d10+24) Fort +9, Ref +7, Will +3 DR 5/good or silver; Immune fire, poison; Resist acid 10, cold 10; SR 16 Offense Speed 40 ft. Melee glaive +11/+6 melee (1d10+6 plus infernal wound) or 2 claws +10 melee (1d6+4) Space 5 ft., Reach 5 ft. (10 ft. with glaive) Special Attacks beard Spell-Like Abilities (CL 12th) At will— greater teleport (self plus 50 lbs. of objects only) 1/day—summon (level 3, 1 bearded devil or 6 lemures, 50%) Statistics Str 19, Dex 15, Con 19, Int 6, Wis 12, Cha 10 Base Atk +6; CMB +10; CMD 22 Feats Improved Initiative , Power Attack , Weapon Focus (glaive) Skills Climb +13, Intimidate +7, Perception +10, Sense Motive +6, Stealth +11 Languages Celestial, Common, Draconic, Infernal; telepathy 100 ft. Ecology Environment any (Hell) Organization solitary, pair, squad (3–10), or troop (10–40) Treasure standard (glaive, other treasure) Special Abilities Beard (Ex) If a bearded devil hits a single opponent with both claw attacks, it also lashes at the same target with its spiky, filthy beard. The victim takes 1d8+2 points of damage and must succeed on a DC 17 Fortitude save or contract devil chills. The save DC is Constitution-based. Devil Chills : Disease—injury; save Fort DC 17; onset 1d4 days; frequency 1/day; effect 1d4 Str damage; cure 3 consecutive saves. Infernal Wound (Su) The damage a bearded devil deals with its glaive inflicts persistent wounds that cause 2 points of bleed damage. Bleed caused from an infernal wound is particularly difficult to stanch—a DC 17 Heal check stops the damage, and any attempt to heal a creature suffe",
+                          source: "Bestiary", isPremium: true)
+        )
+        try await seedMonstersB()
     }
 }

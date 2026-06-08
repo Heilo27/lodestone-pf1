@@ -80,6 +80,7 @@ struct GroupHeader: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(AppColors.adaptivePrimary(colorScheme).opacity(0.08))
             .listRowInsets(EdgeInsets())
+            .accessibilityAddTraits(.isHeader)
     }
 }
 

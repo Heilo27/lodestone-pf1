@@ -14,7 +14,7 @@ struct DetailRow: View {
                 .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
                 .textCase(.uppercase)
                 .tracking(0.5)
-                .frame(width: 110, alignment: .leading)
+                .frame(minWidth: 80, maxWidth: 120, alignment: .leading)
             Text(value)
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))

@@ -233,34 +233,6 @@ extension SeedDataBuilder {
     }
 }
 
-// MARK: - FeatEntry factory (UC)
-private extension FeatEntry {
-    static func make(
-        _ title: String,
-        featType: String,
-        prerequisites: String,
-        benefit: String,
-        normal: String = "",
-        special: String = "",
-        summary: String,
-        source: String = "Core Rulebook",
-        isPremium: Bool = false
-    ) -> FeatEntry {
-        FeatEntry(
-            id: UUID(),
-            title: title,
-            summary: summary,
-            isPremium: isPremium,
-            prerequisites: prerequisites,
-            benefit: benefit,
-            normal: normal,
-            special: special,
-            featType: featType,
-            source: source
-        )
-    }
-}
-
 // MARK: - ClassEntry factory (UC)
 private extension ClassEntry {
     static func make(

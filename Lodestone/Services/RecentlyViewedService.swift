@@ -3,6 +3,7 @@ import SwiftUI
 
 /// Tracks recently viewed entries locally via UserDefaults.
 /// Stores up to 20 entries, most recent first.
+@MainActor
 @Observable
 final class RecentlyViewedService {
     private static let key = "recentlyViewed"

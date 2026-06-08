@@ -2,8 +2,9 @@ import SwiftUI
 
 struct FeatListView: View {
     enum SortOrder: String, CaseIterable {
-        case byType    = "By Type"
-        case prereqs   = "Prerequisites"
+        case alphabetical = "A–Z"
+        case byType       = "By Type"
+        case prereqs      = "Prerequisites"
     }
 
     // Display order for known feat types
@@ -78,6 +79,16 @@ struct FeatListView: View {
         return result
     }
 
+    private var alphabeticalGroups: [(letter: String, feats: [FeatEntry])] {
+        let sorted = baseEntries.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+        var dict: [String: [FeatEntry]] = [:]
+        for feat in sorted {
+            let letter = String(feat.title.prefix(1)).uppercased()
+            dict[letter, default: []].append(feat)
+        }
+        return dict.keys.sorted().map { ($0, dict[$0] ?? []) }
+    }
+
     // Grouped by whether feat has prerequisites
     private var prereqGroups: [(label: String, feats: [FeatEntry])] {
         let sorted = baseEntries.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
@@ -96,7 +107,7 @@ struct FeatListView: View {
             if isLoading {
                 ProgressView("Loading Feats...")
                     .tint(AppColors.adaptivePrimary(colorScheme))
-            } else if typeGroups.isEmpty && prereqGroups.isEmpty {
+            } else if alphabeticalGroups.isEmpty && typeGroups.isEmpty && prereqGroups.isEmpty {
                 ContentUnavailableView(
                     "No Feats",
                     systemImage: ContentType.feat.iconName,
@@ -117,23 +128,44 @@ struct FeatListView: View {
 
                     Divider()
 
-                    List {
-                        switch sortOrder {
-                        case .byType:
-                            ForEach(typeGroups, id: \.type) { group in
-                                Section(header: GroupHeader(group.type)) {
-                                    ForEach(group.feats, id: \.id) { feat in
-                                        FeatRow(entry: feat, isUnlocked: subscriptionService.isUnlocked)
+                    let showIndex = sortOrder == .alphabetical && baseEntries.count >= 300
+                    let indexLetters = alphabeticalGroups.map(\.letter)
+                    ScrollViewReader { proxy in
+                        List {
+                            switch sortOrder {
+                            case .alphabetical:
+                                ForEach(alphabeticalGroups, id: \.letter) { group in
+                                    Section(header: GroupHeader(group.letter)) {
+                                        ForEach(group.feats, id: \.id) { feat in
+                                            FeatRow(entry: feat, isUnlocked: subscriptionService.isUnlocked)
+                                        }
+                                    }
+                                    .id(group.letter)
+                                }
+                            case .byType:
+                                ForEach(typeGroups, id: \.type) { group in
+                                    Section(header: GroupHeader(group.type)) {
+                                        ForEach(group.feats, id: \.id) { feat in
+                                            FeatRow(entry: feat, isUnlocked: subscriptionService.isUnlocked)
+                                        }
+                                    }
+                                }
+                            case .prereqs:
+                                ForEach(prereqGroups, id: \.label) { group in
+                                    Section(header: GroupHeader(group.label)) {
+                                        ForEach(group.feats, id: \.id) { feat in
+                                            FeatRow(entry: feat, isUnlocked: subscriptionService.isUnlocked)
+                                        }
                                     }
                                 }
                             }
-                        case .prereqs:
-                            ForEach(prereqGroups, id: \.label) { group in
-                                Section(header: GroupHeader(group.label)) {
-                                    ForEach(group.feats, id: \.id) { feat in
-                                        FeatRow(entry: feat, isUnlocked: subscriptionService.isUnlocked)
-                                    }
+                        }
+                        .overlay(alignment: .trailing) {
+                            if showIndex {
+                                SectionIndexView(letters: indexLetters) { letter in
+                                    withAnimation { proxy.scrollTo(letter, anchor: .top) }
                                 }
+                                .padding(.trailing, 6)
                             }
                         }
                     }
@@ -165,6 +197,7 @@ struct FeatListView: View {
                     )
                     .font(AppFonts.body)
                 }
+                .accessibilityLabel(selectedType == "All" ? "Filter" : "Filter: \(selectedType)")
             }
         }
         .task { await loadEntries() }

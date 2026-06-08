@@ -1,9 +1,27 @@
 import SwiftUI
+import StoreKit
 
 struct PaywallSheet: View {
     @Binding var isPresented: Bool
     let subscriptionService: SubscriptionService
+    /// When set, the paywall copy is tailored to the specific locked entry.
+    var entry: (any ContentEntry)? = nil
     @Environment(\.colorScheme) private var colorScheme
+    @State private var productsLoadAttempted = false
+
+    private var headline: String {
+        guard let entry else { return "Unlock Premium" }
+        return "Unlock \(entry.title)"
+    }
+
+    private var subtitle: String {
+        guard let entry else {
+            return "Expand your Pathfinder 1E library with all expansion books."
+        }
+        let typeLabel = entry.contentType.singularName.lowercased()
+        let source = entry.source
+        return "This \(typeLabel) is from \(source). Subscribe to unlock it along with hundreds more from all expansion books."
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -13,19 +31,23 @@ struct PaywallSheet: View {
                 .frame(width: 36, height: 5)
                 .padding(.top, AppSpacing.md)
                 .padding(.bottom, AppSpacing.xl)
+                .accessibilityHidden(true)
 
             // Crown icon
             Image(systemName: "crown.fill")
                 .font(.system(size: 48))
                 .foregroundStyle(AppColors.premiumGold)
                 .padding(.bottom, AppSpacing.base)
+                .accessibilityHidden(true)
 
             // Headline
-            Text("Unlock Premium")
+            Text(headline)
                 .font(AppFonts.displayMedium)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, AppSpacing.xl)
 
-            Text("Expand your Pathfinder 1E library with premium expansion books.")
+            Text(subtitle)
                 .font(AppFonts.callout)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
@@ -34,9 +56,9 @@ struct PaywallSheet: View {
 
             // Feature bullets
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                FeatureBullet(icon: "books.vertical.fill", text: "All expansion books for PF1")
+                FeatureBullet(icon: "books.vertical.fill", text: "Expansion books — APG, Ultimate Magic, Bestiaries, and more")
                 FeatureBullet(icon: "magnifyingglass", text: "Full search across all content")
-                FeatureBullet(icon: "arrow.triangle.2.circlepath", text: "Always up to date")
+                FeatureBullet(icon: "lock.open.fill", text: "Instant access — no download required")
             }
             .padding(.top, AppSpacing.xl)
             .padding(.horizontal, AppSpacing.xxl)
@@ -44,72 +66,34 @@ struct PaywallSheet: View {
             Spacer()
 
             VStack(spacing: AppSpacing.md) {
-                if subscriptionService.products.isEmpty {
+                if subscriptionService.products.isEmpty && !productsLoadAttempted {
                     ProgressView()
                         .frame(height: 50)
-                } else {
-                    // PF1-only tier
-                    let pf1Products = subscriptionService.products.filter { subscriptionService.isPF1Product($0) }
-                    let bundleProducts = subscriptionService.products.filter { subscriptionService.isBundleProduct($0) }
-
-                    if !pf1Products.isEmpty {
-                        Text("PF1 Only")
-                            .font(AppFonts.caption.weight(.semibold))
-                            .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                            .textCase(.uppercase)
-                            .tracking(0.8)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, AppSpacing.xl)
-
-                        ForEach(pf1Products, id: \.id) { product in
-                            Button {
-                                Task { await subscriptionService.purchase(product) }
-                            } label: {
-                                HStack {
-                                    Text(product.displayName)
-                                    Spacer()
-                                    Text(product.displayPrice)
-                                        .fontWeight(.semibold)
-                                }
-                                .padding(.horizontal, AppSpacing.xs)
-                            }
-                            .buttonStyle(GoldGradientButtonStyle())
-                            .padding(.horizontal, AppSpacing.xl)
-                        }
-                    }
-
-                    if !bundleProducts.isEmpty {
-                        HStack {
-                            Text("All Apps Bundle")
-                                .font(AppFonts.caption.weight(.semibold))
-                                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
-                                .textCase(.uppercase)
-                                .tracking(0.8)
-                            Spacer()
-                            Text("PF1 + PF2 + SF1")
-                                .font(AppFonts.caption2.weight(.semibold))
-                                .foregroundStyle(AppColors.premiumGold)
-                        }
+                } else if !subscriptionService.products.isEmpty {
+                    ForEach(subscriptionService.products, id: \.id) { product in
+                        SubscriptionButton(
+                            product: product,
+                            colorScheme: colorScheme,
+                            onPurchase: { Task { await subscriptionService.purchase(product) } }
+                        )
                         .padding(.horizontal, AppSpacing.xl)
-                        .padding(.top, AppSpacing.sm)
-
-                        ForEach(bundleProducts, id: \.id) { product in
-                            Button {
-                                Task { await subscriptionService.purchase(product) }
-                            } label: {
-                                HStack {
-                                    Text(product.displayName)
-                                    Spacer()
-                                    Text(product.displayPrice)
-                                        .fontWeight(.semibold)
-                                }
-                                .padding(.horizontal, AppSpacing.xs)
-                            }
-                            .buttonStyle(GoldGradientButtonStyle())
-                            .padding(.horizontal, AppSpacing.xl)
+                    }
+                } else {
+                    ProductsUnavailableView(colorScheme: colorScheme) {
+                        productsLoadAttempted = false
+                        Task {
+                            await subscriptionService.loadProducts()
+                            productsLoadAttempted = true
                         }
                     }
                 }
+
+                // Required by Apple: auto-renewal disclosure must appear before/adjacent to purchase buttons
+                Text("Subscription renews automatically unless cancelled at least 24 hours before the end of the current period. Manage or cancel anytime in App Store settings.")
+                    .font(AppFonts.caption2)
+                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme).opacity(0.7))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, AppSpacing.xxl)
 
                 Button("Restore Purchases") {
                     Task { await subscriptionService.restorePurchases() }
@@ -127,11 +111,18 @@ struct PaywallSheet: View {
                 .frame(minHeight: 44)
                 .contentShape(Rectangle())
 
-                Text("Cancel anytime in App Store settings.")
-                    .font(AppFonts.caption2)
-                    .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme).opacity(0.7))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, AppSpacing.xxl)
+                HStack(spacing: AppSpacing.base) {
+                    Link("Privacy Policy", destination: URL(string: "https://heiloprojects.com/privacy")!)
+                        .font(AppFonts.caption2)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                    Text("·")
+                        .font(AppFonts.caption2)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme).opacity(0.5))
+                    Link("Terms of Use", destination: URL(string: "https://heiloprojects.com/terms")!)
+                        .font(AppFonts.caption2)
+                        .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                }
+                .padding(.top, AppSpacing.xs)
             }
             .padding(.horizontal, AppSpacing.xl)
             .padding(.bottom, AppSpacing.xxl)
@@ -148,8 +139,63 @@ struct PaywallSheet: View {
         .task {
             if subscriptionService.products.isEmpty {
                 await subscriptionService.loadProducts()
+                productsLoadAttempted = true
             }
         }
+        .onChange(of: subscriptionService.isSubscribed) { _, isSubscribed in
+            if isSubscribed { isPresented = false }
+        }
+    }
+}
+
+/// A single subscription option button with Apple-compliant trial and price disclosure.
+private struct SubscriptionButton: View {
+    let product: StoreKit.Product
+    let colorScheme: ColorScheme
+    let onPurchase: () -> Void
+
+    private var isAnnual: Bool { product.id.contains("annual") }
+    private var period: String { isAnnual ? "year" : "month" }
+
+    var body: some View {
+        VStack(spacing: AppSpacing.xs) {
+            Button(action: onPurchase) {
+                Text("Subscribe — \(product.displayPrice)/\(period)")
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, AppSpacing.xs)
+            }
+            .buttonStyle(GoldGradientButtonStyle())
+            .accessibilityLabel("Subscribe for \(product.displayPrice) per \(period). \(isAnnual ? "Annual" : "Monthly") subscription. Cancel anytime.")
+
+            Text("Lodestone PF1 All Access · \(isAnnual ? "1 year" : "1 month") · Cancel anytime")
+                .font(AppFonts.caption)
+                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                .multilineTextAlignment(.center)
+        }
+    }
+}
+
+/// Shown when StoreKit cannot load products (e.g. network error, IAPs not yet approved).
+private struct ProductsUnavailableView: View {
+    let colorScheme: ColorScheme
+    let onRetry: () -> Void
+
+    var body: some View {
+        VStack(spacing: AppSpacing.md) {
+            Text("Subscription options are currently unavailable.")
+                .font(AppFonts.subheadline)
+                .foregroundStyle(AppColors.adaptiveTextSecondary(colorScheme))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, AppSpacing.xl)
+
+            Button("Try Again", action: onRetry)
+                .font(AppFonts.body)
+                .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
+        }
+        .frame(height: 100)
     }
 }
 
@@ -163,6 +209,7 @@ private struct FeatureBullet: View {
             Image(systemName: icon)
                 .foregroundStyle(AppColors.adaptivePrimary(colorScheme))
                 .frame(width: 24)
+                .accessibilityHidden(true)
             Text(text)
                 .font(AppFonts.subheadline)
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))

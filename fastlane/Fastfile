@@ -32,7 +32,9 @@ platform :ios do
       skip_binary_upload: true,
       skip_metadata: true,
       screenshots_path: "./fastlane/screenshots",
-      force: true
+      force: true,
+      overwrite_screenshots: true,
+      run_precheck_before_submit: false
     )
   end
 
@@ -59,6 +61,7 @@ platform :ios do
       submit_for_review: true,
       automatic_release: true,
       force: true,
+      run_precheck_before_submit: false,
       submission_information: {
         export_compliance_uses_encryption: false,
         add_id_info_uses_idfa: false
