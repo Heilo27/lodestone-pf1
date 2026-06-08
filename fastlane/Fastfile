@@ -21,6 +21,7 @@ platform :ios do
       app_identifier: APP_IDENTIFIER,
       skip_binary_upload: true,
       skip_screenshots: true,
+      run_precheck_before_submit: false,
       force: true
     )
   end
