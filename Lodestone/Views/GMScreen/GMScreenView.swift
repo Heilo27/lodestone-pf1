@@ -57,6 +57,16 @@ struct GMScreenView: View {
             .listStyle(.insetGrouped)
             .navigationTitle("GM Tools")
             .searchable(text: $searchText, prompt: "Search tables…")
+            .navigationDestination(for: BrowseDestination.self) { destination in
+                switch destination {
+                case .detail(let wrapped):                          DetailView(entry: wrapped)
+                case .contentTypeList(let type):                    CategoryListView(contentType: type)
+                case .bookContents(let book):                       BookContentsView(source: book)
+                case .recentEntry(let recent):                      RecentEntryLoader(recent: recent)
+                case .itemCategory(let name, let items):            ItemCategoryDetailView(categoryName: name, items: items)
+                case .itemSpecialCategory(let category, let items): ItemSpecialCategoryView(category: category, items: items)
+                }
+            }
 
         if isEmbedded {
             inner

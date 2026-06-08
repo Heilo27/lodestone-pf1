@@ -248,21 +248,34 @@ actor DatabaseService {
         return ContentType(rawValue: typeStr)
     }
 
-    func fetchCrossReferencesWithType(for id: UUID) throws -> [(targetId: UUID, targetType: ContentType, linkText: String)] {
+    func fetchCrossReferencesWithType(for id: UUID, filterType: ContentType? = nil) throws -> [(targetId: UUID, targetType: ContentType, linkText: String)] {
         guard isOpen else { throw DatabaseError.notOpen }
         guard let db else { throw DatabaseError.notOpen }
-        let sql = """
-            SELECT DISTINCT cr.target_id, cr.target_type, cr.link_text
-            FROM cross_references cr
-            WHERE cr.source_id = ?
-            ORDER BY cr.link_text ASC
-        """
+        let sql: String
+        if filterType != nil {
+            sql = """
+                SELECT DISTINCT cr.target_id, cr.target_type, cr.link_text
+                FROM cross_references cr
+                WHERE cr.source_id = ? AND cr.target_type = ?
+                ORDER BY cr.link_text ASC
+            """
+        } else {
+            sql = """
+                SELECT DISTINCT cr.target_id, cr.target_type, cr.link_text
+                FROM cross_references cr
+                WHERE cr.source_id = ?
+                ORDER BY cr.link_text ASC
+            """
+        }
         var stmt: OpaquePointer?
         defer { sqlite3_finalize(stmt) }
         guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
             throw DatabaseError.queryFailed(dbError())
         }
         sqlite3_bind_text(stmt, 1, id.uuidString, -1, SQLITE_TRANSIENT)
+        if let filterType {
+            sqlite3_bind_text(stmt, 2, filterType.rawValue, -1, SQLITE_TRANSIENT)
+        }
         var results: [(targetId: UUID, targetType: ContentType, linkText: String)] = []
         while sqlite3_step(stmt) == SQLITE_ROW {
             let targetStr = String(cString: sqlite3_column_text(stmt, 0))

@@ -7,6 +7,19 @@ struct FavoritesView: View {
     @State private var selectedType: ContentType? = nil
     @Environment(\.isEmbeddedInSplitView) private var isEmbedded
 
+    @ViewBuilder
+    private func destinationListView(for type: ContentType) -> some View {
+        switch type {
+        case .spell:   SpellListView()
+        case .feat:    FeatListView()
+        case .item:    ItemListView()
+        case .monster: MonsterListView()
+        case .trait:   TraitListView()
+        case .skill:   SkillListView()
+        default:       CategoryListView(contentType: type)
+        }
+    }
+
     private func filteredEntries(from entries: [any ContentEntry]) -> [any ContentEntry] {
         entries.filter { entry in
             let matchesType = selectedType == nil || entry.contentType == selectedType
@@ -95,8 +108,13 @@ struct FavoritesView: View {
                 }
             }
             .navigationDestination(for: BrowseDestination.self) { destination in
-                if case .detail(let wrapped) = destination {
-                    DetailView(entry: wrapped)
+                switch destination {
+                case .detail(let wrapped):                          DetailView(entry: wrapped)
+                case .contentTypeList(let type):                    destinationListView(for: type)
+                case .bookContents(let book):                       BookContentsView(source: book)
+                case .recentEntry(let recent):                      RecentEntryLoader(recent: recent)
+                case .itemCategory(let name, let items):            ItemCategoryDetailView(categoryName: name, items: items)
+                case .itemSpecialCategory(let category, let items): ItemSpecialCategoryView(category: category, items: items)
                 }
             }
             .onAppear {

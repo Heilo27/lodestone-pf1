@@ -5,6 +5,7 @@ import SwiftUI
 struct CrossLinkSection: View {
     let sourceId: UUID
     let heading: String
+    var filterType: ContentType? = nil
 
     @State private var links: [(targetId: UUID, targetType: ContentType, linkText: String)] = []
     @Environment(\.colorScheme) private var colorScheme
@@ -21,7 +22,7 @@ struct CrossLinkSection: View {
         }
         .task(id: sourceId) {
             links = []
-            if let fetched = try? await DatabaseService.shared.fetchCrossReferencesWithType(for: sourceId) {
+            if let fetched = try? await DatabaseService.shared.fetchCrossReferencesWithType(for: sourceId, filterType: filterType) {
                 links = fetched
             }
         }

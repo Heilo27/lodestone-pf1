@@ -46,8 +46,8 @@ struct ClassDetailView: View {
                 .foregroundStyle(AppColors.adaptiveTextPrimary(colorScheme))
                 .lineSpacing(4)
 
-            CrossLinkSection(sourceId: classEntry.id, heading: "Class Spells")
-            CrossLinkSection(sourceId: classEntry.id, heading: "Class Skills")
+            CrossLinkSection(sourceId: classEntry.id, heading: "Class Spells", filterType: .spell)
+            CrossLinkSection(sourceId: classEntry.id, heading: "Class Skills", filterType: .rule)
         }
     }
 }

@@ -7,6 +7,21 @@ struct SearchView: View {
     @Environment(LibraryFilterService.self) private var libraryFilter
     @Environment(\.isEmbeddedInSplitView) private var isEmbedded
 
+    // MARK: - Navigation
+
+    @ViewBuilder
+    private func destinationListView(for type: ContentType) -> some View {
+        switch type {
+        case .spell:   SpellListView()
+        case .feat:    FeatListView()
+        case .item:    ItemListView()
+        case .monster: MonsterListView()
+        case .trait:   TraitListView()
+        case .skill:   SkillListView()
+        default:       CategoryListView(contentType: type)
+        }
+    }
+
     // MARK: - Grouped results (max 20 per section)
 
     private var groupedResults: [(type: ContentType, entries: [any ContentEntry], total: Int)] {
@@ -87,8 +102,13 @@ struct SearchView: View {
             .navigationTitle("Search")
             .searchable(text: $viewModel.query, prompt: "Spells, monsters, feats...")
             .navigationDestination(for: BrowseDestination.self) { destination in
-                if case .detail(let wrapped) = destination {
-                    DetailView(entry: wrapped)
+                switch destination {
+                case .detail(let wrapped):                          DetailView(entry: wrapped)
+                case .contentTypeList(let type):                    destinationListView(for: type)
+                case .bookContents(let book):                       BookContentsView(source: book)
+                case .recentEntry(let recent):                      RecentEntryLoader(recent: recent)
+                case .itemCategory(let name, let items):            ItemCategoryDetailView(categoryName: name, items: items)
+                case .itemSpecialCategory(let category, let items): ItemSpecialCategoryView(category: category, items: items)
                 }
             }
             .onChange(of: viewModel.query) {
